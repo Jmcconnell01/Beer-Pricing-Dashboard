@@ -10499,71 +10499,22 @@ st.caption(f"**{market_label}** · {format_label} · Price discrepancy vs. local
 
 st.markdown("---")
 
-# ── Geolocation — single component instance, before tabs ─────────────────────
+# ── Location via zip code — no JS/browser API, works everywhere ──────────────
+# Build zip→(lat, lng) lookup from ACCOUNT_DATA (already in memory)
 if 'geo_status' not in st.session_state:
-    st.session_state['geo_lat']     = None
-    st.session_state['geo_lng']     = None
-    st.session_state['geo_status']  = 'idle'
-    st.session_state['geo_attempt'] = 0
+    st.session_state['geo_lat']    = None
+    st.session_state['geo_lng']    = None
+    st.session_state['geo_status'] = 'idle'
+    st.session_state['geo_zip']    = ''
 
-if st.session_state['geo_status'] == 'pending':
-    # Self-contained geolocation component — no external package needed.
-    # The iframe shares origin with the Streamlit app on Streamlit Cloud,
-    # so window.parent.location is accessible. We write coords into the URL
-    # query params and reload once, which Streamlit picks up as new params.
-    _attempt = st.session_state['geo_attempt']
-
-    # Check if coords just arrived in query params
-    _qp_lat = st.query_params.get('_glat')
-    _qp_lng = st.query_params.get('_glng')
-    if _qp_lat and _qp_lng:
+_ZIP_COORDS: dict = {}
+for _zr in ACCOUNT_DATA:
+    _zk = str(_zr.get('zip', ''))[:5]
+    if _zk and _zk not in _ZIP_COORDS and _zr.get('lat') and _zr.get('lng'):
         try:
-            st.session_state['geo_lat']    = float(_qp_lat)
-            st.session_state['geo_lng']    = float(_qp_lng)
-            st.session_state['geo_status'] = 'granted'
-        except Exception:
-            st.session_state['geo_status'] = 'error'
-        st.query_params.pop('_glat', None)
-        st.query_params.pop('_glng', None)
-        st.rerun()
-    elif st.query_params.get('_gdeny'):
-        st.session_state['geo_status'] = 'denied'
-        st.query_params.pop('_gdeny', None)
-        st.rerun()
-    else:
-        # Mount the component — it requests location then rewrites the parent URL
-        st.components.v1.html(f"""
-        <script>
-        (function() {{
-            var attempt = {_attempt};
-            var doneKey = 'scp_geo_done_' + attempt;
-            if (sessionStorage.getItem(doneKey)) return;
-
-            function send(lat, lng) {{
-                sessionStorage.setItem(doneKey, '1');
-                var u = new URL(window.parent.location.href);
-                if (lat === 'deny') {{
-                    u.searchParams.set('_gdeny', '1');
-                }} else {{
-                    u.searchParams.set('_glat', lat);
-                    u.searchParams.set('_glng', lng);
-                }}
-                window.parent.location.replace(u.toString());
-            }}
-
-            if (!navigator.geolocation) {{ send('deny', ''); return; }}
-
-            navigator.geolocation.getCurrentPosition(
-                function(p) {{ send(p.coords.latitude.toFixed(6), p.coords.longitude.toFixed(6)); }},
-                function(e) {{ send('deny', ''); }},
-                {{timeout: 10000, maximumAge: 0, enableHighAccuracy: false}}
-            );
-        }})();
-        </script>
-        """, height=1)
-
-# Always show geo state — remove after debugging
-st.warning(f"DEBUG ALWAYS — status={st.session_state['geo_status']}  attempt={st.session_state.get('geo_attempt')}  lat={st.session_state.get('geo_lat')}  lng={st.session_state.get('geo_lng')}")
+            _ZIP_COORDS[_zk] = (float(_zr['lat']), float(_zr['lng']))
+        except (ValueError, TypeError):
+            pass
 
 # ─── Tabs ─────────────────────────────────────────────────────────────────────
 tab5, tab1, tab2 = st.tabs(["📱 UPC Scanner List", "📊 Discrepancy Heatmap", "📈 Price Comparison"])
@@ -11356,6 +11307,41 @@ with tab5:
     _user_lng   = st.session_state.get('geo_lng')
     _geo_status = st.session_state.get('geo_status', 'idle')
 
+    # ── Zip code location input ───────────────────────────────────────────────
+    _zip_col, _store_col, _clear_col = st.columns([2, 5, 1])
+
+    with _zip_col:
+        _zip_input = st.text_input(
+            '📍 Your Zip Code',
+            value=st.session_state.get('geo_zip', ''),
+            placeholder='e.g. 29579',
+            max_chars=5,
+            key='geo_zip_input',
+            help='Enter your zip code to sort stores by nearest location'
+        )
+        if _zip_input and len(_zip_input) == 5 and _zip_input.isdigit():
+            if _zip_input != st.session_state.get('geo_zip', ''):
+                if _zip_input in _ZIP_COORDS:
+                    _zlat, _zlng = _ZIP_COORDS[_zip_input]
+                    st.session_state['geo_lat']    = _zlat
+                    st.session_state['geo_lng']    = _zlng
+                    st.session_state['geo_status'] = 'granted'
+                    st.session_state['geo_zip']    = _zip_input
+                    st.rerun()
+                else:
+                    st.caption('⚠️ Zip not found in territory')
+        elif _zip_input == '' and st.session_state.get('geo_zip'):
+            st.session_state['geo_lat']    = None
+            st.session_state['geo_lng']    = None
+            st.session_state['geo_status'] = 'idle'
+            st.session_state['geo_zip']    = ''
+            st.rerun()
+
+    # Re-read after possible rerun
+    _user_lat   = st.session_state.get('geo_lat')
+    _user_lng   = st.session_state.get('geo_lng')
+    _geo_status = st.session_state.get('geo_status', 'idle')
+
     # ── Build sorted company list ────────────────────────────────────────────
     _acct_df_raw = get_account_df()
 
@@ -11381,38 +11367,11 @@ with tab5:
             return f"{v}  ({d:.1f} mi)" if d < 99999 else v
 
         _company_values = ['— Select a store —'] + _sorted_companies
-        _geo_badge = (
-            "<div style='background:#ecfdf5;border:1px solid #6ee7b7;border-radius:6px;"
-            "padding:6px 12px;margin-bottom:8px;font-size:0.8rem;color:#065f46;display:inline-block'>"
-            "📍 Stores sorted nearest to farthest from your location</div>"
-        )
     else:
         _company_values = ['— Select a store —'] + sorted(_acct_df_raw['company'].unique().tolist())
         _dist_label = lambda v: v
-        if _geo_status == 'denied':
-            _geo_badge = (
-                "<div style='background:#fef9c3;border:1px solid #fde68a;border-radius:6px;"
-                "padding:6px 12px;margin-bottom:8px;font-size:0.8rem;color:#92400e;display:inline-block'>"
-                "⚠️ Location denied — stores listed alphabetically. "
-                "Allow location in your browser then click 📍 Use My Location.</div>"
-            )
-        elif _geo_status == 'pending':
-            _geo_badge = (
-                "<div style='background:#eff6ff;border:1px solid #bfdbfe;border-radius:6px;"
-                "padding:6px 12px;margin-bottom:8px;font-size:0.8rem;color:#1e40af;display:inline-block'>"
-                "📡 Getting your location…</div>"
-            )
-        else:
-            _geo_badge = (
-                "<div style='background:#fef9c3;border:1px solid #fde68a;border-radius:6px;"
-                "padding:6px 12px;margin-bottom:8px;font-size:0.8rem;color:#92400e;display:inline-block'>"
-                "📍 Click <strong>Use My Location</strong> to sort stores by distance.</div>"
-            )
 
-    st.markdown(_geo_badge, unsafe_allow_html=True)
-
-    _sc1, _sc2, _sc3 = st.columns([5, 1, 1])
-    with _sc2:
+    with _clear_col:
         st.markdown('<br>', unsafe_allow_html=True)
         if st.button('✕ Clear', use_container_width=True, key='upc_store_clear'):
             st.session_state['upc_store_version'] += 1
@@ -11420,18 +11379,8 @@ with tab5:
                       'upc_sel_store','upc_search','upc_sel_fmt','upc_sel_pkg']:
                 st.session_state.pop(k, None)
             st.rerun()
-    with _sc3:
-        st.markdown('<br>', unsafe_allow_html=True)
-        _loc_btn_label = '📍 Use My Location' if _geo_status in ('idle', 'denied', 'error') else '🔄 Retry Location'
-        if st.button(_loc_btn_label, use_container_width=True, key='upc_geo_retry',
-                     disabled=(_geo_status == 'pending')):
-            st.session_state['geo_status']  = 'pending'
-            st.session_state['geo_lat']     = None
-            st.session_state['geo_lng']     = None
-            st.session_state['geo_attempt'] = st.session_state.get('geo_attempt', 0) + 1
-            st.rerun()
 
-    with _sc1:
+    with _store_col:
         _sel_store_input = st.selectbox(
             '🏪 Company (Store Name)',
             _company_values,
@@ -11969,7 +11918,9 @@ with tab5:
         if os.path.exists(RESULTS_CSV):
             with st.expander("📂 View Saved Survey Results", expanded=False):
                 saved_df = pd.read_csv(RESULTS_CSV)
-                st.dataframe(saved_df.sort_values("Submitted At", ascending=False),
+                st.dataframe(
+                    saved_df.sort_values("Submitted At", ascending=False)
+                    if "Submitted At" in saved_df.columns else saved_df,
                              use_container_width=True, hide_index=True, height=300)
                 if st.button("🗑️ Clear All Saved Results", type="secondary"):
                     os.remove(RESULTS_CSV)
