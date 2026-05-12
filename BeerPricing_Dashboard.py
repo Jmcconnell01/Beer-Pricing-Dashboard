@@ -11410,45 +11410,50 @@ with tab5:
 
         scan_df = get_upc_df(sel_upc_market).copy()
 
-        # Apply planogram filter if this store has a custom list
+        # Build scan list — always use planogram rows directly if store has one
         _using_planogram = False
-        if _pg_store_data:
-            _pg_prods_lower = {str(p).strip().lower() for p in _pg_store_data['products']}
-            # Case-insensitive product name match
-            _prod_mask = scan_df['Product'].str.strip().str.lower().isin(_pg_prods_lower)
-            _filtered  = scan_df[_prod_mask]
-
-            if len(_filtered) > 0:
-                scan_df = _filtered.copy()
+        if _pg_store_data and len(_pg_store_data.get('rows', [])) > 0:
+            import re as _re_pg2
+            _rows = []
+            for _, _pr in _pg_store_data['rows'].iterrows():
+                _name = str(_pr.get('Name', '')).strip()
+                if not _name:
+                    continue
+                # Strip letter suffixes from UPC (e.g. 1820000018S → 1820000018)
+                _upc = re.sub(r'[A-Za-z]+$', '',
+                              str(_pr.get('UPC', '')).strip().split('.')[0])
+                # Extract package string from product name tail
+                _pkg_m = _re_pg2.search(
+                    r'(\d+/[\d.]+\w*(?:\s*x\d+)?)\s*$', _name, _re_pg2.IGNORECASE)
+                _pkg = _pkg_m.group(1).strip() if _pkg_m else ''
+                # Use Family as WAMP, try to match Brand from hardcoded list
+                _wamp  = str(_pr.get('Family', '')).strip()
+                _brand = str(_pr.get('Family', '')).strip()
+                _rows.append({
+                    'WAMP':       _wamp,
+                    'Brand':      _brand,
+                    'Product':    _name,
+                    'Wholesaler': '',
+                    'Package':    _pkg,
+                    'UPC':        _upc,
+                    'Barcode':    str(_pr.get('Barcode', '')).strip(),
+                })
+            if _rows:
+                scan_df = pd.DataFrame(_rows)
+                scan_df['Format']   = scan_df['Package'].apply(
+                    lambda p: 'Singles' if str(p).startswith(('1/', '3/')) else 'Packages')
+                scan_df['PkgGroup'] = scan_df.apply(
+                    lambda r: pkg_group(r['Package'], r.get('WAMP', ''), r.get('Brand', '')),
+                    axis=1)
                 _using_planogram = True
-            else:
-                # No matches in hardcoded list — build scan rows directly from planogram
-                import re as _re_pg2
-                _rows = []
-                for _, _pr in _pg_store_data.get('rows', pd.DataFrame()).iterrows():
-                    _name = str(_pr.get('Name','')).strip()
-                    _upc  = str(_pr.get('UPC','')).strip().split('.')[0]
-                    _upc  = _re_pg2.sub(r'[A-Za-z]+$', '', _upc)
-                    # Extract package from product name (e.g. "Bud Light 12/12C" → "12/12C")
-                    _pkg_m = _re_pg2.search(r'(\d+/[\d.]+\w*(?:\s*x\d+)?)\s*$', _name, _re_pg2.IGNORECASE)
-                    _pkg   = _pkg_m.group(1).strip() if _pkg_m else ''
-                    _rows.append({'WAMP': str(_pr.get('Family','')), 'Brand': '',
-                                  'Product': _name, 'Wholesaler': '',
-                                  'Package': _pkg, 'UPC': _upc, 'Barcode': ''})
-                if _rows:
-                    import pandas as _pd2
-                    _extra = _pd2.DataFrame(_rows)
-                    _extra['Format']   = _extra['Package'].apply(
-                        lambda p: 'Singles' if str(p).startswith(('1/','3/')) else 'Packages')
-                    _extra['PkgGroup'] = _extra.apply(
-                        lambda r: pkg_group(r['Package'], r.get('WAMP',''), r.get('Brand','')), axis=1)
-                    scan_df = _extra.copy()
-                    _using_planogram = True
 
         if _using_planogram:
-            st.success(f"📋 Showing **{len(scan_df)} store-specific products** from planogram for this location.", icon="✅")
+            st.success(
+                f"📋 Showing **{len(scan_df)} store-specific products** from planogram.",
+                icon="✅")
         else:
-            _pg_reason = "no planogram on file for this store" if not _pg_store_data else "no products matched — showing default list"
+            _pg_reason = ("no planogram on file for this store"
+                          if not _pg_store_data else "no rows found — showing default list")
             st.info(f"📦 Showing **default market scan list** ({_pg_reason}).")
         if sel_fmt != "All":
             scan_df = scan_df[scan_df["Format"] == sel_fmt]
