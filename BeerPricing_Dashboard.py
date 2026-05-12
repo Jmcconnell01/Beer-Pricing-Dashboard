@@ -11286,74 +11286,100 @@ with tab5:
     if 'upc_store_version' not in st.session_state:
         st.session_state['upc_store_version'] = 0
 
-    # ── Geolocation via postMessage (no page reload needed) ─────────────────
-    # ── Geolocation via Streamlit component value (works on Streamlit Cloud) ────
-    # Strategy: a st.components.v1.html block requests geolocation and sends
-    # the result back to Python using Streamlit.setComponentValue(), which is
-    # the only cross-iframe communication mechanism that reliably works on
-    # Streamlit Cloud. The component returns a string "lat,lng" or "denied".
+    # ── Geolocation: hidden text_input driven by JS (works on Streamlit Cloud) ──
+    # Pattern: render a hidden st.text_input, inject JS via st.markdown (main
+    # frame — not sandboxed), JS calls geolocation then finds the input by its
+    # aria-label and programmatically sets its value + fires an input event,
+    # which Streamlit detects as a widget change and triggers a rerun.
 
     if 'geo_status' not in st.session_state:
         st.session_state['geo_lat']    = None
         st.session_state['geo_lng']    = None
         st.session_state['geo_status'] = 'pending'
 
+    _GEO_INPUT_LABEL = '_scp_geo_coords'
+
+    # Read back any value the JS wrote into the hidden input last run
+    _geo_input_val = st.session_state.get(_GEO_INPUT_LABEL, '')
+    if _geo_input_val and st.session_state['geo_status'] == 'pending':
+        if _geo_input_val == 'denied':
+            st.session_state['geo_status'] = 'denied'
+        else:
+            try:
+                _lat_s, _lng_s = _geo_input_val.split(',')
+                st.session_state['geo_lat']    = float(_lat_s)
+                st.session_state['geo_lng']    = float(_lng_s)
+                st.session_state['geo_status'] = 'granted'
+            except Exception:
+                st.session_state['geo_status'] = 'error'
+
     _user_lat   = st.session_state['geo_lat']
     _user_lng   = st.session_state['geo_lng']
     _geo_status = st.session_state['geo_status']
 
+    # Hidden input — collapsed to 0px via CSS, but Streamlit still tracks its value
+    st.markdown("""
+    <style>
+      div[data-testid="stTextInput"]:has(input[aria-label="_scp_geo_coords"]) {
+        height: 0 !important; overflow: hidden !important;
+        position: absolute !important; visibility: hidden !important;
+      }
+    </style>
+    """, unsafe_allow_html=True)
+    st.text_input('_scp_geo_coords', key=_GEO_INPUT_LABEL, label_visibility='collapsed')
+
+    # Inject JS into main frame (st.markdown scripts run in the top-level document)
     if _geo_status == 'pending':
-        _geo_result = st.components.v1.html("""
+        st.markdown("""
         <script>
-        const Streamlit = window.parent.Streamlit || (window.Streamlit);
+        (function() {
+            if (window._scp_geo_injected) return;
+            window._scp_geo_injected = true;
 
-        function sendResult(val) {
-            // Use Streamlit component messaging API
-            window.parent.postMessage({
-                type: 'streamlit:setComponentValue',
-                value: val
-            }, '*');
-        }
+            function writeToInput(val) {
+                // Find the hidden Streamlit text input by its aria-label
+                var inp = window.parent.document.querySelector(
+                    'input[aria-label="_scp_geo_coords"]'
+                );
+                if (!inp) {
+                    // Not mounted yet — retry shortly
+                    setTimeout(function(){ writeToInput(val); }, 200);
+                    return;
+                }
+                var nativeInputValueSetter = Object.getOwnPropertyDescriptor(
+                    window.HTMLInputElement.prototype, 'value'
+                ).set;
+                nativeInputValueSetter.call(inp, val);
+                inp.dispatchEvent(new Event('input', { bubbles: true }));
+            }
 
-        // Guard: only request once per page load
-        if (sessionStorage.getItem('scp_geo_done')) {
-            sendResult(sessionStorage.getItem('scp_geo_done'));
-        } else if (!navigator.geolocation) {
-            sessionStorage.setItem('scp_geo_done', 'denied');
-            sendResult('denied');
-        } else {
+            var cached = sessionStorage.getItem('scp_geo_result');
+            if (cached) {
+                writeToInput(cached);
+                return;
+            }
+
+            if (!navigator.geolocation) {
+                sessionStorage.setItem('scp_geo_result', 'denied');
+                writeToInput('denied');
+                return;
+            }
+
             navigator.geolocation.getCurrentPosition(
                 function(pos) {
                     var val = pos.coords.latitude.toFixed(6) + ',' + pos.coords.longitude.toFixed(6);
-                    sessionStorage.setItem('scp_geo_done', val);
-                    sendResult(val);
+                    sessionStorage.setItem('scp_geo_result', val);
+                    writeToInput(val);
                 },
                 function(err) {
-                    sessionStorage.setItem('scp_geo_done', 'denied');
-                    sendResult('denied');
+                    sessionStorage.setItem('scp_geo_result', 'denied');
+                    writeToInput('denied');
                 },
                 {timeout: 10000, maximumAge: 600000, enableHighAccuracy: false}
             );
-        }
+        })();
         </script>
-        """, height=0)
-
-        if _geo_result:
-            if _geo_result == 'denied':
-                st.session_state['geo_status'] = 'denied'
-            else:
-                try:
-                    _lat_str, _lng_str = str(_geo_result).split(',')
-                    st.session_state['geo_lat']    = float(_lat_str)
-                    st.session_state['geo_lng']    = float(_lng_str)
-                    st.session_state['geo_status'] = 'granted'
-                except Exception:
-                    st.session_state['geo_status'] = 'error'
-            st.rerun()
-
-    _user_lat   = st.session_state['geo_lat']
-    _user_lng   = st.session_state['geo_lng']
-    _geo_status = st.session_state['geo_status']
+        """, unsafe_allow_html=True)
 
     # ── Build sorted company list ────────────────────────────────────────────
     _acct_df_raw = get_account_df()
@@ -11430,13 +11456,12 @@ with tab5:
         if st.button('🔄 Retry Location', use_container_width=True, key='upc_geo_retry',
                      disabled=(_geo_status == 'granted')):
             st.session_state['geo_status'] = 'pending'
-            st.session_state['geo_lat'] = None
-            st.session_state['geo_lng'] = None
-            # Clear the sessionStorage guard so the geo component runs again on next render
-            st.components.v1.html(
-                "<script>sessionStorage.removeItem('scp_geo_done');</script>",
-                height=0
-            )
+            st.session_state['geo_lat']    = None
+            st.session_state['geo_lng']    = None
+            st.session_state[_GEO_INPUT_LABEL] = ''
+            # Clear sessionStorage so JS re-requests location
+            st.markdown("<script>sessionStorage.removeItem('scp_geo_result'); window._scp_geo_injected = false;</script>",
+                        unsafe_allow_html=True)
             st.rerun()
 
     with _sc1:
