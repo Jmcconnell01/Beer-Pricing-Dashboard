@@ -10128,7 +10128,7 @@ def load_planogram_index():
             store = str(store).strip()
             upcs  = set(grp['UPC'].dropna().unique())
             prods = set(grp['Name'].dropna().unique())
-            exact_lookup[store] = {'upcs': upcs, 'products': prods}
+            exact_lookup[store] = {'upcs': upcs, 'products': prods, 'rows': grp.reset_index(drop=True)}
             norm = _re_pg.sub(r'\s*\([A-Z]+\)\s*$', '', store).strip().lower()
             name_lookup[norm] = exact_lookup[store]
 
@@ -11413,15 +11413,37 @@ with tab5:
         # Apply planogram filter if this store has a custom list
         _using_planogram = False
         if _pg_store_data:
-            _pg_upcs  = _pg_store_data['upcs']
-            _pg_prods = _pg_store_data['products']
-            # Match by UPC (most reliable) or product name as fallback
-            _upc_mask  = scan_df['UPC'].astype(str).str.strip().str.split('.').str[0].isin(_pg_upcs)
-            _prod_mask = scan_df['Product'].isin(_pg_prods)
-            _filtered  = scan_df[_upc_mask | _prod_mask]
+            _pg_prods_lower = {str(p).strip().lower() for p in _pg_store_data['products']}
+            # Case-insensitive product name match
+            _prod_mask = scan_df['Product'].str.strip().str.lower().isin(_pg_prods_lower)
+            _filtered  = scan_df[_prod_mask]
+
             if len(_filtered) > 0:
                 scan_df = _filtered.copy()
                 _using_planogram = True
+            else:
+                # No matches in hardcoded list — build scan rows directly from planogram
+                import re as _re_pg2
+                _rows = []
+                for _, _pr in _pg_store_data.get('rows', pd.DataFrame()).iterrows():
+                    _name = str(_pr.get('Name','')).strip()
+                    _upc  = str(_pr.get('UPC','')).strip().split('.')[0]
+                    _upc  = _re_pg2.sub(r'[A-Za-z]+$', '', _upc)
+                    # Extract package from product name (e.g. "Bud Light 12/12C" → "12/12C")
+                    _pkg_m = _re_pg2.search(r'(\d+/[\d.]+\w*(?:\s*x\d+)?)\s*$', _name, _re_pg2.IGNORECASE)
+                    _pkg   = _pkg_m.group(1).strip() if _pkg_m else ''
+                    _rows.append({'WAMP': str(_pr.get('Family','')), 'Brand': '',
+                                  'Product': _name, 'Wholesaler': '',
+                                  'Package': _pkg, 'UPC': _upc, 'Barcode': ''})
+                if _rows:
+                    import pandas as _pd2
+                    _extra = _pd2.DataFrame(_rows)
+                    _extra['Format']   = _extra['Package'].apply(
+                        lambda p: 'Singles' if str(p).startswith(('1/','3/')) else 'Packages')
+                    _extra['PkgGroup'] = _extra.apply(
+                        lambda r: pkg_group(r['Package'], r.get('WAMP',''), r.get('Brand','')), axis=1)
+                    scan_df = _extra.copy()
+                    _using_planogram = True
 
         if _using_planogram:
             st.success(f"📋 Showing **{len(scan_df)} store-specific products** from planogram for this location.", icon="✅")
