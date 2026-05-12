@@ -10499,6 +10499,32 @@ st.caption(f"**{market_label}** · {format_label} · Price discrepancy vs. local
 
 st.markdown("---")
 
+# ── Geolocation — runs before tabs so it works regardless of active tab ───────
+if 'geo_status' not in st.session_state:
+    st.session_state['geo_lat']     = None
+    st.session_state['geo_lng']     = None
+    st.session_state['geo_status']  = 'pending'
+    st.session_state['geo_attempt'] = 0
+
+if st.session_state['geo_status'] == 'pending':
+    try:
+        from streamlit_js_eval import get_geolocation as _get_geo
+        _geo_key = f"scp_geo_{st.session_state['geo_attempt']}"
+        _geo_loc = _get_geo(component_key=_geo_key)
+        if isinstance(_geo_loc, dict):
+            if 'coords' in _geo_loc:
+                _lat = _geo_loc['coords'].get('latitude')
+                _lng = _geo_loc['coords'].get('longitude')
+                if _lat is not None and _lng is not None:
+                    st.session_state['geo_lat']    = float(_lat)
+                    st.session_state['geo_lng']    = float(_lng)
+                    st.session_state['geo_status'] = 'granted'
+            elif 'error' in _geo_loc:
+                st.session_state['geo_status'] = 'denied'
+        # None = JS still resolving — stay pending, natural rerun will pick it up
+    except ImportError:
+        st.session_state['geo_status'] = 'error'
+
 # ─── Tabs ─────────────────────────────────────────────────────────────────────
 tab5, tab1, tab2 = st.tabs(["📱 UPC Scanner List", "📊 Discrepancy Heatmap", "📈 Price Comparison"])
 
@@ -11286,39 +11312,9 @@ with tab5:
     if 'upc_store_version' not in st.session_state:
         st.session_state['upc_store_version'] = 0
 
-    # ── Geolocation via streamlit-js-eval ────────────────────────────────────
-    # get_geolocation() returns None on the first run (JS hasn't resolved yet),
-    # then returns the coords dict on the next natural Streamlit rerun.
-    # Never treat None as an error — it just means "still waiting".
-
-    if 'geo_status' not in st.session_state:
-        st.session_state['geo_lat']    = None
-        st.session_state['geo_lng']    = None
-        st.session_state['geo_status'] = 'pending'
-
-    if st.session_state['geo_status'] == 'pending':
-        try:
-            from streamlit_js_eval import get_geolocation as _get_geo
-            _geo_loc = _get_geo(component_key='scp_geolocation')
-            if _geo_loc is not None:
-                # Got a response — could be coords or an error dict
-                _coords = _geo_loc.get('coords', {}) if isinstance(_geo_loc, dict) else {}
-                _lat = _coords.get('latitude')
-                _lng = _coords.get('longitude')
-                if _lat is not None and _lng is not None:
-                    st.session_state['geo_lat']    = float(_lat)
-                    st.session_state['geo_lng']    = float(_lng)
-                    st.session_state['geo_status'] = 'granted'
-                else:
-                    # Got a response but no coords (e.g. permission denied)
-                    st.session_state['geo_status'] = 'denied'
-            # If None: still waiting — leave status as 'pending', show spinner
-        except ImportError:
-            st.session_state['geo_status'] = 'error'
-
-    _user_lat   = st.session_state['geo_lat']
-    _user_lng   = st.session_state['geo_lng']
-    _geo_status = st.session_state['geo_status']
+    _user_lat   = st.session_state.get('geo_lat')
+    _user_lng   = st.session_state.get('geo_lng')
+    _geo_status = st.session_state.get('geo_status', 'pending')
 
     # ── Build sorted company list ────────────────────────────────────────────
     _acct_df_raw = get_account_df()
@@ -11394,9 +11390,10 @@ with tab5:
         st.markdown('<br>', unsafe_allow_html=True)
         if st.button('🔄 Retry Location', use_container_width=True, key='upc_geo_retry',
                      disabled=(_geo_status == 'granted')):
-            st.session_state['geo_status'] = 'pending'
-            st.session_state['geo_lat']    = None
-            st.session_state['geo_lng']    = None
+            st.session_state['geo_status']  = 'pending'
+            st.session_state['geo_lat']     = None
+            st.session_state['geo_lng']     = None
+            st.session_state['geo_attempt'] = st.session_state.get('geo_attempt', 0) + 1
             st.rerun()
 
     with _sc1:
