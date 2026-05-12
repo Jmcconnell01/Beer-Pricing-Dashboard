@@ -11420,14 +11420,18 @@ with tab5:
                 _name = str(_pr.get('Name', '')).strip()
                 if not _name:
                     continue
-                # Strip letter suffixes from UPC (e.g. 1820000018S → 1820000018)
-                _upc = re.sub(r'[A-Za-z]+$', '',
-                              str(_pr.get('UPC', '')).strip().split('.')[0])
+                # Use the Barcode column (11-digit) as the primary UPC for scanning
+                _barcode = str(_pr.get('Barcode', '')).strip().split('.')[0]
+                # Also keep the short UPC as fallback, stripping any letter suffixes
+                _upc_raw = re.sub(r'[A-Za-z]+$', '',
+                                  str(_pr.get('UPC', '')).strip().split('.')[0])
+                # Prefer the longer Barcode value for generation (always 11 digits)
+                _upc = _barcode if len(_barcode) >= 11 else _upc_raw
                 # Extract package string from product name tail
                 _pkg_m = _re_pg2.search(
                     r'(\d+/[\d.]+\w*(?:\s*x\d+)?)\s*$', _name, _re_pg2.IGNORECASE)
                 _pkg = _pkg_m.group(1).strip() if _pkg_m else ''
-                # Use Family as WAMP, try to match Brand from hardcoded list
+                # Use Family as WAMP
                 _wamp  = str(_pr.get('Family', '')).strip()
                 _brand = str(_pr.get('Family', '')).strip()
                 _rows.append({
@@ -11437,7 +11441,7 @@ with tab5:
                     'Wholesaler': '',
                     'Package':    _pkg,
                     'UPC':        _upc,
-                    'Barcode':    str(_pr.get('Barcode', '')).strip(),
+                    'Barcode':    _barcode,
                 })
             if _rows:
                 scan_df = pd.DataFrame(_rows)
