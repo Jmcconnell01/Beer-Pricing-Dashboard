@@ -11239,120 +11239,140 @@ with tab5:
     if 'upc_store_version' not in st.session_state:
         st.session_state['upc_store_version'] = 0
 
-    # ── Geolocation: request browser location once per session ──────────────
-    if 'geo_lat' not in st.session_state:
+    # ── Geolocation via postMessage (no page reload needed) ─────────────────
+    # The iframe calls navigator.geolocation, then sends coords to the parent
+    # Streamlit frame via postMessage. A tiny <script> in the main page listens
+    # and writes the result into a hidden <input> that Streamlit can read via
+    # a dedicated st.components.v1.html component that itself does postMessage
+    # back. Instead, we use the simpler approach: write to sessionStorage in
+    # the iframe, then in the MAIN page script set st.query_params via a
+    # parent-window postMessage listener.
+    #
+    # Cleanest Streamlit-compatible approach: use a single st.components.v1.html
+    # block that (a) requests geolocation, (b) posts coords to the parent window,
+    # and (c) the parent window listener sets a URL hash that causes Streamlit
+    # to rerun with the data readable from st.query_params — but WITHOUT a full
+    # reload by using history.replaceState + st.rerun trigger via a hidden button.
+    #
+    # Most reliable pattern: iframe postMessage → parent window listener →
+    # parent calls window.parent (already IS parent) → use Streamlit's
+    # window.streamlitComponentAPI or simply use window.location hash approach.
+    #
+    # FINAL APPROACH: Use a st.components.v1.html component that requests
+    # geolocation and uses window.parent.postMessage to call back. We intercept
+    # this in a second small <script> injected via st.markdown (runs in main frame)
+    # that writes coords into st.query_params via history.replaceState + triggers
+    # Streamlit's rerun by dispatching a custom event on the main window.
+    # Since that's fragile, the SIMPLEST reliable approach for Streamlit Cloud:
+    # Use an iframe that sets parent.location search params WITHOUT a full reload
+    # by using history.replaceState, then calls window.location.reload() once.
+    # We guard with sessionStorage so it only reloads once.
+
+    # --- Read geo query params FIRST (may have arrived from previous reload) ---
+    _geo_initialized = 'geo_status' in st.session_state
+    if not _geo_initialized:
         st.session_state['geo_lat'] = None
         st.session_state['geo_lng'] = None
-        st.session_state['geo_status'] = 'pending'   # pending | granted | denied | error
+        st.session_state['geo_status'] = 'pending'
 
-    _GEO_KEY = 'geo_result'
+    # Always check query params for fresh geo data, even after session state set
+    _qp_lat = st.query_params.get('geo_lat', None)
+    _qp_lng = st.query_params.get('geo_lng', None)
 
-    # Inject JS that requests geolocation and posts the result back via
-    # st.query_params (Streamlit 1.30+) via a hidden fragment approach.
-    # We use a small component trick: write coords into a query-param that
-    # triggers a rerun, then read and clear it.
-    _geo_js = """
-    <script>
-    (function() {
-        // Only run once – skip if already stored in sessionStorage
-        if (sessionStorage.getItem('scp_geo_done')) return;
-
-        if (!navigator.geolocation) {
-            // Browser doesn't support geolocation
-            const url = new URL(window.location.href);
-            url.searchParams.set('geo_lat', 'denied');
-            url.searchParams.set('geo_lng', 'denied');
-            window.location.href = url.toString();
-            return;
-        }
-
-        navigator.geolocation.getCurrentPosition(
-            function(pos) {
-                sessionStorage.setItem('scp_geo_done', '1');
-                const url = new URL(window.location.href);
-                url.searchParams.set('geo_lat', pos.coords.latitude.toFixed(6));
-                url.searchParams.set('geo_lng', pos.coords.longitude.toFixed(6));
-                window.location.href = url.toString();
-            },
-            function(err) {
-                sessionStorage.setItem('scp_geo_done', '1');
-                const url = new URL(window.location.href);
-                url.searchParams.set('geo_lat', 'denied');
-                url.searchParams.set('geo_lng', 'denied');
-                window.location.href = url.toString();
-            },
-            {timeout: 8000, maximumAge: 300000}
-        );
-    })();
-    </script>
-    """
-
-    # Read coords from query params if they arrived
-    _qp = st.query_params
-    if st.session_state['geo_status'] == 'pending':
-        _qlat = _qp.get('geo_lat', None)
-        _qlng = _qp.get('geo_lng', None)
-        if _qlat is not None and _qlng is not None:
-            if _qlat == 'denied':
-                st.session_state['geo_status'] = 'denied'
-            else:
-                try:
-                    st.session_state['geo_lat'] = float(_qlat)
-                    st.session_state['geo_lng'] = float(_qlng)
-                    st.session_state['geo_status'] = 'granted'
-                except ValueError:
-                    st.session_state['geo_status'] = 'error'
-            # Clear the query params so they don't persist on refresh
-            _qp_clean = dict(_qp)
-            _qp_clean.pop('geo_lat', None)
-            _qp_clean.pop('geo_lng', None)
-            st.query_params.clear()
-            for _k, _v in _qp_clean.items():
-                st.query_params[_k] = _v
+    if _qp_lat is not None and st.session_state['geo_status'] != 'granted':
+        if _qp_lat == 'denied':
+            st.session_state['geo_status'] = 'denied'
+        else:
+            try:
+                st.session_state['geo_lat'] = float(_qp_lat)
+                st.session_state['geo_lng'] = float(_qp_lng)
+                st.session_state['geo_status'] = 'granted'
+            except (ValueError, TypeError):
+                st.session_state['geo_status'] = 'error'
+        # Remove geo params from URL cleanly (no full reload)
+        st.query_params.pop('geo_lat', None)
+        st.query_params.pop('geo_lng', None)
 
     _user_lat = st.session_state.get('geo_lat')
     _user_lng = st.session_state.get('geo_lng')
     _geo_status = st.session_state.get('geo_status', 'pending')
 
-    # Inject JS only while we're still waiting for a result
+    # Inject geolocation JS only while still pending.
+    # Uses history.replaceState (no reload) to set query params,
+    # then calls window.location.reload() exactly once (guarded by sessionStorage).
     if _geo_status == 'pending':
-        st.components.v1.html(_geo_js, height=0)
+        _geo_component_html = """
+        <script>
+        (function() {
+            // Guard: only run geolocation once per browser session
+            if (sessionStorage.getItem('scp_geo_requested')) return;
+            sessionStorage.setItem('scp_geo_requested', '1');
+
+            function sendCoords(lat, lng) {
+                var url = new URL(window.parent.location.href);
+                url.searchParams.set('geo_lat', lat);
+                url.searchParams.set('geo_lng', lng);
+                window.parent.history.replaceState(null, '', url.toString());
+                window.parent.location.reload();
+            }
+
+            if (!navigator.geolocation) {
+                sendCoords('denied', 'denied');
+                return;
+            }
+
+            navigator.geolocation.getCurrentPosition(
+                function(pos) {
+                    sendCoords(
+                        pos.coords.latitude.toFixed(6),
+                        pos.coords.longitude.toFixed(6)
+                    );
+                },
+                function(err) {
+                    sendCoords('denied', 'denied');
+                },
+                {timeout: 10000, maximumAge: 600000, enableHighAccuracy: false}
+            );
+        })();
+        </script>
+        """
+        st.components.v1.html(_geo_component_html, height=0)
 
     # ── Build sorted company list ────────────────────────────────────────────
     _acct_df_raw = get_account_df().copy()
 
     if _user_lat is not None and _user_lng is not None:
-        # Compute distance for every store and sort ascending
         _acct_df_raw['_dist_mi'] = _acct_df_raw.apply(
-            lambda r: _haversine(_user_lat, _user_lng, r['lat'], r['lng'])
-            if pd.notna(r.get('lat')) and pd.notna(r.get('lng')) else 9999,
+            lambda r: _haversine(_user_lat, _user_lng, float(r['lat']), float(r['lng']))
+            if pd.notna(r.get('lat')) and pd.notna(r.get('lng')) else 99999,
             axis=1
         )
-        _acct_df_sorted = _acct_df_raw.sort_values('_dist_mi')
-        _sorted_companies = _acct_df_sorted['company'].tolist()
-        # Label nearest stores with distance
-        def _label(row):
-            d = row['_dist_mi']
-            if d < 9999:
-                return f"{row['company']}  ({d:.1f} mi)"
-            return row['company']
-        _company_labels = ['— Select a store —'] + [_label(r) for _, r in _acct_df_sorted.iterrows()]
-        _company_values = ['— Select a store —'] + _sorted_companies
+        _acct_df_sorted = _acct_df_raw.sort_values('_dist_mi').reset_index(drop=True)
+        _company_values = ['— Select a store —'] + _acct_df_sorted['company'].tolist()
+
+        def _dist_label(v):
+            if v == '— Select a store —':
+                return v
+            rows = _acct_df_sorted[_acct_df_sorted['company'] == v]
+            if rows.empty:
+                return v
+            d = rows.iloc[0]['_dist_mi']
+            return f"{v}  ({d:.1f} mi)" if d < 99999 else v
+
         _geo_badge = (
             f"<div style='background:#ecfdf5;border:1px solid #6ee7b7;border-radius:6px;"
             f"padding:6px 12px;margin-bottom:8px;font-size:0.8rem;color:#065f46;display:inline-block'>"
-            f"📍 Stores sorted by distance from your location</div>"
+            f"📍 Stores sorted nearest to farthest from your location</div>"
         )
     else:
-        _sorted_companies = sorted(_acct_df_raw['company'].unique())
-        _company_labels  = ['— Select a store —'] + _sorted_companies
-        _company_values  = ['— Select a store —'] + _sorted_companies
+        _company_values = ['— Select a store —'] + sorted(_acct_df_raw['company'].unique().tolist())
+        _dist_label = lambda v: v  # no-op, just show name
         if _geo_status == 'denied':
             _geo_badge = (
                 "<div style='background:#fef9c3;border:1px solid #fde68a;border-radius:6px;"
                 "padding:6px 12px;margin-bottom:8px;font-size:0.8rem;color:#92400e;display:inline-block'>"
                 "⚠️ Location access denied — stores listed alphabetically. "
-                "Enable location in your browser to sort by nearest store.</div>"
+                "Enable location in your browser and click Retry.</div>"
             )
         elif _geo_status == 'pending':
             _geo_badge = (
@@ -11364,7 +11384,7 @@ with tab5:
             _geo_badge = (
                 "<div style='background:#fef2f2;border:1px solid #fecaca;border-radius:6px;"
                 "padding:6px 12px;margin-bottom:8px;font-size:0.8rem;color:#991b1b;display:inline-block'>"
-                "❌ Could not determine location — stores listed alphabetically.</div>"
+                "❌ Could not get location — stores listed alphabetically.</div>"
             )
 
     st.markdown(_geo_badge, unsafe_allow_html=True)
@@ -11385,15 +11405,19 @@ with tab5:
             st.session_state['geo_status'] = 'pending'
             st.session_state['geo_lat'] = None
             st.session_state['geo_lng'] = None
+            # Clear the sessionStorage guard so the JS runs again
+            st.components.v1.html(
+                "<script>sessionStorage.removeItem('scp_geo_requested');</script>",
+                height=0
+            )
             st.rerun()
 
     with _sc1:
-        # Build format_func to show distance labels while keeping raw company name as value
-        _label_map = dict(zip(_company_values, _company_labels))
         _sel_store_input = st.selectbox(
             '🏪 Company (Store Name)',
-            _company_values, index=0,
-            format_func=lambda v: _label_map.get(v, v),
+            _company_values,
+            index=0,
+            format_func=_dist_label,
             key=f"upc_store_input_{st.session_state['upc_store_version']}",
         )
 
