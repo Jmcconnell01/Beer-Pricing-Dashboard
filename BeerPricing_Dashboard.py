@@ -10100,32 +10100,28 @@ def get_upc_df(market: str = "1 · Charleston"):
     return df
 
 
-@st.cache_data(show_spinner=False)
+PLANOGRAM_URL = "https://docs.google.com/spreadsheets/d/e/2PACX-1vQlrqK58HOY7cOmkPI1XTGkREzhPp21k8uqTQDGob8qOhZaO7e2FS_fLxjFI1IplCRPmmSTI7Asiqpf/pub?gid=1939743735&single=true&output=csv"
+
+@st.cache_data(ttl=3600, show_spinner=False)
 def load_planogram_index():
     """
-    Load All_Items_All_Planograms.csv and return a dict:
-      { normalized_store_name: set_of_upcs }
-    Normalized store name = store name with the (MKT) suffix stripped and lowercased.
-    Also return the raw store names for exact match lookup.
+    Fetch All_Items_All_Planograms from Google Sheets (published CSV) and return:
+      exact_lookup: { "Circle K #2707332 (BLK)": {upcs, products} }
+      name_lookup:  { "circle k #2707332":        {upcs, products} }
+    Cached for 1 hour. Falls back to empty dicts on any error.
     """
-    import os as _os_pg, re as _re_pg
-    _csv = _os_pg.path.join(_os_pg.path.dirname(_os_pg.path.abspath(__file__)),
-                             "All_Items_All_Planograms.csv")
-    if not _os_pg.path.exists(_csv):
-        return {}, {}
-
+    import re as _re_pg, io as _io_pg
     try:
-        _pg = pd.read_csv(_csv, header=0, low_memory=False)
+        import requests as _req_pg
+        _resp = _req_pg.get(PLANOGRAM_URL, timeout=30)
+        _resp.raise_for_status()
+        _pg = pd.read_csv(_io_pg.StringIO(_resp.text), header=0, low_memory=False)
         _pg.columns = ['_cust_num', 'Retail_Store', 'Family', 'Inner_Pack',
                        'Name', 'Barcode', 'Desc11', 'GTIN', 'UPC']
-        # Drop duplicate header rows
         _pg = _pg[_pg['Name'] != 'Name'].copy()
         _pg['Name'] = _pg['Name'].astype(str).str.strip()
         _pg['UPC']  = _pg['UPC'].astype(str).str.strip().str.split('.').str[0]
 
-        # Build two lookups:
-        #   exact_lookup: { "Circle K #2707332 (BLK)": set_of_upcs }
-        #   name_lookup:  { "circle k #2707332": set_of_upcs }  (suffix stripped)
         exact_lookup = {}
         name_lookup  = {}
         for store, grp in _pg.groupby('Retail_Store'):
@@ -10133,7 +10129,6 @@ def load_planogram_index():
             upcs  = set(grp['UPC'].dropna().unique())
             prods = set(grp['Name'].dropna().unique())
             exact_lookup[store] = {'upcs': upcs, 'products': prods}
-            # Normalized: strip trailing (MKT) suffix, lowercase
             norm = _re_pg.sub(r'\s*\([A-Z]+\)\s*$', '', store).strip().lower()
             name_lookup[norm] = exact_lookup[store]
 
