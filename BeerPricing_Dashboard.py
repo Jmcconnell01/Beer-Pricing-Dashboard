@@ -11286,9 +11286,10 @@ with tab5:
     if 'upc_store_version' not in st.session_state:
         st.session_state['upc_store_version'] = 0
 
-    # ── Geolocation via streamlit-js-eval (proper declared component) ───────────
-    # get_geolocation() is a real Streamlit component that returns coords to Python.
-    # We call it once, cache the result in session_state, and never call it again.
+    # ── Geolocation via streamlit-js-eval ────────────────────────────────────
+    # get_geolocation() returns None on the first run (JS hasn't resolved yet),
+    # then returns the coords dict on the next natural Streamlit rerun.
+    # Never treat None as an error — it just means "still waiting".
 
     if 'geo_status' not in st.session_state:
         st.session_state['geo_lat']    = None
@@ -11300,17 +11301,19 @@ with tab5:
             from streamlit_js_eval import get_geolocation as _get_geo
             _geo_loc = _get_geo(component_key='scp_geolocation')
             if _geo_loc is not None:
-                _coords = _geo_loc.get('coords', {})
+                # Got a response — could be coords or an error dict
+                _coords = _geo_loc.get('coords', {}) if isinstance(_geo_loc, dict) else {}
                 _lat = _coords.get('latitude')
                 _lng = _coords.get('longitude')
                 if _lat is not None and _lng is not None:
                     st.session_state['geo_lat']    = float(_lat)
                     st.session_state['geo_lng']    = float(_lng)
                     st.session_state['geo_status'] = 'granted'
-                    st.rerun()
                 else:
-                    st.session_state['geo_status'] = 'error'
-        except Exception:
+                    # Got a response but no coords (e.g. permission denied)
+                    st.session_state['geo_status'] = 'denied'
+            # If None: still waiting — leave status as 'pending', show spinner
+        except ImportError:
             st.session_state['geo_status'] = 'error'
 
     _user_lat   = st.session_state['geo_lat']
