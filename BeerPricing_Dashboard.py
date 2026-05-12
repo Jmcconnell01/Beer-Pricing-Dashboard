@@ -11286,100 +11286,36 @@ with tab5:
     if 'upc_store_version' not in st.session_state:
         st.session_state['upc_store_version'] = 0
 
-    # ── Geolocation: hidden text_input driven by JS (works on Streamlit Cloud) ──
-    # Pattern: render a hidden st.text_input, inject JS via st.markdown (main
-    # frame — not sandboxed), JS calls geolocation then finds the input by its
-    # aria-label and programmatically sets its value + fires an input event,
-    # which Streamlit detects as a widget change and triggers a rerun.
+    # ── Geolocation via streamlit-js-eval (proper declared component) ───────────
+    # get_geolocation() is a real Streamlit component that returns coords to Python.
+    # We call it once, cache the result in session_state, and never call it again.
 
     if 'geo_status' not in st.session_state:
         st.session_state['geo_lat']    = None
         st.session_state['geo_lng']    = None
         st.session_state['geo_status'] = 'pending'
 
-    _GEO_INPUT_LABEL = '_scp_geo_coords'
-
-    # Read back any value the JS wrote into the hidden input last run
-    _geo_input_val = st.session_state.get(_GEO_INPUT_LABEL, '')
-    if _geo_input_val and st.session_state['geo_status'] == 'pending':
-        if _geo_input_val == 'denied':
-            st.session_state['geo_status'] = 'denied'
-        else:
-            try:
-                _lat_s, _lng_s = _geo_input_val.split(',')
-                st.session_state['geo_lat']    = float(_lat_s)
-                st.session_state['geo_lng']    = float(_lng_s)
-                st.session_state['geo_status'] = 'granted'
-            except Exception:
-                st.session_state['geo_status'] = 'error'
+    if st.session_state['geo_status'] == 'pending':
+        try:
+            from streamlit_js_eval import get_geolocation as _get_geo
+            _geo_loc = _get_geo(component_key='scp_geolocation')
+            if _geo_loc is not None:
+                _coords = _geo_loc.get('coords', {})
+                _lat = _coords.get('latitude')
+                _lng = _coords.get('longitude')
+                if _lat is not None and _lng is not None:
+                    st.session_state['geo_lat']    = float(_lat)
+                    st.session_state['geo_lng']    = float(_lng)
+                    st.session_state['geo_status'] = 'granted'
+                    st.rerun()
+                else:
+                    st.session_state['geo_status'] = 'error'
+        except Exception:
+            st.session_state['geo_status'] = 'error'
 
     _user_lat   = st.session_state['geo_lat']
     _user_lng   = st.session_state['geo_lng']
     _geo_status = st.session_state['geo_status']
-
-    # Hidden input — collapsed to 0px via CSS, but Streamlit still tracks its value
-    st.markdown("""
-    <style>
-      div[data-testid="stTextInput"]:has(input[aria-label="_scp_geo_coords"]) {
-        height: 0 !important; overflow: hidden !important;
-        position: absolute !important; visibility: hidden !important;
-      }
-    </style>
-    """, unsafe_allow_html=True)
-    st.text_input('_scp_geo_coords', key=_GEO_INPUT_LABEL, label_visibility='collapsed')
-
-    # Inject JS into main frame (st.markdown scripts run in the top-level document)
-    if _geo_status == 'pending':
-        st.markdown("""
-        <script>
-        (function() {
-            if (window._scp_geo_injected) return;
-            window._scp_geo_injected = true;
-
-            function writeToInput(val) {
-                // Find the hidden Streamlit text input by its aria-label
-                var inp = window.parent.document.querySelector(
-                    'input[aria-label="_scp_geo_coords"]'
-                );
-                if (!inp) {
-                    // Not mounted yet — retry shortly
-                    setTimeout(function(){ writeToInput(val); }, 200);
-                    return;
-                }
-                var nativeInputValueSetter = Object.getOwnPropertyDescriptor(
-                    window.HTMLInputElement.prototype, 'value'
-                ).set;
-                nativeInputValueSetter.call(inp, val);
-                inp.dispatchEvent(new Event('input', { bubbles: true }));
-            }
-
-            var cached = sessionStorage.getItem('scp_geo_result');
-            if (cached) {
-                writeToInput(cached);
-                return;
-            }
-
-            if (!navigator.geolocation) {
-                sessionStorage.setItem('scp_geo_result', 'denied');
-                writeToInput('denied');
-                return;
-            }
-
-            navigator.geolocation.getCurrentPosition(
-                function(pos) {
-                    var val = pos.coords.latitude.toFixed(6) + ',' + pos.coords.longitude.toFixed(6);
-                    sessionStorage.setItem('scp_geo_result', val);
-                    writeToInput(val);
-                },
-                function(err) {
-                    sessionStorage.setItem('scp_geo_result', 'denied');
-                    writeToInput('denied');
-                },
-                {timeout: 10000, maximumAge: 600000, enableHighAccuracy: false}
-            );
-        })();
-        </script>
-        """, unsafe_allow_html=True)
 
     # ── Build sorted company list ────────────────────────────────────────────
     _acct_df_raw = get_account_df()
@@ -11458,10 +11394,6 @@ with tab5:
             st.session_state['geo_status'] = 'pending'
             st.session_state['geo_lat']    = None
             st.session_state['geo_lng']    = None
-            st.session_state[_GEO_INPUT_LABEL] = ''
-            # Clear sessionStorage so JS re-requests location
-            st.markdown("<script>sessionStorage.removeItem('scp_geo_result'); window._scp_geo_injected = false;</script>",
-                        unsafe_allow_html=True)
             st.rerun()
 
     with _sc1:
