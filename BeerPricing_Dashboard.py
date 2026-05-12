@@ -11239,12 +11239,137 @@ with tab5:
     if 'upc_store_version' not in st.session_state:
         st.session_state['upc_store_version'] = 0
 
-    _all_companies = ['— Select a store —'] + sorted(get_account_df()['company'].unique())
-    _user_lat = None
-    _user_lng = None
-    _gps_banner = None
+    # ── Geolocation: request browser location once per session ──────────────
+    if 'geo_lat' not in st.session_state:
+        st.session_state['geo_lat'] = None
+        st.session_state['geo_lng'] = None
+        st.session_state['geo_status'] = 'pending'   # pending | granted | denied | error
 
-    _sc1, _sc2 = st.columns([5, 1])
+    _GEO_KEY = 'geo_result'
+
+    # Inject JS that requests geolocation and posts the result back via
+    # st.query_params (Streamlit 1.30+) via a hidden fragment approach.
+    # We use a small component trick: write coords into a query-param that
+    # triggers a rerun, then read and clear it.
+    _geo_js = """
+    <script>
+    (function() {
+        // Only run once – skip if already stored in sessionStorage
+        if (sessionStorage.getItem('scp_geo_done')) return;
+
+        if (!navigator.geolocation) {
+            // Browser doesn't support geolocation
+            const url = new URL(window.location.href);
+            url.searchParams.set('geo_lat', 'denied');
+            url.searchParams.set('geo_lng', 'denied');
+            window.location.href = url.toString();
+            return;
+        }
+
+        navigator.geolocation.getCurrentPosition(
+            function(pos) {
+                sessionStorage.setItem('scp_geo_done', '1');
+                const url = new URL(window.location.href);
+                url.searchParams.set('geo_lat', pos.coords.latitude.toFixed(6));
+                url.searchParams.set('geo_lng', pos.coords.longitude.toFixed(6));
+                window.location.href = url.toString();
+            },
+            function(err) {
+                sessionStorage.setItem('scp_geo_done', '1');
+                const url = new URL(window.location.href);
+                url.searchParams.set('geo_lat', 'denied');
+                url.searchParams.set('geo_lng', 'denied');
+                window.location.href = url.toString();
+            },
+            {timeout: 8000, maximumAge: 300000}
+        );
+    })();
+    </script>
+    """
+
+    # Read coords from query params if they arrived
+    _qp = st.query_params
+    if st.session_state['geo_status'] == 'pending':
+        _qlat = _qp.get('geo_lat', None)
+        _qlng = _qp.get('geo_lng', None)
+        if _qlat is not None and _qlng is not None:
+            if _qlat == 'denied':
+                st.session_state['geo_status'] = 'denied'
+            else:
+                try:
+                    st.session_state['geo_lat'] = float(_qlat)
+                    st.session_state['geo_lng'] = float(_qlng)
+                    st.session_state['geo_status'] = 'granted'
+                except ValueError:
+                    st.session_state['geo_status'] = 'error'
+            # Clear the query params so they don't persist on refresh
+            _qp_clean = dict(_qp)
+            _qp_clean.pop('geo_lat', None)
+            _qp_clean.pop('geo_lng', None)
+            st.query_params.clear()
+            for _k, _v in _qp_clean.items():
+                st.query_params[_k] = _v
+
+    _user_lat = st.session_state.get('geo_lat')
+    _user_lng = st.session_state.get('geo_lng')
+    _geo_status = st.session_state.get('geo_status', 'pending')
+
+    # Inject JS only while we're still waiting for a result
+    if _geo_status == 'pending':
+        st.components.v1.html(_geo_js, height=0)
+
+    # ── Build sorted company list ────────────────────────────────────────────
+    _acct_df_raw = get_account_df().copy()
+
+    if _user_lat is not None and _user_lng is not None:
+        # Compute distance for every store and sort ascending
+        _acct_df_raw['_dist_mi'] = _acct_df_raw.apply(
+            lambda r: _haversine(_user_lat, _user_lng, r['lat'], r['lng'])
+            if pd.notna(r.get('lat')) and pd.notna(r.get('lng')) else 9999,
+            axis=1
+        )
+        _acct_df_sorted = _acct_df_raw.sort_values('_dist_mi')
+        _sorted_companies = _acct_df_sorted['company'].tolist()
+        # Label nearest stores with distance
+        def _label(row):
+            d = row['_dist_mi']
+            if d < 9999:
+                return f"{row['company']}  ({d:.1f} mi)"
+            return row['company']
+        _company_labels = ['— Select a store —'] + [_label(r) for _, r in _acct_df_sorted.iterrows()]
+        _company_values = ['— Select a store —'] + _sorted_companies
+        _geo_badge = (
+            f"<div style='background:#ecfdf5;border:1px solid #6ee7b7;border-radius:6px;"
+            f"padding:6px 12px;margin-bottom:8px;font-size:0.8rem;color:#065f46;display:inline-block'>"
+            f"📍 Stores sorted by distance from your location</div>"
+        )
+    else:
+        _sorted_companies = sorted(_acct_df_raw['company'].unique())
+        _company_labels  = ['— Select a store —'] + _sorted_companies
+        _company_values  = ['— Select a store —'] + _sorted_companies
+        if _geo_status == 'denied':
+            _geo_badge = (
+                "<div style='background:#fef9c3;border:1px solid #fde68a;border-radius:6px;"
+                "padding:6px 12px;margin-bottom:8px;font-size:0.8rem;color:#92400e;display:inline-block'>"
+                "⚠️ Location access denied — stores listed alphabetically. "
+                "Enable location in your browser to sort by nearest store.</div>"
+            )
+        elif _geo_status == 'pending':
+            _geo_badge = (
+                "<div style='background:#eff6ff;border:1px solid #bfdbfe;border-radius:6px;"
+                "padding:6px 12px;margin-bottom:8px;font-size:0.8rem;color:#1e40af;display:inline-block'>"
+                "📡 Requesting your location to sort stores by proximity…</div>"
+            )
+        else:
+            _geo_badge = (
+                "<div style='background:#fef2f2;border:1px solid #fecaca;border-radius:6px;"
+                "padding:6px 12px;margin-bottom:8px;font-size:0.8rem;color:#991b1b;display:inline-block'>"
+                "❌ Could not determine location — stores listed alphabetically.</div>"
+            )
+
+    st.markdown(_geo_badge, unsafe_allow_html=True)
+
+    _sc1, _sc2, _sc3 = st.columns([5, 1, 1])
     with _sc2:
         st.markdown('<br>', unsafe_allow_html=True)
         if st.button('✕ Clear', use_container_width=True, key='upc_store_clear'):
@@ -11253,10 +11378,22 @@ with tab5:
                       'upc_sel_store','upc_search','upc_sel_fmt','upc_sel_pkg']:
                 st.session_state.pop(k, None)
             st.rerun()
+    with _sc3:
+        st.markdown('<br>', unsafe_allow_html=True)
+        if st.button('🔄 Retry Location', use_container_width=True, key='upc_geo_retry',
+                     disabled=(_geo_status == 'granted')):
+            st.session_state['geo_status'] = 'pending'
+            st.session_state['geo_lat'] = None
+            st.session_state['geo_lng'] = None
+            st.rerun()
+
     with _sc1:
+        # Build format_func to show distance labels while keeping raw company name as value
+        _label_map = dict(zip(_company_values, _company_labels))
         _sel_store_input = st.selectbox(
             '🏪 Company (Store Name)',
-            _all_companies, index=0,
+            _company_values, index=0,
+            format_func=lambda v: _label_map.get(v, v),
             key=f"upc_store_input_{st.session_state['upc_store_version']}",
         )
 
