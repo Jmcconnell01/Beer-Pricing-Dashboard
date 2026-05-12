@@ -11528,6 +11528,38 @@ with tab5:
             scan_df = scan_df[mask]
         if sel_pkg != "All Groups":
             scan_df = scan_df[scan_df["PkgGroup"] == sel_pkg]
+
+        # ── Inject custom products added via "Add Missing Product" form ──────
+        _custom_products = st.session_state.get("custom_scan_products", [])
+        _custom_for_market = [
+            c for c in _custom_products
+            if c.get("Market") == sel_upc_market
+        ]
+        if _custom_for_market:
+            _custom_df = pd.DataFrame(_custom_for_market)
+            for _col in ["WAMP", "Brand", "Product", "Wholesaler", "Package", "UPC", "Barcode", "PkgGroup", "Format"]:
+                if _col not in _custom_df.columns:
+                    _custom_df[_col] = ""
+            if sel_fmt != "All" and "Format" in _custom_df.columns:
+                _custom_df = _custom_df[_custom_df["Format"] == sel_fmt]
+            if upc_search:
+                _custom_mask = (
+                    _custom_df["Product"].str.contains(_pat, case=False, na=False) |
+                    _custom_df["Brand"].str.contains(_pat, case=False, na=False) |
+                    _custom_df["WAMP"].str.contains(_pat, case=False, na=False) |
+                    _custom_df["UPC"].astype(str).str.contains(_pat, case=False, na=False)
+                )
+                _custom_df = _custom_df[_custom_mask]
+            if sel_pkg != "All Groups":
+                _custom_df = _custom_df[_custom_df["PkgGroup"] == sel_pkg]
+            if not _custom_df.empty:
+                _shared_cols = [c for c in scan_df.columns if c in _custom_df.columns]
+                _custom_subset = _custom_df[_shared_cols].copy()
+                for _mc in scan_df.columns:
+                    if _mc not in _custom_subset.columns:
+                        _custom_subset[_mc] = ""
+                scan_df = pd.concat([scan_df, _custom_subset[scan_df.columns]], ignore_index=False)
+
         scan_df = scan_df.reset_index(drop=True)
 
         # Key by market so prices survive store/filter changes within the same market
@@ -11738,17 +11770,32 @@ with tab5:
         _pkgs    = tuple(str(r["Package"])       for _, r in scan_df.iterrows())
         _brands  = tuple(str(r["Brand"])         for _, r in scan_df.iterrows())
         _wamps   = tuple(str(r["WAMP"])          for _, r in scan_df.iterrows())
+        _is_customs = tuple(bool(r.get("_custom", False)) for _, r in scan_df.iterrows())
         _html_rows = _barcode_html_block(_upcs, _bcs, _prods, _pkgs, _brands, _wamps)
 
         for idx_pos, (i, row) in enumerate(scan_df.iterrows()):
             header_html, barcode_html = _html_rows[idx_pos]
+            _is_custom_row = _is_customs[idx_pos]
 
             _is_done = st.session_state.get(f"{ss_key}_done_{i}", False)
             _has_retail = st.session_state.get(f"retail_{ss_key}_{i}") not in (None, 0.0, "")
-            _card_style = (
-                "border:1.5px solid #22c55e;background:#f0fdf4;"
-                if (_is_done or _has_retail) else "border:1px solid #e0e0e0;"
-            )
+            if _is_custom_row:
+                _card_style = (
+                    "border:1.5px solid #22c55e;background:#f0fdf4;"
+                    if (_is_done or _has_retail) else
+                    "border:1.5px solid #f59e0b;background:#fffbeb;"
+                )
+                _custom_badge = (
+                    "<span style='background:#f59e0b;color:white;border-radius:10px;"
+                    "padding:1px 8px;font-size:0.72rem;margin-left:6px;white-space:nowrap'>"
+                    "⭐ Custom</span>"
+                )
+            else:
+                _card_style = (
+                    "border:1.5px solid #22c55e;background:#f0fdf4;"
+                    if (_is_done or _has_retail) else "border:1px solid #e0e0e0;"
+                )
+                _custom_badge = ""
 
             # Collapse completed cards (show only header + done badge)
             if _is_done:
@@ -11756,7 +11803,7 @@ with tab5:
                     f"<div style='{_card_style}border-radius:8px;"
                     f"padding:8px 14px;margin-bottom:4px;display:flex;"
                     f"justify-content:space-between;align-items:center'>"
-                    f"{header_html}"
+                    f"{header_html}{_custom_badge}"
                     f"<span style='background:#22c55e;color:white;border-radius:12px;"
                     f"padding:2px 10px;font-size:0.8rem;white-space:nowrap'>✓ Done</span>"
                     f"</div>",
@@ -11782,7 +11829,7 @@ with tab5:
             st.markdown(
                 f"<div style='{_card_style}border-radius:8px;"
                 f"padding:10px 14px 6px;margin-bottom:4px'>"
-                f"{header_html}{barcode_html}</div>",
+                f"{header_html}{_custom_badge}{barcode_html}</div>",
                 unsafe_allow_html=True
             )
 
@@ -11980,31 +12027,95 @@ with tab5:
     )
 
     st.markdown("---")
-    st.markdown("#### ➕ Add / Update Price")
-    with st.form("add_price"):
-        ac1, ac2, ac3, ac4, ac5, ac6, ac7 = st.columns(7)
-        new_market = ac1.selectbox("Market", list(MARKETS.keys()))
-        new_format = ac2.radio("Format", ["Singles", "Packages"], horizontal=True)
-        new_cat    = ac3.text_input("Category", placeholder="e.g. Import 12pks")
-        new_prod   = ac4.text_input("Product",  placeholder="e.g. Modelo 12oz Cans")
-        new_comp   = ac5.text_input("Competitor", placeholder="e.g. Spinx")
-        new_price  = ac6.number_input("Competitor Price $", min_value=0.0, step=0.01)
-        new_pkr    = ac7.number_input("Our Price $",   min_value=0.0, step=0.01)
-        submitted  = st.form_submit_button("Save Entry")
+    st.markdown("#### ➕ Add Missing Product to Scan List")
+    st.caption("Use this to add products not already in the UPC Scanner List. The product will appear in the scanner with a generated barcode.")
 
-    if submitted and new_prod and new_comp:
-        new_row = {
-            "Category":   new_cat,
-            "Product":    new_prod,
-            "Competitor": new_comp,
-            "Our Price":   new_pkr   if new_pkr   > 0 else None,
-            "Comp Price": new_price if new_price > 0 else None,
-            "Market":     new_market,
-            "Format":     new_format,
-            "Market Avg": None, "Diff to Avg": None, "Diff to Comp": None,
-        }
-        df_all = pd.concat([df_all, pd.DataFrame([new_row])], ignore_index=True)
-        st.success("✅ Entry saved!")
+    _add_key = "custom_scan_products"
+    if _add_key not in st.session_state:
+        st.session_state[_add_key] = []   # list of dicts
+
+    with st.form("add_missing_product"):
+        _am1, _am2, _am3 = st.columns([2, 2, 2])
+        _am4, _am5, _am6 = st.columns([2, 2, 2])
+
+        with _am1:
+            _new_market = st.selectbox("Market", list(MARKET_CODES.keys())[1:])  # skip "All Markets"
+        with _am2:
+            _new_wamp = st.selectbox("WAMP", ["Core", "Core Plus", "Beyond Beer", "Premium", "Super Premium", "Value", "Wine", "FMB", "Other"])
+        with _am3:
+            _new_brand = st.text_input("Brand", placeholder="e.g. Modelo")
+        with _am4:
+            _new_prod = st.text_input("Product Name *", placeholder="e.g. Modelo Especial 12oz Can")
+        with _am5:
+            _new_pkg = st.text_input("Package", placeholder="e.g. 1/16AL  or  12/12C")
+        with _am6:
+            _new_upc = st.text_input("UPC *", placeholder="e.g. 01234567890  (11-13 digits)")
+
+        _am_submit = st.form_submit_button("➕ Add to Scan List", type="primary",
+                                            use_container_width=True)
+
+    if _am_submit:
+        _missing_fields = []
+        if not _new_prod.strip():
+            _missing_fields.append("Product Name")
+        if not _new_upc.strip():
+            _missing_fields.append("UPC")
+        _upc_clean = _new_upc.strip().replace(" ", "").replace("-", "")
+        if _new_upc.strip() and not _upc_clean.isdigit():
+            _missing_fields.append("UPC (digits only)")
+        if len(_upc_clean) < 11 or len(_upc_clean) > 13:
+            if _new_upc.strip():
+                _missing_fields.append("UPC (must be 11–13 digits)")
+
+        if _missing_fields:
+            st.error(f"Please fix: {', '.join(_missing_fields)}")
+        else:
+            # Check for duplicate UPC in the current market's scan list
+            _existing_upcs = set(
+                str(r[5]).strip() for r in _MARKET_UPC_DATA.get(_new_market, CHS_UPC_DATA)
+            ) | {
+                str(c["UPC"]).strip()
+                for c in st.session_state[_add_key]
+                if c["Market"] == _new_market
+            }
+            if _upc_clean in _existing_upcs:
+                st.warning(f"⚠️ UPC {_upc_clean} already exists in the {_new_market} scan list.")
+            else:
+                _new_entry = {
+                    "Market":    _new_market,
+                    "WAMP":      _new_wamp,
+                    "Brand":     _new_brand.strip(),
+                    "Product":   _new_prod.strip(),
+                    "Package":   _new_pkg.strip() or "1/12oz",
+                    "UPC":       _upc_clean,
+                    "Barcode":   "",           # will generate from UPC numerically
+                    "Wholesaler": "",
+                    "PkgGroup":  pkg_group(_new_pkg.strip() or "1/12oz", _new_wamp, _new_brand.strip()),
+                    "Format":    "Singles" if (_new_pkg.strip() or "").startswith("1/") else "Packages",
+                    "_custom":   True,
+                }
+                st.session_state[_add_key].append(_new_entry)
+                st.success(f"✅ **{_new_prod.strip()}** (UPC: {_upc_clean}) added to the {_new_market} scan list. Switch to the 📱 UPC Scanner List tab to view it.")
+                st.rerun()
+
+    # Show and allow removal of already-added custom products
+    _custom_list = st.session_state.get(_add_key, [])
+    if _custom_list:
+        st.markdown(f"**{len(_custom_list)} custom product(s) added this session:**")
+        for _ci, _ce in enumerate(_custom_list):
+            _cc1, _cc2 = st.columns([8, 1])
+            with _cc1:
+                st.markdown(
+                    f"<div style='background:#fffbeb;border:1px solid #fcd34d;border-radius:6px;"
+                    f"padding:5px 12px;font-size:0.85rem'>"
+                    f"⭐ <strong>{_ce['Product']}</strong> · {_ce['Brand']} · UPC: <code>{_ce['UPC']}</code> · "
+                    f"{_ce['Package']} · {_ce['Market']}</div>",
+                    unsafe_allow_html=True
+                )
+            with _cc2:
+                if st.button("✕", key=f"rm_custom_{_ci}", help="Remove this product"):
+                    st.session_state[_add_key].pop(_ci)
+                    st.rerun()
 
 
 st.markdown("---")
