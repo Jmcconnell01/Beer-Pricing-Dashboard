@@ -11846,8 +11846,9 @@ with tab5:
         if os.path.exists(RESULTS_CSV):
             with st.expander("📂 View Saved Survey Results", expanded=False):
                 saved_df = pd.read_csv(RESULTS_CSV)
-                st.dataframe(saved_df.sort_values("Submitted At", ascending=False),
-                             use_container_width=True, hide_index=True, height=300)
+                if "Submitted At" in saved_df.columns:
+                    saved_df = saved_df.sort_values("Submitted At", ascending=False)
+                st.dataframe(saved_df, use_container_width=True, hide_index=True, height=300)
                 if st.button("🗑️ Clear All Saved Results", type="secondary"):
                     os.remove(RESULTS_CSV)
                     st.warning("All saved results cleared.")
