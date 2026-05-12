@@ -10499,14 +10499,13 @@ st.caption(f"**{market_label}** · {format_label} · Price discrepancy vs. local
 
 st.markdown("---")
 
-# ── Geolocation — button-triggered to satisfy browser user-gesture requirement ─
+# ── Geolocation — single component instance, before tabs ─────────────────────
 if 'geo_status' not in st.session_state:
     st.session_state['geo_lat']     = None
     st.session_state['geo_lng']     = None
-    st.session_state['geo_status']  = 'idle'   # idle until user clicks
+    st.session_state['geo_status']  = 'idle'
     st.session_state['geo_attempt'] = 0
 
-# Read result if component is active
 if st.session_state['geo_status'] == 'pending':
     try:
         from streamlit_js_eval import get_geolocation as _get_geo
@@ -10520,9 +10519,11 @@ if st.session_state['geo_status'] == 'pending':
                     st.session_state['geo_lat']    = float(_lat)
                     st.session_state['geo_lng']    = float(_lng)
                     st.session_state['geo_status'] = 'granted'
+                    st.rerun()
             elif 'error' in _geo_loc:
                 st.session_state['geo_status'] = 'denied'
-        # None = still waiting
+                st.rerun()
+        # None = JS still resolving — Streamlit will rerun automatically when it does
     except ImportError:
         st.session_state['geo_status'] = 'error'
 
@@ -11371,27 +11372,6 @@ with tab5:
             )
 
     st.markdown(_geo_badge, unsafe_allow_html=True)
-
-    # Keep geo component alive while pending so it can send back the result
-    if _geo_status == 'pending':
-        try:
-            from streamlit_js_eval import get_geolocation as _get_geo
-            _geo_key = f"scp_geo_{st.session_state.get('geo_attempt', 0)}"
-            _geo_loc = _get_geo(component_key=_geo_key)
-            if isinstance(_geo_loc, dict):
-                if 'coords' in _geo_loc:
-                    _lat = _geo_loc['coords'].get('latitude')
-                    _lng = _geo_loc['coords'].get('longitude')
-                    if _lat is not None and _lng is not None:
-                        st.session_state['geo_lat']    = float(_lat)
-                        st.session_state['geo_lng']    = float(_lng)
-                        st.session_state['geo_status'] = 'granted'
-                        st.rerun()
-                elif 'error' in _geo_loc:
-                    st.session_state['geo_status'] = 'denied'
-                    st.rerun()
-        except ImportError:
-            st.session_state['geo_status'] = 'error'
 
     _sc1, _sc2, _sc3 = st.columns([5, 1, 1])
     with _sc2:
