@@ -11414,6 +11414,7 @@ with tab5:
         _using_planogram = False
         if _pg_store_data and len(_pg_store_data.get('rows', [])) > 0:
             import re as _re_pg2
+            re = _re_pg2
             _rows = []
             for _, _pr in _pg_store_data['rows'].iterrows():
                 _name = str(_pr.get('Name', '')).strip()
