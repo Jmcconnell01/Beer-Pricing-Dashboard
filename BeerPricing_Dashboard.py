@@ -10511,6 +10511,7 @@ if st.session_state['geo_status'] == 'pending':
         from streamlit_js_eval import get_geolocation as _get_geo
         _geo_key = f"scp_geo_{st.session_state['geo_attempt']}"
         _geo_loc = _get_geo(component_key=_geo_key)
+        st.caption(f"DEBUG geo_loc={_geo_loc!r}  key={_geo_key}")
         if isinstance(_geo_loc, dict):
             if 'coords' in _geo_loc:
                 _lat = _geo_loc['coords'].get('latitude')
@@ -10526,6 +10527,8 @@ if st.session_state['geo_status'] == 'pending':
         # None = JS still resolving — Streamlit will rerun automatically when it does
     except ImportError:
         st.session_state['geo_status'] = 'error'
+else:
+    st.caption(f"DEBUG geo_status={st.session_state['geo_status']}  lat={st.session_state.get('geo_lat')}  lng={st.session_state.get('geo_lng')}")
 
 # ─── Tabs ─────────────────────────────────────────────────────────────────────
 tab5, tab1, tab2 = st.tabs(["📱 UPC Scanner List", "📊 Discrepancy Heatmap", "📈 Price Comparison"])
