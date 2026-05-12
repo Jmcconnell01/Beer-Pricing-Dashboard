@@ -11372,6 +11372,7 @@ with tab5:
     sel_pkg        = st.session_state.get("upc_sel_pkg",    "All Groups")
 
     # ── Main content ─────────────────────────────────────────────────────────
+    acct_df   = get_account_df()
     store_row = acct_df[acct_df["company"] == sel_store].iloc[0] \
                 if sel_store and sel_store not in ("", "— Select a store —") else None
 
