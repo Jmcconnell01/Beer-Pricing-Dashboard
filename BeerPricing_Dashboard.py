@@ -10499,13 +10499,14 @@ st.caption(f"**{market_label}** · {format_label} · Price discrepancy vs. local
 
 st.markdown("---")
 
-# ── Geolocation — runs before tabs so it works regardless of active tab ───────
+# ── Geolocation — button-triggered to satisfy browser user-gesture requirement ─
 if 'geo_status' not in st.session_state:
     st.session_state['geo_lat']     = None
     st.session_state['geo_lng']     = None
-    st.session_state['geo_status']  = 'pending'
+    st.session_state['geo_status']  = 'idle'   # idle until user clicks
     st.session_state['geo_attempt'] = 0
 
+# Read result if component is active
 if st.session_state['geo_status'] == 'pending':
     try:
         from streamlit_js_eval import get_geolocation as _get_geo
@@ -10521,7 +10522,7 @@ if st.session_state['geo_status'] == 'pending':
                     st.session_state['geo_status'] = 'granted'
             elif 'error' in _geo_loc:
                 st.session_state['geo_status'] = 'denied'
-        # None = JS still resolving — stay pending, natural rerun will pick it up
+        # None = still waiting
     except ImportError:
         st.session_state['geo_status'] = 'error'
 
@@ -11314,13 +11315,12 @@ with tab5:
 
     _user_lat   = st.session_state.get('geo_lat')
     _user_lng   = st.session_state.get('geo_lng')
-    _geo_status = st.session_state.get('geo_status', 'pending')
+    _geo_status = st.session_state.get('geo_status', 'idle')
 
     # ── Build sorted company list ────────────────────────────────────────────
     _acct_df_raw = get_account_df()
 
     if _user_lat is not None and _user_lng is not None:
-        # Vectorized haversine — one numpy pass over all stores, no .apply()
         import numpy as _np
         _R = 3958.8
         _lat1, _lng1 = _np.radians(_user_lat), _np.radians(_user_lng)
@@ -11330,15 +11330,10 @@ with tab5:
         _a = _np.sin(_dlat/2)**2 + _np.cos(_lat1)*_np.cos(_lat2)*_np.sin(_dlng/2)**2
         _dist = _R * 2 * _np.arctan2(_np.sqrt(_a), _np.sqrt(1-_a))
         _dist = _np.where(_np.isnan(_dist), 99999, _dist)
-
         _order = _np.argsort(_dist)
         _sorted_companies = _acct_df_raw["company"].iloc[_order].tolist()
         _dist_sorted      = _dist[_order]
-        # Build label map once — O(n) dict lookup instead of per-item DataFrame filter
-        _dist_map = {
-            name: d
-            for name, d in zip(_sorted_companies, _dist_sorted)
-        }
+        _dist_map = {name: d for name, d in zip(_sorted_companies, _dist_sorted)}
 
         def _dist_label(v):
             if v == '— Select a store —':
@@ -11348,34 +11343,55 @@ with tab5:
 
         _company_values = ['— Select a store —'] + _sorted_companies
         _geo_badge = (
-            f"<div style='background:#ecfdf5;border:1px solid #6ee7b7;border-radius:6px;"
-            f"padding:6px 12px;margin-bottom:8px;font-size:0.8rem;color:#065f46;display:inline-block'>"
-            f"📍 Stores sorted nearest to farthest from your location</div>"
+            "<div style='background:#ecfdf5;border:1px solid #6ee7b7;border-radius:6px;"
+            "padding:6px 12px;margin-bottom:8px;font-size:0.8rem;color:#065f46;display:inline-block'>"
+            "📍 Stores sorted nearest to farthest from your location</div>"
         )
     else:
         _company_values = ['— Select a store —'] + sorted(_acct_df_raw['company'].unique().tolist())
-        _dist_label = lambda v: v  # no-op, just show name
+        _dist_label = lambda v: v
         if _geo_status == 'denied':
             _geo_badge = (
                 "<div style='background:#fef9c3;border:1px solid #fde68a;border-radius:6px;"
                 "padding:6px 12px;margin-bottom:8px;font-size:0.8rem;color:#92400e;display:inline-block'>"
-                "⚠️ Location access denied — stores listed alphabetically. "
-                "Enable location in your browser and click Retry.</div>"
+                "⚠️ Location denied — stores listed alphabetically. "
+                "Allow location in your browser then click 📍 Use My Location.</div>"
             )
         elif _geo_status == 'pending':
             _geo_badge = (
                 "<div style='background:#eff6ff;border:1px solid #bfdbfe;border-radius:6px;"
                 "padding:6px 12px;margin-bottom:8px;font-size:0.8rem;color:#1e40af;display:inline-block'>"
-                "📡 Requesting your location to sort stores by proximity…</div>"
+                "📡 Getting your location…</div>"
             )
         else:
             _geo_badge = (
-                "<div style='background:#fef2f2;border:1px solid #fecaca;border-radius:6px;"
-                "padding:6px 12px;margin-bottom:8px;font-size:0.8rem;color:#991b1b;display:inline-block'>"
-                "❌ Could not get location — stores listed alphabetically.</div>"
+                "<div style='background:#fef9c3;border:1px solid #fde68a;border-radius:6px;"
+                "padding:6px 12px;margin-bottom:8px;font-size:0.8rem;color:#92400e;display:inline-block'>"
+                "📍 Click <strong>Use My Location</strong> to sort stores by distance.</div>"
             )
 
     st.markdown(_geo_badge, unsafe_allow_html=True)
+
+    # Keep geo component alive while pending so it can send back the result
+    if _geo_status == 'pending':
+        try:
+            from streamlit_js_eval import get_geolocation as _get_geo
+            _geo_key = f"scp_geo_{st.session_state.get('geo_attempt', 0)}"
+            _geo_loc = _get_geo(component_key=_geo_key)
+            if isinstance(_geo_loc, dict):
+                if 'coords' in _geo_loc:
+                    _lat = _geo_loc['coords'].get('latitude')
+                    _lng = _geo_loc['coords'].get('longitude')
+                    if _lat is not None and _lng is not None:
+                        st.session_state['geo_lat']    = float(_lat)
+                        st.session_state['geo_lng']    = float(_lng)
+                        st.session_state['geo_status'] = 'granted'
+                        st.rerun()
+                elif 'error' in _geo_loc:
+                    st.session_state['geo_status'] = 'denied'
+                    st.rerun()
+        except ImportError:
+            st.session_state['geo_status'] = 'error'
 
     _sc1, _sc2, _sc3 = st.columns([5, 1, 1])
     with _sc2:
@@ -11388,8 +11404,9 @@ with tab5:
             st.rerun()
     with _sc3:
         st.markdown('<br>', unsafe_allow_html=True)
-        if st.button('🔄 Retry Location', use_container_width=True, key='upc_geo_retry',
-                     disabled=(_geo_status == 'granted')):
+        _loc_btn_label = '📍 Use My Location' if _geo_status in ('idle', 'denied', 'error') else '🔄 Retry Location'
+        if st.button(_loc_btn_label, use_container_width=True, key='upc_geo_retry',
+                     disabled=(_geo_status == 'pending')):
             st.session_state['geo_status']  = 'pending'
             st.session_state['geo_lat']     = None
             st.session_state['geo_lng']     = None
