@@ -10499,23 +10499,6 @@ st.caption(f"**{market_label}** · {format_label} · Price discrepancy vs. local
 
 st.markdown("---")
 
-# ── Location via zip code — no JS/browser API, works everywhere ──────────────
-# Build zip→(lat, lng) lookup from ACCOUNT_DATA (already in memory)
-if 'geo_status' not in st.session_state:
-    st.session_state['geo_lat']    = None
-    st.session_state['geo_lng']    = None
-    st.session_state['geo_status'] = 'idle'
-    st.session_state['geo_zip']    = ''
-
-_ZIP_COORDS: dict = {}
-for _zr in ACCOUNT_DATA:
-    _zk = str(_zr.get('zip', ''))[:5]
-    if _zk and _zk not in _ZIP_COORDS and _zr.get('lat') and _zr.get('lng'):
-        try:
-            _ZIP_COORDS[_zk] = (float(_zr['lat']), float(_zr['lng']))
-        except (ValueError, TypeError):
-            pass
-
 # ─── Tabs ─────────────────────────────────────────────────────────────────────
 tab5, tab1, tab2 = st.tabs(["📱 UPC Scanner List", "📊 Discrepancy Heatmap", "📈 Price Comparison"])
 
@@ -11303,75 +11286,12 @@ with tab5:
     if 'upc_store_version' not in st.session_state:
         st.session_state['upc_store_version'] = 0
 
-    _user_lat   = st.session_state.get('geo_lat')
-    _user_lng   = st.session_state.get('geo_lng')
-    _geo_status = st.session_state.get('geo_status', 'idle')
-
-    # ── Zip code location input ───────────────────────────────────────────────
-    _zip_col, _store_col, _clear_col = st.columns([2, 5, 1])
-
-    with _zip_col:
-        _zip_input = st.text_input(
-            '📍 Your Zip Code',
-            value=st.session_state.get('geo_zip', ''),
-            placeholder='e.g. 29579',
-            max_chars=5,
-            key='geo_zip_input',
-            help='Enter your zip code to sort stores by nearest location'
-        )
-        if _zip_input and len(_zip_input) == 5 and _zip_input.isdigit():
-            if _zip_input != st.session_state.get('geo_zip', ''):
-                if _zip_input in _ZIP_COORDS:
-                    _zlat, _zlng = _ZIP_COORDS[_zip_input]
-                    st.session_state['geo_lat']    = _zlat
-                    st.session_state['geo_lng']    = _zlng
-                    st.session_state['geo_status'] = 'granted'
-                    st.session_state['geo_zip']    = _zip_input
-                    st.rerun()
-                else:
-                    st.caption('⚠️ Zip not found in territory')
-        elif _zip_input == '' and st.session_state.get('geo_zip'):
-            st.session_state['geo_lat']    = None
-            st.session_state['geo_lng']    = None
-            st.session_state['geo_status'] = 'idle'
-            st.session_state['geo_zip']    = ''
-            st.rerun()
-
-    # Re-read after possible rerun
-    _user_lat   = st.session_state.get('geo_lat')
-    _user_lng   = st.session_state.get('geo_lng')
-    _geo_status = st.session_state.get('geo_status', 'idle')
-
-    # ── Build sorted company list ────────────────────────────────────────────
+    # ── Build company list (alphabetical) ────────────────────────────────────
     _acct_df_raw = get_account_df()
+    _company_values = ['— Select a store —'] + sorted(_acct_df_raw['company'].unique().tolist())
 
-    if _user_lat is not None and _user_lng is not None:
-        import numpy as _np
-        _R = 3958.8
-        _lat1, _lng1 = _np.radians(_user_lat), _np.radians(_user_lng)
-        _lat2 = _np.radians(_acct_df_raw["lat"].to_numpy(dtype=float, na_value=_np.nan))
-        _lng2 = _np.radians(_acct_df_raw["lng"].to_numpy(dtype=float, na_value=_np.nan))
-        _dlat, _dlng = _lat2 - _lat1, _lng2 - _lng1
-        _a = _np.sin(_dlat/2)**2 + _np.cos(_lat1)*_np.cos(_lat2)*_np.sin(_dlng/2)**2
-        _dist = _R * 2 * _np.arctan2(_np.sqrt(_a), _np.sqrt(1-_a))
-        _dist = _np.where(_np.isnan(_dist), 99999, _dist)
-        _order = _np.argsort(_dist)
-        _sorted_companies = _acct_df_raw["company"].iloc[_order].tolist()
-        _dist_sorted      = _dist[_order]
-        _dist_map = {name: d for name, d in zip(_sorted_companies, _dist_sorted)}
-
-        def _dist_label(v):
-            if v == '— Select a store —':
-                return v
-            d = _dist_map.get(v, 99999)
-            return f"{v}  ({d:.1f} mi)" if d < 99999 else v
-
-        _company_values = ['— Select a store —'] + _sorted_companies
-    else:
-        _company_values = ['— Select a store —'] + sorted(_acct_df_raw['company'].unique().tolist())
-        _dist_label = lambda v: v
-
-    with _clear_col:
+    _sc1, _sc2 = st.columns([6, 1])
+    with _sc2:
         st.markdown('<br>', unsafe_allow_html=True)
         if st.button('✕ Clear', use_container_width=True, key='upc_store_clear'):
             st.session_state['upc_store_version'] += 1
@@ -11379,13 +11299,11 @@ with tab5:
                       'upc_sel_store','upc_search','upc_sel_fmt','upc_sel_pkg']:
                 st.session_state.pop(k, None)
             st.rerun()
-
-    with _store_col:
+    with _sc1:
         _sel_store_input = st.selectbox(
             '🏪 Company (Store Name)',
             _company_values,
             index=0,
-            format_func=_dist_label,
             key=f"upc_store_input_{st.session_state['upc_store_version']}",
         )
 
