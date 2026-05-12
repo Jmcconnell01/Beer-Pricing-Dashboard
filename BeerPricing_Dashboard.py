@@ -10136,6 +10136,37 @@ def load_planogram_index():
     except Exception:
         return {}, {}
 
+SURVEY_SHEET_ID = "1noPalZFT_PdzaZY5bIRlkYdfTKy4SHNYfjngE3X07Fw"
+
+def _get_gsheets_client():
+    """Return an authorised gspread client using Streamlit secrets."""
+    try:
+        import gspread
+        from google.oauth2.service_account import Credentials
+        _scopes = [
+            "https://www.googleapis.com/auth/spreadsheets",
+            "https://www.googleapis.com/auth/drive",
+        ]
+        _creds = Credentials.from_service_account_info(
+            st.secrets["gcp_service_account"], scopes=_scopes
+        )
+        return gspread.authorize(_creds)
+    except Exception:
+        return None
+
+def _append_to_survey_sheet(rows: list):
+    """Append a list of row-lists to the Survey Submissions Google Sheet."""
+    try:
+        _gc  = _get_gsheets_client()
+        if _gc is None:
+            return False
+        _sh  = _gc.open_by_key(SURVEY_SHEET_ID)
+        _ws  = _sh.sheet1
+        _ws.append_rows(rows, value_input_option="USER_ENTERED")
+        return True
+    except Exception:
+        return False
+
 @st.cache_data(ttl=30)
 def load_survey_pricing(market_key):
     """Load submitted survey prices from CSV (cached 30s)."""
@@ -11811,6 +11842,10 @@ with tab5:
         export_df["Barcode"] = scan_df["Barcode"].values
         filled = export_df["Retail $"].notna().sum()
 
+        # ── Rep Name ─────────────────────────────────────────────────────────
+        _rep_name = st.text_input("👤 Rep Name", placeholder="Enter your name before submitting",
+                                  key=f"rep_name_{ss_key}")
+
         # ── Stats + action row ────────────────────────────────────────────────
         sa, sb, sc, sd = st.columns([1, 1, 1, 2])
 
@@ -11839,18 +11874,42 @@ with tab5:
             submit_col, dl_col = st.columns(2)
 
             with submit_col:
+                _submit_disabled = (filled == 0) or not _rep_name.strip()
+                _submit_help = "Enter your name above before submitting" if not _rep_name.strip() else "Saves all entered prices"
                 if st.button("✅ Submit Survey", type="primary", use_container_width=True,
-                             disabled=(filled == 0),
-                             help="Saves all entered prices to survey_results.csv"):
+                             disabled=_submit_disabled,
+                             help=_submit_help):
                     # Stamp timestamp and only save rows with a retail price
                     now = _dt.datetime.now().strftime("%Y-%m-%d %H:%M:%S")
                     save_df = export_df[export_df["Retail $"].notna()].copy()
                     save_df["Submitted At"] = now
+                    save_df["Rep Name"]     = _rep_name.strip()
 
+                    # Save locally to CSV
                     file_exists = os.path.exists(RESULTS_CSV)
                     save_df.to_csv(RESULTS_CSV, mode="a", header=not file_exists, index=False)
 
-                    st.success(f"✅ {len(save_df)} price{'s' if len(save_df) != 1 else ''} saved to survey_results.csv  ({now})")
+                    # Write to Google Sheets
+                    _gs_rows = []
+                    for _, _gr in save_df.iterrows():
+                        _gs_rows.append([
+                            str(_gr.get("Submitted At", "")),
+                            str(_gr.get("Rep Name", "")),
+                            str(_gr.get("Store", "")),
+                            str(_gr.get("Market", "")),
+                            str(_gr.get("Parent Chain", "")),
+                            str(_gr.get("Customer ID", "")),
+                            str(_gr.get("WAMP", "")),
+                            str(_gr.get("Product", "")),
+                            str(_gr.get("Package", "")),
+                            str(_gr.get("UPC", "")),
+                            str(_gr.get("Retail $", "")),
+                            str(_gr.get("2 for $", "")),
+                        ])
+                    _gs_ok = _append_to_survey_sheet(_gs_rows)
+
+                    _gs_msg = " · Logged to Google Sheets ✅" if _gs_ok else " · Google Sheets unavailable ⚠️"
+                    st.success(f"✅ {len(save_df)} price{'s' if len(save_df) != 1 else ''} saved  ({now}){_gs_msg}")
                     st.balloons()
 
             with dl_col:
