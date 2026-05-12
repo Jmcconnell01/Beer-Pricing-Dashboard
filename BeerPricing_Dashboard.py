@@ -10507,25 +10507,60 @@ if 'geo_status' not in st.session_state:
     st.session_state['geo_attempt'] = 0
 
 if st.session_state['geo_status'] == 'pending':
-    try:
-        from streamlit_js_eval import get_geolocation as _get_geo
-        _geo_key = f"scp_geo_{st.session_state['geo_attempt']}"
-        _geo_loc = _get_geo(component_key=_geo_key)
-        st.warning(f"DEBUG pending — geo_loc={_geo_loc!r}  key={_geo_key}")
-        if isinstance(_geo_loc, dict):
-            if 'coords' in _geo_loc:
-                _lat = _geo_loc['coords'].get('latitude')
-                _lng = _geo_loc['coords'].get('longitude')
-                if _lat is not None and _lng is not None:
-                    st.session_state['geo_lat']    = float(_lat)
-                    st.session_state['geo_lng']    = float(_lng)
-                    st.session_state['geo_status'] = 'granted'
-                    st.rerun()
-            elif 'error' in _geo_loc:
-                st.session_state['geo_status'] = 'denied'
-                st.rerun()
-    except ImportError:
-        st.session_state['geo_status'] = 'error'
+    # Self-contained geolocation component — no external package needed.
+    # The iframe shares origin with the Streamlit app on Streamlit Cloud,
+    # so window.parent.location is accessible. We write coords into the URL
+    # query params and reload once, which Streamlit picks up as new params.
+    _attempt = st.session_state['geo_attempt']
+
+    # Check if coords just arrived in query params
+    _qp_lat = st.query_params.get('_glat')
+    _qp_lng = st.query_params.get('_glng')
+    if _qp_lat and _qp_lng:
+        try:
+            st.session_state['geo_lat']    = float(_qp_lat)
+            st.session_state['geo_lng']    = float(_qp_lng)
+            st.session_state['geo_status'] = 'granted'
+        except Exception:
+            st.session_state['geo_status'] = 'error'
+        st.query_params.pop('_glat', None)
+        st.query_params.pop('_glng', None)
+        st.rerun()
+    elif st.query_params.get('_gdeny'):
+        st.session_state['geo_status'] = 'denied'
+        st.query_params.pop('_gdeny', None)
+        st.rerun()
+    else:
+        # Mount the component — it requests location then rewrites the parent URL
+        st.components.v1.html(f"""
+        <script>
+        (function() {{
+            var attempt = {_attempt};
+            var doneKey = 'scp_geo_done_' + attempt;
+            if (sessionStorage.getItem(doneKey)) return;
+
+            function send(lat, lng) {{
+                sessionStorage.setItem(doneKey, '1');
+                var u = new URL(window.parent.location.href);
+                if (lat === 'deny') {{
+                    u.searchParams.set('_gdeny', '1');
+                }} else {{
+                    u.searchParams.set('_glat', lat);
+                    u.searchParams.set('_glng', lng);
+                }}
+                window.parent.location.replace(u.toString());
+            }}
+
+            if (!navigator.geolocation) {{ send('deny', ''); return; }}
+
+            navigator.geolocation.getCurrentPosition(
+                function(p) {{ send(p.coords.latitude.toFixed(6), p.coords.longitude.toFixed(6)); }},
+                function(e) {{ send('deny', ''); }},
+                {{timeout: 10000, maximumAge: 0, enableHighAccuracy: false}}
+            );
+        }})();
+        </script>
+        """, height=1)
 
 # Always show geo state — remove after debugging
 st.warning(f"DEBUG ALWAYS — status={st.session_state['geo_status']}  attempt={st.session_state.get('geo_attempt')}  lat={st.session_state.get('geo_lat')}  lng={st.session_state.get('geo_lng')}")
