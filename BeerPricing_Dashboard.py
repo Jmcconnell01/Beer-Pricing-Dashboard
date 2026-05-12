@@ -11287,103 +11287,73 @@ with tab5:
         st.session_state['upc_store_version'] = 0
 
     # ── Geolocation via postMessage (no page reload needed) ─────────────────
-    # The iframe calls navigator.geolocation, then sends coords to the parent
-    # Streamlit frame via postMessage. A tiny <script> in the main page listens
-    # and writes the result into a hidden <input> that Streamlit can read via
-    # a dedicated st.components.v1.html component that itself does postMessage
-    # back. Instead, we use the simpler approach: write to sessionStorage in
-    # the iframe, then in the MAIN page script set st.query_params via a
-    # parent-window postMessage listener.
-    #
-    # Cleanest Streamlit-compatible approach: use a single st.components.v1.html
-    # block that (a) requests geolocation, (b) posts coords to the parent window,
-    # and (c) the parent window listener sets a URL hash that causes Streamlit
-    # to rerun with the data readable from st.query_params — but WITHOUT a full
-    # reload by using history.replaceState + st.rerun trigger via a hidden button.
-    #
-    # Most reliable pattern: iframe postMessage → parent window listener →
-    # parent calls window.parent (already IS parent) → use Streamlit's
-    # window.streamlitComponentAPI or simply use window.location hash approach.
-    #
-    # FINAL APPROACH: Use a st.components.v1.html component that requests
-    # geolocation and uses window.parent.postMessage to call back. We intercept
-    # this in a second small <script> injected via st.markdown (runs in main frame)
-    # that writes coords into st.query_params via history.replaceState + triggers
-    # Streamlit's rerun by dispatching a custom event on the main window.
-    # Since that's fragile, the SIMPLEST reliable approach for Streamlit Cloud:
-    # Use an iframe that sets parent.location search params WITHOUT a full reload
-    # by using history.replaceState, then calls window.location.reload() once.
-    # We guard with sessionStorage so it only reloads once.
+    # ── Geolocation via Streamlit component value (works on Streamlit Cloud) ────
+    # Strategy: a st.components.v1.html block requests geolocation and sends
+    # the result back to Python using Streamlit.setComponentValue(), which is
+    # the only cross-iframe communication mechanism that reliably works on
+    # Streamlit Cloud. The component returns a string "lat,lng" or "denied".
 
-    # --- Read geo query params FIRST (may have arrived from previous reload) ---
-    _geo_initialized = 'geo_status' in st.session_state
-    if not _geo_initialized:
-        st.session_state['geo_lat'] = None
-        st.session_state['geo_lng'] = None
+    if 'geo_status' not in st.session_state:
+        st.session_state['geo_lat']    = None
+        st.session_state['geo_lng']    = None
         st.session_state['geo_status'] = 'pending'
 
-    # Always check query params for fresh geo data, even after session state set
-    _qp_lat = st.query_params.get('geo_lat', None)
-    _qp_lng = st.query_params.get('geo_lng', None)
+    _user_lat   = st.session_state['geo_lat']
+    _user_lng   = st.session_state['geo_lng']
+    _geo_status = st.session_state['geo_status']
 
-    if _qp_lat is not None and st.session_state['geo_status'] != 'granted':
-        if _qp_lat == 'denied':
-            st.session_state['geo_status'] = 'denied'
-        else:
-            try:
-                st.session_state['geo_lat'] = float(_qp_lat)
-                st.session_state['geo_lng'] = float(_qp_lng)
-                st.session_state['geo_status'] = 'granted'
-            except (ValueError, TypeError):
-                st.session_state['geo_status'] = 'error'
-        # Remove geo params from URL cleanly (no full reload)
-        st.query_params.pop('geo_lat', None)
-        st.query_params.pop('geo_lng', None)
-
-    _user_lat = st.session_state.get('geo_lat')
-    _user_lng = st.session_state.get('geo_lng')
-    _geo_status = st.session_state.get('geo_status', 'pending')
-
-    # Inject geolocation JS only while still pending.
-    # Uses history.replaceState (no reload) to set query params,
-    # then calls window.location.reload() exactly once (guarded by sessionStorage).
     if _geo_status == 'pending':
-        _geo_component_html = """
+        _geo_result = st.components.v1.html("""
         <script>
-        (function() {
-            // Guard: only run geolocation once per browser session
-            if (sessionStorage.getItem('scp_geo_requested')) return;
-            sessionStorage.setItem('scp_geo_requested', '1');
+        const Streamlit = window.parent.Streamlit || (window.Streamlit);
 
-            function sendCoords(lat, lng) {
-                var url = new URL(window.parent.location.href);
-                url.searchParams.set('geo_lat', lat);
-                url.searchParams.set('geo_lng', lng);
-                window.parent.history.replaceState(null, '', url.toString());
-                window.parent.location.reload();
-            }
+        function sendResult(val) {
+            // Use Streamlit component messaging API
+            window.parent.postMessage({
+                type: 'streamlit:setComponentValue',
+                value: val
+            }, '*');
+        }
 
-            if (!navigator.geolocation) {
-                sendCoords('denied', 'denied');
-                return;
-            }
-
+        // Guard: only request once per page load
+        if (sessionStorage.getItem('scp_geo_done')) {
+            sendResult(sessionStorage.getItem('scp_geo_done'));
+        } else if (!navigator.geolocation) {
+            sessionStorage.setItem('scp_geo_done', 'denied');
+            sendResult('denied');
+        } else {
             navigator.geolocation.getCurrentPosition(
                 function(pos) {
-                    sendCoords(
-                        pos.coords.latitude.toFixed(6),
-                        pos.coords.longitude.toFixed(6)
-                    );
+                    var val = pos.coords.latitude.toFixed(6) + ',' + pos.coords.longitude.toFixed(6);
+                    sessionStorage.setItem('scp_geo_done', val);
+                    sendResult(val);
                 },
                 function(err) {
-                    sendCoords('denied', 'denied');
+                    sessionStorage.setItem('scp_geo_done', 'denied');
+                    sendResult('denied');
                 },
                 {timeout: 10000, maximumAge: 600000, enableHighAccuracy: false}
             );
-        })();
+        }
         </script>
-        """
-        st.components.v1.html(_geo_component_html, height=0)
+        """, height=0)
+
+        if _geo_result:
+            if _geo_result == 'denied':
+                st.session_state['geo_status'] = 'denied'
+            else:
+                try:
+                    _lat_str, _lng_str = str(_geo_result).split(',')
+                    st.session_state['geo_lat']    = float(_lat_str)
+                    st.session_state['geo_lng']    = float(_lng_str)
+                    st.session_state['geo_status'] = 'granted'
+                except Exception:
+                    st.session_state['geo_status'] = 'error'
+            st.rerun()
+
+    _user_lat   = st.session_state['geo_lat']
+    _user_lng   = st.session_state['geo_lng']
+    _geo_status = st.session_state['geo_status']
 
     # ── Build sorted company list ────────────────────────────────────────────
     _acct_df_raw = get_account_df()
@@ -11462,9 +11432,9 @@ with tab5:
             st.session_state['geo_status'] = 'pending'
             st.session_state['geo_lat'] = None
             st.session_state['geo_lng'] = None
-            # Clear the sessionStorage guard so the JS runs again
+            # Clear the sessionStorage guard so the geo component runs again on next render
             st.components.v1.html(
-                "<script>sessionStorage.removeItem('scp_geo_requested');</script>",
+                "<script>sessionStorage.removeItem('scp_geo_done');</script>",
                 height=0
             )
             st.rerun()
