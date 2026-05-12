@@ -63,6 +63,10 @@ _check_login()
 st.markdown("""
 <style>
   [data-testid="stSidebar"], [data-testid="collapsedControl"] { display: none !important; }
+  .hidden-filters-block,
+  .hidden-filters-block * { display: none !important; visibility: hidden !important;
+                             height: 0 !important; overflow: hidden !important;
+                             position: absolute !important; pointer-events: none !important; }
 </style>
 """, unsafe_allow_html=True)
 
@@ -12010,9 +12014,17 @@ with tab5:
                     st.rerun()
 
 
-    # ── Filters & Add/Update Price ────────────────────────────────────────────
-    st.markdown("---")
-    st.markdown("### 🔍 Dashboard Filters")
+    # ── Filters (hidden from users — defaults are set via session state) ────────
+    # Widgets must exist for their session_state keys to be valid, but we hide
+    # the entire block with CSS so users never see it.
+    st.markdown("""
+    <style>
+      div[data-testid="stVerticalBlock"]:has(> div > div[data-testid="stMarkdownContainer"] > h3)
+        .hidden-filters-block { display: none !important; }
+      .hidden-filters-block { display: none !important; }
+    </style>
+    <div class="hidden-filters-block" style="display:none!important;height:0;overflow:hidden;position:absolute;visibility:hidden">
+    """, unsafe_allow_html=True)
     _fcol1, _fcol2, _fcol3, _fcol4 = st.columns([1, 1, 1, 1])
     with _fcol1:
         _sel_market = st.selectbox("Market", market_opts, key="sel_market")
@@ -12048,8 +12060,7 @@ with tab5:
         help="Highlight where our price differs from a competitor by this amount",
         key="threshold"
     )
-
-    st.markdown("---")
+    st.markdown("</div>", unsafe_allow_html=True)
     st.markdown("#### ➕ Add Missing Product to Scan List")
     st.caption("Use this to add products not already in the UPC Scanner List. The product will appear in the scanner with a generated barcode.")
 
