@@ -10054,10 +10054,9 @@ def pkg_group(package: str, wamp: str = "", brand: str = "") -> str:
     df = pd.DataFrame(rows,
         columns=["Category","Package","Brand","Product","UPC","Competitor","Single","TwoFor","TwoFor_Display"])
     df["Market"]   = "1 · Charleston"
-    df["Format"]   = df["Package"].apply(
-        lambda p: "Singles" if str(p).startswith(("1/", "3/")) else "Packages"
-    )
-    df["PkgGroup"] = df["Package"].apply(pkg_group)
+    _pkg = df["Package"].astype(str)
+    df["Format"]   = _pkg.str.startswith(("1/", "3/")).map({True: "Singles", False: "Packages"})
+    df["PkgGroup"] = [pkg_group(p) for p in df["Package"]]
     return df
 
 
@@ -10092,10 +10091,13 @@ def get_upc_df(market: str = "1 · Charleston"):
     raw = _MARKET_UPC_DATA.get(market, CHS_UPC_DATA)
     # Columns: WAMP, Brand, Product, Wholesaler, Package, UPC, Barcode
     df = pd.DataFrame(raw, columns=["WAMP", "Brand", "Product", "Wholesaler", "Package", "UPC", "Barcode"])
-    df["Format"]   = df["Package"].apply(
-        lambda p: "Singles" if str(p).startswith(("1/", "3/")) else "Packages"
-    )
-    df["PkgGroup"] = df.apply(lambda r: pkg_group(r["Package"], r.get("WAMP",""), r.get("Brand","")), axis=1)
+    pkg = df["Package"].astype(str)
+    df["Format"]   = pkg.str.startswith(("1/", "3/")).map({True: "Singles", False: "Packages"})
+    # pkg_group is a pure Python fn — vectorize via list comprehension (faster than apply)
+    df["PkgGroup"] = [
+        pkg_group(p, w, b)
+        for p, w, b in zip(df["Package"], df["WAMP"], df["Brand"])
+    ]
     df["Wholesaler"] = df["Wholesaler"].fillna("").astype(str)
     return df
 
@@ -10118,7 +10120,14 @@ def load_survey_pricing(market_key):
             return pd.DataFrame(), []
         df_csv["Competitor"] = df_csv["Parent Chain"].str.strip()
         df_csv["Single"]     = pd.to_numeric(df_csv["Retail $"], errors="coerce")
-        df_csv["PkgGroup"]   = df_csv.apply(lambda r: pkg_group(r["Package"], r.get("WAMP",""), r.get("Brand","")), axis=1)
+        df_csv["PkgGroup"]   = [
+            pkg_group(p, w, b)
+            for p, w, b in zip(
+                df_csv.get("Package", pd.Series([""] * len(df_csv))),
+                df_csv.get("WAMP",    pd.Series([""] * len(df_csv))),
+                df_csv.get("Brand",   pd.Series([""] * len(df_csv))),
+            )
+        ]
         keep = ["WAMP","PkgGroup","Brand","Product","UPC","Competitor","Single"]
         if "Wholesaler" in df_csv.columns:
             keep.append("Wholesaler")
@@ -10252,6 +10261,35 @@ def _make_barcode_b64_from_font(code_str: str, height_px: int = 80) -> str | Non
     except Exception:
         return None
 
+@st.cache_data(show_spinner=False)
+def _barcode_html_block(upcs: tuple, barcodes: tuple, products: tuple,
+                        packages: tuple, brands: tuple, wamps: tuple) -> list:
+    """Return list of (header_html, barcode_html) per row — cached by scan list."""
+    out = []
+    for upc, bc, prod, pkg, brand, wamp in zip(upcs, barcodes, products, packages, brands, wamps):
+        header = (
+            f"<div style='display:flex;justify-content:space-between;"
+            f"align-items:baseline;margin-bottom:4px'>"
+            f"<span><strong>{prod}</strong> "
+            f"<span style='font-size:0.8rem;color:grey'>{brand} · {wamp}</span></span>"
+            f"<span style='background:#f0f2f6;border-radius:4px;padding:2px 8px;"
+            f"font-size:0.78rem;font-weight:600'>{pkg}</span></div>"
+        )
+        b64 = _make_barcode_b64(str(upc).strip()) if len(str(upc).strip()) >= 11 \
+              else _make_barcode_b64_from_font(str(bc))
+        if b64:
+            barcode = (
+                f"<div style='background:white;border:1px solid #ddd;border-radius:6px;"
+                f"padding:8px 12px;margin:4px 0 8px;text-align:center'>"
+                f"<img src='data:image/png;base64,{b64}' "
+                f"style='width:100%;max-width:580px;height:85px;object-fit:contain;"
+                f"image-rendering:crisp-edges;display:block;margin:0 auto'></div>"
+            )
+        else:
+            barcode = f"<p style='font-size:0.75rem;color:grey'>UPC: {upc or bc}</p>"
+        out.append((header, barcode))
+    return out
+
 @st.cache_resource
 def _get_counties_geojson():
     """Fetch SC+GA county GeoJSON once per process — never re-fetched."""
@@ -10298,19 +10336,23 @@ def _compute_county_flags(survey_json: str, name_to_fips_json: str, mkt_label: s
             if not _sp.empty and not _hp.empty:
                 if float(_sp.max()) - float(_hp.min()) >= threshold_val:
                     _chain_flag_counts[_cfc] = _chain_flag_counts.get(_cfc, 0) + 1
-    # Map chain → county → fips → count
+    # Map chain → county → fips → count (vectorized, no iterrows)
     _acct  = get_account_df()
     _mname = mkt_label.split(" · ")[1] if " · " in mkt_label else mkt_label
-    _acct  = _acct[_acct.get("market", pd.Series(dtype=str)).str.contains(_mname, case=False, na=False)]              if "market" in _acct.columns else _acct
-    _valid = set(_acct["county"].str.strip().str.lower().dropna().unique()) if "county" in _acct.columns else set()
+    if "market" in _acct.columns:
+        _acct = _acct[_acct["market"].str.contains(_mname, case=False, na=False)]
+    if _acct.empty or "county" not in _acct.columns:
+        return {}
     _flags = {}
-    for _, _ar in _acct.iterrows():
-        _ch = str(_ar.get("parent_chain", ""))
-        _co = str(_ar.get("county", "")).strip().lower()
-        if _ch in _chain_flag_counts and _co and _co in _valid:
-            _fips = n2f.get(_co)
+    # Build series lookups once
+    _chains  = _acct["parent_chain"].astype(str)
+    _counties = _acct["county"].astype(str).str.strip().str.lower()
+    _valid   = set(_counties.dropna().unique())
+    for ch, co in zip(_chains, _counties):
+        if ch in _chain_flag_counts and co and co in _valid:
+            _fips = n2f.get(co)
             if _fips:
-                _flags[_fips] = _flags.get(_fips, 0) + _chain_flag_counts[_ch]
+                _flags[_fips] = _flags.get(_fips, 0) + _chain_flag_counts[ch]
     return _flags
 
 @st.cache_data
@@ -10348,12 +10390,12 @@ def load_data():
     )
     if not combined.empty:
         combined["Market Avg"]   = combined.groupby(["Product","Market"])["Comp Price"].transform("mean")
-        combined["Diff to Comp"] = combined.apply(
-            lambda r: round(r["Our Price"] - r["Comp Price"], 2)
-                      if pd.notna(r["Our Price"]) and pd.notna(r["Comp Price"]) else None, axis=1)
-        combined["Diff to Avg"]  = combined.apply(
-            lambda r: round(r["Our Price"] - r["Market Avg"], 2)
-                      if pd.notna(r["Our Price"]) and pd.notna(r["Market Avg"]) else None, axis=1)
+        # Vectorized arithmetic — much faster than row-wise apply
+        our  = pd.to_numeric(combined["Our Price"],  errors="coerce")
+        comp = pd.to_numeric(combined["Comp Price"], errors="coerce")
+        avg  = pd.to_numeric(combined["Market Avg"], errors="coerce")
+        combined["Diff to Comp"] = (our - comp).round(2).where(our.notna() & comp.notna())
+        combined["Diff to Avg"]  = (our - avg ).round(2).where(our.notna() & avg.notna())
     return combined
 
 df_all = load_data()
@@ -10366,16 +10408,17 @@ sel_cat     = st.session_state.get("sel_cat",    "All Categories")
 sel_prod    = st.session_state.get("sel_prod",   "All Products")
 threshold   = st.session_state.get("threshold",  0.50)
 
-# ─── Apply filters ────────────────────────────────────────────────────────────
-df = df_all.copy()
+# ─── Apply filters (use boolean masks on the cached df, no copy unless filtering) ─
+_mask = pd.Series(True, index=df_all.index)
 if sel_market != "All Markets":
-    df = df[df["Market"] == sel_market]
+    _mask &= df_all["Market"] == sel_market
 if sel_format != "All":
-    df = df[df["Format"] == sel_format]
+    _mask &= df_all["Format"] == sel_format
 if sel_cat != "All Categories":
-    df = df[df["Category"] == sel_cat]
+    _mask &= df_all["Category"] == sel_cat
 if sel_prod != "All Products":
-    df = df[df["Product"] == sel_prod]
+    _mask &= df_all["Product"] == sel_prod
+df = df_all[_mask].copy() if not _mask.all() else df_all
 
 df_valid = df.dropna(subset=["Our Price", "Comp Price"])
 
@@ -10720,7 +10763,7 @@ with tab1:
                 "Wine Singles 7oz",
                 "Singles","Singles x4","Singles x6","Singles x9",
             }
-            view["_Format"] = view["PkgGroup"].apply(lambda g: "Singles" if g in _singles_grps else "Packages")
+            view["_Format"] = view["PkgGroup"].isin(_singles_grps).map({True: "Singles", False: "Packages"})
 
             _pre_grp = view.groupby(["WAMP","PkgGroup","Competitor"])["Single"].mean().round(2).reset_index()
             _pre_grp.columns = ["WAMP","Package","Chain","Avg Price"]
@@ -11059,7 +11102,7 @@ with tab1:
                     "Wine Singles 7oz",
                     "Singles","Singles x4","Singles x6","Singles x9",
                 }
-                _rpt_view["_Format"] = _rpt_view["PkgGroup"].apply(lambda g: "Singles" if g in _singles_grps2 else "Packages")
+                _rpt_view["_Format"] = _rpt_view["PkgGroup"].isin(_singles_grps2).map({True: "Singles", False: "Packages"})
             if sel_format_gap != "Both":
                 _rpt_view = _rpt_view[_rpt_view["_Format"] == sel_format_gap]
 
@@ -11339,26 +11382,36 @@ with tab5:
         st.components.v1.html(_geo_component_html, height=0)
 
     # ── Build sorted company list ────────────────────────────────────────────
-    _acct_df_raw = get_account_df().copy()
+    _acct_df_raw = get_account_df()
 
     if _user_lat is not None and _user_lng is not None:
-        _acct_df_raw['_dist_mi'] = _acct_df_raw.apply(
-            lambda r: _haversine(_user_lat, _user_lng, float(r['lat']), float(r['lng']))
-            if pd.notna(r.get('lat')) and pd.notna(r.get('lng')) else 99999,
-            axis=1
-        )
-        _acct_df_sorted = _acct_df_raw.sort_values('_dist_mi').reset_index(drop=True)
-        _company_values = ['— Select a store —'] + _acct_df_sorted['company'].tolist()
+        # Vectorized haversine — one numpy pass over all stores, no .apply()
+        import numpy as _np
+        _R = 3958.8
+        _lat1, _lng1 = _np.radians(_user_lat), _np.radians(_user_lng)
+        _lat2 = _np.radians(_acct_df_raw["lat"].to_numpy(dtype=float, na_value=_np.nan))
+        _lng2 = _np.radians(_acct_df_raw["lng"].to_numpy(dtype=float, na_value=_np.nan))
+        _dlat, _dlng = _lat2 - _lat1, _lng2 - _lng1
+        _a = _np.sin(_dlat/2)**2 + _np.cos(_lat1)*_np.cos(_lat2)*_np.sin(_dlng/2)**2
+        _dist = _R * 2 * _np.arctan2(_np.sqrt(_a), _np.sqrt(1-_a))
+        _dist = _np.where(_np.isnan(_dist), 99999, _dist)
+
+        _order = _np.argsort(_dist)
+        _sorted_companies = _acct_df_raw["company"].iloc[_order].tolist()
+        _dist_sorted      = _dist[_order]
+        # Build label map once — O(n) dict lookup instead of per-item DataFrame filter
+        _dist_map = {
+            name: d
+            for name, d in zip(_sorted_companies, _dist_sorted)
+        }
 
         def _dist_label(v):
             if v == '— Select a store —':
                 return v
-            rows = _acct_df_sorted[_acct_df_sorted['company'] == v]
-            if rows.empty:
-                return v
-            d = rows.iloc[0]['_dist_mi']
+            d = _dist_map.get(v, 99999)
             return f"{v}  ({d:.1f} mi)" if d < 99999 else v
 
+        _company_values = ['— Select a store —'] + _sorted_companies
         _geo_badge = (
             f"<div style='background:#ecfdf5;border:1px solid #6ee7b7;border-radius:6px;"
             f"padding:6px 12px;margin-bottom:8px;font-size:0.8rem;color:#065f46;display:inline-block'>"
@@ -11424,7 +11477,8 @@ with tab5:
 
     # Auto-derive Market, Parent Chain, Customer Type from selected company
     if _sel_store_input != "— Select a store —":
-        _store_row_live  = get_account_df()[get_account_df()["company"] == _sel_store_input].iloc[0]
+        _acct_for_lookup = get_account_df()
+        _store_row_live  = _acct_for_lookup[_acct_for_lookup["company"] == _sel_store_input].iloc[0]
         _derived_parent  = _store_row_live["parent_chain"]
         _derived_type    = _store_row_live["customer_type"]
         _derived_cid     = _store_row_live["customer_id"]
@@ -11514,7 +11568,7 @@ with tab5:
     if sel_store and sel_store not in ("", "— Select a store —") and sel_upc_market != "All Markets":
 
         # Get market-specific UPC list (wholesaler varies by market)
-        scan_df = get_upc_df(sel_upc_market).copy()
+        scan_df = get_upc_df(sel_upc_market)
         if sel_fmt != "All":
             scan_df = scan_df[scan_df["Format"] == sel_fmt]
         if upc_search:
@@ -11701,22 +11755,19 @@ with tab5:
         _prefill_flag = f"_prefilled_{ss_key}_{sel_store}"
         if sel_store and not st.session_state.get(_prefill_flag):
             _market_pricing = PREFILLED_PRICING.get(sel_upc_market, {})
-            # Determine which chain matches the selected store's parent chain
             _store_chain = _derived_parent if _derived_parent != "All Chains" else ""
-            for _scan_idx, _scan_row in scan_df.iterrows():
-                _upc = str(_scan_row["UPC"]).strip()
+            _store_chain_lower = _store_chain.lower()
+            for _scan_idx, _upc in zip(scan_df.index, scan_df["UPC"].astype(str).str.strip()):
                 _upc_pricing = _market_pricing.get(_upc, {})
                 if not _upc_pricing:
                     continue
-                # Try exact chain match first, then fuzzy
                 _chain_data = None
                 for _chain_key, _cd in _upc_pricing.items():
-                    if _store_chain and _store_chain.lower() in _chain_key.lower():
+                    if _store_chain_lower and _store_chain_lower in _chain_key.lower():
                         _chain_data = _cd
                         break
                 if _chain_data is None:
                     continue
-                # Only seed if not already set by user / localStorage restore
                 _rk = f"retail_{ss_key}_{_scan_idx}"
                 _tk = f"twofor_{ss_key}_{_scan_idx}"
                 if not st.session_state.get(_rk):
@@ -11735,42 +11786,13 @@ with tab5:
         # Pre-build wholesaler options (same for all rows in this market)
         _ws_options = [""] + MARKET_WHOLESALERS.get(sel_upc_market, ["Southern Crown Partners"])
 
-        # Pre-generate all barcodes as a single cached HTML block
-        @st.cache_data(show_spinner=False)
-        def _barcode_html_block(upcs: tuple, barcodes: tuple, products: tuple,
-                                packages: tuple, brands: tuple, wamps: tuple) -> list:
-            """Return list of (header_html, barcode_html) per row — cached by scan list."""
-            out = []
-            for upc, bc, prod, pkg, brand, wamp in zip(upcs, barcodes, products, packages, brands, wamps):
-                header = (
-                    f"<div style='display:flex;justify-content:space-between;"
-                    f"align-items:baseline;margin-bottom:4px'>"
-                    f"<span><strong>{prod}</strong> "
-                    f"<span style='font-size:0.8rem;color:grey'>{brand} · {wamp}</span></span>"
-                    f"<span style='background:#f0f2f6;border-radius:4px;padding:2px 8px;"
-                    f"font-size:0.78rem;font-weight:600'>{pkg}</span></div>"
-                )
-                b64 = _make_barcode_b64(str(upc).strip()) if len(str(upc).strip()) >= 11                       else _make_barcode_b64_from_font(str(bc))
-                if b64:
-                    barcode = (
-                        f"<div style='background:white;border:1px solid #ddd;border-radius:6px;"
-                        f"padding:8px 12px;margin:4px 0 8px;text-align:center'>"
-                        f"<img src='data:image/png;base64,{b64}' "
-                        f"style='width:100%;max-width:580px;height:85px;object-fit:contain;"
-                        f"image-rendering:crisp-edges;display:block;margin:0 auto'></div>"
-                    )
-                else:
-                    barcode = f"<p style='font-size:0.75rem;color:grey'>UPC: {upc or bc}</p>"
-                out.append((header, barcode))
-            return out
-
-        _upcs    = tuple(str(r["UPC"]).strip()  for _, r in scan_df.iterrows())
-        _bcs     = tuple(str(r["Barcode"])       for _, r in scan_df.iterrows())
-        _prods   = tuple(str(r["Product"])       for _, r in scan_df.iterrows())
-        _pkgs    = tuple(str(r["Package"])       for _, r in scan_df.iterrows())
-        _brands  = tuple(str(r["Brand"])         for _, r in scan_df.iterrows())
-        _wamps   = tuple(str(r["WAMP"])          for _, r in scan_df.iterrows())
-        _is_customs = tuple(bool(r.get("_custom", False)) for _, r in scan_df.iterrows())
+        _upcs       = tuple(scan_df["UPC"].astype(str).str.strip())
+        _bcs        = tuple(scan_df["Barcode"].astype(str))
+        _prods      = tuple(scan_df["Product"].astype(str))
+        _pkgs       = tuple(scan_df["Package"].astype(str))
+        _brands     = tuple(scan_df["Brand"].astype(str))
+        _wamps      = tuple(scan_df["WAMP"].astype(str))
+        _is_customs = tuple(scan_df.get("_custom", pd.Series(False, index=scan_df.index)).fillna(False).astype(bool))
         _html_rows = _barcode_html_block(_upcs, _bcs, _prods, _pkgs, _brands, _wamps)
 
         for idx_pos, (i, row) in enumerate(scan_df.iterrows()):
@@ -12008,13 +12030,14 @@ with tab5:
     with _fcol3:
         _sel_cat = st.selectbox("Category", _cat_opts, key="sel_cat")
 
-    _base = df_all.copy()
+    _base_mask = pd.Series(True, index=df_all.index)
     if _sel_market != "All Markets":
-        _base = _base[_base["Market"] == _sel_market]
+        _base_mask &= df_all["Market"] == _sel_market
     if _sel_format != "All":
-        _base = _base[_base["Format"] == _sel_format]
+        _base_mask &= df_all["Format"] == _sel_format
     if _sel_cat != "All Categories":
-        _base = _base[_base["Category"] == _sel_cat]
+        _base_mask &= df_all["Category"] == _sel_cat
+    _base = df_all[_base_mask]
 
     _prod_opts = ["All Products"] + sorted(_base["Product"].unique())
     with _fcol4:
