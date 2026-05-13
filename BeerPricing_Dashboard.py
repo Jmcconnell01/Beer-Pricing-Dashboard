@@ -10676,37 +10676,6 @@ with tab1:
             name="Counties",
         ))
 
-    # ── Store pins layer (shown when zoomed into a market) ───────────────────
-    if sel_mkt and st.session_state["hm_zoomed"] and sel_mkt in has_data:
-        _store_df = get_account_df()
-        _mkt_label = sel_mkt.split(" · ")[1]  # e.g. "Charleston"
-        _stores = _store_df[_store_df["market"].str.contains(_mkt_label, case=False, na=False)]
-        if not _stores.empty:
-            # Color by parent chain
-            _chains = _stores["parent_chain"].unique()
-            _chain_colors = ["#e63946","#2a9d8f","#e9c46a","#f4a261","#264653",
-                             "#a8dadc","#457b9d","#1d3557","#6d6875","#b5838d",
-                             "#e76f51","#3d405b","#81b29a","#f2cc8f","#118ab2"]
-            _chain_color_map = {c: _chain_colors[i % len(_chain_colors)] for i, c in enumerate(_chains)}
-
-            for _chain in _chains:
-                _ch_stores = _stores[_stores["parent_chain"] == _chain]
-                fig_map.add_trace(go_map.Scattermapbox(
-                    lat=_ch_stores["lat"].tolist(),
-                    lon=_ch_stores["lng"].tolist(),
-                    mode="markers",
-                    marker=dict(size=10, color=_chain_color_map[_chain], opacity=0.85),
-                    text=_ch_stores["company"].tolist(),
-                    customdata=_ch_stores[["company","parent_chain","address","city"]].values.tolist(),
-                    hovertemplate=(
-                        "<b>%{customdata[0]}</b><br>"
-                        "Chain: %{customdata[1]}<br>"
-                        "%{customdata[2]}, %{customdata[3]}<extra></extra>"
-                    ),
-                    name=_chain,
-                    showlegend=True,
-                ))
-
     # Market dot markers on top
     fig_map.add_trace(go_map.Scattermapbox(
         lat=map_lats, lon=map_lons,
@@ -10721,23 +10690,11 @@ with tab1:
         showlegend=False,
     ))
 
-    _show_legend = sel_mkt and st.session_state["hm_zoomed"] and sel_mkt in has_data
     fig_map.update_layout(
         mapbox=dict(style="carto-positron", center=map_center, zoom=map_zoom),
         margin=dict(l=0, r=0, t=0, b=0),
         height=420,
-        showlegend=_show_legend,
-        legend=dict(
-            orientation="v",
-            x=1.0, y=1.0,
-            xanchor="right", yanchor="top",
-            bgcolor="rgba(255,255,255,0.88)",
-            bordercolor="#ccc", borderwidth=1,
-            font=dict(size=9),
-            itemsizing="constant",
-            tracegroupgap=2,
-            title=dict(text="<b>Chain</b>", font=dict(size=10)),
-        ),
+        showlegend=False,
         clickmode="event+select",
     )
 
