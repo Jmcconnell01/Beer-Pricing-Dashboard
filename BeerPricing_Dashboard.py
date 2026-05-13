@@ -10565,7 +10565,7 @@ with tab1:
     has_data = _hardcoded_has_data | _csv_has_data
 
     if "hm_market" not in st.session_state:
-        st.session_state["hm_market"] = "1 · Charleston"
+        st.session_state["hm_market"] = None
     if "hm_zoomed" not in st.session_state:
         st.session_state["hm_zoomed"] = False
 
@@ -10591,7 +10591,7 @@ with tab1:
         st.session_state["county_flags_all_loaded"] = True
 
     sel_mkt = st.session_state["hm_market"]
-    geo     = MARKET_GEO[sel_mkt]
+    geo     = MARKET_GEO[sel_mkt] if sel_mkt else list(MARKET_GEO.values())[0]
 
     # ── MAP ───────────────────────────────────────────────────────────────────
     import plotly.graph_objects as go_map
@@ -10605,7 +10605,7 @@ with tab1:
                      for m in map_names]
     marker_sizes  = [22 if m == sel_mkt else 15 for m in map_names]
 
-    if st.session_state["hm_zoomed"] and sel_mkt in has_data:
+    if sel_mkt and st.session_state["hm_zoomed"] and sel_mkt in has_data:
         map_center = dict(lat=geo["lat"], lon=geo["lon"])
         map_zoom   = geo["zoom"]
     else:
@@ -10662,7 +10662,7 @@ with tab1:
         ))
 
     # ── Store pins layer (shown when zoomed into a market) ───────────────────
-    if st.session_state["hm_zoomed"] and sel_mkt in has_data:
+    if sel_mkt and st.session_state["hm_zoomed"] and sel_mkt in has_data:
         _store_df = get_account_df()
         _mkt_label = sel_mkt.split(" · ")[1]  # e.g. "Charleston"
         _stores = _store_df[_store_df["market"].str.contains(_mkt_label, case=False, na=False)]
@@ -10706,7 +10706,7 @@ with tab1:
         showlegend=False,
     ))
 
-    _show_legend = st.session_state["hm_zoomed"] and sel_mkt in has_data
+    _show_legend = sel_mkt and st.session_state["hm_zoomed"] and sel_mkt in has_data
     fig_map.update_layout(
         mapbox=dict(style="carto-positron", center=map_center, zoom=map_zoom),
         margin=dict(l=0, r=0, t=0, b=0),
@@ -10735,10 +10735,11 @@ with tab1:
             if clicked != st.session_state["hm_market"]:
                 st.session_state["hm_market"] = clicked
                 st.session_state["hm_zoomed"] = True
-                st.rerun()
             else:
-                st.session_state["hm_zoomed"] = not st.session_state["hm_zoomed"]
-                st.rerun()
+                # Toggle off — deselect market entirely
+                st.session_state["hm_market"] = None
+                st.session_state["hm_zoomed"] = False
+            st.rerun()
 
     btn_cols = st.columns(len(MARKET_GEO))
     for col, mname in zip(btn_cols, MARKET_GEO.keys()):
@@ -10747,23 +10748,28 @@ with tab1:
         has_d  = mname in has_data
         _is_zoomed = st.session_state.get("hm_zoomed", False)
         _zoom_icon = "🔍" if (is_sel and _is_zoomed) else ("📍" if is_sel else "○")
+        _btn_help  = ("Click to deselect" if is_sel
+                      else ("Click to select" if has_d else "No survey data yet"))
         if col.button(f"{_zoom_icon} {short}",
                       use_container_width=True,
                       type="primary" if is_sel else "secondary",
-                      help="Click to zoom out" if (is_sel and _is_zoomed) else ("Click to zoom in" if has_d else "No survey data yet"),
+                      help=_btn_help,
                       key=f"mktbtn_{mname}"):
             if is_sel:
-                # Same market clicked — toggle zoom
-                st.session_state["hm_zoomed"] = not _is_zoomed
+                # Same market clicked — deselect entirely
+                st.session_state["hm_market"] = None
+                st.session_state["hm_zoomed"] = False
             else:
-                # Different market — zoom in
+                # Different market — select and zoom in
                 st.session_state["hm_market"] = mname
                 st.session_state["hm_zoomed"] = True
             st.rerun()
 
     st.markdown("---")
 
-    if sel_mkt not in has_data:
+    if not sel_mkt:
+        st.info("👆 Select a market above to view pricing data.")
+    elif sel_mkt not in has_data:
         st.info(f"📋 **{sel_mkt}** — No competitor pricing data loaded yet. "
                 f"Use the UPC Scanner tab to collect prices and submit a survey.")
     else:
