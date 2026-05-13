@@ -10347,25 +10347,35 @@ def _compute_county_flags(survey_json: str, name_to_fips_json: str, mkt_label: s
     n2f   = json.loads(name_to_fips_json)
     if df.empty or not n2f:
         return {}
-    _cf_pivot = df.pivot_table(
-        index=["WAMP","PkgGroup","Product"], columns="Competitor",
-        values="Single", aggfunc="mean"
-    ).round(2)
-    _cf_pivot.columns.name = None
-    _cf_ws = df.drop_duplicates("Product").set_index("Product")["Wholesaler"].to_dict()
+
+    # Determine SCP and competitor wholesaler for this market dynamically
+    _SCP       = "Southern Crown Partners"
+    _mkt_ws    = MARKET_WHOLESALERS.get(mkt_label, [_SCP])
+    _comp_ws   = [w for w in _mkt_ws if w != _SCP]
+
+    # Build chain → count by flagging any chain where SCP prices above competitor
+    # When no known competitor wholesaler, flag chains where retail price > market avg
     _chain_flag_counts = {}
-    for (_cfw, _cfp), _cfg in _cf_pivot.groupby(level=["WAMP","PkgGroup"]):
-        _cfg_c  = _cfg.dropna(axis=1, how="all")
-        _cs_idx = [i for i in _cfg_c.index if _cf_ws.get(i[-1]) == "Southern Crown Partners"]
-        _ch_idx = [i for i in _cfg_c.index if _cf_ws.get(i[-1]) == "Henry J. Lee Reyes"]
-        if not _cs_idx or not _ch_idx:
-            continue
-        for _cfc in _cfg_c.columns:
-            _sp = _cfg_c.loc[_cs_idx, _cfc].dropna()
-            _hp = _cfg_c.loc[_ch_idx, _cfc].dropna()
-            if not _sp.empty and not _hp.empty:
-                if float(_sp.max()) - float(_hp.min()) >= threshold_val:
-                    _chain_flag_counts[_cfc] = _chain_flag_counts.get(_cfc, 0) + 1
+
+    if _comp_ws:
+        # Use wholesaler-based comparison (same as heatmap logic)
+        if "Parent Chain" in df.columns and "Retail $" in df.columns and "Wholesaler" in df.columns:
+            _scp_rows  = df[df["Wholesaler"] == _SCP]
+            _comp_rows = df[df["Wholesaler"].isin(_comp_ws)]
+            for _chain in df["Parent Chain"].dropna().unique():
+                _scp_prices  = _scp_rows[_scp_rows["Parent Chain"]  == _chain]["Retail $"].dropna()
+                _comp_prices = _comp_rows[_comp_rows["Parent Chain"] == _chain]["Retail $"].dropna()
+                if not _scp_prices.empty and not _comp_prices.empty:
+                    if float(_scp_prices.mean()) - float(_comp_prices.mean()) >= threshold_val:
+                        _chain_flag_counts[_chain] = _chain_flag_counts.get(_chain, 0) + 1
+    else:
+        # No competitor wholesaler — flag chains priced above market average
+        if "Parent Chain" in df.columns and "Retail $" in df.columns:
+            _mkt_avg = df["Retail $"].mean()
+            for _chain in df["Parent Chain"].dropna().unique():
+                _chain_avg = df[df["Parent Chain"] == _chain]["Retail $"].mean()
+                if _chain_avg - _mkt_avg >= threshold_val:
+                    _chain_flag_counts[_chain] = _chain_flag_counts.get(_chain, 0) + 1
     # Map chain → county → fips → count
     _acct  = get_account_df()
     _mname = mkt_label.split(" · ")[1] if " · " in mkt_label else mkt_label
@@ -10570,6 +10580,11 @@ with tab1:
         st.session_state["hm_zoomed"] = False
 
     # Pre-compute county flags for ALL markets with data on first load
+    # Reset cache key when function logic changes
+    if st.session_state.get("county_flags_version") != 2:
+        st.session_state.pop("county_flags_all_loaded", None)
+        st.session_state.pop("county_flags", None)
+        st.session_state["county_flags_version"] = 2
     if "county_flags_all_loaded" not in st.session_state:
         _counties_pre, _n2f_pre = _get_counties_geojson()
         if _counties_pre:
