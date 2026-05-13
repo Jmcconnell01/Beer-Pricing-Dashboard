@@ -10569,10 +10569,26 @@ with tab1:
     if "hm_zoomed" not in st.session_state:
         st.session_state["hm_zoomed"] = False
 
-    # Clear county flags whenever market changes so stale data doesn't bleed across markets
-    if st.session_state.get("hm_market_last") != st.session_state["hm_market"]:
-        st.session_state["county_flags"] = {}
-        st.session_state["hm_market_last"] = st.session_state["hm_market"]
+    # Pre-compute county flags for ALL markets with data on first load
+    if "county_flags_all_loaded" not in st.session_state:
+        _counties_pre, _n2f_pre = _get_counties_geojson()
+        if _counties_pre:
+            _all_flags = {}
+            for _pmkt in has_data:
+                try:
+                    _pdf, _ = load_survey_pricing(_pmkt)
+                    if not _pdf.empty and "Wholesaler" in _pdf.columns:
+                        _pfl = _compute_county_flags(
+                            survey_json=_pdf.to_json(orient="split"),
+                            name_to_fips_json=__import__("json").dumps(_n2f_pre),
+                            mkt_label=_pmkt,
+                            threshold_val=0.50,
+                        )
+                        _all_flags.update(_pfl)
+                except Exception:
+                    pass
+            st.session_state["county_flags"] = _all_flags
+        st.session_state["county_flags_all_loaded"] = True
 
     sel_mkt = st.session_state["hm_market"]
     geo     = MARKET_GEO[sel_mkt]
@@ -10645,6 +10661,37 @@ with tab1:
             name="Counties",
         ))
 
+    # ── Store pins layer (shown when zoomed into a market) ───────────────────
+    if st.session_state["hm_zoomed"] and sel_mkt in has_data:
+        _store_df = get_account_df()
+        _mkt_label = sel_mkt.split(" · ")[1]  # e.g. "Charleston"
+        _stores = _store_df[_store_df["market"].str.contains(_mkt_label, case=False, na=False)]
+        if not _stores.empty:
+            # Color by parent chain
+            _chains = _stores["parent_chain"].unique()
+            _chain_colors = ["#e63946","#2a9d8f","#e9c46a","#f4a261","#264653",
+                             "#a8dadc","#457b9d","#1d3557","#6d6875","#b5838d",
+                             "#e76f51","#3d405b","#81b29a","#f2cc8f","#118ab2"]
+            _chain_color_map = {c: _chain_colors[i % len(_chain_colors)] for i, c in enumerate(_chains)}
+
+            for _chain in _chains:
+                _ch_stores = _stores[_stores["parent_chain"] == _chain]
+                fig_map.add_trace(go_map.Scattermapbox(
+                    lat=_ch_stores["lat"].tolist(),
+                    lon=_ch_stores["lng"].tolist(),
+                    mode="markers",
+                    marker=dict(size=10, color=_chain_color_map[_chain], opacity=0.85),
+                    text=_ch_stores["company"].tolist(),
+                    customdata=_ch_stores[["company","parent_chain","address","city"]].values.tolist(),
+                    hovertemplate=(
+                        "<b>%{customdata[0]}</b><br>"
+                        "Chain: %{customdata[1]}<br>"
+                        "%{customdata[2]}, %{customdata[3]}<extra></extra>"
+                    ),
+                    name=_chain,
+                    showlegend=True,
+                ))
+
     # Market dot markers on top
     fig_map.add_trace(go_map.Scattermapbox(
         lat=map_lats, lon=map_lons,
@@ -10655,13 +10702,24 @@ with tab1:
         textfont=dict(size=11, color="#1a1a1a"),
         customdata=map_names,
         hovertemplate="<b>%{customdata}</b><br>%{text}<extra></extra>",
-        name="",
+        name="Markets",
+        showlegend=False,
     ))
 
+    _show_legend = st.session_state["hm_zoomed"] and sel_mkt in has_data
     fig_map.update_layout(
         mapbox=dict(style="carto-positron", center=map_center, zoom=map_zoom),
         margin=dict(l=0, r=0, t=0, b=0),
-        height=420, showlegend=False, clickmode="event+select",
+        height=420,
+        showlegend=_show_legend,
+        legend=dict(
+            orientation="v", x=0.01, y=0.99,
+            bgcolor="rgba(255,255,255,0.85)",
+            bordercolor="#ccc", borderwidth=1,
+            font=dict(size=10),
+            title=dict(text="Chain", font=dict(size=11)),
+        ),
+        clickmode="event+select",
     )
 
     map_event = st.plotly_chart(
@@ -10756,7 +10814,7 @@ with tab1:
 
         chain_cols = all_chains
 
-        # ── Compute county flag counts — cached ──────────────────────────────
+        # ── Compute county flag counts — merge all markets into session state ──
         if not survey_df.empty and "Wholesaler" in survey_df.columns and _counties_geojson:
             _new_flags = _compute_county_flags(
                 survey_json=survey_df.to_json(orient="split"),
@@ -10764,7 +10822,10 @@ with tab1:
                 mkt_label=sel_mkt,
                 threshold_val=threshold,
             )
-            st.session_state["county_flags"] = _new_flags
+            # Merge into existing flags so all markets stay colored
+            _existing_flags = st.session_state.get("county_flags", {})
+            _existing_flags.update(_new_flags)
+            st.session_state["county_flags"] = _existing_flags
 
         if survey_df.empty:
             st.info(
