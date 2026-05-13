@@ -10687,13 +10687,20 @@ with tab1:
         short  = mname.split(" · ")[1]
         is_sel = mname == sel_mkt
         has_d  = mname in has_data
-        if col.button(f"{'📍' if is_sel else '○'} {short}",
+        _is_zoomed = st.session_state.get("hm_zoomed", False)
+        _zoom_icon = "🔍" if (is_sel and _is_zoomed) else ("📍" if is_sel else "○")
+        if col.button(f"{_zoom_icon} {short}",
                       use_container_width=True,
                       type="primary" if is_sel else "secondary",
-                      help="Pricing data loaded" if has_d else "No survey data yet",
+                      help="Click to zoom out" if (is_sel and _is_zoomed) else ("Click to zoom in" if has_d else "No survey data yet"),
                       key=f"mktbtn_{mname}"):
-            st.session_state["hm_market"] = mname
-            st.session_state["hm_zoomed"] = True
+            if is_sel:
+                # Same market clicked — toggle zoom
+                st.session_state["hm_zoomed"] = not _is_zoomed
+            else:
+                # Different market — zoom in
+                st.session_state["hm_market"] = mname
+                st.session_state["hm_zoomed"] = True
             st.rerun()
 
     st.markdown("---")
