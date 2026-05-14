@@ -11123,9 +11123,9 @@ with tab1:
                 flagged_groups.sort(key=lambda x: -x[9])
 
                 if not flagged_groups:
-                    st.success(f"✅ No groups where SCP products are priced ≥ ${threshold:.2f} above HJL products.")
+                    st.success(f"✅ No groups where SCP products are priced ≥ ${threshold:.2f} above {HJL} products.")
                 else:
-                    st.markdown(f"**{len(flagged_groups)} group(s) where SCP products are overpriced vs HJL**")
+                    st.markdown(f"**{len(flagged_groups)} group(s) where SCP products are overpriced vs {HJL}**")
 
                     for (wamp, pkg, grp_clean, scp_rows, hjl_rows,
                          scp_avg, hjl_avg, gap, overpriced_chains, max_gap, worst_chain) in flagged_groups:
@@ -11135,7 +11135,7 @@ with tab1:
                         n_hjl = len(hjl_rows)
 
                         with st.expander(
-                            f"{sev} **{wamp} · {pkg}** — {n_scp} SCP · {n_hjl} HJL products · "
+                            f"{sev} **{wamp} · {pkg}** — {n_scp} SCP · {n_hjl} {HJL} products · "
                             f"Max SCP disadvantage is **${max_gap:.2f}** at {worst_chain}",
                             expanded=False
                         ):
@@ -11155,7 +11155,7 @@ with tab1:
                             text_cells = []
                             for prod_idx in grp_clean.index:
                                 ws = prod_ws_map.get(prod_idx[-1], "")
-                                tag = "SCP" if ws == SCP else ("HJL" if ws == HJL else "")
+                                tag = "SCP" if ws == SCP else (HJL if ws == HJL else "")
                                 rt = []
                                 for chain in chain_cols_here:
                                     p = grp_clean.loc[prod_idx, chain]
@@ -11172,7 +11172,7 @@ with tab1:
                             y_labels = []
                             for idx in grp_clean.index:
                                 ws  = prod_ws_map.get(idx[-1], "")
-                                tag = " [SCP]" if ws == SCP else (" [HJL]" if ws == HJL else "")
+                                tag = " [SCP]" if ws == SCP else (f" [{HJL}]" if ws == HJL else "")
                                 y_labels.append(idx[-1] + tag)
 
                             fig_gap = go.Figure(data=go.Heatmap(
@@ -11212,7 +11212,7 @@ with tab1:
                                             key=f"gap_{wamp}_{pkg}_{geo['label']}")
 
                             # Per-chain callout: highest SCP price vs lowest HJL price
-                            st.markdown("**SCP vs HJL price per chain (flagged chains only):**")
+                            st.markdown(f"**SCP vs {HJL} price per chain (flagged chains only):**")
                             sp_cols_ui = st.columns(min(len(overpriced_chains), 4))
                             for i, (chain_name, gap_val) in enumerate(
                                 overpriced_chains.sort_values(ascending=False).items()
@@ -11319,7 +11319,7 @@ with tab1:
                     })
 
             if not _findings:
-                st.success(f"✅ No SCP overpricing vs HJL found above ${threshold:.2f} threshold.")
+                st.success(f"✅ No SCP overpricing vs {_HJL} found above ${threshold:.2f} threshold.")
             else:
                 _rpt_df = pd.DataFrame(_findings).sort_values("Gap ($)", ascending=False)
 
@@ -11343,7 +11343,7 @@ with tab1:
                             st.markdown(
                                 f"- **{_row['WAMP']} · {_row['Package']}** — "
                                 f"SCP *{_row['SCP Product']}* **${_row['SCP Price ($)']:.2f}** vs "
-                                f"HJL *{_row['HJL Product']}* **${_row['HJL Price ($)']:.2f}** "
+                                f"{_HJL} *{_row['HJL Product']}* **${_row['HJL Price ($)']:.2f}** "
                                 f"— SCP is **+${_row['Gap ($)']:.2f}** higher"
                             )
 
@@ -11646,12 +11646,15 @@ with tab5:
         scan_df = scan_df.reset_index(drop=True)
 
         # Key by market + store + format filter so prices are isolated per view.
-        # Including sel_fmt and sel_pkg prevents index mismatches when the user
-        # switches between All / Singles / Packages or package groups.
-        _fmt_slug = sel_fmt.replace(" ", "_")
-        _pkg_slug = sel_pkg.replace(" ", "_").replace("/", "-")
-        _store_slug = (sel_store or "nostore").replace(" ", "_")[:40]
-        ss_key = f"prices_{sel_upc_market}_{_store_slug}_{_fmt_slug}_{_pkg_slug}"
+        # IMPORTANT: ss_key is used directly in Streamlit widget keys so it must
+        # contain only alphanumeric characters and underscores — no spaces, dots,
+        # slashes, or special characters like · which Streamlit rejects silently.
+        import re as _re_key
+        _fmt_slug   = _re_key.sub(r"[^a-zA-Z0-9]", "_", sel_fmt)
+        _pkg_slug   = _re_key.sub(r"[^a-zA-Z0-9]", "_", sel_pkg)
+        _store_slug = _re_key.sub(r"[^a-zA-Z0-9]", "_", (sel_store or "nostore"))[:40]
+        _mkt_slug   = _re_key.sub(r"[^a-zA-Z0-9]", "_", sel_upc_market)
+        ss_key = f"prices_{_mkt_slug}_{_store_slug}_{_fmt_slug}_{_pkg_slug}"
 
         # ── Progress tracking ─────────────────────────────────────────────────
         # Count already-entered prices (from session state)
@@ -11945,13 +11948,24 @@ with tab5:
 
             st.markdown("<div style='margin-bottom:8px'></div>", unsafe_allow_html=True)
 
+            # Persist widget values to session state immediately
+            # so they survive the re-run triggered by pressing Submit
+            if retail is not None and retail != 0.0:
+                st.session_state[f"retail_{ss_key}_{i}"] = float(retail)
+            if twofor is not None and twofor != 0.0:
+                st.session_state[f"twofor_{ss_key}_{i}"] = float(twofor)
+
+            # Read from session state (persisted) not widget return value
+            # The widget can return None on the Submit re-run even if the user entered a value
+            _saved_retail = st.session_state.get(f"retail_{ss_key}_{i}")
+            _saved_twofor = st.session_state.get(f"twofor_{ss_key}_{i}")
             edited_rows.append({
                 "WAMP":       row["WAMP"], "Brand":   row["Brand"],
                 "Product":    row["Product"], "Package": row["Package"],
                 "UPC":        row["UPC"],  "Barcode": str(row["Barcode"]),
                 "Wholesaler": wholesaler,
-                "Retail $":   float(retail) if retail is not None else None,
-                "2 for $":    float(twofor) if twofor is not None else None,
+                "Retail $":   float(_saved_retail) if _saved_retail not in (None, 0.0, "") else None,
+                "2 for $":    float(_saved_twofor) if _saved_twofor not in (None, 0.0, "") else None,
             })
 
         edited = pd.DataFrame(edited_rows)
