@@ -10087,11 +10087,46 @@ _MARKET_UPC_DATA = {
 }
 
 @st.cache_data
+def normalize_upc(upc_raw) -> str:
+    """Normalize any UPC-like string to a 12-digit UPC-A string.
+
+    Rules applied in order:
+    1. Strip whitespace and drop any decimal suffix (e.g. '123.0' → '123').
+    2. Keep only digit characters.
+    3. Length handling:
+       - 13 digits → EAN-13; drop the leading '0' if present, giving 12-digit UPC-A.
+         If the leading digit is not '0', keep all 13 digits (legitimate EAN-13).
+       - 12 digits → already UPC-A; use as-is.
+       - 11 digits → UPC-A missing check digit; pad left with '0' to make 12 digits
+         (the scanner / barcode library will recompute the check digit).
+       - < 11 digits → left-pad with zeros to 12 digits.
+       - > 13 digits → truncate to 12 rightmost digits.
+    Returns the normalized string (always 12 digits).
+    """
+    s = str(upc_raw).strip().split(".")[0]          # drop decimal suffix
+    digits = "".join(ch for ch in s if ch.isdigit()) # digits only
+    n = len(digits)
+    if n == 13:
+        # EAN-13: strip leading zero → 12-digit UPC-A, else keep 13 (rare)
+        normalized = digits[1:] if digits[0] == "0" else digits[:12]
+    elif n == 12:
+        normalized = digits
+    elif n == 11:
+        normalized = "0" + digits                    # pad leading zero
+    elif n < 11:
+        normalized = digits.zfill(12)               # left-pad to 12
+    else:                                            # > 13
+        normalized = digits[:12]
+    return normalized
+
+
 def get_upc_df(market: str = "1 · Charleston"):
     """Return market-specific UPC list with correct per-SKU wholesaler assignments."""
     raw = _MARKET_UPC_DATA.get(market, CHS_UPC_DATA)
     # Columns: WAMP, Brand, Product, Wholesaler, Package, UPC, Barcode
     df = pd.DataFrame(raw, columns=["WAMP", "Brand", "Product", "Wholesaler", "Package", "UPC", "Barcode"])
+    # ── Normalize all UPCs to 12-digit UPC-A ────────────────────────────────
+    df["UPC"] = df["UPC"].apply(normalize_upc)
     df["Format"]   = df["Package"].apply(
         lambda p: "Singles" if str(p).startswith(("1/", "3/")) else "Packages"
     )
@@ -10235,6 +10270,9 @@ def load_survey_pricing(market_key):
 
         df_raw["Competitor"] = df_raw["Parent Chain"].str.strip()
         df_raw["Single"]     = pd.to_numeric(df_raw["Retail $"], errors="coerce")
+        # Normalize UPCs to 12 digits so survey data matches scanner list keys
+        if "UPC" in df_raw.columns:
+            df_raw["UPC"] = df_raw["UPC"].apply(normalize_upc)
         df_raw["PkgGroup"]   = df_raw.apply(
             lambda r: pkg_group(r.get("Package",""), r.get("WAMP",""), r.get("Brand","")), axis=1
         )
@@ -10322,7 +10360,9 @@ def compute_presales_pivot(survey_df_json: str) -> str:
 
 @st.cache_data(show_spinner=False)
 def _make_barcode_b64(upc_str: str, height_px: int = 80) -> str | None:
-    """Cached UPC-A / EAN-13 barcode image generator."""
+    """Cached UPC-A / EAN-13 barcode image generator.
+    Expects a 12-digit UPC-A string (already normalized by normalize_upc).
+    Falls back gracefully for 13-digit EAN-13 inputs."""
     try:
         from PIL import Image as PilImage
         from barcode import UPCA, EAN13
@@ -10330,8 +10370,19 @@ def _make_barcode_b64(upc_str: str, height_px: int = 80) -> str | None:
         from io import BytesIO as _BIO
         import base64 as _b64mod
         upc_str = str(upc_str).strip().split(".")[0]
+        # Normalize to 12 digits if not already done
+        digits = "".join(c for c in upc_str if c.isdigit())
+        if len(digits) == 13:
+            upc_str = digits[1:] if digits[0] == "0" else digits
+        elif len(digits) == 12:
+            upc_str = digits
+        elif len(digits) == 11:
+            upc_str = "0" + digits
+        else:
+            upc_str = digits.zfill(12)[:12]
         writer  = _IW()
-        bc_obj  = EAN13(upc_str[:12], writer=writer) if len(upc_str) >= 13 else UPCA(upc_str[:11], writer=writer)
+        # UPCA library takes 11 digits and computes check digit internally
+        bc_obj  = UPCA(upc_str[:11], writer=writer)
         buf = _BIO()
         bc_obj.write(buf, options={"write_text": True, "module_height": 15.0,
                                    "module_width": 0.8, "quiet_zone": 6.0, "dpi": 200,
