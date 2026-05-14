@@ -10155,43 +10155,94 @@ def _get_gsheets_client():
         return None
 
 def _append_to_survey_sheet(rows: list):
-    """Append a list of row-lists to the Survey Submissions Google Sheet."""
+    """Append a list of row-lists to the Survey Submissions Google Sheet.
+    Uses batch append — a single API call, which is atomic on the Sheets side
+    and eliminates the CSV race condition entirely."""
     try:
         _gc  = _get_gsheets_client()
         if _gc is None:
             return False
         _sh  = _gc.open_by_key(SURVEY_SHEET_ID)
         _ws  = _sh.sheet1
+        # Ensure header row exists
+        existing = _ws.get_all_values()
+        if not existing:
+            header = [
+                "Submitted At","Rep Name","Store","Market","Parent Chain",
+                "Customer ID","WAMP","Brand","Product","Package","UPC",
+                "Wholesaler","Retail $","2 for $",
+            ]
+            _ws.append_row(header, value_input_option="USER_ENTERED")
         _ws.append_rows(rows, value_input_option="USER_ENTERED")
         return True
     except Exception:
         return False
 
+
+@st.cache_data(ttl=30)
+def _load_all_survey_from_sheets() -> pd.DataFrame:
+    """Pull every submitted row from Google Sheets (cached 30 s).
+    Falls back to the local CSV when Sheets is unavailable."""
+    try:
+        _gc = _get_gsheets_client()
+        if _gc is not None:
+            _sh  = _gc.open_by_key(SURVEY_SHEET_ID)
+            _ws  = _sh.sheet1
+            rows = _ws.get_all_values()
+            if len(rows) < 2:
+                return pd.DataFrame()
+            df_gs = pd.DataFrame(rows[1:], columns=rows[0])
+            # Normalise numeric columns that arrive as strings
+            for _col in ("Retail $", "2 for $"):
+                if _col in df_gs.columns:
+                    df_gs[_col] = pd.to_numeric(df_gs[_col], errors="coerce")
+            return df_gs
+    except Exception:
+        pass
+
+    # ── CSV fallback (local dev / Sheets unreachable) ──────────────────────
+    import os as _osf
+    _path = _osf.path.join(_osf.path.dirname(_osf.path.abspath(__file__)), "survey_results.csv")
+    if _osf.path.exists(_path):
+        try:
+            return pd.read_csv(_path)
+        except Exception:
+            pass
+    return pd.DataFrame()
+
+
 @st.cache_data(ttl=30)
 def load_survey_pricing(market_key):
-    """Load submitted survey prices from CSV (cached 30s)."""
-    import os as _os2
-    path = _os2.path.join(_os2.path.dirname(_os2.path.abspath(__file__)), "survey_results.csv")
-    if not _os2.path.exists(path):
-        return pd.DataFrame(), []
+    """Load submitted survey prices — Google Sheets is the source of truth."""
     try:
-        df_csv = pd.read_csv(path)
-        if "Rewards $" in df_csv.columns and "2 for $" not in df_csv.columns:
-            df_csv = df_csv.rename(columns={"Rewards $": "2 for $"})
-        df_csv = df_csv[df_csv["Retail $"].notna() & (df_csv["Retail $"] > 0)].copy()
+        df_raw = _load_all_survey_from_sheets()
+        if df_raw.empty:
+            return pd.DataFrame(), []
+
+        # Column-name back-compat
+        if "Rewards $" in df_raw.columns and "2 for $" not in df_raw.columns:
+            df_raw = df_raw.rename(columns={"Rewards $": "2 for $"})
+
+        df_raw = df_raw[df_raw["Retail $"].notna() & (pd.to_numeric(df_raw["Retail $"], errors="coerce") > 0)].copy()
+        df_raw["Retail $"] = pd.to_numeric(df_raw["Retail $"], errors="coerce")
+
         if market_key and market_key != "All Markets":
             market_name = market_key.split(" · ")[1]
-            df_csv = df_csv[df_csv["Market"].str.contains(market_name, case=False, na=False)]
-        if df_csv.empty:
+            df_raw = df_raw[df_raw["Market"].str.contains(market_name, case=False, na=False)]
+
+        if df_raw.empty:
             return pd.DataFrame(), []
-        df_csv["Competitor"] = df_csv["Parent Chain"].str.strip()
-        df_csv["Single"]     = pd.to_numeric(df_csv["Retail $"], errors="coerce")
-        df_csv["PkgGroup"]   = df_csv.apply(lambda r: pkg_group(r["Package"], r.get("WAMP",""), r.get("Brand","")), axis=1)
+
+        df_raw["Competitor"] = df_raw["Parent Chain"].str.strip()
+        df_raw["Single"]     = pd.to_numeric(df_raw["Retail $"], errors="coerce")
+        df_raw["PkgGroup"]   = df_raw.apply(
+            lambda r: pkg_group(r.get("Package",""), r.get("WAMP",""), r.get("Brand","")), axis=1
+        )
         keep = ["WAMP","PkgGroup","Brand","Product","UPC","Competitor","Single"]
-        if "Wholesaler" in df_csv.columns:
+        if "Wholesaler" in df_raw.columns:
             keep.append("Wholesaler")
-        chains = sorted(df_csv["Competitor"].dropna().unique())
-        return df_csv[keep].copy(), chains
+        chains = sorted(df_raw["Competitor"].dropna().unique())
+        return df_raw[keep].copy(), chains
     except Exception:
         return pd.DataFrame(), []
 
@@ -10556,23 +10607,22 @@ with tab1:
         "8 · Vidalia":      {"lat": 32.2177, "lon": -82.4135, "label": "Vidalia, GA",             "zoom": 11},
         "9 · Fitzgerald":   {"lat": 31.7149, "lon": -83.2521, "label": "Fitzgerald, GA",          "zoom": 11},
     }
-    # Markets with hardcoded benchmark data OR rows in survey_results.csv
+    # Markets with hardcoded benchmark data OR rows in Google Sheets (source of truth)
     _hardcoded_has_data = {mkt for mkt, (mkt_data, _) in MARKETS.items()
                            if any(any(v is not None for v in row[3:]) for row in mkt_data)}
-    _csv_has_data = set()
+    _sheets_has_data = set()
     try:
-        import os as _os_hd
-        _csv_path_hd = _os_hd.path.join(_os_hd.path.dirname(_os_hd.path.abspath(__file__)), "survey_results.csv")
-        if _os_hd.path.exists(_csv_path_hd):
-            _csv_mkts = pd.read_csv(_csv_path_hd, usecols=["Market", "Retail $"])
-            _csv_mkts = _csv_mkts[_csv_mkts["Retail $"].notna() & (_csv_mkts["Retail $"] > 0)]
+        _sheets_df = _load_all_survey_from_sheets()
+        if not _sheets_df.empty and "Market" in _sheets_df.columns and "Retail $" in _sheets_df.columns:
+            _sheets_df["Retail $"] = pd.to_numeric(_sheets_df["Retail $"], errors="coerce")
+            _sheets_df = _sheets_df[_sheets_df["Retail $"].notna() & (_sheets_df["Retail $"] > 0)]
             for _mkt_key in MARKET_GEO.keys():
                 _mkt_name = _mkt_key.split(" · ")[1]
-                if _csv_mkts["Market"].str.contains(_mkt_name, case=False, na=False).any():
-                    _csv_has_data.add(_mkt_key)
+                if _sheets_df["Market"].str.contains(_mkt_name, case=False, na=False).any():
+                    _sheets_has_data.add(_mkt_key)
     except Exception:
         pass
-    has_data = _hardcoded_has_data | _csv_has_data
+    has_data = _hardcoded_has_data | _sheets_has_data
 
     if "hm_market" not in st.session_state:
         st.session_state["hm_market"] = None
@@ -11903,10 +11953,11 @@ with tab5:
             st.metric("Prices Entered", f"{filled} / {len(export_df)}")
 
         with sb:
-            # Show how many records already saved in the CSV
-            if os.path.exists(RESULTS_CSV):
-                saved_count = max(0, sum(1 for _ in open(RESULTS_CSV)) - 1)
-            else:
+            # Show how many records are in the authoritative Sheets store
+            try:
+                _sv_df = _load_all_survey_from_sheets()
+                saved_count = len(_sv_df) if not _sv_df.empty else 0
+            except Exception:
                 saved_count = 0
             st.metric("Total Saved Records", f"{saved_count}")
 
@@ -11935,11 +11986,7 @@ with tab5:
                     save_df["Submitted At"] = now
                     save_df["Rep Name"]     = _rep_name.strip()
 
-                    # Save locally to CSV
-                    file_exists = os.path.exists(RESULTS_CSV)
-                    save_df.to_csv(RESULTS_CSV, mode="a", header=not file_exists, index=False)
-
-                    # Write to Google Sheets
+                    # ── PRIMARY write: Google Sheets (atomic batch append — no race condition) ──
                     _gs_rows = []
                     for _, _gr in save_df.iterrows():
                         _gs_rows.append([
@@ -11950,29 +11997,47 @@ with tab5:
                             str(_gr.get("Parent Chain", "")),
                             str(_gr.get("Customer ID", "")),
                             str(_gr.get("WAMP", "")),
+                            str(_gr.get("Brand", "")),
                             str(_gr.get("Product", "")),
                             str(_gr.get("Package", "")),
                             str(_gr.get("UPC", "")),
+                            str(_gr.get("Wholesaler", "")),
                             str(_gr.get("Retail $", "")),
                             str(_gr.get("2 for $", "")),
                         ])
                     _gs_ok = _append_to_survey_sheet(_gs_rows)
 
-                    _gs_msg = " · Logged to Google Sheets ✅" if _gs_ok else " · Google Sheets unavailable ⚠️"
+                    # ── SECONDARY write: local CSV fallback (best-effort, no locking needed
+                    #    because Sheets is authoritative — CSV is only for local dev / export) ──
+                    try:
+                        import fcntl as _fcntl
+                        _file_exists = os.path.exists(RESULTS_CSV)
+                        with open(RESULTS_CSV, "a", newline="") as _f:
+                            _fcntl.flock(_f, _fcntl.LOCK_EX)
+                            save_df.to_csv(_f, mode="a", header=not _file_exists, index=False)
+                            _fcntl.flock(_f, _fcntl.LOCK_UN)
+                    except Exception:
+                        pass  # CSV failure is non-fatal; Sheets is the source of truth
+
+                    # Bust the 30-second Sheets read-cache so the heatmap refreshes immediately
+                    load_survey_pricing.clear()
+                    _load_all_survey_from_sheets.clear()
+
+                    _gs_msg = " · Saved to Google Sheets ✅" if _gs_ok else " · ⚠️ Google Sheets unavailable — check service account secrets"
                     st.success(f"✅ {len(save_df)} price{'s' if len(save_df) != 1 else ''} saved  ({now}){_gs_msg}")
                     st.balloons()
 
             with dl_col:
-                # Download all historical results
-                if os.path.exists(RESULTS_CSV):
-                    with open(RESULTS_CSV, "rb") as f_csv:
-                        st.download_button(
-                            "⬇ Download All Results",
-                            f_csv.read(),
-                            "survey_results.csv",
-                            "text/csv",
-                            use_container_width=True,
-                        )
+                # Download all historical results from Google Sheets (authoritative source)
+                _dl_df = _load_all_survey_from_sheets()
+                if not _dl_df.empty:
+                    st.download_button(
+                        "⬇ Download All Results",
+                        _dl_df.to_csv(index=False).encode(),
+                        "survey_results.csv",
+                        "text/csv",
+                        use_container_width=True,
+                    )
                 else:
                     st.download_button(
                         "⬇ Download All Results",
@@ -11984,16 +12049,28 @@ with tab5:
                     )
 
         # ── Saved results preview ─────────────────────────────────────────────
-        if os.path.exists(RESULTS_CSV):
-            with st.expander("📂 View Saved Survey Results", expanded=False):
-                saved_df = pd.read_csv(RESULTS_CSV)
-                if "Submitted At" in saved_df.columns:
-                    saved_df = saved_df.sort_values("Submitted At", ascending=False)
-                st.dataframe(saved_df, use_container_width=True, hide_index=True, height=300)
-                if st.button("🗑️ Clear All Saved Results", type="secondary"):
-                    os.remove(RESULTS_CSV)
-                    st.warning("All saved results cleared.")
+        with st.expander("📂 View Saved Survey Results", expanded=False):
+            _preview_df = _load_all_survey_from_sheets()
+            if not _preview_df.empty:
+                if "Submitted At" in _preview_df.columns:
+                    _preview_df = _preview_df.sort_values("Submitted At", ascending=False)
+                st.dataframe(_preview_df, use_container_width=True, hide_index=True, height=300)
+                # Download from Sheets data (always current, even on Streamlit Cloud)
+                st.download_button(
+                    "⬇ Download All Results",
+                    _preview_df.to_csv(index=False).encode(),
+                    "survey_results.csv",
+                    "text/csv",
+                    use_container_width=True,
+                )
+                st.caption("⚠️ 'Clear All' removes the local backup CSV only. To clear Google Sheets data, delete rows directly in the sheet.")
+                if st.button("🗑️ Clear Local CSV Backup", type="secondary"):
+                    if os.path.exists(RESULTS_CSV):
+                        os.remove(RESULTS_CSV)
+                    st.warning("Local CSV backup cleared. Google Sheets data is unaffected.")
                     st.rerun()
+            else:
+                st.info("No survey results found yet. Submit a survey above to get started.")
 
 
     # ── Filters & Add/Update Price ────────────────────────────────────────────
