@@ -12022,16 +12022,38 @@ with tab5:
             submit_col, dl_col = st.columns(2)
 
             with submit_col:
-                _submit_disabled = (filled == 0) or not _rep_name.strip()
-                _submit_help = "Enter your name above before submitting" if not _rep_name.strip() else "Saves all entered prices"
+                # Only require a rep name — allow submission with any number of prices
+                # (even just 1). Users doing partial surveys should never be blocked.
+                _rep_ok = bool(_rep_name.strip())
+                _submit_disabled = not _rep_ok
+                if not _rep_ok:
+                    _submit_help = "Enter your name above before submitting"
+                elif filled == 0:
+                    _submit_help = "⚠️ No prices entered yet — you can still submit to record a visit"
+                else:
+                    _submit_help = f"Submit {filled} price{'s' if filled != 1 else ''} to Google Sheets"
                 if st.button("✅ Submit Survey", type="primary", use_container_width=True,
                              disabled=_submit_disabled,
                              help=_submit_help):
-                    # Stamp timestamp and only save rows with a retail price
+                    # Collect only rows that have a retail price entered
                     now = _dt.datetime.now().strftime("%Y-%m-%d %H:%M:%S")
                     save_df = export_df[export_df["Retail $"].notna()].copy()
                     save_df["Submitted At"] = now
                     save_df["Rep Name"]     = _rep_name.strip()
+
+                    if save_df.empty:
+                        # No prices — record a visit-only row so the rep is logged
+                        save_df = pd.DataFrame([{
+                            "Submitted At": now,
+                            "Rep Name":    _rep_name.strip(),
+                            "Store":       export_df["Store"].iloc[0] if len(export_df) else "",
+                            "Market":      export_df["Market"].iloc[0] if len(export_df) else "",
+                            "Parent Chain":export_df["Parent Chain"].iloc[0] if len(export_df) else "",
+                            "Customer ID": export_df["Customer ID"].iloc[0] if len(export_df) else "",
+                            "WAMP": "", "Brand": "", "Product": "— Visit logged (no prices) —",
+                            "Package": "", "UPC": "", "Wholesaler": "",
+                            "Retail $": "", "2 for $": "",
+                        }])
 
                     # ── PRIMARY write: Google Sheets (atomic batch append — no race condition) ──
                     _gs_rows = []
@@ -12054,8 +12076,7 @@ with tab5:
                         ])
                     _gs_ok = _append_to_survey_sheet(_gs_rows)
 
-                    # ── SECONDARY write: local CSV fallback (best-effort, no locking needed
-                    #    because Sheets is authoritative — CSV is only for local dev / export) ──
+                    # ── SECONDARY write: local CSV fallback ──────────────────────
                     try:
                         import fcntl as _fcntl
                         _file_exists = os.path.exists(RESULTS_CSV)
@@ -12064,14 +12085,18 @@ with tab5:
                             save_df.to_csv(_f, mode="a", header=not _file_exists, index=False)
                             _fcntl.flock(_f, _fcntl.LOCK_UN)
                     except Exception:
-                        pass  # CSV failure is non-fatal; Sheets is the source of truth
+                        pass
 
                     # Bust the 30-second Sheets read-cache so the heatmap refreshes immediately
                     load_survey_pricing.clear()
                     _load_all_survey_from_sheets.clear()
 
-                    _gs_msg = " · Saved to Google Sheets ✅" if _gs_ok else " · ⚠️ Google Sheets unavailable — check service account secrets"
-                    st.success(f"✅ {len(save_df)} price{'s' if len(save_df) != 1 else ''} saved  ({now}){_gs_msg}")
+                    _price_count = len(save_df[save_df["Product"] != "— Visit logged (no prices) —"])
+                    _gs_msg = " · Saved to Google Sheets ✅" if _gs_ok else " · ⚠️ Google Sheets unavailable"
+                    if _price_count == 0:
+                        st.success(f"✅ Visit logged for {_rep_name.strip()} — no prices recorded  ({now}){_gs_msg}")
+                    else:
+                        st.success(f"✅ {_price_count} price{'s' if _price_count != 1 else ''} saved  ({now}){_gs_msg}")
                     st.balloons()
 
             with dl_col:
