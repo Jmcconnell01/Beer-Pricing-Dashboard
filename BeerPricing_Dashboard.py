@@ -11645,8 +11645,13 @@ with tab5:
             scan_df = scan_df[scan_df["PkgGroup"] == sel_pkg]
         scan_df = scan_df.reset_index(drop=True)
 
-        # Key by market so prices survive store/filter changes within the same market
-        ss_key = f"prices_{sel_upc_market}"
+        # Key by market + store + format filter so prices are isolated per view.
+        # Including sel_fmt and sel_pkg prevents index mismatches when the user
+        # switches between All / Singles / Packages or package groups.
+        _fmt_slug = sel_fmt.replace(" ", "_")
+        _pkg_slug = sel_pkg.replace(" ", "_").replace("/", "-")
+        _store_slug = (sel_store or "nostore").replace(" ", "_")[:40]
+        ss_key = f"prices_{sel_upc_market}_{_store_slug}_{_fmt_slug}_{_pkg_slug}"
 
         # ── Progress tracking ─────────────────────────────────────────────────
         # Count already-entered prices (from session state)
