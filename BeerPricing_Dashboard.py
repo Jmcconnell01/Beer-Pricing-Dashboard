@@ -10228,7 +10228,7 @@ def _append_to_survey_sheet(rows: list):
         return False
 
 
-@st.cache_data(ttl=30)
+@st.cache_data(ttl=30, show_spinner=False)
 def _load_all_survey_from_sheets() -> pd.DataFrame:
     """Pull every submitted row from Google Sheets (cached 30 s).
     Falls back to the local CSV when Sheets is unavailable."""
@@ -10267,7 +10267,7 @@ def _load_all_survey_from_sheets() -> pd.DataFrame:
     return pd.DataFrame()
 
 
-@st.cache_data(ttl=30)
+@st.cache_data(ttl=30, show_spinner=False)
 def load_survey_pricing(market_key):
     """Load submitted survey prices — Google Sheets is the source of truth."""
     try:
