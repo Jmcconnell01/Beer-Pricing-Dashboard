@@ -10228,10 +10228,15 @@ def _append_to_survey_sheet(rows: list):
         return False
 
 
-@st.cache_data(ttl=30, show_spinner=False)
 def _load_all_survey_from_sheets() -> pd.DataFrame:
-    """Pull every submitted row from Google Sheets (cached 30 s).
-    Falls back to the local CSV when Sheets is unavailable."""
+    """Pull every submitted row from Google Sheets. Always normalises column names."""
+    _COL_MAP = {
+        "Our Price":    "Retail $",
+        "Comp Price":   "Wholesaler",
+        "2 for Price":  "2 for $",
+        "Chain":        "Parent Chain",
+        "Rewards $":    "2 for $",
+    }
     try:
         _gc = _get_gsheets_client()
         if _gc is not None:
@@ -10241,14 +10246,9 @@ def _load_all_survey_from_sheets() -> pd.DataFrame:
             if len(rows) < 2:
                 return pd.DataFrame()
             df_gs = pd.DataFrame(rows[1:], columns=rows[0])
-            # Normalise column names and numeric columns
-            # The sheet may use old names like "Our Price" and "2 for Price"
-            df_gs = df_gs.rename(columns={
-                "Our Price":   "Retail $",
-                "Comp Price":  "Wholesaler",
-                "2 for Price": "2 for $",
-                "Chain":       "Parent Chain",
-            })
+            df_gs = df_gs.rename(columns={k: v for k, v in _COL_MAP.items() if k in df_gs.columns})
+            if "Brand" not in df_gs.columns:
+                df_gs["Brand"] = ""
             for _col in ("Retail $", "2 for $"):
                 if _col in df_gs.columns:
                     df_gs[_col] = pd.to_numeric(df_gs[_col], errors="coerce")
@@ -10256,80 +10256,81 @@ def _load_all_survey_from_sheets() -> pd.DataFrame:
     except Exception:
         pass
 
-    # ── CSV fallback (local dev / Sheets unreachable) ──────────────────────
+    # ── CSV fallback ──────────────────────────────────────────────────────
     import os as _osf
     _path = _osf.path.join(_osf.path.dirname(_osf.path.abspath(__file__)), "survey_results.csv")
     if _osf.path.exists(_path):
         try:
-            return pd.read_csv(_path)
+            df_csv = pd.read_csv(_path)
+            df_csv = df_csv.rename(columns={k: v for k, v in _COL_MAP.items() if k in df_csv.columns})
+            if "Brand" not in df_csv.columns:
+                df_csv["Brand"] = ""
+            return df_csv
         except Exception:
             pass
     return pd.DataFrame()
 
 
-@st.cache_data(ttl=30, show_spinner=False)
-def load_survey_pricing(market_key):
-    """Load submitted survey prices — Google Sheets is the source of truth."""
+@st.cache_data(ttl=60, show_spinner=False)
+def load_survey_pricing(market_key: str):
+    """Load submitted survey prices from Google Sheets for the given market."""
+    import re as _re_sp
     try:
-        df_raw = _load_all_survey_from_sheets()
-        if df_raw.empty:
+        df = _load_all_survey_from_sheets()
+        if df.empty:
             return pd.DataFrame(), []
 
-        # Column-name back-compat — handle old/alternate header names from the sheet
-        # The sheet was created with: Chain, Our Price, Comp Price, 2 for Price
-        # and NO Brand column. Map them to the canonical names the code uses.
-        _col_aliases = {
-            "Rewards $":     "2 for $",
-            "Our Price":      "Retail $",       # Sheet uses "Our Price" for the retail price
-            "Comp Price":     "Wholesaler",      # Sheet uses "Comp Price" to store Wholesaler name
-            "2 for Price":    "2 for $",
-            "Chain":          "Parent Chain",    # Sheet uses "Chain" instead of "Parent Chain"
-            "Retailer":       "Parent Chain",
-            "Wholesaler Name":"Wholesaler",
-        }
-        df_raw = df_raw.rename(columns={k: v for k, v in _col_aliases.items() if k in df_raw.columns})
-        # If Brand column is missing, add it empty so downstream code doesn't break
-        if "Brand" not in df_raw.columns:
-            df_raw["Brand"] = ""
+        # Keep only rows with a real retail price
+        df = df[df["Retail $"].notna() & (df["Retail $"] > 0)].copy()
+        if df.empty:
+            return pd.DataFrame(), []
 
-        # ── Column alignment fix ──────────────────────────────────────────────
-        # If the sheet has misaligned columns (Product blank, Package has product name),
-        # swap them. This can happen when the sheet header row differs from code expectations.
-        if "Product" in df_raw.columns and "Package" in df_raw.columns:
-            _prod_blank = df_raw["Product"].fillna("").str.strip().eq("")
-            _pkg_looks_like_product = df_raw["Package"].fillna("").str.contains(r"[A-Za-z]{3,}", regex=True)
-            _swap_mask = _prod_blank & _pkg_looks_like_product & ~df_raw["Package"].str.contains(r"^\d+/", regex=True, na=False)
-            if _swap_mask.any():
-                # Extract the package token (e.g. "1/16AL") from the end of the product-name-in-Package column
-                import re as _re_col
-                _pkg_in_pkg = df_raw.loc[_swap_mask, "Package"].str.extract(r"(\d+/\d+[A-Za-z]+(?:\s*x\d+)?)$")[0]
-                df_raw.loc[_swap_mask, "Product"] = df_raw.loc[_swap_mask, "Package"]
-                df_raw.loc[_swap_mask, "Package"] = _pkg_in_pkg.fillna("")
-        # ─────────────────────────────────────────────────────────────────────
-        df_raw = df_raw[df_raw["Retail $"].notna() & (pd.to_numeric(df_raw["Retail $"], errors="coerce") > 0)].copy()
-        df_raw["Retail $"] = pd.to_numeric(df_raw["Retail $"], errors="coerce")
-
+        # Filter to the requested market
         if market_key and market_key != "All Markets":
-            market_name = market_key.split(" · ")[1]
-            df_raw = df_raw[df_raw["Market"].str.contains(market_name, case=False, na=False)]
-
-        if df_raw.empty:
+            mkt_name = market_key.split(" · ")[1]
+            df = df[df["Market"].str.contains(mkt_name, case=False, na=False)]
+        if df.empty:
             return pd.DataFrame(), []
 
-        df_raw["Competitor"] = df_raw["Parent Chain"].str.strip()
-        df_raw["Single"]     = pd.to_numeric(df_raw["Retail $"], errors="coerce")
-        # Normalize UPCs to 12 digits so survey data matches scanner list keys
-        if "UPC" in df_raw.columns:
-            df_raw["UPC"] = df_raw["UPC"].apply(normalize_upc)
-        df_raw["PkgGroup"]   = df_raw.apply(
-            lambda r: pkg_group(r.get("Package",""), r.get("WAMP",""), r.get("Brand","")), axis=1
+        # Build heatmap columns
+        df["Competitor"] = df["Parent Chain"].fillna("").str.strip()
+        df["Single"]     = df["Retail $"].astype(float)
+        if "UPC" in df.columns:
+            df["UPC"] = df["UPC"].apply(normalize_upc)
+
+        # Extract package token from product name if Package column is blank
+        def _extract_pkg(row):
+            pkg = str(row.get("Package", "")).strip()
+            if pkg and re.match(r"\d+/", pkg):
+                return pkg
+            m = _re_sp.search(r"(\d+/\d+[A-Za-z]+(?:\s*x\d+)?)", str(row.get("Product", "")))
+            return m.group(1) if m else pkg
+
+        df["Package"]  = df.apply(_extract_pkg, axis=1)
+        df["PkgGroup"] = df.apply(
+            lambda r: pkg_group(r.get("Package", ""), r.get("WAMP", ""), r.get("Brand", "")), axis=1
         )
-        keep = ["WAMP","PkgGroup","Brand","Product","UPC","Competitor","Single"]
-        if "Wholesaler" in df_raw.columns:
-            keep.append("Wholesaler")
-        chains = sorted(df_raw["Competitor"].dropna().unique())
-        return df_raw[keep].copy(), chains
-    except Exception:
+
+        # Backfill blank Wholesaler from UPC master list
+        if "Wholesaler" not in df.columns:
+            df["Wholesaler"] = ""
+        _blank = df["Wholesaler"].fillna("").eq("")
+        if _blank.any():
+            _upc_df = get_upc_df(market_key)
+            if not _upc_df.empty and "Wholesaler" in _upc_df.columns:
+                _ws_by_upc  = dict(zip(_upc_df["UPC"].astype(str).str.strip(), _upc_df["Wholesaler"]))
+                _ws_by_prod = dict(zip(_upc_df["Product"].astype(str).str.strip(), _upc_df["Wholesaler"]))
+                df.loc[_blank, "Wholesaler"] = (
+                    df.loc[_blank, "UPC"].astype(str).str.strip().map(_ws_by_upc)
+                    .fillna(df.loc[_blank, "Product"].astype(str).str.strip().map(_ws_by_prod))
+                    .fillna("")
+                )
+
+        keep = ["WAMP", "PkgGroup", "Brand", "Product", "UPC", "Competitor", "Single", "Wholesaler"]
+        keep = [c for c in keep if c in df.columns]
+        chains = sorted(df["Competitor"].dropna().unique())
+        return df[keep].copy(), chains
+    except Exception as _e:
         return pd.DataFrame(), []
 
 @st.cache_resource
@@ -10902,17 +10903,30 @@ with tab1:
                 f"Use the UPC Scanner tab to collect prices and submit a survey.")
     else:
         survey_df, all_chains = load_survey_pricing(sel_mkt)
+        _using_live_data = not survey_df.empty
 
-        # Fall back to benchmark sc_*_data for any market if no CSV survey data
+        # ── TEMPORARY DEBUG — remove once Walmart appears ──────────────────
+        with st.expander("🛠 Pipeline Debug (temporary)", expanded=True):
+            st.write(f"**load_survey_pricing returned:** {len(survey_df)} rows, chains={all_chains}")
+            if not survey_df.empty:
+                st.dataframe(survey_df)
+            else:
+                st.error("survey_df is EMPTY — benchmark fallback will fire")
+                # Show raw sheet to diagnose
+                _raw = _load_all_survey_from_sheets()
+                st.write(f"Raw sheet rows: {len(_raw)}, columns: {list(_raw.columns)}")
+                if not _raw.empty:
+                    st.dataframe(_raw.head(10))
+        # ── END DEBUG ───────────────────────────────────────────────────────
+
+        # Fall back to hardcoded benchmark data ONLY when no survey submissions exist
         if survey_df.empty and sel_mkt in has_data:
             import re as _re_pkg
             mkt_data, competitors = MARKETS[sel_mkt]
             _rows = []
             for row in mkt_data:
                 wamp, product = row[0], row[1]
-                # Extract package token from the product name (e.g. "Bud Light TWS 1/16AL" -> "1/16AL")
-                # sc_*_data rows have no dedicated package column
-                _pkg_match = _re_pkg.search(r'(\d+/\d+[A-Za-z]+(?:\s*x\d+)?)', str(product))
+                _pkg_match = _re_pkg.search(r"(\d+/\d+[A-Za-z]+(?:\s*x\d+)?)", str(product))
                 _pkg = _pkg_match.group(1) if _pkg_match else str(product)
                 for ci, comp in enumerate(competitors):
                     price = row[3 + ci] if (3 + ci) < len(row) else None
