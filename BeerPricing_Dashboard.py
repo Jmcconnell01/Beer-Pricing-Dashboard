@@ -11670,7 +11670,7 @@ with tab5:
         # Count already-entered prices (from session state)
         _entered_count = sum(
             1 for i in scan_df.index
-            if st.session_state.get(f"retail_{ss_key}_{i}") not in (None, 0.0, "")
+            if st.session_state.get(f"val_retail_{ss_key}_{i}") not in (None, 0.0, "")
         )
         _total_count = len(scan_df)
         _pct = _entered_count / _total_count if _total_count else 0
@@ -11696,7 +11696,7 @@ with tab5:
                 _grp_total = len(_grp_df)
                 _grp_filled = sum(
                     1 for i in _grp_df.index
-                    if st.session_state.get(f"retail_{ss_key}_{i}") not in (None, 0.0, "")
+                    if st.session_state.get(f"val_retail_{ss_key}_{i}") not in (None, 0.0, "")
                 )
                 _grp_rows.append({
                     "Package Group": _grp,
@@ -11722,8 +11722,8 @@ with tab5:
         import json as _json_mod
         _price_payload = {}
         for _i in scan_df.index:
-            _rv = st.session_state.get(f"retail_{ss_key}_{_i}")
-            _tv = st.session_state.get(f"twofor_{ss_key}_{_i}")  # may not exist yet
+            _rv = st.session_state.get(f"val_retail_{ss_key}_{_i}")
+            _tv = st.session_state.get(f"val_twofor_{ss_key}_{_i}")  # may not exist yet
             _wv = st.session_state.get(f"wholesaler_{ss_key}_{_i}", "")
             _dv = st.session_state.get(f"{ss_key}_done_{_i}", False)
             if _rv or _tv or _dv:
@@ -11783,9 +11783,9 @@ with tab5:
                 for _idx_str, _vals in _restored.items():
                     _idx = int(_idx_str)
                     if _vals.get("r") is not None:
-                        st.session_state[f"retail_{ss_key}_{_idx}"]     = float(_vals["r"])
+                        st.session_state[f"val_retail_{ss_key}_{_idx}"] = float(_vals["r"])
                     if _vals.get("t") is not None:
-                        st.session_state[f"twofor_{ss_key}_{_idx}"]     = float(_vals["t"])  # noqa
+                        st.session_state[f"val_twofor_{ss_key}_{_idx}"] = float(_vals["t"])  # noqa
                     if _vals.get("w"):
                         st.session_state[f"wholesaler_{ss_key}_{_idx}"] = _vals["w"]
                     if _vals.get("d"):
@@ -11818,8 +11818,8 @@ with tab5:
                 if _chain_data is None:
                     continue
                 # Only seed if not already set by user / localStorage restore
-                _rk = f"retail_{ss_key}_{_scan_idx}"
-                _tk = f"twofor_{ss_key}_{_scan_idx}"
+                _rk = f"val_retail_{ss_key}_{_scan_idx}"
+                _tk = f"val_twofor_{ss_key}_{_scan_idx}"
                 if not st.session_state.get(_rk):
                     _rv = _chain_data.get("retail")
                     if _rv is not None:
@@ -11877,7 +11877,7 @@ with tab5:
             header_html, barcode_html = _html_rows[idx_pos]
 
             _is_done = st.session_state.get(f"{ss_key}_done_{i}", False)
-            _has_retail = st.session_state.get(f"retail_{ss_key}_{i}") not in (None, 0.0, "")
+            _has_retail = st.session_state.get(f"val_retail_{ss_key}_{i}") not in (None, 0.0, "")
             _card_style = (
                 "border:1.5px solid #22c55e;background:#f0fdf4;"
                 if (_is_done or _has_retail) else "border:1px solid #e0e0e0;"
@@ -11906,8 +11906,8 @@ with tab5:
                     "Product":    row["Product"], "Package": row["Package"],
                     "UPC":        row["UPC"],  "Barcode": str(row["Barcode"]),
                     "Wholesaler": st.session_state.get(f"wholesaler_{ss_key}_{i}", ""),
-                    "Retail $":   st.session_state.get(f"retail_{ss_key}_{i}"),
-                    "2 for $":    st.session_state.get(f"twofor_{ss_key}_{i}"),
+                    "Retail $":   st.session_state.get(f"val_retail_{ss_key}_{i}"),
+                    "2 for $":    st.session_state.get(f"val_twofor_{ss_key}_{i}"),
                 })
                 continue
 
@@ -11924,13 +11924,13 @@ with tab5:
             with fc1:
                 retail = st.number_input(
                     "💲 Retail $", min_value=0.0, step=0.01, format="%.2f",
-                    value=float(st.session_state[f"retail_{ss_key}_{i}"]) if st.session_state.get(f"retail_{ss_key}_{i}") else None,
+                    value=float(st.session_state[f"val_retail_{ss_key}_{i}"]) if st.session_state.get(f"val_retail_{ss_key}_{i}") else None,
                     placeholder="0.00", key=f"retail_{ss_key}_{i}",
                 )
             with fc2:
                 twofor = st.number_input(
                     "2️⃣ 2 for $", min_value=0.0, step=0.01, format="%.2f",
-                    value=float(st.session_state.get(f"twofor_{ss_key}_{i}", 0) or 0) or None,
+                    value=float(st.session_state.get(f"val_twofor_{ss_key}_{i}", 0) or 0) or None,
                     placeholder="0.00", key=f"twofor_{ss_key}_{i}",
                 )
             with fc3:
@@ -11958,17 +11958,17 @@ with tab5:
 
             st.markdown("<div style='margin-bottom:8px'></div>", unsafe_allow_html=True)
 
-            # Persist widget values to session state immediately
-            # so they survive the re-run triggered by pressing Submit
+            # Persist widget values to a SEPARATE key (prefix val_) so we don't
+            # conflict with the widget's own session_state key (retail_/twofor_).
+            # Streamlit raises StreamlitAPIException if you write directly to a widget key.
             if retail is not None and retail != 0.0:
-                st.session_state[f"retail_{ss_key}_{i}"] = float(retail)
+                st.session_state[f"val_retail_{ss_key}_{i}"] = float(retail)
             if twofor is not None and twofor != 0.0:
-                st.session_state[f"twofor_{ss_key}_{i}"] = float(twofor)
+                st.session_state[f"val_twofor_{ss_key}_{i}"] = float(twofor)
 
-            # Read from session state (persisted) not widget return value
-            # The widget can return None on the Submit re-run even if the user entered a value
-            _saved_retail = st.session_state.get(f"retail_{ss_key}_{i}")
-            _saved_twofor = st.session_state.get(f"twofor_{ss_key}_{i}")
+            # Read from the persisted value key, not the widget key
+            _saved_retail = st.session_state.get(f"val_retail_{ss_key}_{i}")
+            _saved_twofor = st.session_state.get(f"val_twofor_{ss_key}_{i}")
             edited_rows.append({
                 "WAMP":       row["WAMP"], "Brand":   row["Brand"],
                 "Product":    row["Product"], "Package": row["Package"],
@@ -12038,7 +12038,7 @@ with tab5:
                          help="Collapse all cards that have a retail price entered",
                          disabled=(filled == 0)):
                 for _i in scan_df.index:
-                    if st.session_state.get(f"retail_{ss_key}_{_i}"):
+                    if st.session_state.get(f"val_retail_{ss_key}_{_i}"):
                         st.session_state[f"{ss_key}_done_{_i}"] = True
                 st.rerun()
 
