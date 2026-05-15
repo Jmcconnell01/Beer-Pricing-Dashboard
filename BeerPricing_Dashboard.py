@@ -10209,6 +10209,7 @@ def _append_to_survey_sheet(rows: list):
             ]
             # Alternate names the sheet might use
             _alt = {
+                "Price":            "Retail $",   # raw sheet column name
                 "Chain":            "Parent Chain",
                 "Our Price":        "Retail $",
                 "Comp Price":       "Wholesaler",  # sheet stores wholesaler name here
@@ -10231,6 +10232,7 @@ def _append_to_survey_sheet(rows: list):
 def _load_all_survey_from_sheets() -> pd.DataFrame:
     """Pull every submitted row from Google Sheets. Always normalises column names."""
     _COL_MAP = {
+        "Price":        "Retail $",   # raw sheet column name
         "Our Price":    "Retail $",
         "Comp Price":   "Wholesaler",
         "2 for Price":  "2 for $",
