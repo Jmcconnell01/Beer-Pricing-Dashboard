@@ -10343,6 +10343,9 @@ def load_survey_pricing(market_key: str):
         chains = sorted(df["Competitor"].dropna().unique())
         return df[keep].copy(), chains
     except Exception as _e:
+        import traceback as _tb
+        # Store the error so the debug block can surface it
+        st.session_state["_lsp_last_error"] = f"{type(_e).__name__}: {_e}\n{_tb.format_exc()}"
         return pd.DataFrame(), []
 
 @st.cache_resource
@@ -10701,10 +10704,12 @@ with tab1:
     _hm_hdr_col, _hm_btn_col = st.columns([6, 1])
     _hm_hdr_col.subheader("📊 Price Discrepancy Heatmap")
     if _hm_btn_col.button("🔄 Refresh", help="Clear cached survey data and reload from CSV", key="hm_refresh"):
+        _load_all_survey_from_sheets.clear()
         load_survey_pricing.clear()
         compute_chain_deviation.clear()
         compute_product_pivot.clear()
         compute_presales_pivot.clear()
+        st.session_state.pop("_lsp_last_error", None)
         st.rerun()
 
     # ── Market definitions ────────────────────────────────────────────────────
@@ -10923,6 +10928,10 @@ with tab1:
                 st.dataframe(survey_df)
             else:
                 st.error("survey_df is EMPTY — benchmark fallback will fire")
+                # Show the actual exception from load_survey_pricing if one was captured
+                _lsp_err = st.session_state.get("_lsp_last_error")
+                if _lsp_err:
+                    st.error(f"load_survey_pricing exception:\n```\n{_lsp_err}\n```")
                 # Show raw sheet to diagnose
                 try:
                     _raw = _load_all_survey_from_sheets()
@@ -12229,6 +12238,7 @@ with tab5:
                         pass
 
                     # Bust the 30-second Sheets read-cache so the heatmap refreshes immediately
+                    _load_all_survey_from_sheets.clear()
                     load_survey_pricing.clear()
 
                     _price_count = len(save_df[save_df["Product"] != "— Visit logged (no prices) —"])
