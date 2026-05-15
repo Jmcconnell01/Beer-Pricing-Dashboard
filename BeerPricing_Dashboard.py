@@ -10187,7 +10187,8 @@ def _append_to_survey_sheet(rows: list):
             return False
         _sh  = _gc.open_by_key(SURVEY_SHEET_ID)
         _ws  = _sh.sheet1
-        # Ensure header row exists
+        # Read existing header to detect which column order the sheet uses.
+        # The sheet may have been set up with "Our Price"/"Chain" or "Retail $"/"Parent Chain".
         existing = _ws.get_all_values()
         if not existing:
             header = [
@@ -10196,6 +10197,31 @@ def _append_to_survey_sheet(rows: list):
                 "Wholesaler","Retail $","2 for $",
             ]
             _ws.append_row(header, value_input_option="USER_ENTERED")
+        else:
+            # Re-order each row to match the sheet's ACTUAL header order so data
+            # lands in the right columns regardless of what names the sheet uses.
+            _hdr = existing[0]
+            # Canonical value map for each row (rows is list-of-lists in fixed order)
+            _fixed_keys = [
+                "Submitted At","Rep Name","Store","Market","Parent Chain",
+                "Customer ID","WAMP","Brand","Product","Package","UPC",
+                "Wholesaler","Retail $","2 for $",
+            ]
+            # Alternate names the sheet might use
+            _alt = {
+                "Chain":            "Parent Chain",
+                "Our Price":        "Retail $",
+                "Comp Price":       "",           # no equivalent — leave blank
+                "2 for Price":      "2 for $",
+                "Wholesaler Name":  "Wholesaler",
+            }
+            # Normalise header to canonical names
+            _norm_hdr = [_alt.get(h, h) for h in _hdr]
+            _reordered = []
+            for row_vals in rows:
+                _row_dict = dict(zip(_fixed_keys, row_vals))
+                _reordered.append([_row_dict.get(col_name, "") for col_name in _norm_hdr])
+            rows = _reordered
         _ws.append_rows(rows, value_input_option="USER_ENTERED")
         return True
     except Exception:
@@ -10242,9 +10268,17 @@ def load_survey_pricing(market_key):
         if df_raw.empty:
             return pd.DataFrame(), []
 
-        # Column-name back-compat
-        if "Rewards $" in df_raw.columns and "2 for $" not in df_raw.columns:
-            df_raw = df_raw.rename(columns={"Rewards $": "2 for $"})
+        # Column-name back-compat — handle old/alternate header names from the sheet
+        _col_aliases = {
+            "Rewards $":     "2 for $",
+            "Our Price":      "Retail $",      # Sheet uses "Our Price" instead of "Retail $"
+            "Comp Price":     "Comp Price",     # kept as-is (not currently used by heatmap)
+            "2 for Price":    "2 for $",
+            "Chain":          "Parent Chain",   # Sheet uses "Chain" instead of "Parent Chain"
+            "Retailer":       "Parent Chain",
+            "Wholesaler Name":"Wholesaler",
+        }
+        df_raw = df_raw.rename(columns={k: v for k, v in _col_aliases.items() if k in df_raw.columns})
 
         # ── Column alignment fix ──────────────────────────────────────────────
         # If the sheet has misaligned columns (Product blank, Package has product name),
@@ -10666,6 +10700,8 @@ with tab1:
     _sheets_has_data = set()
     try:
         _sheets_df = _load_all_survey_from_sheets()
+        # Normalise column names before checking (sheet may use "Our Price" instead of "Retail $")
+        _sheets_df = _sheets_df.rename(columns={"Our Price": "Retail $", "Chain": "Parent Chain", "2 for Price": "2 for $"})
         if not _sheets_df.empty and "Market" in _sheets_df.columns and "Retail $" in _sheets_df.columns:
             _sheets_df["Retail $"] = pd.to_numeric(_sheets_df["Retail $"], errors="coerce")
             _sheets_df = _sheets_df[_sheets_df["Retail $"].notna() & (_sheets_df["Retail $"] > 0)]
