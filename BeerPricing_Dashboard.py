@@ -10239,6 +10239,7 @@ def _load_all_survey_from_sheets() -> pd.DataFrame:
         "Chain":        "Parent Chain",
         "Rewards $":    "2 for $",
     }
+    _sheets_exc = None
     try:
         _gc = _get_gsheets_client()
         if _gc is not None:
@@ -10255,8 +10256,8 @@ def _load_all_survey_from_sheets() -> pd.DataFrame:
                 if _col in df_gs.columns:
                     df_gs[_col] = pd.to_numeric(df_gs[_col], errors="coerce")
             return df_gs
-    except Exception:
-        pass
+    except Exception as _e:
+        _sheets_exc = _e
 
     # ── CSV fallback ──────────────────────────────────────────────────────
     import os as _osf
@@ -10267,9 +10268,17 @@ def _load_all_survey_from_sheets() -> pd.DataFrame:
             df_csv = df_csv.rename(columns={k: v for k, v in _COL_MAP.items() if k in df_csv.columns})
             if "Brand" not in df_csv.columns:
                 df_csv["Brand"] = ""
+            # Ensure price columns are numeric regardless of how CSV stored them
+            for _col in ("Retail $", "2 for $"):
+                if _col in df_csv.columns:
+                    df_csv[_col] = pd.to_numeric(df_csv[_col], errors="coerce")
             return df_csv
         except Exception:
             pass
+
+    # Surface the Sheets error so it appears in the debug expander
+    if _sheets_exc is not None:
+        raise _sheets_exc
     return pd.DataFrame()
 
 
@@ -10915,10 +10924,16 @@ with tab1:
             else:
                 st.error("survey_df is EMPTY — benchmark fallback will fire")
                 # Show raw sheet to diagnose
-                _raw = _load_all_survey_from_sheets()
-                st.write(f"Raw sheet rows: {len(_raw)}, columns: {list(_raw.columns)}")
-                if not _raw.empty:
-                    st.dataframe(_raw.head(10))
+                try:
+                    _raw = _load_all_survey_from_sheets()
+                    st.write(f"Raw sheet rows: {len(_raw)}, columns: {list(_raw.columns)}")
+                    if not _raw.empty:
+                        st.dataframe(_raw.head(10))
+                        st.caption("Dtypes: " + ", ".join(f"{c}={t}" for c, t in _raw.dtypes.items()))
+                        if "Retail $" in _raw.columns:
+                            st.write(f"Retail $ sample values: {_raw['Retail $'].head(5).tolist()} (dtype={_raw['Retail $'].dtype})")
+                except Exception as _raw_e:
+                    st.error(f"_load_all_survey_from_sheets raised: {_raw_e}")
         # ── END DEBUG ───────────────────────────────────────────────────────
 
         # Fall back to hardcoded benchmark data ONLY when no survey submissions exist
@@ -11001,6 +11016,8 @@ with tab1:
                         st.success(f"{len(_dbg_mkt)} row(s) in Sheets for {_mkt_name_dbg}")
                         show_cols = list(_dbg_mkt.columns)  # Show ALL columns so nothing is hidden
                         st.dataframe(_dbg_mkt[show_cols], use_container_width=True)
+                        # Show dtypes so we can confirm Retail $ is numeric, not string
+                        st.caption("Column dtypes: " + ", ".join(f"{c}={str(t)}" for c, t in _dbg_mkt.dtypes.items()))
                 else:
                     st.warning("Google Sheets appears empty or has no Market column.")
             except Exception as _dbg_e:
