@@ -10246,6 +10246,20 @@ def load_survey_pricing(market_key):
         if "Rewards $" in df_raw.columns and "2 for $" not in df_raw.columns:
             df_raw = df_raw.rename(columns={"Rewards $": "2 for $"})
 
+        # ── Column alignment fix ──────────────────────────────────────────────
+        # If the sheet has misaligned columns (Product blank, Package has product name),
+        # swap them. This can happen when the sheet header row differs from code expectations.
+        if "Product" in df_raw.columns and "Package" in df_raw.columns:
+            _prod_blank = df_raw["Product"].fillna("").str.strip().eq("")
+            _pkg_looks_like_product = df_raw["Package"].fillna("").str.contains(r"[A-Za-z]{3,}", regex=True)
+            _swap_mask = _prod_blank & _pkg_looks_like_product & ~df_raw["Package"].str.contains(r"^\d+/", regex=True, na=False)
+            if _swap_mask.any():
+                # Extract the package token (e.g. "1/16AL") from the end of the product-name-in-Package column
+                import re as _re_col
+                _pkg_in_pkg = df_raw.loc[_swap_mask, "Package"].str.extract(r"(\d+/\d+[A-Za-z]+(?:\s*x\d+)?)$")[0]
+                df_raw.loc[_swap_mask, "Product"] = df_raw.loc[_swap_mask, "Package"]
+                df_raw.loc[_swap_mask, "Package"] = _pkg_in_pkg.fillna("")
+        # ─────────────────────────────────────────────────────────────────────
         df_raw = df_raw[df_raw["Retail $"].notna() & (pd.to_numeric(df_raw["Retail $"], errors="coerce") > 0)].copy()
         df_raw["Retail $"] = pd.to_numeric(df_raw["Retail $"], errors="coerce")
 
@@ -10920,7 +10934,7 @@ with tab1:
                         st.dataframe(_dbg_df[["Market","Store","Product","Retail $"]].head(10))
                     else:
                         st.success(f"{len(_dbg_mkt)} row(s) in Sheets for {_mkt_name_dbg}")
-                        show_cols = [c for c in ["Submitted At","Rep Name","Store","Market","Product","Package","Wholesaler","Retail $","2 for $"] if c in _dbg_mkt.columns]
+                        show_cols = list(_dbg_mkt.columns)  # Show ALL columns so nothing is hidden
                         st.dataframe(_dbg_mkt[show_cols], use_container_width=True)
                 else:
                     st.warning("Google Sheets appears empty or has no Market column.")
