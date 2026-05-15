@@ -10313,7 +10313,7 @@ def load_survey_pricing(market_key: str):
         # Extract package token from product name if Package column is blank
         def _extract_pkg(row):
             pkg = str(row.get("Package", "")).strip()
-            if pkg and re.match(r"\d+/", pkg):
+            if pkg and _re_sp.match(r"\d+/", pkg):
                 return pkg
             m = _re_sp.search(r"(\d+/\d+[A-Za-z]+(?:\s*x\d+)?)", str(row.get("Product", "")))
             return m.group(1) if m else pkg
