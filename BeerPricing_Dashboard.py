@@ -10842,17 +10842,22 @@ with tab1:
 
         # Fall back to benchmark sc_*_data for any market if no CSV survey data
         if survey_df.empty and sel_mkt in has_data:
+            import re as _re_pkg
             mkt_data, competitors = MARKETS[sel_mkt]
             _rows = []
             for row in mkt_data:
                 wamp, product = row[0], row[1]
+                # Extract package token from the product name (e.g. "Bud Light TWS 1/16AL" -> "1/16AL")
+                # sc_*_data rows have no dedicated package column
+                _pkg_match = _re_pkg.search(r'(\d+/\d+[A-Za-z]+(?:\s*x\d+)?)', str(product))
+                _pkg = _pkg_match.group(1) if _pkg_match else str(product)
                 for ci, comp in enumerate(competitors):
                     price = row[3 + ci] if (3 + ci) < len(row) else None
                     if price is not None:
                         _rows.append({
                             "WAMP": wamp, "Product": product,
                             "Competitor": comp, "Single": price,
-                            "PkgGroup": pkg_group(product, wamp, row[2] if len(row) > 2 else ""),
+                            "PkgGroup": pkg_group(_pkg, wamp, ""),
                             "UPC": "", "Brand": "", "Wholesaler": "",
                         })
             if _rows:
