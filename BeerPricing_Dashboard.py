@@ -10859,12 +10859,12 @@ with tab1:
                 survey_df  = pd.DataFrame(_rows)
                 all_chains = sorted(survey_df["Competitor"].dropna().unique())
 
-        # Always ensure Wholesaler column is populated from UPC lookup
-        # (CSV data may predate the Wholesaler field, or UPCs may have format differences)
-        if not survey_df.empty and ("Wholesaler" not in survey_df.columns or survey_df["Wholesaler"].fillna("").eq("").all()):
+        # Always fill any blank Wholesaler values from the UPC master list.
+        # Submitted surveys may have blank Wholesaler if the rep didn't touch the dropdown,
+        # so we ALWAYS backfill from UPC->Wholesaler and Product->Wholesaler maps.
+        if not survey_df.empty:
             _upc_df2  = get_upc_df(sel_mkt)
-            # Build UPC->Wholesaler map with multiple key formats to handle int/float/string mismatches
-            # Vectorised map builds — no iterrows()
+            # Build UPC->Wholesaler and Product->Wholesaler maps
             _ws_map2 = {}
             if "Wholesaler" in _upc_df2.columns:
                 _ws_map2 = dict(zip(
@@ -10876,12 +10876,17 @@ with tab1:
                 _has_ws   = _upc_df2[_upc_df2["Wholesaler"].astype(bool)]
                 _prod_ws2 = dict(zip(_has_ws["Product"].astype(str).str.strip(), _has_ws["Wholesaler"]))
 
-            # Vectorised wholesaler lookup — UPC first, product name fallback
-            _upc_series  = survey_df["UPC"].astype(str).str.strip().str.split(".").str[0]
-            _prod_series = survey_df["Product"].astype(str).str.strip()
-            survey_df["Wholesaler"] = _upc_series.map(_ws_map2).fillna(
-                _prod_series.map(_prod_ws2)
-            ).fillna("")
+            if "Wholesaler" not in survey_df.columns:
+                survey_df["Wholesaler"] = ""
+
+            # For any row where Wholesaler is blank, fill from UPC first, then product name
+            _blank_mask  = survey_df["Wholesaler"].fillna("").eq("")
+            if _blank_mask.any():
+                _upc_series  = survey_df.loc[_blank_mask, "UPC"].astype(str).str.strip().str.split(".").str[0]
+                _prod_series = survey_df.loc[_blank_mask, "Product"].astype(str).str.strip()
+                survey_df.loc[_blank_mask, "Wholesaler"] = _upc_series.map(_ws_map2).fillna(
+                    _prod_series.map(_prod_ws2)
+                ).fillna("")
 
         chain_cols = all_chains
 
