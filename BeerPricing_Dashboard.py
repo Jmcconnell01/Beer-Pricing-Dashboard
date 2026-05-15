@@ -10241,7 +10241,14 @@ def _load_all_survey_from_sheets() -> pd.DataFrame:
             if len(rows) < 2:
                 return pd.DataFrame()
             df_gs = pd.DataFrame(rows[1:], columns=rows[0])
-            # Normalise numeric columns that arrive as strings
+            # Normalise column names and numeric columns
+            # The sheet may use old names like "Our Price" and "2 for Price"
+            df_gs = df_gs.rename(columns={
+                "Our Price":   "Retail $",
+                "Comp Price":  "Wholesaler",
+                "2 for Price": "2 for $",
+                "Chain":       "Parent Chain",
+            })
             for _col in ("Retail $", "2 for $"):
                 if _col in df_gs.columns:
                     df_gs[_col] = pd.to_numeric(df_gs[_col], errors="coerce")
@@ -10681,6 +10688,7 @@ with tab1:
     _hm_hdr_col, _hm_btn_col = st.columns([6, 1])
     _hm_hdr_col.subheader("📊 Price Discrepancy Heatmap")
     if _hm_btn_col.button("🔄 Refresh", help="Clear cached survey data and reload from CSV", key="hm_refresh"):
+        _load_all_survey_from_sheets.clear()
         load_survey_pricing.clear()
         compute_chain_deviation.clear()
         compute_product_pivot.clear()
