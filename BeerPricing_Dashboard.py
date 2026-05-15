@@ -10908,6 +10908,25 @@ with tab1:
             _existing_flags.update(_new_flags)
             st.session_state["county_flags"] = _existing_flags
 
+        # ── Debug: show raw Sheets rows for this market (helps diagnose missing prices) ──
+        with st.expander("🔍 Debug: Raw data in Google Sheets for this market", expanded=False):
+            try:
+                _dbg_df = _load_all_survey_from_sheets()
+                if not _dbg_df.empty and "Market" in _dbg_df.columns:
+                    _mkt_name_dbg = sel_mkt.split(" · ")[1] if sel_mkt else ""
+                    _dbg_mkt = _dbg_df[_dbg_df["Market"].str.contains(_mkt_name_dbg, case=False, na=False)]
+                    if _dbg_mkt.empty:
+                        st.warning(f"No rows found in Sheets for market containing '{_mkt_name_dbg}'. Check the Market column values.")
+                        st.dataframe(_dbg_df[["Market","Store","Product","Retail $"]].head(10))
+                    else:
+                        st.success(f"{len(_dbg_mkt)} row(s) in Sheets for {_mkt_name_dbg}")
+                        show_cols = [c for c in ["Submitted At","Rep Name","Store","Market","Product","Package","Wholesaler","Retail $","2 for $"] if c in _dbg_mkt.columns]
+                        st.dataframe(_dbg_mkt[show_cols], use_container_width=True)
+                else:
+                    st.warning("Google Sheets appears empty or has no Market column.")
+            except Exception as _dbg_e:
+                st.error(f"Could not load Sheets: {_dbg_e}")
+
         if survey_df.empty:
             st.info(
                 f"📋 **No survey data submitted for {geo['label']} yet.**  "
@@ -11958,17 +11977,19 @@ with tab5:
 
             st.markdown("<div style='margin-bottom:8px'></div>", unsafe_allow_html=True)
 
-            # Persist widget values to a SEPARATE key (prefix val_) so we don't
-            # conflict with the widget's own session_state key (retail_/twofor_).
-            # Streamlit raises StreamlitAPIException if you write directly to a widget key.
-            if retail is not None and retail != 0.0:
-                st.session_state[f"val_retail_{ss_key}_{i}"] = float(retail)
-            if twofor is not None and twofor != 0.0:
-                st.session_state[f"val_twofor_{ss_key}_{i}"] = float(twofor)
+            # Persist to val_ keys (separate from widget keys to avoid StreamlitAPIException).
+            # Take the widget return value if it is a real non-zero price, otherwise fall back
+            # to whatever was previously persisted in val_ (survives Submit reruns).
+            _live_retail = retail if (retail is not None and float(retail) > 0) else None
+            _live_twofor = twofor if (twofor is not None and float(twofor) > 0) else None
+            if _live_retail is not None:
+                st.session_state[f"val_retail_{ss_key}_{i}"] = float(_live_retail)
+            if _live_twofor is not None:
+                st.session_state[f"val_twofor_{ss_key}_{i}"] = float(_live_twofor)
 
-            # Read from the persisted value key, not the widget key
-            _saved_retail = st.session_state.get(f"val_retail_{ss_key}_{i}")
-            _saved_twofor = st.session_state.get(f"val_twofor_{ss_key}_{i}")
+            # Best price: live widget value first, then persisted val_, then None
+            _saved_retail = _live_retail if _live_retail is not None else st.session_state.get(f"val_retail_{ss_key}_{i}")
+            _saved_twofor = _live_twofor if _live_twofor is not None else st.session_state.get(f"val_twofor_{ss_key}_{i}")
             edited_rows.append({
                 "WAMP":       row["WAMP"], "Brand":   row["Brand"],
                 "Product":    row["Product"], "Package": row["Package"],
