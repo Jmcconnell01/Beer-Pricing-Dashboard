@@ -10343,9 +10343,6 @@ def load_survey_pricing(market_key: str):
         chains = sorted(df["Competitor"].dropna().unique())
         return df[keep].copy(), chains
     except Exception as _e:
-        import traceback as _tb
-        # Store the error so the debug block can surface it
-        st.session_state["_lsp_last_error"] = f"{type(_e).__name__}: {_e}\n{_tb.format_exc()}"
         return pd.DataFrame(), []
 
 @st.cache_resource
@@ -10709,7 +10706,6 @@ with tab1:
         compute_chain_deviation.clear()
         compute_product_pivot.clear()
         compute_presales_pivot.clear()
-        st.session_state.pop("_lsp_last_error", None)
         st.rerun()
 
     # ── Market definitions ────────────────────────────────────────────────────
@@ -10921,30 +10917,6 @@ with tab1:
         survey_df, all_chains = load_survey_pricing(sel_mkt)
         _using_live_data = not survey_df.empty
 
-        # ── TEMPORARY DEBUG — remove once Walmart appears ──────────────────
-        with st.expander("🛠 Pipeline Debug (temporary)", expanded=True):
-            st.write(f"**load_survey_pricing returned:** {len(survey_df)} rows, chains={all_chains}")
-            if not survey_df.empty:
-                st.dataframe(survey_df)
-            else:
-                st.error("survey_df is EMPTY — benchmark fallback will fire")
-                # Show the actual exception from load_survey_pricing if one was captured
-                _lsp_err = st.session_state.get("_lsp_last_error")
-                if _lsp_err:
-                    st.error(f"load_survey_pricing exception:\n```\n{_lsp_err}\n```")
-                # Show raw sheet to diagnose
-                try:
-                    _raw = _load_all_survey_from_sheets()
-                    st.write(f"Raw sheet rows: {len(_raw)}, columns: {list(_raw.columns)}")
-                    if not _raw.empty:
-                        st.dataframe(_raw.head(10))
-                        st.caption("Dtypes: " + ", ".join(f"{c}={t}" for c, t in _raw.dtypes.items()))
-                        if "Retail $" in _raw.columns:
-                            st.write(f"Retail $ sample values: {_raw['Retail $'].head(5).tolist()} (dtype={_raw['Retail $'].dtype})")
-                except Exception as _raw_e:
-                    st.error(f"_load_all_survey_from_sheets raised: {_raw_e}")
-        # ── END DEBUG ───────────────────────────────────────────────────────
-
         # Fall back to hardcoded benchmark data ONLY when no survey submissions exist
         if survey_df.empty and sel_mkt in has_data:
             import re as _re_pkg
@@ -11010,27 +10982,6 @@ with tab1:
             _existing_flags = st.session_state.get("county_flags", {})
             _existing_flags.update(_new_flags)
             st.session_state["county_flags"] = _existing_flags
-
-        # ── Debug: show raw Sheets rows for this market (helps diagnose missing prices) ──
-        with st.expander("🔍 Debug: Raw data in Google Sheets for this market", expanded=False):
-            try:
-                _dbg_df = _load_all_survey_from_sheets()
-                if not _dbg_df.empty and "Market" in _dbg_df.columns:
-                    _mkt_name_dbg = sel_mkt.split(" · ")[1] if sel_mkt else ""
-                    _dbg_mkt = _dbg_df[_dbg_df["Market"].str.contains(_mkt_name_dbg, case=False, na=False)]
-                    if _dbg_mkt.empty:
-                        st.warning(f"No rows found in Sheets for market containing '{_mkt_name_dbg}'. Check the Market column values.")
-                        st.dataframe(_dbg_df[["Market","Store","Product","Retail $"]].head(10))
-                    else:
-                        st.success(f"{len(_dbg_mkt)} row(s) in Sheets for {_mkt_name_dbg}")
-                        show_cols = list(_dbg_mkt.columns)  # Show ALL columns so nothing is hidden
-                        st.dataframe(_dbg_mkt[show_cols], use_container_width=True)
-                        # Show dtypes so we can confirm Retail $ is numeric, not string
-                        st.caption("Column dtypes: " + ", ".join(f"{c}={str(t)}" for c, t in _dbg_mkt.dtypes.items()))
-                else:
-                    st.warning("Google Sheets appears empty or has no Market column.")
-            except Exception as _dbg_e:
-                st.error(f"Could not load Sheets: {_dbg_e}")
 
         if survey_df.empty:
             st.info(
