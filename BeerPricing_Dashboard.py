@@ -10229,6 +10229,7 @@ def _append_to_survey_sheet(rows: list):
         return False
 
 
+@st.cache_data(ttl=60, show_spinner=False)
 def _load_all_survey_from_sheets() -> pd.DataFrame:
     """Pull every submitted row from Google Sheets. Always normalises column names."""
     _COL_MAP = {
@@ -10700,7 +10701,6 @@ with tab1:
     _hm_hdr_col, _hm_btn_col = st.columns([6, 1])
     _hm_hdr_col.subheader("📊 Price Discrepancy Heatmap")
     if _hm_btn_col.button("🔄 Refresh", help="Clear cached survey data and reload from CSV", key="hm_refresh"):
-        _load_all_survey_from_sheets.clear()
         load_survey_pricing.clear()
         compute_chain_deviation.clear()
         compute_product_pivot.clear()
@@ -12230,7 +12230,6 @@ with tab5:
 
                     # Bust the 30-second Sheets read-cache so the heatmap refreshes immediately
                     load_survey_pricing.clear()
-                    _load_all_survey_from_sheets.clear()
 
                     _price_count = len(save_df[save_df["Product"] != "— Visit logged (no prices) —"])
                     _gs_msg = " · Saved to Google Sheets ✅" if _gs_ok else " · ⚠️ Google Sheets unavailable"
