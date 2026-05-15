@@ -10211,7 +10211,7 @@ def _append_to_survey_sheet(rows: list):
             _alt = {
                 "Chain":            "Parent Chain",
                 "Our Price":        "Retail $",
-                "Comp Price":       "",           # no equivalent — leave blank
+                "Comp Price":       "Wholesaler",  # sheet stores wholesaler name here
                 "2 for Price":      "2 for $",
                 "Wholesaler Name":  "Wholesaler",
             }
@@ -10269,16 +10269,21 @@ def load_survey_pricing(market_key):
             return pd.DataFrame(), []
 
         # Column-name back-compat — handle old/alternate header names from the sheet
+        # The sheet was created with: Chain, Our Price, Comp Price, 2 for Price
+        # and NO Brand column. Map them to the canonical names the code uses.
         _col_aliases = {
             "Rewards $":     "2 for $",
-            "Our Price":      "Retail $",      # Sheet uses "Our Price" instead of "Retail $"
-            "Comp Price":     "Comp Price",     # kept as-is (not currently used by heatmap)
+            "Our Price":      "Retail $",       # Sheet uses "Our Price" for the retail price
+            "Comp Price":     "Wholesaler",      # Sheet uses "Comp Price" to store Wholesaler name
             "2 for Price":    "2 for $",
-            "Chain":          "Parent Chain",   # Sheet uses "Chain" instead of "Parent Chain"
+            "Chain":          "Parent Chain",    # Sheet uses "Chain" instead of "Parent Chain"
             "Retailer":       "Parent Chain",
             "Wholesaler Name":"Wholesaler",
         }
         df_raw = df_raw.rename(columns={k: v for k, v in _col_aliases.items() if k in df_raw.columns})
+        # If Brand column is missing, add it empty so downstream code doesn't break
+        if "Brand" not in df_raw.columns:
+            df_raw["Brand"] = ""
 
         # ── Column alignment fix ──────────────────────────────────────────────
         # If the sheet has misaligned columns (Product blank, Package has product name),
@@ -10701,7 +10706,7 @@ with tab1:
     try:
         _sheets_df = _load_all_survey_from_sheets()
         # Normalise column names before checking (sheet may use "Our Price" instead of "Retail $")
-        _sheets_df = _sheets_df.rename(columns={"Our Price": "Retail $", "Chain": "Parent Chain", "2 for Price": "2 for $"})
+        _sheets_df = _sheets_df.rename(columns={"Our Price": "Retail $", "Chain": "Parent Chain", "2 for Price": "2 for $", "Comp Price": "Wholesaler"})
         if not _sheets_df.empty and "Market" in _sheets_df.columns and "Retail $" in _sheets_df.columns:
             _sheets_df["Retail $"] = pd.to_numeric(_sheets_df["Retail $"], errors="coerce")
             _sheets_df = _sheets_df[_sheets_df["Retail $"].notna() & (_sheets_df["Retail $"] > 0)]
