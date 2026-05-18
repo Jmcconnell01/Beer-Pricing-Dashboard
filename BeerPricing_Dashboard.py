@@ -10915,6 +10915,29 @@ with tab1:
         survey_df, all_chains = load_survey_pricing(sel_mkt)
         _using_live_data = not survey_df.empty
 
+        # ── Diagnostic: show raw Sheets data ─────────────────────────────────
+        with st.expander("🔍 Raw Sheets Diagnostic", expanded=False):
+            _diag_raw = _load_all_survey_from_sheets()
+            st.write(f"Sheets returned {len(_diag_raw)} rows")
+            if not _diag_raw.empty:
+                st.write(f"Columns: {list(_diag_raw.columns)}")
+                st.write(f"Markets: {_diag_raw['Market'].unique().tolist() if 'Market' in _diag_raw.columns else 'no Market col'}")
+                st.dataframe(_diag_raw.head(10))
+            else:
+                st.error("Sheets returned empty — showing error:")
+                try:
+                    _gc_test = _get_gsheets_client()
+                    if _gc_test is None:
+                        st.error("_get_gsheets_client() returned None")
+                    else:
+                        _ws_test = _gc_test.open_by_key(SURVEY_SHEET_ID).sheet1
+                        _rows_test = _ws_test.get_all_values()
+                        st.success(f"Direct Sheets call worked: {len(_rows_test)} rows")
+                        st.write(_rows_test[:3])
+                except Exception as _diag_e:
+                    st.error(f"Exception: {_diag_e}")
+        # ── End Diagnostic ────────────────────────────────────────────────────
+
         # Fall back to hardcoded benchmark data ONLY when no survey submissions exist
         if survey_df.empty and sel_mkt in has_data:
             import re as _re_pkg
