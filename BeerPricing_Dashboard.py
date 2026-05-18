@@ -12103,43 +12103,30 @@ with tab5:
                 if (_is_done or _has_retail) else "border:1px solid #e0e0e0;"
             )
 
-            # ── Collapse cards that are done OR already have a saved retail price ──
-            _saved_retail_val = st.session_state.get(f"val_retail_{ss_key}_{i}")
-            _is_priced = _saved_retail_val not in (None, 0.0, "")
-            _is_collapsed = _is_done or (_is_priced and not st.session_state.get(f"expand_{ss_key}_{i}", False))
-
-            if _is_collapsed:
-                _retail_disp = f"${float(_saved_retail_val):.2f}" if _is_priced else ""
-                _twofor_val  = st.session_state.get(f"val_twofor_{ss_key}_{i}")
-                _twofor_disp = f" · 2/${ float(_twofor_val):.2f}" if _twofor_val not in (None, 0.0, "") else ""
-                _badge_color = "#22c55e" if _is_done else "#3b82f6"
-                _badge_label = "✓ Done" if _is_done else f"✓ {_retail_disp}{_twofor_disp}"
+            # Collapse completed cards (show only header + done badge)
+            if _is_done:
                 st.markdown(
                     f"<div style='{_card_style}border-radius:8px;"
                     f"padding:8px 14px;margin-bottom:4px;display:flex;"
                     f"justify-content:space-between;align-items:center'>"
                     f"{header_html}"
-                    f"<span style='background:{_badge_color};color:white;border-radius:12px;"
-                    f"padding:2px 10px;font-size:0.85rem;white-space:nowrap;font-weight:600'>"
-                    f"{_badge_label}</span>"
+                    f"<span style='background:#22c55e;color:white;border-radius:12px;"
+                    f"padding:2px 10px;font-size:0.8rem;white-space:nowrap'>✓ Done</span>"
                     f"</div>",
                     unsafe_allow_html=True
                 )
-                _btn_col1, _btn_col2 = st.columns([1, 8])
-                with _btn_col1:
-                    if st.button("✏️", key=f"expand_btn_{ss_key}_{i}",
-                                 help="Edit this price", use_container_width=True):
-                        st.session_state[f"expand_{ss_key}_{i}"] = True
-                        if _is_done:
-                            st.session_state[f"{ss_key}_done_{i}"] = False
-                        st.rerun()
-                # Still collect the row for export
+                # Minimal un-done checkbox (re-opens the card)
+                if st.checkbox("↩ Re-open", key=f"undone_{ss_key}_{i}", value=False,
+                               label_visibility="collapsed"):
+                    st.session_state[f"{ss_key}_done_{i}"] = False
+                    st.rerun()
+                # Still collect the row for export (use saved values)
                 edited_rows.append({
                     "WAMP":       row["WAMP"], "Brand":   row["Brand"],
                     "Product":    row["Product"], "Package": row["Package"],
                     "UPC":        row["UPC"],  "Barcode": str(row["Barcode"]),
                     "Wholesaler": st.session_state.get(f"wholesaler_{ss_key}_{i}", ""),
-                    "Retail $":   _saved_retail_val,
+                    "Retail $":   st.session_state.get(f"val_retail_{ss_key}_{i}"),
                     "2 for $":    st.session_state.get(f"val_twofor_{ss_key}_{i}"),
                 })
                 continue
@@ -12205,7 +12192,6 @@ with tab5:
             _live_twofor = twofor if (twofor is not None and float(twofor) > 0) else None
             if _live_retail is not None:
                 st.session_state[f"val_retail_{ss_key}_{i}"] = float(_live_retail)
-                st.session_state[f"expand_{ss_key}_{i}"] = False  # re-collapse after price entered
             if _live_twofor is not None:
                 st.session_state[f"val_twofor_{ss_key}_{i}"] = float(_live_twofor)
 
