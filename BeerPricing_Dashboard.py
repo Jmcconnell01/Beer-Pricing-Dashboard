@@ -11902,9 +11902,10 @@ with tab5:
             return (999, 999)
         scan_df["_sort_qty"]  = scan_df["Package"].apply(lambda p: _pkg_sort_key(p)[0])
         scan_df["_sort_size"] = scan_df["Package"].apply(lambda p: _pkg_sort_key(p)[1])
+        # Sort but preserve original indices so session state keys (val_retail_{ss_key}_{i})
+        # remain valid. ignore_index=False keeps the original row numbers intact.
         scan_df = scan_df.sort_values(
             ["WAMP", "PkgGroup", "_sort_qty", "_sort_size", "Product"],
-            ignore_index=True
         ).drop(columns=["_sort_qty", "_sort_size"])
 
         # Key by market + store + format filter so prices are isolated per view.
