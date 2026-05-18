@@ -12102,46 +12102,33 @@ with tab5:
         except Exception:
             pass
 
-        # Pre-generate all barcodes as a single cached HTML block
-        def _barcode_html_block(upcs: tuple, barcodes: tuple, products: tuple,
-                                packages: tuple, wamps: tuple, _v: int = 2) -> list:
-            """Return list of (header_html, barcode_html) per row — cached by scan list."""
-            out = []
-            for upc, bc, prod, pkg, wamp in zip(upcs, barcodes, products, packages, wamps):
-                # Show full product name: if product already ends with pkg, show as-is,
-                # otherwise append the package so it reads e.g. "Bud Light 12/12C"
-                _full_prod = prod if prod.strip().endswith(pkg.strip()) else f"{prod} {pkg}".strip()
-                header = (
-                    f"<div style='display:flex;justify-content:space-between;"
-                    f"align-items:baseline;margin-bottom:4px'>"
-                    f"<span><strong>{_full_prod}</strong> "
-                    f"<span style='font-size:0.8rem;color:grey'>{wamp}</span></span>"
-                    f"</div>"
-                )
-                b64 = _make_barcode_b64(str(upc).strip()) if len(str(upc).strip()) >= 11                       else _make_barcode_b64_from_font(str(bc))
-                if b64:
-                    barcode = (
-                        f"<div style='background:white;border:1px solid #ddd;border-radius:6px;"
-                        f"padding:8px 12px;margin:4px 0 8px;text-align:center'>"
-                        f"<img src='data:image/png;base64,{b64}' "
-                        f"style='width:100%;max-width:580px;height:85px;object-fit:contain;"
-                        f"image-rendering:crisp-edges;display:block;margin:0 auto'></div>"
-                    )
-                else:
-                    barcode = f"<p style='font-size:0.75rem;color:grey'>UPC: {upc or bc}</p>"
-                out.append((header, barcode))
-            return out
-
-        _upcs    = tuple(str(r["UPC"]).strip()  for _, r in scan_df.iterrows())
-        _bcs     = tuple(str(r["Barcode"])       for _, r in scan_df.iterrows())
-        _prods   = tuple(str(r["Product"])       for _, r in scan_df.iterrows())
-        _pkgs    = tuple(str(r["Package"])       for _, r in scan_df.iterrows())
-        _brands  = tuple(str(r["Brand"])         for _, r in scan_df.iterrows())
-        _wamps   = tuple(str(r["WAMP"])          for _, r in scan_df.iterrows())
-        _html_rows = _barcode_html_block(_upcs, _bcs, _prods, _pkgs, _wamps, _v=2)
-
         for idx_pos, (i, row) in enumerate(scan_df.iterrows()):
-            header_html, barcode_html = _html_rows[idx_pos]
+            # Generate header and barcode inline — no caching, always fresh
+            _prod = str(row["Product"]).strip()
+            _pkg  = str(row["Package"]).strip()
+            _wamp = str(row["WAMP"]).strip()
+            _upc  = str(row["UPC"]).strip()
+            _bc   = str(row["Barcode"]).strip()
+            _full_prod = _prod if _prod.endswith(_pkg) else f"{_prod} {_pkg}".strip()
+            header_html = (
+                f"<div style='display:flex;justify-content:space-between;"
+                f"align-items:baseline;margin-bottom:4px'>"
+                f"<span><strong>{_full_prod}</strong> "
+                f"<span style='font-size:0.8rem;color:grey'>{_wamp}</span></span>"
+                f"</div>"
+            )
+            _b64 = _make_barcode_b64(_upc) if len(_upc) >= 11 else _make_barcode_b64_from_font(_bc)
+            if _b64:
+                barcode_html = (
+                    f"<div style='background:white;border:1px solid #ddd;border-radius:6px;"
+                    f"padding:8px 12px;margin:4px 0 8px;text-align:center'>"
+                    f"<img src='data:image/png;base64,{_b64}' "
+                    f"style='width:100%;max-width:580px;height:85px;object-fit:contain;"
+                    f"image-rendering:crisp-edges;display:block;margin:0 auto'></div>"
+                )
+            else:
+                barcode_html = f"<p style='font-size:0.75rem;color:grey'>UPC: {_upc or _bc}</p>"
+
 
             _is_done    = st.session_state.get(f"{ss_key}_done_{i}", False)
             _retail_val = st.session_state.get(f"val_retail_{ss_key}_{i}")
