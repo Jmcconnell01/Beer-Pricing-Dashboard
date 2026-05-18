@@ -12103,7 +12103,6 @@ with tab5:
             pass
 
         # Pre-generate all barcodes as a single cached HTML block
-        @st.cache_data(show_spinner=False)
         def _barcode_html_block(upcs: tuple, barcodes: tuple, products: tuple,
                                 packages: tuple, wamps: tuple, _v: int = 2) -> list:
             """Return list of (header_html, barcode_html) per row — cached by scan list."""
