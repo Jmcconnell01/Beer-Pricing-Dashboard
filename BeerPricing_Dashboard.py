@@ -10983,13 +10983,61 @@ with tab1:
             _existing_flags.update(_new_flags)
             st.session_state["county_flags"] = _existing_flags
 
+        # ── Chains with Pricing ───────────────────────────────────────────────
+        # Show every chain in this market, whether it has pricing, and source.
+        # Uses ALL known chains for this market (benchmark list) as the universe.
+        if sel_mkt in MARKETS:
+            _all_mkt_chains = sorted(set(MARKETS[sel_mkt][1]))  # all competitor chains
+            _live_chains    = set(all_chains) if not survey_df.empty else set()
+            _data_source    = "🟢 Live Survey" if _using_live_data else "🔵 Baseline"
+
+            _chain_rows = []
+            for _ch in _all_mkt_chains:
+                if _ch in _live_chains:
+                    _n_prod = survey_df[survey_df["Competitor"] == _ch]["Product"].nunique()                               if not survey_df.empty else 0
+                    _chain_rows.append({
+                        "Chain":    _ch,
+                        "Pricing":  "✅ Has Pricing",
+                        "Source":   _data_source,
+                        "Products": _n_prod,
+                    })
+                else:
+                    _chain_rows.append({
+                        "Chain":    _ch,
+                        "Pricing":  "⬜ No Pricing",
+                        "Source":   "—",
+                        "Products": "—",
+                    })
+
+            _chain_cov_df = pd.DataFrame(_chain_rows)
+            _n_have = (_chain_cov_df["Pricing"] == "✅ Has Pricing").sum()
+            _n_total = len(_chain_cov_df)
+
+            with st.expander(
+                f"📋 Chains with Pricing — {_n_have} of {_n_total} chains in {geo['label']}",
+                expanded=(_n_have == 0)
+            ):
+                def _style_chain_cov(row):
+                    if row["Pricing"] == "✅ Has Pricing":
+                        return ["color:#22c55e;font-weight:600" if i == 1 else
+                                "color:#22c55e" if i == 2 else "" for i in range(len(row))]
+                    return ["color:#6b7280" if i in (1,2) else "" for i in range(len(row))]
+
+                st.dataframe(
+                    _chain_cov_df.style.apply(_style_chain_cov, axis=1),
+                    use_container_width=True,
+                    hide_index=True,
+                    height=min(400, 35 + 35 * len(_chain_cov_df)),
+                )
+                if _n_have == 0:
+                    st.info(
+                        f"No pricing data yet for {geo['label']}. "
+                        f"Use the **📱 UPC Scanner List** tab to submit surveys."
+                    )
+        # ── End Chains with Pricing ───────────────────────────────────────────
+
         if survey_df.empty:
-            st.info(
-                f"📋 **No survey data submitted for {geo['label']} yet.**  "
-                f"Use the **📱 UPC Scanner List** tab to scan products and enter retail prices, "
-                f"then hit **✅ Submit Survey** to save them. Once submitted, discrepancies "
-                f"will appear here automatically."
-            )
+            pass  # info already shown in expander above
         else:
             view = survey_df.copy()
 
