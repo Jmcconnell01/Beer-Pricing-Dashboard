@@ -11022,11 +11022,12 @@ with tab1:
                     st.error(f"Exception: {_diag_e}")
         # ── End Diagnostic ────────────────────────────────────────────────────
 
-        # Fall back to hardcoded benchmark data ONLY when no survey submissions exist
-        if survey_df.empty and sel_mkt in has_data:
+        # Always merge baseline data with live survey data.
+        # Live survey prices take priority — baseline fills chains not yet surveyed.
+        if sel_mkt in has_data:
             import re as _re_pkg
             mkt_data, competitors = MARKETS[sel_mkt]
-            _rows = []
+            _base_rows = []
             for row in mkt_data:
                 wamp, product = row[0], row[1]
                 _pkg_match = _re_pkg.search(r"(\d+/\d+[A-Za-z]+(?:\s*x\d+)?)", str(product))
@@ -11034,15 +11035,25 @@ with tab1:
                 for ci, comp in enumerate(competitors):
                     price = row[3 + ci] if (3 + ci) < len(row) else None
                     if price is not None:
-                        _rows.append({
+                        _base_rows.append({
                             "WAMP": wamp, "Product": product,
                             "Competitor": comp, "Single": price,
                             "PkgGroup": pkg_group(_pkg, wamp, ""),
                             "UPC": "", "Brand": "", "Wholesaler": "",
                         })
-            if _rows:
-                survey_df  = pd.DataFrame(_rows)
-                all_chains = sorted(survey_df["Competitor"].dropna().unique())
+            if _base_rows:
+                _base_df = pd.DataFrame(_base_rows)
+                if survey_df.empty:
+                    # No live data — use baseline entirely
+                    survey_df  = _base_df
+                    all_chains = sorted(survey_df["Competitor"].dropna().unique())
+                else:
+                    # Merge: keep live survey chains as-is, add baseline for unsurveyed chains
+                    _surveyed_chains = set(all_chains)
+                    _base_unsurveyed = _base_df[~_base_df["Competitor"].isin(_surveyed_chains)]
+                    if not _base_unsurveyed.empty:
+                        survey_df  = pd.concat([survey_df, _base_unsurveyed], ignore_index=True)
+                        all_chains = sorted(survey_df["Competitor"].dropna().unique())
 
         # Always fill any blank Wholesaler values from the UPC master list.
         # Submitted surveys may have blank Wholesaler if the rep didn't touch the dropdown,
