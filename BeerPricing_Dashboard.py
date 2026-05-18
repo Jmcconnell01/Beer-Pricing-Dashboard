@@ -11911,6 +11911,23 @@ with tab5:
         # Pre-build wholesaler options (same for all rows in this market)
         _ws_options = [""] + MARKET_WHOLESALERS.get(sel_upc_market, ["Southern Crown Partners"])
 
+        # Derive a store-level wholesaler default from the most recent survey submission.
+        # If a rep already submitted prices for this store, reuse the wholesaler they picked
+        # so they don't have to re-select it on every SKU every visit.
+        _store_ws_default = ""
+        try:
+            _prev_df = _load_all_survey_from_sheets()
+            if not _prev_df.empty and "Store" in _prev_df.columns and "Wholesaler" in _prev_df.columns:
+                _prev_store = _prev_df[_prev_df["Store"] == sel_store]
+                if not _prev_store.empty:
+                    _prev_ws = _prev_store["Wholesaler"].replace("", pd.NA).dropna()
+                    if not _prev_ws.empty:
+                        _store_ws_default = str(_prev_ws.iloc[0]).strip()
+                        if _store_ws_default not in _ws_options:
+                            _store_ws_default = ""
+        except Exception:
+            pass
+
         # Pre-generate all barcodes as a single cached HTML block
         @st.cache_data(show_spinner=False)
         def _barcode_html_block(upcs: tuple, barcodes: tuple, products: tuple,
@@ -12012,6 +12029,9 @@ with tab5:
                 _ws_default = str(row["Wholesaler"]).strip() if "Wholesaler" in row.index else ""
                 if _ws_default not in _ws_options:
                     _ws_default = ""
+                # Fall back to the store-level default derived from prior submissions
+                if not _ws_default:
+                    _ws_default = _store_ws_default
                 _ws_saved = st.session_state.get(f"wholesaler_{ss_key}_{i}", _ws_default)
                 if _ws_saved not in _ws_options:
                     _ws_saved = _ws_default
