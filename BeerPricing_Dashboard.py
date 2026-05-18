@@ -11881,7 +11881,20 @@ with tab5:
             scan_df = scan_df[mask]
         if sel_pkg != "All Groups":
             scan_df = scan_df[scan_df["PkgGroup"] == sel_pkg]
-        scan_df = scan_df.sort_values(["WAMP", "PkgGroup", "Package", "Product"], ignore_index=True)
+        # Sort by WAMP, PkgGroup, then package size numerically
+        # e.g. 1/16AL < 6/12C < 12/12C < 24/12C
+        import re as _re_sort
+        def _pkg_sort_key(pkg):
+            m = _re_sort.match(r"(\d+)/(\d+(?:\.\d+)?)", str(pkg).strip())
+            if m:
+                return (int(m.group(1)), float(m.group(2)))
+            return (999, 999)
+        scan_df["_sort_qty"]  = scan_df["Package"].apply(lambda p: _pkg_sort_key(p)[0])
+        scan_df["_sort_size"] = scan_df["Package"].apply(lambda p: _pkg_sort_key(p)[1])
+        scan_df = scan_df.sort_values(
+            ["WAMP", "PkgGroup", "_sort_qty", "_sort_size", "Product"],
+            ignore_index=True
+        ).drop(columns=["_sort_qty", "_sort_size"])
 
         # Key by market + store + format filter so prices are isolated per view.
         # IMPORTANT: ss_key is used directly in Streamlit widget keys so it must
@@ -12138,7 +12151,7 @@ with tab5:
             _is_expanded = st.session_state.get(f"expand_{ss_key}_{i}", False)
 
             # Card is collapsed if: done, or (has retail OR has wholesaler) and not manually expanded
-            _is_collapsed = _is_done or ((_has_retail or _has_ws) and not _is_expanded)
+            _is_collapsed = _is_done  # only collapse when user clicks Done
 
             _card_style = (
                 "border:1.5px solid #22c55e;background:#f0fdf4;"
