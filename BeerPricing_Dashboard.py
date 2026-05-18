@@ -10010,34 +10010,32 @@ def pkg_group(package: str, wamp: str = "", brand: str = "") -> str:
         return "Singles x9"
     if qty == 12:
         if w == "Beyond Beer":
-            _b_low = b.lower()
+            # Match on BOTH brand and product name (brand may be empty in survey data)
+            _search = (b + " " + brand).lower() if brand else b.lower()
             # Cider
-            _cider_brands = {"angry orchard", "strongbow", "smith & forge", "smith and forge",
-                             "woodchuck", "ace cider", "angry orchard crisp"}
-            if any(x in _b_low for x in ("angry orchard", "strongbow", "smith", "woodchuck",
-                                          "ace cider", "cider")):
+            if any(x in _search for x in ("angry orchard", "strongbow", "smith & forge",
+                                           "smith and forge", "woodchuck", "ace cider", "cider")):
                 return "BB 12-packs Cider"
             # Seltzer
-            _seltzer_brands = ("white claw", "truly", "bud light seltzer", "vizzy",
-                               "cacti", "corona seltzer", "natural light seltzer",
-                               "bon & viv", "press hard", "topo chico",
-                               "michelob ultra org", "michelob ultra seltzer",
-                               "mich ultra org", "organic seltzer")
-            if any(x in _b_low for x in _seltzer_brands):
+            if any(x in _search for x in ("white claw", "truly", "bud light seltzer", "vizzy",
+                                           "cacti", "corona seltzer", "natural light seltzer",
+                                           "bon & viv", "press hard", "topo chico",
+                                           "michelob ultra org", "michelob ultra seltzer",
+                                           "mich ultra org", "organic seltzer", "hard seltzer",
+                                           "hd seltzer", "seltzer")):
                 return "BB 12-packs Seltzer"
             # FMB High-ABV
-            _fmb_high_brands = ("four loko", "mike's", "mikes", "sparkling ice",
-                                 "hard mountain dew", "blast", "joose", "steel reserve",
-                                 "twisted shotz")
-            if any(x in _b_low for x in _fmb_high_brands):
+            if any(x in _search for x in ("four loko", "mike's hard", "mikes hard",
+                                           "sparkling ice", "hard mountain dew", "beast unleashed",
+                                           "beast tea", "the beast", "ritas", "lime-a-rita",
+                                           "straw-ber-rita", "mang-o-rita")):
                 return "BB 12-packs FMB High-ABV"
             # FMB Low-ABV
-            _fmb_low_brands = ("smirnoff ice", "twisted tea", "hard iced tea",
-                                "mike's hard lemonade", "seagram", "bacardi",
-                                "malt", "lemonade", "iced tea")
-            if any(x in _b_low for x in _fmb_low_brands):
+            if any(x in _search for x in ("smirnoff ice", "twisted tea", "hard iced tea",
+                                           "arizona hard", "arizona iced", "seagram", "bacardi",
+                                           "lemonade", "iced tea", "simply spiked",
+                                           "new belgium", "voodoo ranger")):
                 return "BB 12-packs FMB Low-ABV"
-            # Fallback for unrecognised Beyond Beer 12-packs
             return "BB 12-packs Other"
         return "12-packs"
     if qty == 15:
@@ -10171,7 +10169,7 @@ def get_upc_df(market: str = "1 · Charleston"):
     df["Format"]   = df["Package"].apply(
         lambda p: "Singles" if str(p).startswith(("1/", "3/")) else "Packages"
     )
-    df["PkgGroup"] = df.apply(lambda r: pkg_group(r["Package"], r.get("WAMP",""), r.get("Brand","")), axis=1)
+    df["PkgGroup"] = df.apply(lambda r: pkg_group(r["Package"], r.get("WAMP",""), r.get("Brand","") or r.get("Product","")), axis=1)
     df["Wholesaler"] = df["Wholesaler"].fillna("").astype(str)
     return df
 
@@ -10372,7 +10370,7 @@ def load_survey_pricing(market_key: str):
 
         df["Package"]  = df.apply(_extract_pkg, axis=1)
         df["PkgGroup"] = df.apply(
-            lambda r: pkg_group(r.get("Package", ""), r.get("WAMP", ""), r.get("Brand", "")), axis=1
+            lambda r: pkg_group(r.get("Package", ""), r.get("WAMP", ""), r.get("Brand", "") or r.get("Product", "")), axis=1
         )
 
         # Backfill blank Wholesaler from UPC master list
