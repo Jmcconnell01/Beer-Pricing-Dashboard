@@ -11434,7 +11434,7 @@ with tab1:
                                 icon  = "🔴" if real_gap >= threshold * 2 else "🟡"
                                 sp_cols_ui[i % len(sp_cols_ui)].metric(
                                     f"{icon} {chain_name[:24]}",
-                                    f"SCP ${scp_p:.2f}  vs  HJL ${hjl_p:.2f}",
+                                    f"SCP ${scp_p:.2f}  vs  {HJL} ${hjl_p:.2f}",
                                     f"SCP is ${real_gap:.2f} higher",
                                     delta_color="inverse",
                                 )
@@ -11520,8 +11520,8 @@ with tab1:
                         "Chain":        _chain,
                         "SCP Product":  _scp_repr[-1] if isinstance(_scp_repr, tuple) else _scp_repr,
                         "SCP Price ($)":  _scp_chain_avg,
-                        "HJL Product":  _hjl_repr[-1] if isinstance(_hjl_repr, tuple) else _hjl_repr,
-                        "HJL Price ($)":  _hjl_chain_avg,
+                        f"{_HJL} Product":  _hjl_repr[-1] if isinstance(_hjl_repr, tuple) else _hjl_repr,
+                        f"{_HJL} Price ($)":  _hjl_chain_avg,
                         "Gap ($)":      _g,
                     })
 
@@ -11550,7 +11550,7 @@ with tab1:
                             st.markdown(
                                 f"- **{_row['WAMP']} · {_row['Package']}** — "
                                 f"SCP *{_row['SCP Product']}* **${_row['SCP Price ($)']:.2f}** vs "
-                                f"{_HJL} *{_row['HJL Product']}* **${_row['HJL Price ($)']:.2f}** "
+                                f"{_HJL} *{_row[f'{_HJL} Product']}* **${_row[f'{_HJL} Price ($)']:.2f}** "
                                 f"— SCP is **+${_row['Gap ($)']:.2f}** higher"
                             )
 
