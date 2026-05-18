@@ -10009,6 +10009,36 @@ def pkg_group(package: str, wamp: str = "", brand: str = "") -> str:
     if qty == 9:
         return "Singles x9"
     if qty == 12:
+        if w == "Beyond Beer":
+            _b_low = b.lower()
+            # Cider
+            _cider_brands = {"angry orchard", "strongbow", "smith & forge", "smith and forge",
+                             "woodchuck", "ace cider", "angry orchard crisp"}
+            if any(x in _b_low for x in ("angry orchard", "strongbow", "smith", "woodchuck",
+                                          "ace cider", "cider")):
+                return "BB 12-packs Cider"
+            # Seltzer
+            _seltzer_brands = ("white claw", "truly", "bud light seltzer", "vizzy",
+                               "cacti", "corona seltzer", "natural light seltzer",
+                               "bon & viv", "press hard", "topo chico",
+                               "michelob ultra org", "michelob ultra seltzer",
+                               "mich ultra org", "organic seltzer")
+            if any(x in _b_low for x in _seltzer_brands):
+                return "BB 12-packs Seltzer"
+            # FMB High-ABV
+            _fmb_high_brands = ("four loko", "mike's", "mikes", "sparkling ice",
+                                 "hard mountain dew", "blast", "joose", "steel reserve",
+                                 "twisted shotz")
+            if any(x in _b_low for x in _fmb_high_brands):
+                return "BB 12-packs FMB High-ABV"
+            # FMB Low-ABV
+            _fmb_low_brands = ("smirnoff ice", "twisted tea", "hard iced tea",
+                                "mike's hard lemonade", "seagram", "bacardi",
+                                "malt", "lemonade", "iced tea")
+            if any(x in _b_low for x in _fmb_low_brands):
+                return "BB 12-packs FMB Low-ABV"
+            # Fallback for unrecognised Beyond Beer 12-packs
+            return "BB 12-packs Other"
         return "12-packs"
     if qty == 15:
         return "15-packs"
