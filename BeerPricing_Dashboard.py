@@ -12105,15 +12105,15 @@ with tab5:
         # Pre-generate all barcodes as a single cached HTML block
         @st.cache_data(show_spinner=False)
         def _barcode_html_block(upcs: tuple, barcodes: tuple, products: tuple,
-                                packages: tuple, brands: tuple, wamps: tuple) -> list:
+                                packages: tuple, wamps: tuple) -> list:
             """Return list of (header_html, barcode_html) per row — cached by scan list."""
             out = []
-            for upc, bc, prod, pkg, brand, wamp in zip(upcs, barcodes, products, packages, brands, wamps):
+            for upc, bc, prod, pkg, wamp in zip(upcs, barcodes, products, packages, wamps):
                 header = (
                     f"<div style='display:flex;justify-content:space-between;"
                     f"align-items:baseline;margin-bottom:4px'>"
                     f"<span><strong>{prod}</strong> "
-                    f"<span style='font-size:0.8rem;color:grey'>{brand} · {wamp}</span></span>"
+                    f"<span style='font-size:0.8rem;color:grey'>{wamp}</span></span>"
                     f"<span style='background:#f0f2f6;border-radius:4px;padding:2px 8px;"
                     f"font-size:0.78rem;font-weight:600'>{pkg}</span></div>"
                 )
@@ -12137,7 +12137,7 @@ with tab5:
         _pkgs    = tuple(str(r["Package"])       for _, r in scan_df.iterrows())
         _brands  = tuple(str(r["Brand"])         for _, r in scan_df.iterrows())
         _wamps   = tuple(str(r["WAMP"])          for _, r in scan_df.iterrows())
-        _html_rows = _barcode_html_block(_upcs, _bcs, _prods, _pkgs, _brands, _wamps)
+        _html_rows = _barcode_html_block(_upcs, _bcs, _prods, _pkgs, _wamps)
 
         for idx_pos, (i, row) in enumerate(scan_df.iterrows()):
             header_html, barcode_html = _html_rows[idx_pos]
