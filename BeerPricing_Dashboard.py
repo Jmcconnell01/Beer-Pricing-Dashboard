@@ -12121,7 +12121,12 @@ with tab5:
             _wamp = str(row["WAMP"]).strip()
             _upc  = str(row["UPC"]).strip()
             _bc   = str(row["Barcode"]).strip()
-            _full_prod = _prod if _prod.endswith(_pkg) else f"{_prod} {_pkg}".strip()
+            # Always show full product name with package
+            # If product name already contains the package token, show as-is
+            # otherwise append it: "Angry Orchard" + "1/19C" = "Angry Orchard 1/19C"
+            import re as _re_prod
+            _pkg_in_prod = _pkg and _re_prod.search(_re_prod.escape(_pkg), _prod)
+            _full_prod = _prod if _pkg_in_prod else f"{_prod} {_pkg}".strip() if _pkg else _prod
             header_html = (
                 f"<div style='display:flex;justify-content:space-between;"
                 f"align-items:baseline;margin-bottom:4px'>"
@@ -12153,13 +12158,10 @@ with tab5:
             # Card is collapsed if: done, or (has retail OR has wholesaler) and not manually expanded
             _is_collapsed = _is_done  # only collapse when user clicks Done
 
-            _card_style = (
-                "border:1.5px solid #22c55e;background:#f0fdf4;"
-                if (_is_done or _has_retail)
-                else "border:1.5px solid #3b82f6;background:#eff6ff;"
-                if _has_ws
-                else "border:1px solid #e0e0e0;"
-            )
+            # All open cards use the same neutral border — no green on priced cards
+            _card_style = "border:1px solid #e0e0e0;"
+            if _is_done:
+                _card_style = "border:1.5px solid #22c55e;background:#f0fdf4;"
 
             if _is_collapsed:
                 # Build badge label
