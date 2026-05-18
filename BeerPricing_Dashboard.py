@@ -11096,6 +11096,10 @@ with tab1:
             _live_chains    = set(all_chains) if not survey_df.empty else set()
             _data_source    = "🟢 Live Survey" if _using_live_data else "🔵 Baseline"
 
+            # Build baseline chain set from sc_*_data (has pricing regardless of live survey)
+            _mkt_data, _mkt_comps = MARKETS[sel_mkt]
+            _baseline_chains = set(_mkt_comps)
+
             _chain_rows = []
             for _ch in _all_mkt_chains:
                 if _ch in _live_chains:
@@ -11103,8 +11107,21 @@ with tab1:
                     _chain_rows.append({
                         "Chain":    _ch,
                         "Pricing":  "✅ Has Pricing",
-                        "Source":   _data_source,
+                        "Source":   "🟢 Live Survey",
                         "Products": _n_prod,
+                    })
+                elif _ch in _baseline_chains:
+                    # Count baseline products for this chain
+                    _n_base = sum(
+                        1 for _brow in _mkt_data
+                        for _ci, _bc in enumerate(_mkt_comps)
+                        if _bc == _ch and (3 + _ci) < len(_brow) and _brow[3 + _ci] is not None
+                    )
+                    _chain_rows.append({
+                        "Chain":    _ch,
+                        "Pricing":  "✅ Has Pricing",
+                        "Source":   "🔵 Baseline",
+                        "Products": _n_base,
                     })
                 else:
                     _chain_rows.append({
