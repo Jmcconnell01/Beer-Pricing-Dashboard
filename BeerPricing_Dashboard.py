@@ -10015,11 +10015,34 @@ def pkg_group(package: str, wamp: str = "", brand: str = "") -> str:
     if qty == 18:
         return "18-packs"
     if qty == 24:
-        # Split 7oz (Coronita/Modelito style) from standard 12oz 24-packs
         size_part = p.split("/")[1].lower() if "/" in p else ""
         if size_part.startswith("7"):
             return "24-packs (7oz)"
-        return "24-packs (12oz)"
+        # Split cans vs bottles for Core (and other WAMPs)
+        # Bottle indicators: B, NR, LN, GL, BTL
+        # Can indicators: C, AL, CAN
+        _is_bottle = any(size_part.endswith(x) for x in ("b","nr","ln","gl","btl")) or "bot" in size_part
+        _is_can    = any(size_part.endswith(x) for x in ("c","al","can")) and not _is_bottle
+        if w == "Core":
+            if _is_can:    return "Core 24-packs Cans"
+            if _is_bottle: return "Core 24-packs Bottles"
+            return "Core 24-packs"
+        if w == "Value":
+            if _is_can:    return "Value 24-packs Cans"
+            if _is_bottle: return "Value 24-packs Bottles"
+            return "Value 24-packs"
+        if w == "Premium":
+            if _is_can:    return "Premium 24-packs Cans"
+            if _is_bottle: return "Premium 24-packs Bottles"
+            return "Premium 24-packs"
+        if w == "Beyond Beer":
+            if _is_can:    return "BB 24-packs Cans"
+            if _is_bottle: return "BB 24-packs Bottles"
+            return "BB 24-packs"
+        # Generic fallback for any WAMP
+        if _is_can:    return "24-packs Cans"
+        if _is_bottle: return "24-packs Bottles"
+        return "24-packs"
     return "Wine/Other"
 
 
