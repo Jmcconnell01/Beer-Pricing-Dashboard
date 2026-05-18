@@ -12109,13 +12109,15 @@ with tab5:
             """Return list of (header_html, barcode_html) per row — cached by scan list."""
             out = []
             for upc, bc, prod, pkg, wamp in zip(upcs, barcodes, products, packages, wamps):
+                # Show full product name: if product already ends with pkg, show as-is,
+                # otherwise append the package so it reads e.g. "Bud Light 12/12C"
+                _full_prod = prod if prod.strip().endswith(pkg.strip()) else f"{prod} {pkg}".strip()
                 header = (
                     f"<div style='display:flex;justify-content:space-between;"
                     f"align-items:baseline;margin-bottom:4px'>"
-                    f"<span><strong>{prod}</strong> "
+                    f"<span><strong>{_full_prod}</strong> "
                     f"<span style='font-size:0.8rem;color:grey'>{wamp}</span></span>"
-                    f"<span style='background:#f0f2f6;border-radius:4px;padding:2px 8px;"
-                    f"font-size:0.78rem;font-weight:600'>{pkg}</span></div>"
+                    f"</div>"
                 )
                 b64 = _make_barcode_b64(str(upc).strip()) if len(str(upc).strip()) >= 11                       else _make_barcode_b64_from_font(str(bc))
                 if b64:
