@@ -11842,11 +11842,22 @@ with tab5:
                 # Use Family as WAMP
                 _wamp  = str(_pr.get('Family', '')).strip()
                 _brand = str(_pr.get('Family', '')).strip()
+                # Try to enrich from UPC master list for full product name & wholesaler
+                _upc_master = get_upc_df(sel_upc_market)
+                _upc_match  = _upc_master[_upc_master["UPC"].astype(str).str.strip() == _upc]
+                if not _upc_match.empty:
+                    _master_row = _upc_match.iloc[0]
+                    _name = str(_master_row["Product"]).strip() or _name
+                    _pkg  = str(_master_row["Package"]).strip() or _pkg
+                    _wamp = str(_master_row["WAMP"]).strip()    or _wamp
+                    _ws   = str(_master_row["Wholesaler"]).strip()
+                else:
+                    _ws = ''
                 _rows.append({
                     'WAMP':       _wamp,
                     'Brand':      _brand,
                     'Product':    _name,
-                    'Wholesaler': '',
+                    'Wholesaler': _ws,
                     'Package':    _pkg,
                     'UPC':        _upc,
                     'Barcode':    _barcode,
