@@ -10419,12 +10419,19 @@ def load_survey_pricing(market_key: str):
                 w = str(row.get("WAMP", "")).strip()
                 if w in _valid_wamps:
                     return w
-                # Try UPC lookup first, then product name
+                # Try UPC lookup first
                 upc = str(row.get("UPC", "")).strip()
                 if upc in _upc_wamp:
                     return _upc_wamp[upc]
+                # Try exact product name match
                 prod = str(row.get("Product", "")).strip()
-                return _prod_wamp.get(prod, w or "Core")
+                if prod in _prod_wamp:
+                    return _prod_wamp[prod]
+                # Try partial match — product name may have extra tokens
+                for _p, _w in _prod_wamp.items():
+                    if prod.startswith(_p) or _p.startswith(prod):
+                        return _w
+                return "Core"  # safe default
             df["WAMP"] = df.apply(_fix_wamp, axis=1)
 
         df["PkgGroup"] = df.apply(
