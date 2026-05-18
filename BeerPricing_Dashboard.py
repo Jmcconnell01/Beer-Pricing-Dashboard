@@ -10402,6 +10402,31 @@ def load_survey_pricing(market_key: str):
             return m.group(1) if m else pkg
 
         df["Package"]  = df.apply(_extract_pkg, axis=1)
+
+        # Normalise WAMP — must be a valid WAMP category.
+        # If the sheet stored a brand name instead, look it up from the UPC master list.
+        _valid_wamps = {"Core", "Core Plus", "Value", "Premium", "Super Premium",
+                        "Beyond Beer", "Wine", "Other"}
+        _wamp_col = df.get("WAMP", pd.Series(dtype=str)) if "WAMP" in df.columns else pd.Series(dtype=str)
+        _bad_wamp = ~df["WAMP"].isin(_valid_wamps) if "WAMP" in df.columns else pd.Series([True]*len(df))
+        if _bad_wamp.any():
+            _upc_wamp_df = get_upc_df(market_key)
+            _prod_wamp   = dict(zip(_upc_wamp_df["Product"].astype(str).str.strip(),
+                                    _upc_wamp_df["WAMP"]))
+            _upc_wamp    = dict(zip(_upc_wamp_df["UPC"].astype(str).str.strip(),
+                                    _upc_wamp_df["WAMP"]))
+            def _fix_wamp(row):
+                w = str(row.get("WAMP", "")).strip()
+                if w in _valid_wamps:
+                    return w
+                # Try UPC lookup first, then product name
+                upc = str(row.get("UPC", "")).strip()
+                if upc in _upc_wamp:
+                    return _upc_wamp[upc]
+                prod = str(row.get("Product", "")).strip()
+                return _prod_wamp.get(prod, w or "Core")
+            df["WAMP"] = df.apply(_fix_wamp, axis=1)
+
         df["PkgGroup"] = df.apply(
             lambda r: pkg_group(r.get("Package", ""), r.get("WAMP", ""), r.get("Brand", "") or r.get("Product", "")), axis=1
         )
