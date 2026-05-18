@@ -10171,6 +10171,39 @@ def get_upc_df(market: str = "1 · Charleston"):
     )
     df["PkgGroup"] = df.apply(lambda r: pkg_group(r["Package"], r.get("WAMP",""), r.get("Brand","") or r.get("Product","")), axis=1)
     df["Wholesaler"] = df["Wholesaler"].fillna("").astype(str)
+
+    # ── Auto-assign wholesaler from Brand-level memory ────────────────────
+    # If any SKU for a Brand already has a wholesaler, apply it to all
+    # other SKUs of the same Brand that are blank.
+    # Priority: Brand match → Product-prefix match (e.g. all "Bud Light *")
+    _brand_ws = (
+        df[df["Wholesaler"].ne("")]
+        .groupby("Brand")["Wholesaler"]
+        .agg(lambda x: x.mode()[0])   # most common wholesaler for that brand
+    )
+    _blank = df["Wholesaler"].eq("")
+    if _blank.any():
+        df.loc[_blank, "Wholesaler"] = df.loc[_blank, "Brand"].map(_brand_ws).fillna("")
+
+    # Secondary pass: match on the first word(s) of the Product name
+    # e.g. "Bud Light TWS 1/16AL" and "Bud Light 12/12C" share "Bud Light"
+    _blank2 = df["Wholesaler"].eq("")
+    if _blank2.any():
+        # Build product-prefix → wholesaler from assigned rows
+        _assigned = df[df["Wholesaler"].ne("")].copy()
+        _assigned["_prefix"] = _assigned["Product"].str.extract(r'^([A-Za-z].{2,20}?)\s+\d')[0]
+        _prefix_ws = (
+            _assigned.dropna(subset=["_prefix"])
+            .groupby("_prefix")["Wholesaler"]
+            .agg(lambda x: x.mode()[0])
+        )
+        def _lookup_prefix(product):
+            for prefix, ws in _prefix_ws.items():
+                if str(product).startswith(prefix):
+                    return ws
+            return ""
+        df.loc[_blank2, "Wholesaler"] = df.loc[_blank2, "Product"].apply(_lookup_prefix)
+
     return df
 
 
