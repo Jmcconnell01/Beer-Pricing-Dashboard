@@ -10010,33 +10010,33 @@ def pkg_group(package: str, wamp: str = "", brand: str = "") -> str:
         return "Singles x9"
     if qty == 12:
         if w == "Beyond Beer":
-            # Match on BOTH brand and product name (brand may be empty in survey data)
-            _search = (b + " " + brand).lower() if brand else b.lower()
-            # Cider
+            _search = b.lower()  # b = brand or product name passed as 3rd arg
+            # ── Cider ────────────────────────────────────────────────────────
             if any(x in _search for x in ("angry orchard", "strongbow", "smith & forge",
                                            "smith and forge", "woodchuck", "ace cider", "cider")):
                 return "BB 12-packs Cider"
-            # Seltzer
-            if any(x in _search for x in ("white claw", "truly", "bud light seltzer", "vizzy",
-                                           "cacti", "corona seltzer", "natural light seltzer",
-                                           "bon & viv", "press hard", "topo chico",
+            # ── Seltzer ───────────────────────────────────────────────────────
+            if any(x in _search for x in ("white claw", "truly", "vizzy",
+                                           "corona seltzer", "topo chico",
                                            "michelob ultra org", "michelob ultra seltzer",
-                                           "mich ultra org", "organic seltzer", "hard seltzer",
-                                           "hd seltzer", "seltzer")):
+                                           "mich ultra org", "organic seltzer",
+                                           "hd seltzer", "hrdseltzer", "hard seltzer",
+                                           "bud light seltzer", "cacti", "bon & viv")):
                 return "BB 12-packs Seltzer"
-            # FMB High-ABV
+            # ── FMB High-ABV ──────────────────────────────────────────────────
             if any(x in _search for x in ("four loko", "mike's hard", "mikes hard",
-                                           "sparkling ice", "hard mountain dew", "beast unleashed",
-                                           "beast tea", "the beast", "ritas", "lime-a-rita",
-                                           "straw-ber-rita", "mang-o-rita")):
+                                           "beast unleashed", "beast tea", "the beast",
+                                           "ritas", "lime-a-rita", "straw-ber-rita",
+                                           "mang-o-rita", "hard mountain dew", "sparkling ice")):
                 return "BB 12-packs FMB High-ABV"
-            # FMB Low-ABV
-            if any(x in _search for x in ("smirnoff ice", "twisted tea", "hard iced tea",
-                                           "arizona hard", "arizona iced", "seagram", "bacardi",
-                                           "lemonade", "iced tea", "simply spiked",
-                                           "new belgium", "voodoo ranger")):
+            # ── FMB Low-ABV ───────────────────────────────────────────────────
+            if any(x in _search for x in ("twisted tea", "arizona hard", "arizona iced",
+                                           "hard iced tea", "simply spiked",
+                                           "new belgium", "voodoo ranger",
+                                           "smirnoff ice", "seagram", "bacardi")):
                 return "BB 12-packs FMB Low-ABV"
-            return "BB 12-packs Other"
+            # ── FMB catch-all ─────────────────────────────────────────────────
+            return "BB 12-packs FMB"
         return "12-packs"
     if qty == 15:
         return "15-packs"
@@ -11038,7 +11038,7 @@ with tab1:
                         _base_rows.append({
                             "WAMP": wamp, "Product": product,
                             "Competitor": comp, "Single": price,
-                            "PkgGroup": pkg_group(_pkg, wamp, ""),
+                            "PkgGroup": pkg_group(_pkg, wamp, product),
                             "UPC": "", "Brand": "", "Wholesaler": "",
                         })
             if _base_rows:
