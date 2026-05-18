@@ -11902,11 +11902,15 @@ with tab5:
             return (999, 999)
         scan_df["_sort_qty"]  = scan_df["Package"].apply(lambda p: _pkg_sort_key(p)[0])
         scan_df["_sort_size"] = scan_df["Package"].apply(lambda p: _pkg_sort_key(p)[1])
-        # Sort but preserve original indices so session state keys (val_retail_{ss_key}_{i})
-        # remain valid. ignore_index=False keeps the original row numbers intact.
+        # Sort by WAMP (logical order), then package size numerically
+        # Preserve original indices so session state keys stay valid
+        _wamp_order = ["Core", "Core Plus", "Value", "Premium", "Super Premium",
+                       "Beyond Beer", "Wine", "Other"]
+        _wamp_cat = pd.Categorical(scan_df["WAMP"], categories=_wamp_order, ordered=True)
+        scan_df = scan_df.assign(_wamp_sort=_wamp_cat.codes)
         scan_df = scan_df.sort_values(
-            ["WAMP", "PkgGroup", "_sort_qty", "_sort_size", "Product"],
-        ).drop(columns=["_sort_qty", "_sort_size"])
+            ["_sort_qty", "_sort_size", "_wamp_sort", "Product"],
+        ).drop(columns=["_sort_qty", "_sort_size", "_wamp_sort"])
 
         # Key by market + store + format filter so prices are isolated per view.
         # IMPORTANT: ss_key is used directly in Streamlit widget keys so it must
