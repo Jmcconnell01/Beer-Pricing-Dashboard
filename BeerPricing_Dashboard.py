@@ -11911,20 +11911,28 @@ with tab5:
         # Pre-build wholesaler options (same for all rows in this market)
         _ws_options = [""] + MARKET_WHOLESALERS.get(sel_upc_market, ["Southern Crown Partners"])
 
-        # Derive a store-level wholesaler default from the most recent survey submission.
-        # If a rep already submitted prices for this store, reuse the wholesaler they picked
-        # so they don't have to re-select it on every SKU every visit.
-        _store_ws_default = ""
+        # Build a market-level Product→Wholesaler memory from all past submissions.
+        # This means: if any rep already assigned Bud Light → Southern Crown Partners
+        # in this market, every future survey in this market pre-fills that assignment.
+        # Only fills products that have been explicitly assigned — blanks stay blank.
+        _mkt_ws_memory = {}  # {product_name: wholesaler}
         try:
             _prev_df = _load_all_survey_from_sheets()
-            if not _prev_df.empty and "Store" in _prev_df.columns and "Wholesaler" in _prev_df.columns:
-                _prev_store = _prev_df[_prev_df["Store"] == sel_store]
-                if not _prev_store.empty:
-                    _prev_ws = _prev_store["Wholesaler"].replace("", pd.NA).dropna()
-                    if not _prev_ws.empty:
-                        _store_ws_default = str(_prev_ws.iloc[0]).strip()
-                        if _store_ws_default not in _ws_options:
-                            _store_ws_default = ""
+            if not _prev_df.empty and "Market" in _prev_df.columns and "Wholesaler" in _prev_df.columns and "Product" in _prev_df.columns:
+                _mkt_name = sel_upc_market.split(" · ")[1] if " · " in sel_upc_market else sel_upc_market
+                _prev_mkt = _prev_df[
+                    _prev_df["Market"].str.contains(_mkt_name, case=False, na=False) &
+                    _prev_df["Wholesaler"].fillna("").str.strip().ne("") &
+                    _prev_df["Product"].fillna("").str.strip().ne("")
+                ]
+                if not _prev_mkt.empty:
+                    # Sort ascending so the most recent assignment wins (last write wins)
+                    if "Submitted At" in _prev_mkt.columns:
+                        _prev_mkt = _prev_mkt.sort_values("Submitted At", ascending=True)
+                    _mkt_ws_memory = dict(zip(
+                        _prev_mkt["Product"].str.strip(),
+                        _prev_mkt["Wholesaler"].str.strip()
+                    ))
         except Exception:
             pass
 
@@ -12026,12 +12034,16 @@ with tab5:
                     placeholder="0.00", key=f"twofor_{ss_key}_{i}",
                 )
             with fc3:
+                # Default 1: hardcoded UPC master list wholesaler for this SKU
                 _ws_default = str(row["Wholesaler"]).strip() if "Wholesaler" in row.index else ""
                 if _ws_default not in _ws_options:
                     _ws_default = ""
-                # Fall back to the store-level default derived from prior submissions
-                if not _ws_default:
-                    _ws_default = _store_ws_default
+                # Default 2: market-level memory from past submissions (overrides UPC list)
+                # Only applies if the product was explicitly assigned in a prior survey
+                _product_name = str(row["Product"]).strip() if "Product" in row.index else ""
+                _remembered_ws = _mkt_ws_memory.get(_product_name, "")
+                if _remembered_ws in _ws_options:
+                    _ws_default = _remembered_ws  # past survey wins over hardcoded default
                 _ws_saved = st.session_state.get(f"wholesaler_{ss_key}_{i}", _ws_default)
                 if _ws_saved not in _ws_options:
                     _ws_saved = _ws_default
