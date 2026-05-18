@@ -11117,12 +11117,20 @@ with tab1:
                         for _ci, _bc in enumerate(_mkt_comps)
                         if _bc == _ch and (3 + _ci) < len(_brow) and _brow[3 + _ci] is not None
                     )
-                    _chain_rows.append({
-                        "Chain":    _ch,
-                        "Pricing":  "✅ Has Pricing",
-                        "Source":   "🔵 Baseline",
-                        "Products": _n_base,
-                    })
+                    if _n_base > 0:
+                        _chain_rows.append({
+                            "Chain":    _ch,
+                            "Pricing":  "✅ Has Pricing",
+                            "Source":   "🔵 Baseline",
+                            "Products": _n_base,
+                        })
+                    else:
+                        _chain_rows.append({
+                            "Chain":    _ch,
+                            "Pricing":  "⬜ No Pricing",
+                            "Source":   "—",
+                            "Products": "—",
+                        })
                 else:
                     _chain_rows.append({
                         "Chain":    _ch,
