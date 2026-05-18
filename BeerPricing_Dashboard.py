@@ -10229,7 +10229,6 @@ def _append_to_survey_sheet(rows: list):
         return False
 
 
-@st.cache_data(ttl=60, show_spinner=False)
 def _load_all_survey_from_sheets() -> pd.DataFrame:
     """Pull every submitted row from Google Sheets. Always normalises column names."""
     _COL_MAP = {
@@ -10700,8 +10699,7 @@ tab5, tab1, tab2 = st.tabs(["📱 UPC Scanner List", "📊 Discrepancy Heatmap",
 with tab1:
     _hm_hdr_col, _hm_btn_col = st.columns([6, 1])
     _hm_hdr_col.subheader("📊 Price Discrepancy Heatmap")
-    if _hm_btn_col.button("🔄 Refresh", help="Clear cached survey data and reload from CSV", key="hm_refresh"):
-        _load_all_survey_from_sheets.clear()
+    if _hm_btn_col.button("🔄 Refresh", help="Reload latest data from Google Sheets", key="hm_refresh"):
         load_survey_pricing.clear()
         compute_chain_deviation.clear()
         compute_product_pivot.clear()
