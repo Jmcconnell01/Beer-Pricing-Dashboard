@@ -11848,7 +11848,7 @@ with tab5:
             scan_df = scan_df[mask]
         if sel_pkg != "All Groups":
             scan_df = scan_df[scan_df["PkgGroup"] == sel_pkg]
-        scan_df = scan_df.reset_index(drop=True)
+        scan_df = scan_df.sort_values(["WAMP", "PkgGroup", "Package", "Product"], ignore_index=True)
 
         # Key by market + store + format filter so prices are isolated per view.
         # IMPORTANT: ss_key is used directly in Streamlit widget keys so it must
