@@ -12096,42 +12096,67 @@ with tab5:
         for idx_pos, (i, row) in enumerate(scan_df.iterrows()):
             header_html, barcode_html = _html_rows[idx_pos]
 
-            _is_done = st.session_state.get(f"{ss_key}_done_{i}", False)
-            _has_retail = st.session_state.get(f"val_retail_{ss_key}_{i}") not in (None, 0.0, "")
+            _is_done    = st.session_state.get(f"{ss_key}_done_{i}", False)
+            _retail_val = st.session_state.get(f"val_retail_{ss_key}_{i}")
+            _twofor_val = st.session_state.get(f"val_twofor_{ss_key}_{i}")
+            _ws_val     = st.session_state.get(f"wholesaler_{ss_key}_{i}", "")
+            _has_retail = _retail_val not in (None, 0.0, "")
+            _has_ws     = bool(_ws_val and _ws_val.strip())
+            _is_expanded = st.session_state.get(f"expand_{ss_key}_{i}", False)
+
+            # Card is collapsed if: done, or (has retail OR has wholesaler) and not manually expanded
+            _is_collapsed = _is_done or ((_has_retail or _has_ws) and not _is_expanded)
+
             _card_style = (
                 "border:1.5px solid #22c55e;background:#f0fdf4;"
-                if (_is_done or _has_retail) else "border:1px solid #e0e0e0;"
+                if (_is_done or _has_retail)
+                else "border:1.5px solid #3b82f6;background:#eff6ff;"
+                if _has_ws
+                else "border:1px solid #e0e0e0;"
             )
 
-            # Collapse completed cards (show only header + done badge)
-            if _is_done:
+            if _is_collapsed:
+                # Build badge label
+                if _is_done:
+                    _badge_color = "#22c55e"
+                    _badge_label = "✓ Done"
+                elif _has_retail:
+                    _twofor_disp = f" · 2/${float(_twofor_val):.2f}" if _twofor_val not in (None, 0.0, "") else ""
+                    _badge_color = "#3b82f6"
+                    _badge_label = f"✓ ${float(_retail_val):.2f}{_twofor_disp}"
+                else:
+                    _badge_color = "#6b7280"
+                    _badge_label = f"🏭 {_ws_val}"
+
                 st.markdown(
                     f"<div style='{_card_style}border-radius:8px;"
                     f"padding:8px 14px;margin-bottom:4px;display:flex;"
                     f"justify-content:space-between;align-items:center'>"
                     f"{header_html}"
-                    f"<span style='background:#22c55e;color:white;border-radius:12px;"
-                    f"padding:2px 10px;font-size:0.8rem;white-space:nowrap'>✓ Done</span>"
+                    f"<span style='background:{_badge_color};color:white;border-radius:12px;"
+                    f"padding:2px 10px;font-size:0.85rem;white-space:nowrap;font-weight:600'>"
+                    f"{_badge_label}</span>"
                     f"</div>",
                     unsafe_allow_html=True
                 )
-                # Minimal un-done checkbox (re-opens the card)
-                if st.checkbox("↩ Re-open", key=f"undone_{ss_key}_{i}", value=False,
-                               label_visibility="collapsed"):
-                    st.session_state[f"{ss_key}_done_{i}"] = False
-                    st.rerun()
-                # Still collect the row for export (use saved values)
+                _btn_col1, _btn_col2 = st.columns([1, 8])
+                with _btn_col1:
+                    if st.button("✏️", key=f"expand_btn_{ss_key}_{i}",
+                                 help="Edit", use_container_width=True):
+                        st.session_state[f"expand_{ss_key}_{i}"] = True
+                        st.session_state[f"{ss_key}_done_{i}"] = False
+                        st.rerun()
                 edited_rows.append({
                     "WAMP":       row["WAMP"], "Brand":   row["Brand"],
                     "Product":    row["Product"], "Package": row["Package"],
                     "UPC":        row["UPC"],  "Barcode": str(row["Barcode"]),
-                    "Wholesaler": st.session_state.get(f"wholesaler_{ss_key}_{i}", ""),
-                    "Retail $":   st.session_state.get(f"val_retail_{ss_key}_{i}"),
-                    "2 for $":    st.session_state.get(f"val_twofor_{ss_key}_{i}"),
+                    "Wholesaler": _ws_val,
+                    "Retail $":   float(_retail_val) if _has_retail else None,
+                    "2 for $":    float(_twofor_val) if _twofor_val not in (None, 0.0, "") else None,
                 })
                 continue
 
-            # Single st.markdown for all static HTML (header + barcode) — 1 call instead of 6
+            # ── Open card ─────────────────────────────────────────────────────
             st.markdown(
                 f"<div style='{_card_style}border-radius:8px;"
                 f"padding:10px 14px 6px;margin-bottom:4px'>"
@@ -12139,19 +12164,19 @@ with tab5:
                 unsafe_allow_html=True
             )
 
-            # ── st.form per card — no rerun on every keystroke ───────────────
+            # st.form prevents rerun on every keystroke — only reruns on Save/Done
             with st.form(key=f"form_{ss_key}_{i}", border=False):
                 fc1, fc2, fc3, fc4, fc5 = st.columns([2, 2, 2, 1, 1])
                 with fc1:
                     retail = st.number_input(
                         "💲 Retail $", min_value=0.0, step=0.01, format="%.2f",
-                        value=float(st.session_state[f"val_retail_{ss_key}_{i}"]) if st.session_state.get(f"val_retail_{ss_key}_{i}") else None,
+                        value=float(_retail_val) if _has_retail else None,
                         placeholder="0.00",
                     )
                 with fc2:
                     twofor = st.number_input(
                         "2️⃣ 2 for $", min_value=0.0, step=0.01, format="%.2f",
-                        value=float(st.session_state.get(f"val_twofor_{ss_key}_{i}", 0) or 0) or None,
+                        value=float(_twofor_val) if _twofor_val not in (None, 0.0, "") else None,
                         placeholder="0.00",
                     )
                 with fc3:
@@ -12162,9 +12187,7 @@ with tab5:
                     _remembered_ws = _mkt_ws_memory.get(_product_name, "")
                     if _remembered_ws in _ws_options:
                         _ws_default = _remembered_ws
-                    _ws_saved = st.session_state.get(f"wholesaler_{ss_key}_{i}", _ws_default)
-                    if _ws_saved not in _ws_options:
-                        _ws_saved = _ws_default
+                    _ws_saved = _ws_val if _ws_val in _ws_options else _ws_default
                     wholesaler = st.selectbox(
                         "🏭 Wholesaler", _ws_options,
                         index=_ws_options.index(_ws_saved) if _ws_saved in _ws_options else 0,
@@ -12178,31 +12201,28 @@ with tab5:
 
             st.markdown("<div style='margin-bottom:8px'></div>", unsafe_allow_html=True)
 
-            # Only update session state when form is submitted
             if _save_clicked or _done_clicked:
-                st.session_state[f"wholesaler_{ss_key}_{i}"] = wholesaler
+                # Always save wholesaler even without a price
+                if wholesaler:
+                    st.session_state[f"wholesaler_{ss_key}_{i}"] = wholesaler
                 if retail and float(retail) > 0:
                     st.session_state[f"val_retail_{ss_key}_{i}"] = float(retail)
-                    st.session_state[f"expand_{ss_key}_{i}"] = False
                 if twofor and float(twofor) > 0:
                     st.session_state[f"val_twofor_{ss_key}_{i}"] = float(twofor)
                 if _done_clicked:
                     st.session_state[f"{ss_key}_done_{i}"] = True
+                st.session_state[f"expand_{ss_key}_{i}"] = False
                 st.rerun()
 
-            # Use persisted values for export row
-            _saved_retail = st.session_state.get(f"val_retail_{ss_key}_{i}")
-            _saved_twofor = st.session_state.get(f"val_twofor_{ss_key}_{i}")
-            wholesaler    = st.session_state.get(f"wholesaler_{ss_key}_{i}", _ws_default if "_ws_default" in dir() else "")
+            # Export row always uses persisted session state values
             edited_rows.append({
                 "WAMP":       row["WAMP"], "Brand":   row["Brand"],
                 "Product":    row["Product"], "Package": row["Package"],
                 "UPC":        row["UPC"],  "Barcode": str(row["Barcode"]),
-                "Wholesaler": wholesaler,
-                "Retail $":   float(_saved_retail) if _saved_retail not in (None, 0.0, "") else None,
-                "2 for $":    float(_saved_twofor) if _saved_twofor not in (None, 0.0, "") else None,
+                "Wholesaler": st.session_state.get(f"wholesaler_{ss_key}_{i}", _ws_default),
+                "Retail $":   float(_retail_val) if _has_retail else None,
+                "2 for $":    float(_twofor_val) if _twofor_val not in (None, 0.0, "") else None,
             })
-
 
         edited = pd.DataFrame(edited_rows)
 
@@ -12338,7 +12358,6 @@ with tab5:
                         pass
 
                     # Bust the 30-second Sheets read-cache so the heatmap refreshes immediately
-                    _load_all_survey_from_sheets.clear()
                     load_survey_pricing.clear()
 
                     _price_count = len(save_df[save_df["Product"] != "— Visit logged (no prices) —"])
