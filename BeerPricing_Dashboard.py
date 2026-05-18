@@ -12139,65 +12139,61 @@ with tab5:
                 unsafe_allow_html=True
             )
 
-            # Interactive inputs — unavoidable widgets but now only 4 per row (was 32)
-            fc1, fc2, fc3, fc4 = st.columns([2, 2, 2, 1])
-            with fc1:
-                retail = st.number_input(
-                    "💲 Retail $", min_value=0.0, step=0.01, format="%.2f",
-                    value=float(st.session_state[f"val_retail_{ss_key}_{i}"]) if st.session_state.get(f"val_retail_{ss_key}_{i}") else None,
-                    placeholder="0.00", key=f"retail_{ss_key}_{i}",
-                )
-            with fc2:
-                twofor = st.number_input(
-                    "2️⃣ 2 for $", min_value=0.0, step=0.01, format="%.2f",
-                    value=float(st.session_state.get(f"val_twofor_{ss_key}_{i}", 0) or 0) or None,
-                    placeholder="0.00", key=f"twofor_{ss_key}_{i}",
-                )
-            with fc3:
-                # Default 1: hardcoded UPC master list wholesaler for this SKU
-                _ws_default = str(row["Wholesaler"]).strip() if "Wholesaler" in row.index else ""
-                if _ws_default not in _ws_options:
-                    _ws_default = ""
-                # Default 2: market-level memory from past submissions (overrides UPC list)
-                # Only applies if the product was explicitly assigned in a prior survey
-                _product_name = str(row["Product"]).strip() if "Product" in row.index else ""
-                _remembered_ws = _mkt_ws_memory.get(_product_name, "")
-                if _remembered_ws in _ws_options:
-                    _ws_default = _remembered_ws  # past survey wins over hardcoded default
-                _ws_saved = st.session_state.get(f"wholesaler_{ss_key}_{i}", _ws_default)
-                if _ws_saved not in _ws_options:
-                    _ws_saved = _ws_default
-                wholesaler = st.selectbox(
-                    "🏭 Wholesaler", _ws_options,
-                    index=_ws_options.index(_ws_saved) if _ws_saved in _ws_options else 0,
-                    key=f"wholesaler_{ss_key}_{i}",
-                )
-            with fc4:
-                st.markdown("<br>", unsafe_allow_html=True)
-                _mark_done = st.checkbox(
-                    "✓ Done", key=f"done_chk_{ss_key}_{i}",
-                    value=False,
-                    help="Mark this SKU as complete and collapse the card"
-                )
-                if _mark_done:
-                    st.session_state[f"{ss_key}_done_{i}"] = True
-                    st.rerun()
+            # ── st.form per card — no rerun on every keystroke ───────────────
+            with st.form(key=f"form_{ss_key}_{i}", border=False):
+                fc1, fc2, fc3, fc4, fc5 = st.columns([2, 2, 2, 1, 1])
+                with fc1:
+                    retail = st.number_input(
+                        "💲 Retail $", min_value=0.0, step=0.01, format="%.2f",
+                        value=float(st.session_state[f"val_retail_{ss_key}_{i}"]) if st.session_state.get(f"val_retail_{ss_key}_{i}") else None,
+                        placeholder="0.00",
+                    )
+                with fc2:
+                    twofor = st.number_input(
+                        "2️⃣ 2 for $", min_value=0.0, step=0.01, format="%.2f",
+                        value=float(st.session_state.get(f"val_twofor_{ss_key}_{i}", 0) or 0) or None,
+                        placeholder="0.00",
+                    )
+                with fc3:
+                    _ws_default = str(row["Wholesaler"]).strip() if "Wholesaler" in row.index else ""
+                    if _ws_default not in _ws_options:
+                        _ws_default = ""
+                    _product_name = str(row["Product"]).strip() if "Product" in row.index else ""
+                    _remembered_ws = _mkt_ws_memory.get(_product_name, "")
+                    if _remembered_ws in _ws_options:
+                        _ws_default = _remembered_ws
+                    _ws_saved = st.session_state.get(f"wholesaler_{ss_key}_{i}", _ws_default)
+                    if _ws_saved not in _ws_options:
+                        _ws_saved = _ws_default
+                    wholesaler = st.selectbox(
+                        "🏭 Wholesaler", _ws_options,
+                        index=_ws_options.index(_ws_saved) if _ws_saved in _ws_options else 0,
+                    )
+                with fc4:
+                    st.markdown("<br>", unsafe_allow_html=True)
+                    _save_clicked = st.form_submit_button("💾 Save", use_container_width=True)
+                with fc5:
+                    st.markdown("<br>", unsafe_allow_html=True)
+                    _done_clicked = st.form_submit_button("✓ Done", use_container_width=True, type="primary")
 
             st.markdown("<div style='margin-bottom:8px'></div>", unsafe_allow_html=True)
 
-            # Persist to val_ keys (separate from widget keys to avoid StreamlitAPIException).
-            # Take the widget return value if it is a real non-zero price, otherwise fall back
-            # to whatever was previously persisted in val_ (survives Submit reruns).
-            _live_retail = retail if (retail is not None and float(retail) > 0) else None
-            _live_twofor = twofor if (twofor is not None and float(twofor) > 0) else None
-            if _live_retail is not None:
-                st.session_state[f"val_retail_{ss_key}_{i}"] = float(_live_retail)
-            if _live_twofor is not None:
-                st.session_state[f"val_twofor_{ss_key}_{i}"] = float(_live_twofor)
+            # Only update session state when form is submitted
+            if _save_clicked or _done_clicked:
+                st.session_state[f"wholesaler_{ss_key}_{i}"] = wholesaler
+                if retail and float(retail) > 0:
+                    st.session_state[f"val_retail_{ss_key}_{i}"] = float(retail)
+                    st.session_state[f"expand_{ss_key}_{i}"] = False
+                if twofor and float(twofor) > 0:
+                    st.session_state[f"val_twofor_{ss_key}_{i}"] = float(twofor)
+                if _done_clicked:
+                    st.session_state[f"{ss_key}_done_{i}"] = True
+                st.rerun()
 
-            # Best price: live widget value first, then persisted val_, then None
-            _saved_retail = _live_retail if _live_retail is not None else st.session_state.get(f"val_retail_{ss_key}_{i}")
-            _saved_twofor = _live_twofor if _live_twofor is not None else st.session_state.get(f"val_twofor_{ss_key}_{i}")
+            # Use persisted values for export row
+            _saved_retail = st.session_state.get(f"val_retail_{ss_key}_{i}")
+            _saved_twofor = st.session_state.get(f"val_twofor_{ss_key}_{i}")
+            wholesaler    = st.session_state.get(f"wholesaler_{ss_key}_{i}", _ws_default if "_ws_default" in dir() else "")
             edited_rows.append({
                 "WAMP":       row["WAMP"], "Brand":   row["Brand"],
                 "Product":    row["Product"], "Package": row["Package"],
@@ -12206,6 +12202,7 @@ with tab5:
                 "Retail $":   float(_saved_retail) if _saved_retail not in (None, 0.0, "") else None,
                 "2 for $":    float(_saved_twofor) if _saved_twofor not in (None, 0.0, "") else None,
             })
+
 
         edited = pd.DataFrame(edited_rows)
 
