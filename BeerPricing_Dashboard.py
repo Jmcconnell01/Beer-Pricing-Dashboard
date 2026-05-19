@@ -10172,37 +10172,52 @@ def get_upc_df(market: str = "1 · Charleston"):
     df["PkgGroup"] = df.apply(lambda r: pkg_group(r["Package"], r.get("WAMP",""), r.get("Brand","") or r.get("Product","")), axis=1)
     df["Wholesaler"] = df["Wholesaler"].fillna("").astype(str)
 
-    # ── Auto-assign wholesaler from Brand-level memory ────────────────────
-    # If any SKU for a Brand already has a wholesaler, apply it to all
-    # other SKUs of the same Brand that are blank.
-    # Priority: Brand match → Product-prefix match (e.g. all "Bud Light *")
-    _brand_ws = (
-        df[df["Wholesaler"].ne("")]
-        .groupby("Brand")["Wholesaler"]
-        .agg(lambda x: x.mode()[0])   # most common wholesaler for that brand
-    )
-    _blank = df["Wholesaler"].eq("")
-    if _blank.any():
-        df.loc[_blank, "Wholesaler"] = df.loc[_blank, "Brand"].map(_brand_ws).fillna("")
+    # ── Auto-assign wholesaler by Brand then product-prefix ─────────────
+    import re as _re_ws
+    def _brand_from_product(prod):
+        """Strip the package token to get the brand portion: 'Bud Light TWS 1/16AL' → 'Bud Light TWS'"""
+        return _re_ws.sub(r'\s*\d+/\d+.*$', '', str(prod)).strip()
 
-    # Secondary pass: match on the first word(s) of the Product name
-    # e.g. "Bud Light TWS 1/16AL" and "Bud Light 12/12C" share "Bud Light"
-    _blank2 = df["Wholesaler"].eq("")
-    if _blank2.any():
-        # Build product-prefix → wholesaler from assigned rows
-        _assigned = df[df["Wholesaler"].ne("")].copy()
-        _assigned["_prefix"] = _assigned["Product"].str.extract(r'^([A-Za-z].{2,20}?)\s+\d')[0]
-        _prefix_ws = (
-            _assigned.dropna(subset=["_prefix"])
-            .groupby("_prefix")["Wholesaler"]
+    # Pass 1: fill blanks from Brand column (exact brand match)
+    _assigned_df = df[df["Wholesaler"].ne("")]
+    if not _assigned_df.empty and "Brand" in df.columns:
+        _brand_ws = (
+            _assigned_df[_assigned_df["Brand"].ne("")]
+            .groupby("Brand")["Wholesaler"]
             .agg(lambda x: x.mode()[0])
         )
-        def _lookup_prefix(product):
-            for prefix, ws in _prefix_ws.items():
-                if str(product).startswith(prefix):
+        _blank = df["Wholesaler"].eq("") & df["Brand"].ne("")
+        if _blank.any():
+            df.loc[_blank, "Wholesaler"] = df.loc[_blank, "Brand"].map(_brand_ws).fillna("")
+
+    # Pass 2: fill remaining blanks by matching product brand prefix
+    # e.g. "Bud Light TWS 1/16AL" → brand_prefix="Bud Light TWS"
+    # matches "Bud Light TWS 1/16AL" → "Southern Crown Partners"
+    _blank2 = df["Wholesaler"].eq("")
+    if _blank2.any():
+        _assigned2 = df[df["Wholesaler"].ne("")].copy()
+        _assigned2["_pfx"] = _assigned2["Product"].apply(_brand_from_product)
+        _pfx_ws = (
+            _assigned2[_assigned2["_pfx"].ne("")]
+            .groupby("_pfx")["Wholesaler"]
+            .agg(lambda x: x.mode()[0])
+        )
+        # Sort by prefix length descending so longer/more specific prefixes match first
+        _pfx_ws_sorted = sorted(_pfx_ws.items(), key=lambda x: -len(x[0]))
+        def _lookup_pfx(prod):
+            prod_pfx = _brand_from_product(prod)
+            # Exact prefix match first
+            if prod_pfx in _pfx_ws:
+                return _pfx_ws[prod_pfx]
+            # Partial: check if prefixes share enough common words (at least 2)
+            prod_words = prod_pfx.lower().split()
+            for pfx, ws in _pfx_ws_sorted:
+                pfx_words = pfx.lower().split()
+                common = sum(1 for w in pfx_words if w in prod_words)
+                if common >= min(2, len(pfx_words), len(prod_words)):
                     return ws
             return ""
-        df.loc[_blank2, "Wholesaler"] = df.loc[_blank2, "Product"].apply(_lookup_prefix)
+        df.loc[_blank2, "Wholesaler"] = df.loc[_blank2, "Product"].apply(_lookup_pfx)
 
     return df
 
