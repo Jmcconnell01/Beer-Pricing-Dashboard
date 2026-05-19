@@ -12315,14 +12315,16 @@ with tab5:
                         placeholder="0.00",
                     )
                 with fc3:
+                    # Priority: 1) session state (if non-blank) 2) market memory 3) UPC master list
                     _ws_default = str(row["Wholesaler"]).strip() if "Wholesaler" in row.index else ""
                     if _ws_default not in _ws_options:
                         _ws_default = ""
                     _product_name = str(row["Product"]).strip() if "Product" in row.index else ""
                     _remembered_ws = _mkt_ws_memory.get(_product_name, "")
-                    if _remembered_ws in _ws_options:
+                    if _remembered_ws and _remembered_ws in _ws_options:
                         _ws_default = _remembered_ws
-                    _ws_saved = _ws_val if _ws_val in _ws_options else _ws_default
+                    # Only use session state if it has a real (non-blank) value
+                    _ws_saved = _ws_val if (_ws_val and _ws_val in _ws_options) else _ws_default
                     wholesaler = st.selectbox(
                         "🏭 Wholesaler", _ws_options,
                         index=_ws_options.index(_ws_saved) if _ws_saved in _ws_options else 0,
