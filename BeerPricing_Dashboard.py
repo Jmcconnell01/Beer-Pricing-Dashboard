@@ -11512,120 +11512,134 @@ with tab1:
                 else:
                     st.markdown(f"**{len(flagged_groups)} group(s) where SCP products are overpriced vs {HJL}**")
 
-                    for (wamp, pkg, grp_clean, scp_rows, hjl_rows,
-                         scp_avg, hjl_avg, gap, overpriced_chains, max_gap, worst_chain) in flagged_groups:
+                    # Group by WAMP for hierarchical display
+                    from collections import defaultdict as _dd
+                    _by_wamp = _dd(list)
+                    for _fg in flagged_groups:
+                        _by_wamp[_fg[0]].append(_fg)
 
-                        sev = "🔴" if max_gap >= threshold * 2 else "🟡"
-                        n_scp = len(scp_rows)
-                        n_hjl = len(hjl_rows)
-
+                    for wamp, _wamp_groups in _by_wamp.items():
+                        _wamp_max_gap = max(g[9] for g in _wamp_groups)
+                        _wamp_sev = "🔴" if _wamp_max_gap >= threshold * 2 else "🟡"
                         with st.expander(
-                            f"{sev} **{wamp} · {pkg}** — {n_scp} SCP · {n_hjl} {HJL} products · "
-                            f"Max SCP disadvantage is **${max_gap:.2f}** at {worst_chain}",
+                            f"{_wamp_sev} **{wamp}** — {len(_wamp_groups)} package group(s) · "
+                            f"Max gap **${_wamp_max_gap:.2f}**",
                             expanded=False
                         ):
-                            chain_cols_here = list(grp_clean.columns)
-                            prod_labels     = [idx[-1] for idx in grp_clean.index]
+                            for (wamp, pkg, grp_clean, scp_rows, hjl_rows,
+                                 scp_avg, hjl_avg, gap, overpriced_chains, max_gap, worst_chain) in _wamp_groups:
 
-                            # Colour each cell: SCP rows vs HJL avg at that chain
-                            # positive = SCP higher than HJL avg, negative = SCP lower
-                            diff_mat = grp_clean.copy().astype(float)
-                            for prod_idx in grp_clean.index:
-                                ws = prod_ws_map.get(prod_idx[-1], "")
-                                for chain in chain_cols_here:
-                                    p = grp_clean.loc[prod_idx, chain]
-                                    ref = hjl_avg[chain] if ws == SCP else scp_avg[chain]
-                                    diff_mat.loc[prod_idx, chain] = round(p - ref, 2) if not pd.isna(p) and not pd.isna(ref) else float("nan")
+                                sev = "🔴" if max_gap >= threshold * 2 else "🟡"
+                                n_scp = len(scp_rows)
+                                n_hjl = len(hjl_rows)
 
-                            text_cells = []
-                            for prod_idx in grp_clean.index:
-                                ws = prod_ws_map.get(prod_idx[-1], "")
-                                tag = "SCP" if ws == SCP else (HJL if ws == HJL else "")
-                                rt = []
-                                for chain in chain_cols_here:
-                                    p = grp_clean.loc[prod_idx, chain]
-                                    d = diff_mat.loc[prod_idx, chain]
-                                    if pd.isna(p):
-                                        rt.append("—")
-                                    elif not pd.isna(d):
-                                        rt.append(f"${p:.2f}<br>({d:+.2f})")
-                                    else:
-                                        rt.append(f"${p:.2f}")
-                                text_cells.append(rt)
+                                with st.expander(
+                                    f"{sev} **{pkg}** — {n_scp} SCP · {n_hjl} {HJL} products · "
+                                    f"Max SCP disadvantage is **${max_gap:.2f}** at {worst_chain}",
+                                    expanded=False
+                                ):
+                                    chain_cols_here = list(grp_clean.columns)
+                                    prod_labels     = [idx[-1] for idx in grp_clean.index]
 
-                            # Label products with their wholesaler tag
-                            y_labels = []
-                            for idx in grp_clean.index:
-                                ws  = prod_ws_map.get(idx[-1], "")
-                                tag = " [SCP]" if ws == SCP else (f" [{HJL}]" if ws == HJL else "")
-                                y_labels.append(idx[-1] + tag)
+                                    # Colour each cell: SCP rows vs HJL avg at that chain
+                                    # positive = SCP higher than HJL avg, negative = SCP lower
+                                    diff_mat = grp_clean.copy().astype(float)
+                                    for prod_idx in grp_clean.index:
+                                        ws = prod_ws_map.get(prod_idx[-1], "")
+                                        for chain in chain_cols_here:
+                                            p = grp_clean.loc[prod_idx, chain]
+                                            ref = hjl_avg[chain] if ws == SCP else scp_avg[chain]
+                                            diff_mat.loc[prod_idx, chain] = round(p - ref, 2) if not pd.isna(p) and not pd.isna(ref) else float("nan")
 
-                            fig_gap = go.Figure(data=go.Heatmap(
-                                z=diff_mat.values,
-                                x=chain_cols_here,
-                                y=y_labels,
-                                colorscale=[
-                                    [0.0, "#166534"],[0.3, "#22c55e"],[0.45, "#dcfce7"],
-                                    [0.5, "#f9fafb"],[0.55, "#fee2e2"],[0.7, "#ef4444"],[1.0, "#991b1b"]
-                                ],
-                                zmid=0,
-                                text=text_cells, texttemplate="%{text}", textfont={"size":10},
-                                hoverongaps=False,
-                                colorbar=dict(title="vs other WS", tickformat="+.2f", thickness=12, len=0.8),
-                                xgap=2, ygap=2,
-                            ))
-                            max_label_len = max(len(y) for y in y_labels)
-                            left_margin   = max(220, max_label_len * 7)
-                            fig_gap.update_layout(
-                                height=max(200, len(y_labels)*44+100),
-                                margin=dict(l=left_margin, r=20, t=40, b=10),
-                                xaxis=dict(side="top", tickangle=-30,
-                                           tickfont=dict(size=11, color="black",
-                                                        family="Arial Black, Arial, sans-serif")),
-                                yaxis=dict(
-                                    autorange="reversed",
-                                    tickfont=dict(size=11, color="black",
-                                                 family="Arial Black, Arial, sans-serif"),
-                                    automargin=False,
-                                    side="left",
-                                    ticklabelposition="outside left",
-                                ),
-                                plot_bgcolor="#f8fafc", paper_bgcolor="#ffffff",
-                            )
-                            fig_gap.update_yaxes(ticksuffix="  ")
-                            st.plotly_chart(fig_gap, use_container_width=True,
-                                            key=f"gap_{wamp}_{pkg}_{geo['label']}")
+                                    text_cells = []
+                                    for prod_idx in grp_clean.index:
+                                        ws = prod_ws_map.get(prod_idx[-1], "")
+                                        tag = "SCP" if ws == SCP else (HJL if ws == HJL else "")
+                                        rt = []
+                                        for chain in chain_cols_here:
+                                            p = grp_clean.loc[prod_idx, chain]
+                                            d = diff_mat.loc[prod_idx, chain]
+                                            if pd.isna(p):
+                                                rt.append("—")
+                                            elif not pd.isna(d):
+                                                rt.append(f"${p:.2f}<br>({d:+.2f})")
+                                            else:
+                                                rt.append(f"${p:.2f}")
+                                        text_cells.append(rt)
 
-                            # Per-chain callout: highest SCP price vs lowest HJL price
-                            st.markdown(f"**SCP vs {HJL} price per chain (flagged chains only):**")
-                            sp_cols_ui = st.columns(min(len(overpriced_chains), 4))
-                            for i, (chain_name, gap_val) in enumerate(
-                                overpriced_chains.sort_values(ascending=False).items()
-                            ):
-                                _scp_at_chain = grp_clean.loc[scp_rows, chain_name].dropna()
-                                _hjl_at_chain = grp_clean.loc[hjl_rows, chain_name].dropna()
-                                if _scp_at_chain.empty or _hjl_at_chain.empty:
-                                    continue
-                                scp_p = round(float(_scp_at_chain.max()), 2)
-                                hjl_p = round(float(_hjl_at_chain.min()), 2)
-                                real_gap = round(scp_p - hjl_p, 2)
-                                icon  = "🔴" if real_gap >= threshold * 2 else "🟡"
-                                sp_cols_ui[i % len(sp_cols_ui)].metric(
-                                    f"{icon} {chain_name[:24]}",
-                                    f"SCP ${scp_p:.2f}  vs  {HJL} ${hjl_p:.2f}",
-                                    f"SCP is ${real_gap:.2f} higher",
-                                    delta_color="inverse",
-                                )
+                                    # Label products with their wholesaler tag
+                                    y_labels = []
+                                    for idx in grp_clean.index:
+                                        ws  = prod_ws_map.get(idx[-1], "")
+                                        tag = " [SCP]" if ws == SCP else (f" [{HJL}]" if ws == HJL else "")
+                                        y_labels.append(idx[-1] + tag)
 
-                            if show_2for and "2 for $" in view.columns:
-                                t_grp = view[(view["WAMP"]==wamp) & (view["PkgGroup"]==pkg)].pivot_table(
-                                    index="Competitor", columns="Product", values="2 for $", aggfunc="mean"
-                                ).round(2)
-                                if not t_grp.empty:
-                                    st.markdown("**2-for prices:**")
-                                    st.dataframe(t_grp.style.format("${:.2f}", na_rep="—"),
-                                                 use_container_width=True,
-                                                 height=min(300, len(t_grp)*36+50))
+                                    fig_gap = go.Figure(data=go.Heatmap(
+                                        z=diff_mat.values,
+                                        x=chain_cols_here,
+                                        y=y_labels,
+                                        colorscale=[
+                                            [0.0, "#166534"],[0.3, "#22c55e"],[0.45, "#dcfce7"],
+                                            [0.5, "#f9fafb"],[0.55, "#fee2e2"],[0.7, "#ef4444"],[1.0, "#991b1b"]
+                                        ],
+                                        zmid=0,
+                                        text=text_cells, texttemplate="%{text}", textfont={"size":10},
+                                        hoverongaps=False,
+                                        colorbar=dict(title="vs other WS", tickformat="+.2f", thickness=12, len=0.8),
+                                        xgap=2, ygap=2,
+                                    ))
+                                    max_label_len = max(len(y) for y in y_labels)
+                                    left_margin   = max(220, max_label_len * 7)
+                                    fig_gap.update_layout(
+                                        height=max(200, len(y_labels)*44+100),
+                                        margin=dict(l=left_margin, r=20, t=40, b=10),
+                                        xaxis=dict(side="top", tickangle=-30,
+                                                   tickfont=dict(size=11, color="black",
+                                                                family="Arial Black, Arial, sans-serif")),
+                                        yaxis=dict(
+                                            autorange="reversed",
+                                            tickfont=dict(size=11, color="black",
+                                                         family="Arial Black, Arial, sans-serif"),
+                                            automargin=False,
+                                            side="left",
+                                            ticklabelposition="outside left",
+                                        ),
+                                        plot_bgcolor="#f8fafc", paper_bgcolor="#ffffff",
+                                    )
+                                    fig_gap.update_yaxes(ticksuffix="  ")
+                                    st.plotly_chart(fig_gap, use_container_width=True,
+                                                    key=f"gap_{wamp}_{pkg}_{geo['label']}")
+
+                                    # Per-chain callout: highest SCP price vs lowest HJL price
+                                    st.markdown(f"**SCP vs {HJL} price per chain (flagged chains only):**")
+                                    sp_cols_ui = st.columns(min(len(overpriced_chains), 4))
+                                    for i, (chain_name, gap_val) in enumerate(
+                                        overpriced_chains.sort_values(ascending=False).items()
+                                    ):
+                                        _scp_at_chain = grp_clean.loc[scp_rows, chain_name].dropna()
+                                        _hjl_at_chain = grp_clean.loc[hjl_rows, chain_name].dropna()
+                                        if _scp_at_chain.empty or _hjl_at_chain.empty:
+                                            continue
+                                        scp_p = round(float(_scp_at_chain.max()), 2)
+                                        hjl_p = round(float(_hjl_at_chain.min()), 2)
+                                        real_gap = round(scp_p - hjl_p, 2)
+                                        icon  = "🔴" if real_gap >= threshold * 2 else "🟡"
+                                        sp_cols_ui[i % len(sp_cols_ui)].metric(
+                                            f"{icon} {chain_name[:24]}",
+                                            f"SCP ${scp_p:.2f}  vs  {HJL} ${hjl_p:.2f}",
+                                            f"SCP is ${real_gap:.2f} higher",
+                                            delta_color="inverse",
+                                        )
+
+                                    if show_2for and "2 for $" in view.columns:
+                                        t_grp = view[(view["WAMP"]==wamp) & (view["PkgGroup"]==pkg)].pivot_table(
+                                            index="Competitor", columns="Product", values="2 for $", aggfunc="mean"
+                                        ).round(2)
+                                        if not t_grp.empty:
+                                            st.markdown("**2-for prices:**")
+                                            st.dataframe(t_grp.style.format("${:.2f}", na_rep="—"),
+                                                         use_container_width=True,
+                                                         height=min(300, len(t_grp)*36+50))
 
             st.markdown("---")
             st.caption(f"Data: {geo['label']} · Single prices from field surveys · Flag threshold: ${threshold:.2f}")
