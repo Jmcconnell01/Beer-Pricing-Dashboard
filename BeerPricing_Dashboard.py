@@ -11371,34 +11371,15 @@ with tab1:
                     # ── Chain selector — drives Product Price Gaps below ──────
                     _chain_filter_key = f"chain_filter_{geo['label']}"
                     _chain_opts = list(_pre_dev_df["Chain"])
-                    _cf_col1, _cf_col2 = st.columns([3, 1])
-                    with _cf_col1:
-                        sel_gap_chains = st.multiselect(
-                            "🔍 Filter Product Price Gaps by chain:",
-                            _chain_opts,
-                            default=[],
-                            placeholder="All Chains",
-                            key=_chain_filter_key,
-                            help="Select one or more chains, then choose Include or Exclude."
-                        )
-                    with _cf_col2:
-                        sel_gap_chain_mode = st.radio(
-                            "Mode",
-                            ["Include", "Exclude"],
-                            key=f"chain_filter_mode_{geo['label']}",
-                            horizontal=True,
-                            disabled=(len(sel_gap_chains) == 0),
-                            help="Include: show only selected chains · Exclude: hide selected chains"
-                        )
-                    # Keep backward-compat single value for title label
-                    sel_gap_chain = sel_gap_chains[0] if len(sel_gap_chains) == 1 else ("All Chains" if not sel_gap_chains else "Multiple")
-                    st.markdown("---")
+                    sel_gap_chains     = []
+                    sel_gap_chain_mode = "Include"
+                    sel_gap_chain      = "All Chains"
 
-            # ── Controls ──────────────────────────────────────────────────────
-            # Classify chains into Small / Large format
+            # ── Unified filter bar ────────────────────────────────────────────
+            # Classify chains into format buckets
             _SMALL_FORMAT = {
                 "Circle K", "Refuel Market", "GPM Southeast", "7-Eleven", "Spinx",
-                "Parkers", "Enmark", "Buck Magement (Blue Water)", "Dollar General",
+                "Parkers", "Enmark", "Buck Magement (Blue Water)",
                 "Minuteman Food Mart", "Casey's", "Wawa", "Sheetz", "Quik Trip", "QT",
                 "RaceTrac", "Circle K GA", "Loves GA", "Murphy GA", "Nouria",
                 "Pilot GA", "QT GA", "WaWa", "Loves", "Pilot", "Flying J",
@@ -11414,23 +11395,31 @@ with tab1:
                 "Dollar General", "Dollar Tree", "Family Dollar",
                 "CVS", "Walgreens", "Rite Aid",
             }
-            _all_view_chains = set(view["Competitor"].dropna().unique()) if "Competitor" in view.columns else set()
+            _all_view_chains    = set(view["Competitor"].dropna().unique()) if "Competitor" in view.columns else set()
             _chains_small       = sorted(_all_view_chains & _SMALL_FORMAT)
             _chains_large       = sorted(_all_view_chains & _LARGE_FORMAT)
             _chains_drug_dollar = sorted(_all_view_chains & _DRUG_DOLLAR_FORMAT)
-            _chains_other       = sorted(_all_view_chains - _SMALL_FORMAT - _LARGE_FORMAT - _DRUG_DOLLAR_FORMAT)
 
-            cc1, cc2, cc3 = st.columns([1, 1, 1])
-            with cc1:
+            fc1, fc2, fc3, fc4, fc5, fc6 = st.columns([2, 1, 2, 1, 1, 1])
+            with fc1:
                 wamp_all = sorted(view["WAMP"].unique())
                 sel_wamp = st.multiselect("WAMP", wamp_all, default=[], placeholder="All WAMPs", key="d_wamp")
-            with cc2:
-                _fmt_options = ["All Formats", "Small Format", "Large Format", "Drug/Dollar"]
-                sel_chain_fmt = st.selectbox("Chain Format", _fmt_options, key="d_chain_fmt",
-                                             help="Small Format = convenience/gas · Large Format = grocery · Drug/Dollar = drug & dollar stores")
-            with cc3:
-                threshold = st.slider("Flag threshold $", 0.10, 3.0, 0.10, 0.10, key="d_thresh")
-                show_2for = st.toggle("Show 2-For", value=False, key="d_2for")
+            with fc2:
+                _fmt_options = ["All", "Small", "Large", "Drug/Dollar"]
+                sel_chain_fmt = st.selectbox("Format", _fmt_options, key="d_chain_fmt")
+            with fc3:
+                _chain_opts_all = sorted(_all_view_chains)
+                sel_gap_chains = st.multiselect("Chain", _chain_opts_all, default=[],
+                                                placeholder="All Chains", key=f"chain_filter_{geo['label']}")
+                sel_gap_chain = sel_gap_chains[0] if len(sel_gap_chains) == 1 else ("All Chains" if not sel_gap_chains else "Multiple")
+            with fc4:
+                sel_gap_chain_mode = st.radio("Mode", ["Include", "Exclude"],
+                                              key=f"chain_filter_mode_{geo['label']}",
+                                              horizontal=True, disabled=(len(sel_gap_chains) == 0))
+            with fc5:
+                threshold = st.slider("Flag $", 0.10, 3.0, 0.10, 0.10, key="d_thresh")
+                show_2for = st.toggle("2-For", value=False, key="d_2for")
+            with fc6:
                 sel_format_gap = st.radio("Format", ["Both", "Singles", "Packages"],
                                           horizontal=True, key="d_format_gap")
 
