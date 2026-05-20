@@ -11395,34 +11395,64 @@ with tab1:
                     st.markdown("---")
 
             # ── Controls ──────────────────────────────────────────────────────
-            cc1, cc2, cc3, cc4 = st.columns([1, 1, 1, 1])
+            # Classify chains into Small / Large format
+            _SMALL_FORMAT = {
+                "Circle K", "Refuel Market", "GPM Southeast", "7-Eleven", "Spinx",
+                "Parkers", "Enmark", "Buck Magement (Blue Water)", "Dollar General",
+                "Minuteman Food Mart", "Casey's", "Wawa", "Sheetz", "Quik Trip", "QT",
+                "RaceTrac", "Circle K GA", "Loves GA", "Murphy GA", "Nouria",
+                "Pilot GA", "QT GA", "WaWa", "Loves", "Pilot", "Flying J",
+                "Independent (GA)", "Independent (SC)",
+            }
+            _LARGE_FORMAT = {
+                "Food Lion", "Publix", "Walmart", "Harris Teeter", "Lowe's Foods",
+                "Kroger", "Ingles", "Aldi", "Lidl", "Target", "Sam's Club",
+                "Costco", "Trader Joe's", "Whole Foods", "Bi-Lo", "Winn-Dixie",
+                "Food City", "Giant", "Stop & Shop",
+            }
+            _DRUG_DOLLAR_FORMAT = {
+                "Dollar General", "Dollar Tree", "Family Dollar",
+                "CVS", "Walgreens", "Rite Aid",
+            }
+            _all_view_chains = set(view["Competitor"].dropna().unique()) if "Competitor" in view.columns else set()
+            _chains_small       = sorted(_all_view_chains & _SMALL_FORMAT)
+            _chains_large       = sorted(_all_view_chains & _LARGE_FORMAT)
+            _chains_drug_dollar = sorted(_all_view_chains & _DRUG_DOLLAR_FORMAT)
+            _chains_other       = sorted(_all_view_chains - _SMALL_FORMAT - _LARGE_FORMAT - _DRUG_DOLLAR_FORMAT)
+
+            cc1, cc2, cc3 = st.columns([1, 1, 1])
             with cc1:
-                wamp_all  = sorted(view["WAMP"].unique())
-                sel_wamp  = st.multiselect("WAMP", wamp_all, default=[], placeholder="All WAMPs", key="d_wamp")
+                wamp_all = sorted(view["WAMP"].unique())
+                sel_wamp = st.multiselect("WAMP", wamp_all, default=[], placeholder="All WAMPs", key="d_wamp")
             with cc2:
-                raw_groups     = view["PkgGroup"].unique().tolist()
-                ordered_groups = [g for g in PKG_GROUP_ORDER if g in raw_groups] +                                  [g for g in raw_groups if g not in PKG_GROUP_ORDER]
-                sel_pkg = st.multiselect("Package Group", ordered_groups, default=[],
-                                         placeholder="All Groups", key="d_pkg")
+                _fmt_options = ["All Formats", "Small Format", "Large Format", "Drug/Dollar"]
+                sel_chain_fmt = st.selectbox("Chain Format", _fmt_options, key="d_chain_fmt",
+                                             help="Small Format = convenience/gas · Large Format = grocery · Drug/Dollar = drug & dollar stores")
             with cc3:
-                # Wholesaler filter — only show products I carry
-                _ws_avail = sorted([w for w in view["Wholesaler"].dropna().unique() if w]) if "Wholesaler" in view.columns else []
-                _ws_opts  = ["All Wholesalers"] + _ws_avail
-                sel_wholesaler = st.selectbox("🏭 My Wholesaler", _ws_opts, key="d_wholesaler",
-                                              help="Filter gap analysis to only products carried by this wholesaler")
-                sel_format_gap = st.radio("Format", ["Both", "Singles", "Packages"],
-                                          horizontal=True, key="d_format_gap",
-                                          help="Filter SCP vs Competition gap section by product format")
-            with cc4:
                 threshold = st.slider("Flag threshold $", 0.10, 3.0, 0.10, 0.10, key="d_thresh")
                 show_2for = st.toggle("Show 2-For", value=False, key="d_2for")
+                sel_format_gap = st.radio("Format", ["Both", "Singles", "Packages"],
+                                          horizontal=True, key="d_format_gap")
 
-            # Apply filters (wholesaler filter removed from view — gap section needs both wholesalers)
-            if sel_wamp: view = view[view["WAMP"].isin(sel_wamp)]
-            if sel_pkg:  view = view[view["PkgGroup"].isin(sel_pkg)]
-            # Apply format filter for gap section using _Format column
+            # Apply WAMP filter
+            if sel_wamp:
+                view = view[view["WAMP"].isin(sel_wamp)]
+
+            # Apply chain format filter
+            if sel_chain_fmt == "Small Format" and _chains_small:
+                view = view[view["Competitor"].isin(_chains_small)]
+            elif sel_chain_fmt == "Large Format" and _chains_large:
+                view = view[view["Competitor"].isin(_chains_large)]
+            elif sel_chain_fmt == "Drug/Dollar" and _chains_drug_dollar:
+                view = view[view["Competitor"].isin(_chains_drug_dollar)]
+
+            # Apply format filter
             if sel_format_gap != "Both" and "_Format" in view.columns:
                 view = view[view["_Format"] == sel_format_gap]
+
+            # Keep sel_pkg and sel_wholesaler as no-op defaults (used downstream)
+            sel_pkg        = []
+            sel_wholesaler = "All Wholesalers"
 
             st.markdown(f"### {geo['label']}")
             st.markdown("---")
