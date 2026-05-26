@@ -11307,7 +11307,7 @@ with tab1:
             n_products = view["Product"].nunique()
 
             # ══════════════════════════════════════════════════════════════════
-            # CHAIN SUMMARY — shown before controls so it's immediately visible
+            # Derive format column, then show filters, then Chain Summary
             # ══════════════════════════════════════════════════════════════════
             # Derive format from PkgGroup name
             _singles_grps = {
@@ -11320,68 +11320,7 @@ with tab1:
                 "Wine Singles 7oz",
                 "Singles","Singles x4","Singles x6","Singles x9",
             }
-            view["_Format"] = view["PkgGroup"].apply(lambda g: "Singles" if g in _singles_grps else "Packages")
-
-            _pre_grp = view.groupby(["WAMP","PkgGroup","Competitor"])["Single"].mean().round(2).reset_index()
-            _pre_grp.columns = ["WAMP","Package","Chain","Avg Price"]
-            _pre_avail = sorted(view["Competitor"].unique())
-            sel_gap_chain = "All Chains"      # default
-            sel_gap_chains = []               # default
-            sel_gap_chain_mode = "Include"    # default
-
-            if not _pre_grp.empty:
-                _pre_pivot = _pre_grp.pivot_table(
-                    index=["WAMP","Package"], columns="Chain", values="Avg Price"
-                ).round(2)
-                _pre_pivot.columns.name = None
-                _pre_chains = [c for c in chain_cols if c in _pre_pivot.columns]
-                if _pre_chains:
-                    _pre_pivot  = _pre_pivot[_pre_chains]
-                    _pre_mktavg = _pre_pivot[_pre_chains].mean(axis=1).round(2)
-                    _pre_diff   = _pre_pivot[_pre_chains].subtract(_pre_mktavg, axis=0).round(2)
-                    _pre_dev    = _pre_diff[_pre_chains].mean().round(2).sort_values()
-
-                    # Avg Singles price per chain
-                    _sing_view  = view[view["_Format"] == "Singles"]
-                    _sing_avg   = _sing_view.groupby("Competitor")["Single"].mean().round(2)
-                    # Avg Packages price per chain
-                    _pkg_view   = view[view["_Format"] == "Packages"]
-                    _pkg_avg    = _pkg_view.groupby("Competitor")["Single"].mean().round(2)
-
-                    _pre_dev_df = pd.DataFrame({
-                        "Chain":   _pre_dev.index,
-                        "Avg Deviation from Market ($)": _pre_dev.values,
-                        "Status":  ["🟢 Below Avg" if v < 0 else ("🔴 Above Avg" if v > 0 else "➖ At Avg")
-                                    for v in _pre_dev.values],
-                        "Avg Singles Price ($)":  [_sing_avg.get(c, float("nan")) for c in _pre_dev.index],
-                        "Avg Packages Price ($)": [_pkg_avg.get(c, float("nan"))  for c in _pre_dev.index],
-                    })
-
-                    st.markdown("#### 📊 Chain Summary — Average vs. Market")
-                    st.caption("How each chain prices relative to the market average across all WAMPs and package groups. Select a chain to drill into its product price gaps below.")
-
-                    def _style_dev_pre(row):
-                        d = row["Avg Deviation from Market ($)"]
-                        if isinstance(d, float):
-                            if d < -0.25: return ["background-color:#dcfce7;color:#166534;font-weight:600"] * len(row)
-                            if d >  0.25: return ["background-color:#fee2e2;color:#991b1b;font-weight:600"] * len(row)
-                        return [""] * len(row)
-
-                    st.dataframe(
-                        _pre_dev_df.style
-                            .format({"Avg Deviation from Market ($)": "${:+.2f}",
-                                     "Avg Singles Price ($)":  "${:.2f}",
-                                     "Avg Packages Price ($)": "${:.2f}"})
-                            .apply(_style_dev_pre, axis=1),
-                        use_container_width=True, hide_index=True,
-                    )
-
-                    # ── Chain selector — drives Product Price Gaps below ──────
-                    _chain_filter_key = f"chain_filter_{geo['label']}"
-                    _chain_opts = list(_pre_dev_df["Chain"])
-                    sel_gap_chains     = []
-                    sel_gap_chain_mode = "Include"
-                    sel_gap_chain      = "All Chains"
+            view[\"_Format\"] = view[\"PkgGroup\"].apply(lambda g: \"Singles\" if g in _singles_grps else \"Packages\")
 
             # ── Unified filter bar ────────────────────────────────────────────
             # Classify chains into format buckets
@@ -11431,7 +11370,7 @@ with tab1:
                 sel_format_gap = st.radio("Format", ["Both", "Singles", "Packages"],
                                           horizontal=True, key="d_format_gap")
 
-            # Apply WAMP filter
+            # Apply filters to view — these now apply to BOTH Chain Summary AND Price Gaps
             if sel_wamp:
                 view = view[view["WAMP"].isin(sel_wamp)]
 
@@ -11443,13 +11382,75 @@ with tab1:
             elif sel_chain_fmt == "Drug/Dollar" and _chains_drug_dollar:
                 view = view[view["Competitor"].isin(_chains_drug_dollar)]
 
-            # Apply format filter
+            # Apply Singles/Packages format filter
             if sel_format_gap != "Both" and "_Format" in view.columns:
                 view = view[view["_Format"] == sel_format_gap]
 
             # Keep sel_pkg and sel_wholesaler as no-op defaults (used downstream)
             sel_pkg        = []
             sel_wholesaler = "All Wholesalers"
+
+            # ══════════════════════════════════════════════════════════════════
+            # CHAIN SUMMARY — now uses filtered view so format/WAMP filters apply
+            # ══════════════════════════════════════════════════════════════════
+            _pre_grp = view.groupby(["WAMP","PkgGroup","Competitor"])["Single"].mean().round(2).reset_index()
+            _pre_grp.columns = ["WAMP","Package","Chain","Avg Price"]
+            _pre_avail = sorted(view["Competitor"].unique())
+            sel_gap_chain = "All Chains"      # default
+            sel_gap_chains = sel_gap_chains   # already set above
+            sel_gap_chain_mode = sel_gap_chain_mode  # already set above
+
+            if not _pre_grp.empty:
+                _pre_pivot = _pre_grp.pivot_table(
+                    index=["WAMP","Package"], columns="Chain", values="Avg Price"
+                ).round(2)
+                _pre_pivot.columns.name = None
+                _pre_chains = [c for c in chain_cols if c in _pre_pivot.columns]
+                if _pre_chains:
+                    _pre_pivot  = _pre_pivot[_pre_chains]
+                    _pre_mktavg = _pre_pivot[_pre_chains].mean(axis=1).round(2)
+                    _pre_diff   = _pre_pivot[_pre_chains].subtract(_pre_mktavg, axis=0).round(2)
+                    _pre_dev    = _pre_diff[_pre_chains].mean().round(2).sort_values()
+
+                    # Avg Singles price per chain (from filtered view)
+                    _sing_view  = view[view["_Format"] == "Singles"]
+                    _sing_avg   = _sing_view.groupby("Competitor")["Single"].mean().round(2)
+                    # Avg Packages price per chain (from filtered view)
+                    _pkg_view   = view[view["_Format"] == "Packages"]
+                    _pkg_avg    = _pkg_view.groupby("Competitor")["Single"].mean().round(2)
+
+                    _pre_dev_df = pd.DataFrame({
+                        "Chain":   _pre_dev.index,
+                        "Avg Deviation from Market ($)": _pre_dev.values,
+                        "Status":  ["🟢 Below Avg" if v < 0 else ("🔴 Above Avg" if v > 0 else "➖ At Avg")
+                                    for v in _pre_dev.values],
+                        "Avg Singles Price ($)":  [_sing_avg.get(c, float("nan")) for c in _pre_dev.index],
+                        "Avg Packages Price ($)": [_pkg_avg.get(c, float("nan"))  for c in _pre_dev.index],
+                    })
+
+                    st.markdown("#### 📊 Chain Summary — Average vs. Market")
+                    st.caption("How each chain prices relative to the market average across all WAMPs and package groups. Select a chain to drill into its product price gaps below.")
+
+                    def _style_dev_pre(row):
+                        d = row["Avg Deviation from Market ($)"]
+                        if isinstance(d, float):
+                            if d < -0.25: return ["background-color:#dcfce7;color:#166534;font-weight:600"] * len(row)
+                            if d >  0.25: return ["background-color:#fee2e2;color:#991b1b;font-weight:600"] * len(row)
+                        return [""] * len(row)
+
+                    st.dataframe(
+                        _pre_dev_df.style
+                            .format({"Avg Deviation from Market ($)": "${:+.2f}",
+                                     "Avg Singles Price ($)":  "${:.2f}",
+                                     "Avg Packages Price ($)": "${:.2f}"})
+                            .apply(_style_dev_pre, axis=1),
+                        use_container_width=True, hide_index=True,
+                    )
+
+                    # ── Chain selector — drives Product Price Gaps below ──────
+                    _chain_filter_key = f"chain_filter_{geo['label']}"
+                    _chain_opts = list(_pre_dev_df["Chain"])
+                    sel_gap_chain      = "All Chains"
 
             st.markdown(f"### {geo['label']}")
             st.markdown("---")
