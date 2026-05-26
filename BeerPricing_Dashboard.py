@@ -134,20 +134,20 @@ sc_chas_data = [
     ('Core', 'Miller Lite 1/16AL', None, 1.49, 1.99, 2.09, 1.79, 1.99, 2.29, 1.99, 2.19, 1.3, None, None, None, None, None),
     ('Core Plus', 'Bud Light Lime 1/16AL', None, 2.49, 2.79, 2.39, 2.39, 2.79, 2.49, 2.69, 2.79, None, None, None, None, None, None),
     ('Core Plus', 'Michelob Ultra 1/16AL', None, 2.49, 2.79, 2.39, 2.39, 2.79, 2.49, 1.99, 2.79, None, None, None, None, None, None),
-    ('Beyond Beer', 'Clubtails Sex On the Beach 1/16C', None, 2.69, 2.69, 2.89, 2.69, 2.79, 2.99, 2.59, 2.99, None, None, None, None, None, None),
-    ('Beyond Beer', 'MD 2020 Spk Punch Sweet Blue Ras 1/16C', None, 1.79, 1.99, 2.39, 1.79, 1.99, 2.79, 1.99, 2.09, None, None, None, None, None, None),
-    ('Beyond Beer', 'Mikes HARDER Lemonade 1/16C', None, 2.69, 2.69, 2.89, 2.39, 2.79, 3.19, 2.79, 2.99, 2.5, None, None, None, None, None),
-    ('Beyond Beer', 'Ritas Lime-A-Rita 1/16C', None, 1.79, 1.99, 2.89, 1.79, 1.99, 2.79, 1.99, 2.09, None, None, None, None, None, None),
+    ('Beyond Beer-Sweet FAB', 'Clubtails Sex On the Beach 1/16C', None, 2.69, 2.69, 2.89, 2.69, 2.79, 2.99, 2.59, 2.99, None, None, None, None, None, None),
+    ('Beyond Beer-Low', 'MD 2020 Spk Punch Sweet Blue Ras 1/16C', None, 1.79, 1.99, 2.39, 1.79, 1.99, 2.79, 1.99, 2.09, None, None, None, None, None, None),
+    ('Beyond Beer-Tea and Lemonade', 'Mikes HARDER Lemonade 1/16C', None, 2.69, 2.69, 2.89, 2.39, 2.79, 3.19, 2.79, 2.99, 2.5, None, None, None, None, None),
+    ('Beyond Beer-Low', 'Ritas Lime-A-Rita 1/16C', None, 1.79, 1.99, 2.89, 1.79, 1.99, 2.79, 1.99, 2.09, None, None, None, None, None, None),
     ('Beyond Beer', "Seagram's Escapes JamaicanMeHapy 1/16C", None, 2.69, 2.69, 2.89, 2.39, 2.79, 2.79, 2.39, 2.59, 1.75, None, None, None, None, None),
-    ('Beyond Beer', 'Smirnoff Ice Smash Peach Mango 1/16C', None, 2.69, 2.69, 2.89, 2.39, 2.79, 3.19, 2.79, 2.99, None, None, None, None, None, None),
-    ('Beyond Beer', 'The Beast Unleashed Mean Green 1/16C', None, 2.69, 2.59, 2.89, 2.39, 2.79, 2.99, 2.69, 2.99, None, None, None, None, None, None),
-    ('Beyond Beer', 'Truly Hd Seltzer Wild Berry 1/16C', None, 2.89, 2.59, 2.89, 2.39, 2.79, 2.99, 2.79, 2.99, None, None, None, None, None, None),
-    ('Premium', 'Stella Artois Import 1/15C', None, 2.79, 2.99, 2.89, 2.39, 2.79, None, None, 2.99, None, None, None, None, None, None),
+    ('Beyond Beer-Sweet FAB', 'Smirnoff Ice Smash Peach Mango 1/16C', None, 2.69, 2.69, 2.89, 2.39, 2.79, 3.19, 2.79, 2.99, None, None, None, None, None, None),
+    ('Beyond Beer-Sweet FAB', 'The Beast Unleashed Mean Green 1/16C', None, 2.69, 2.59, 2.89, 2.39, 2.79, 2.99, 2.69, 2.99, None, None, None, None, None, None),
+    ('Beyond Beer-Seltzer', 'Truly Hd Seltzer Wild Berry 1/16C', None, 2.89, 2.59, 2.89, 2.39, 2.79, 2.99, 2.79, 2.99, None, None, None, None, None, None),
+    ('Super Premium', 'Stella Artois Import 1/15C', None, 2.79, 2.99, 2.89, 2.39, 2.79, None, None, 2.99, None, None, None, None, None, None),
     ('Premium', 'Heineken 1/16C', None, 2.79, 2.99, 2.89, 2.39, 2.79, None, 2.79, None, None, None, None, None, None, None),
     ('Premium', 'Modelo 1/16C', None, 2.79, 2.99, 2.89, 2.39, 2.79, None, 2.79, None, None, None, None, None, None, None),
     ('Premium', 'Corona Extra 1/16C', None, 2.79, 2.99, 2.89, 2.39, 2.79, None, 2.79, 2.99, None, None, None, None, None, None),
     ('Premium', "Redd's Apple Ale 1/16C", None, 2.69, 2.89, 2.89, 2.39, 2.79, 3.19, 2.79, 2.99, None, None, None, None, None, None),
-    ('Beyond Beer', 'Steel Reserve Alloy Spkd Pineapl 1/16C x4', None, 1.99, 1.99, 2.39, 2.39, 1.99, 2.49, None, 2.19, None, None, None, None, None, None),
+    ('Beyond Beer-Low', 'Steel Reserve Alloy Spkd Pineapl 1/16C x4', None, 1.99, 1.99, 2.39, 2.39, 1.99, 2.49, None, 2.19, None, None, None, None, None, None),
     ('Core', 'Coors Light 1/16C x4', None, 1.99, 2.09, 2.09, 1.79, 1.99, None, 1.99, 2.19, None, None, None, None, None, None),
     ('Core', 'Miller Lite 1/16C x4', None, 1.99, 2.09, 2.09, 1.79, 1.99, None, 1.99, 2.19, None, None, None, None, None, None),
     ('Core', 'Yuengling Traditional Lager 1/16C x4', None, 1.99, 1.99, 2.09, 1.79, 1.99, None, 1.99, 2.19, None, None, None, None, None, None),
@@ -161,27 +161,27 @@ sc_chas_data = [
     ('Value', 'Miller High Life 1/16C x6', None, 1.79, 1.89, 1.89, 1.79, 1.89, None, 1.49, 2.09, None, None, None, None, None, None),
     ('Value', 'Natural Light 1/16C x6', None, 1.99, 1.89, 1.89, 1.79, 1.89, None, 1.59, 1.99, None, None, None, None, None, None),
     ('Value', 'Pabst 1/16C x6', None, 1.79, 1.89, 1.89, 1.79, 1.89, None, None, 2.09, None, None, None, None, None, None),
-    ('Beyond Beer', 'Angry Orchard Crisp Apple 1/19C', None, 2.69, 2.69, 2.89, 2.39, 2.79, 2.99, 2.69, 2.99, None, None, None, None, None, None),
-    ('Beyond Beer', 'White Claw Blk Cherry HrdSeltzer 1/19C', None, 3.99, 4.09, 4.09, 3.69, None, 4.29, None, 4.49, 3.35, None, None, None, None, None),
+    ('Beyond Beer-Cider', 'Angry Orchard Crisp Apple 1/19C', None, 2.69, 2.69, 2.89, 2.39, 2.79, 2.99, 2.69, 2.99, None, None, None, None, None, None),
+    ('Beyond Beer-Seltzer', 'White Claw Blk Cherry HrdSeltzer 1/19C', None, 3.99, 4.09, 4.09, 3.69, None, 4.29, None, 4.49, 3.35, None, None, None, None, None),
     ('Super Premium', 'Goose Island Beer HugTropical 1/19C', None, 3.99, 4.09, 3.89, 3.49, 3.99, 4.19, 3.99, 4.39, 3.8, None, None, None, None, None),
     ('Super Premium', 'New Belgium Voodoo Ranger ImpIPA 1/19C', None, 3.99, 4.09, 3.89, 3.49, 3.99, 4.19, None, 4.39, None, None, None, None, None, None),
     ('Super Premium', 'Sweetwater Goin Coastal 1/19C', None, 3.99, 4.29, 3.89, 3.49, 3.99, 4.29, 4.19, 4.49, None, None, None, None, None, None),
     ('Super Premium', 'Terrapin Hopsecutioner IPA 1/19C', None, 3.99, 4.29, 3.89, 3.49, 3.99, 4.29, 4.29, 4.49, None, None, None, None, None, None),
     ('Super Premium', 'Wicked Weed Pernicious IPA 1/19C', None, 3.89, 4.09, 3.89, 3.49, 3.99, 4.19, 3.99, 4.39, 3.8, None, None, None, None, None),
-    ('Beyond Beer', 'Fireball Cinnamon Malt 16.5 1/200B', None, 3.49, None, 3.99, None, None, None, None, 4.99, None, None, None, None, None, None),
+    ('Beyond Beer-Sweet FAB', 'Fireball Cinnamon Malt 16.5 1/200B', None, 3.49, None, 3.99, None, None, None, None, 4.99, None, None, None, None, None, None),
     ('Premium', 'Heineken 1/22B', None, 4.29, 4.69, 4.09, 3.69, 4.29, 4.49, 4.49, 4.49, None, None, None, None, None, None),
     ('Super Premium', 'Stella Artois 1/22B', None, 4.29, None, 4.09, 3.69, 4.49, 4.49, 4.29, 4.49, None, None, None, None, None, None),
-    ('Beyond Beer', 'AriZona Hard Iced Tea Lemon 1/22C', None, 3.89, 4.09, 4.09, 3.69, 3.99, None, None, 4.19, None, None, None, None, None, None),
-    ('Beyond Beer', 'Mikes HARDER Lemonade 1/23.5C', None, 3.99, 4.09, 4.09, 3.69, 3.99, 4.49, 4.29, 4.49, 3.8, None, None, None, None, None),
-    ('Beyond Beer', 'Smirnoff Ice Screwdriver 1/24B', None, 3.99, 4.09, 4.09, 3.69, 3.99, 4.29, 4.29, 4.49, 3.25, None, None, None, None, None),
+    ('Beyond Beer-Tea and Lemonade', 'AriZona Hard Iced Tea Lemon 1/22C', None, 3.89, 4.09, 4.09, 3.69, 3.99, None, None, 4.19, None, None, None, None, None, None),
+    ('Beyond Beer-Tea and Lemonade', 'Mikes HARDER Lemonade 1/23.5C', None, 3.99, 4.09, 4.09, 3.69, 3.99, 4.49, 4.29, 4.49, 3.8, None, None, None, None, None),
+    ('Beyond Beer-Sweet FAB', 'Smirnoff Ice Screwdriver 1/24B', None, 3.99, 4.09, 4.09, 3.69, 3.99, 4.29, 4.29, 4.49, 3.25, None, None, None, None, None),
     ('Premium', 'Corona Extra 1/24B', None, 4.29, 4.49, 4.09, 3.69, 4.29, 4.29, 4.29, 4.49, None, None, None, None, None, None),
-    ('Beyond Beer', 'Arnold Palmer Spkd Half&Half 1/24C', None, 3.89, 4.09, 4.09, 3.69, 3.99, None, 4.29, 4.49, 3.8, None, None, None, None, None),
-    ('Beyond Beer', 'Four Loko Gold 14 pct 1/24C', None, 3.99, 3.69, 4.09, 3.69, 3.99, 3.79, 3.79, 4.19, None, None, None, None, None, None),
-    ('Beyond Beer', 'New Belgium Voodoo Ranger Tea 1/24C', None, 3.89, 4.09, 4.09, 3.69, 3.99, 4.19, None, 4.19, None, None, None, None, None, None),
-    ('Beyond Beer', 'Simply Spiked Lemonade 1/24C', None, 3.99, 4.09, 4.09, 3.69, None, None, 4.29, 4.49, 3.8, None, None, None, None, None),
-    ('Beyond Beer', 'The Beast Tea Original 1/24C', None, 3.99, 3.89, 4.09, None, 3.99, 4.19, 3.99, 4.19, None, None, None, None, None, None),
-    ('Beyond Beer', 'Truly Hd Seltzer Wild Berry 1/24C', None, 3.99, 3.89, 4.09, 3.69, 3.99, None, 3.99, 4.49, 4.45, None, None, None, None, None),
-    ('Beyond Beer', 'Twisted Tea 1/24C', None, 3.99, 3.89, 4.09, 3.99, 3.99, 4.19, 3.49, 4.19, 3.55, None, None, None, None, None),
+    ('Beyond Beer-Tea and Lemonade', 'Arnold Palmer Spkd Half&Half 1/24C', None, 3.89, 4.09, 4.09, 3.69, 3.99, None, 4.29, 4.49, 3.8, None, None, None, None, None),
+    ('Beyond Beer-Sweet FAB', 'Four Loko Gold 14 pct 1/24C', None, 3.99, 3.69, 4.09, 3.69, 3.99, 3.79, 3.79, 4.19, None, None, None, None, None, None),
+    ('Beyond Beer-Tea and Lemonade', 'New Belgium Voodoo Ranger Tea 1/24C', None, 3.89, 4.09, 4.09, 3.69, 3.99, 4.19, None, 4.19, None, None, None, None, None, None),
+    ('Beyond Beer-Tea and Lemonade', 'Simply Spiked Lemonade 1/24C', None, 3.99, 4.09, 4.09, 3.69, None, None, 4.29, 4.49, 3.8, None, None, None, None, None),
+    ('Beyond Beer-Tea and Lemonade', 'The Beast Tea Original 1/24C', None, 3.99, 3.89, 4.09, None, 3.99, 4.19, 3.99, 4.19, None, None, None, None, None, None),
+    ('Beyond Beer-Seltzer', 'Truly Hd Seltzer Wild Berry 1/24C', None, 3.99, 3.89, 4.09, 3.69, 3.99, None, 3.99, 4.49, 4.45, None, None, None, None, None),
+    ('Beyond Beer-Tea and Lemonade', 'Twisted Tea 1/24C', None, 3.99, 3.89, 4.09, 3.99, 3.99, 4.19, 3.49, 4.19, 3.55, None, None, None, None, None),
     ('Core', 'Coors Light 1/24C', None, 3.29, 3.09, 3.09, 3.19, 3.29, 3.39, 3.19, 3.29, 2.8, None, None, None, None, None),
     ('Core', 'Yuengling Traditional Lager 1/24C', None, 3.29, 3.29, 3.09, 2.99, 3.29, 3.39, 3.19, 3.29, 3.1, None, None, None, None, None),
     ('Premium', 'Corona Extra 1/24C', None, 4.29, 4.49, 4.09, 3.69, 4.29, 4.29, 4.29, 4.49, 3.8, None, None, None, None, None),
@@ -212,10 +212,10 @@ sc_chas_data = [
     ('Value', 'Olde Eng 800 1/42PL', None, 3.29, 3.29, 3.39, None, 3.49, None, None, 3.49, None, None, None, None, None, None),
     ('Value', 'Steel Res. High Gravity 1/42PL', None, 3.29, 3.29, 3.39, 2.49, 3.49, 3.49, 3.39, 3.49, 3.3, None, None, None, None, None),
     ('Wine', 'Beatbox Blue Razzberry 1/500BX', None, 4.49, 3.99, 4.49, 3.99, 4.29, 4.99, 4.49, 5.39, 3.7, None, None, None, None, None),
-    ('Beyond Beer', 'Four Loko Pregame Jungle Juice 10 pct 1/7B', None, 2.29, 2.29, 2.89, 2.39, 2.49, 2.99, 2.39, 2.29, None, None, None, None, None, None),
-    ('Beyond Beer', 'Four Loko Pregame Sour Blue Razz 13.9 pct 1/7B', None, 2.29, 2.29, 2.89, 2.39, 2.49, 2.99, 2.39, 2.29, None, None, None, None, None, None),
-    ('Beyond Beer', 'J Bootlegger Alcatraz Sour Apple 10 pct 1/7B', None, 2.29, 2.29, 2.89, 2.39, 2.49, 2.99, 2.49, 2.29, None, None, None, None, None, None),
-    ('Beyond Beer', 'J Bootlegger Sng Sng Sour Grape 12 pct 1/7B', None, 2.29, 2.29, 2.89, 2.39, 2.49, 2.99, 2.49, 2.29, None, None, None, None, None, None),
+    ('Beyond Beer-Sweet FAB', 'Four Loko Pregame Jungle Juice 10 pct 1/7B', None, 2.29, 2.29, 2.89, 2.39, 2.49, 2.99, 2.39, 2.29, None, None, None, None, None, None),
+    ('Beyond Beer-Sweet FAB', 'Four Loko Pregame Sour Blue Razz 13.9 pct 1/7B', None, 2.29, 2.29, 2.89, 2.39, 2.49, 2.99, 2.39, 2.29, None, None, None, None, None, None),
+    ('Beyond Beer-Sweet FAB', 'J Bootlegger Alcatraz Sour Apple 10 pct 1/7B', None, 2.29, 2.29, 2.89, 2.39, 2.49, 2.99, 2.49, 2.29, None, None, None, None, None, None),
+    ('Beyond Beer-Sweet FAB', 'J Bootlegger Sng Sng Sour Grape 12 pct 1/7B', None, 2.29, 2.29, 2.89, 2.39, 2.49, 2.99, 2.49, 2.29, None, None, None, None, None, None),
     ('Wine', 'Big Sipz Chocolate 1/7C', None, 3.99, 3.59, 3.99, 3.49, 3.99, 3.99, None, 4.29, None, None, None, None, None, None),
     ('Wine', 'BuzzBallz Chillers Cocoa Chiller 1/7C', None, 4.49, 3.79, 3.99, 3.99, 4.29, 3.99, 4.49, 4.69, None, None, None, None, None, None),
     ('Super Premium', 'Stella Artois 12/11B', None, 19.99, 21.99, 19.99, 19.99, 18.99, 21.99, 20.49, 21.99, 16.3, None, None, None, None, None),
@@ -227,8 +227,8 @@ sc_chas_data = [
     ('Premium', 'Corona Extra 12/12B', None, 19.99, 20.99, 19.99, 19.99, 19.99, 19.99, 20.49, 21.99, 19.65, None, None, None, None, None),
     ('Premium', 'Heineken 12/12B', None, 19.99, 21.49, 19.99, 19.99, 18.99, 19.99, 19.99, 21.99, 21.6, None, None, None, None, None),
     ('Value', 'Natural Light 12/12B', None, 11.99, 14.49, 12.69, 11.99, 12.49, None, None, 14.59, 12.45, None, None, None, None, None),
-    ('Beyond Beer', 'New Belgium Voodoo Ranger TeaVP1 12/12C', None, 17.99, 19.49, 17.99, 20.99, 18.99, 18.99, None, 18.99, None, None, None, None, None, None),
-    ('Beyond Beer', 'Twisted Tea 12/12C', None, 17.99, 19.49, 17.99, 17.99, 18.99, 18.99, 17.99, 19.49, 17.3, None, None, None, None, None),
+    ('Beyond Beer-Tea and Lemonade', 'New Belgium Voodoo Ranger TeaVP1 12/12C', None, 17.99, 19.49, 17.99, 20.99, 18.99, 18.99, None, 18.99, None, None, None, None, None, None),
+    ('Beyond Beer-Tea and Lemonade', 'Twisted Tea 12/12C', None, 17.99, 19.49, 17.99, 17.99, 18.99, 18.99, 17.99, 19.49, 17.3, None, None, None, None, None),
     ('Core', 'Bud Light 12/12C', None, 14.99, 14.49, 13.99, 14.99, 13.99, 14.49, 13.99, 15.79, 10.95, None, None, None, None, None),
     ('Core', 'Budweiser 12/12C', None, 14.99, 14.49, 13.99, 14.99, 13.99, 14.49, 13.99, 15.79, 10.95, None, None, None, None, None),
     ('Core', 'Miller Lite 12/12C', None, 14.99, 14.49, 13.99, 14.99, 13.99, 14.49, 14.99, 15.79, 10.95, None, None, None, None, None),
@@ -241,22 +241,22 @@ sc_chas_data = [
     ('Value', 'Icehouse 12/12C', None, 11.99, 13.49, 11.49, 11.99, 10.99, 11.49, 11.99, 13.49, 11.25, None, None, None, None, None),
     ('Value', 'Miller High Life 12/12C', None, 11.99, 13.49, 11.49, 11.99, 10.99, 11.49, 11.99, 13.49, 11.25, None, None, None, None, None),
     ('Value', 'Pabst 12/12C', None, 11.99, 13.49, 11.49, 11.99, 10.99, 11.49, 11.99, 13.49, 11.25, None, None, None, None, None),
-    ('Beyond Beer', 'AriZona Hard Iced Tea Variety 12/12C SC', None, 21.99, 21.99, 18.99, 20.99, 18.99, None, None, 18.99, None, None, None, None, None, None),
-    ('Beyond Beer', 'Corona Seltzer Variety Pack 2 12/12C SC', None, None, None, 19.99, 20.99, None, 19.99, 21.49, None, 18.8, None, None, None, None, None),
-    ('Beyond Beer', 'Michelob Ultra Org Seltzer VarP3 12/12C SC', None, 20.99, 21.49, 19.99, 20.99, 19.99, 19.99, None, 21.49, None, None, None, None, None, None),
-    ('Beyond Beer', 'Mikes Hard Variety Pack 12/12C SC', None, 21.99, 23.49, 19.99, None, 19.99, 19.99, None, 22.59, None, None, None, None, None, None),
-    ('Beyond Beer', 'Simply Spiked Lemonade Variety 12/12C SC', None, 21.99, 23.49, 18.99, 20.99, 19.99, 19.99, 21.49, 22.59, 20.25, None, None, None, None, None),
-    ('Beyond Beer', 'The Beast Tea Variety 12/12C SC', None, 17.99, 19.99, 17.99, None, 18.99, 18.99, None, 19.59, None, None, None, None, None, None),
-    ('Beyond Beer', 'The Beast Unleashed Variety 1 12/12C SC', None, 17.99, 19.99, 18.99, 20.99, 18.99, 18.99, 17.49, 19.59, None, None, None, None, None, None),
-    ('Beyond Beer', 'Topo Chico Hd Seltzer Marg VP 12/12C SC', None, 19.99, 23.49, 18.99, 20.99, 19.99, 19.99, 21.49, 22.59, 19.8, None, None, None, None, None),
-    ('Beyond Beer', 'Truly Hd Seltzer Berry Variety 12/12C SC', None, 19.99, 21.49, 19.99, 20.99, 19.99, 19.99, 19.99, 21.59, 18.8, None, None, None, None, None),
-    ('Beyond Beer', 'Vizzy Seltzer Variety 1 12/12C SC', None, 19.99, None, 18.99, 20.99, None, 19.99, 21.49, 22.59, 19.25, None, None, None, None, None),
-    ('Beyond Beer', 'White Claw Variety Pk HrdSeltzer 12/12C SC', None, 19.99, 22.99, 18.99, 20.99, 19.99, 19.99, 17.94, 22.59, 20.25, None, None, None, None, None),
+    ('Beyond Beer-Tea and Lemonade', 'AriZona Hard Iced Tea Variety 12/12C SC', None, 21.99, 21.99, 18.99, 20.99, 18.99, None, None, 18.99, None, None, None, None, None, None),
+    ('Beyond Beer-Seltzer', 'Corona Seltzer Variety Pack 2 12/12C SC', None, None, None, 19.99, 20.99, None, 19.99, 21.49, None, 18.8, None, None, None, None, None),
+    ('Beyond Beer-Seltzer', 'Michelob Ultra Org Seltzer VarP3 12/12C SC', None, 20.99, 21.49, 19.99, 20.99, 19.99, 19.99, None, 21.49, None, None, None, None, None, None),
+    ('Beyond Beer-Tea and Lemonade', 'Mikes Hard Variety Pack 12/12C SC', None, 21.99, 23.49, 19.99, None, 19.99, 19.99, None, 22.59, None, None, None, None, None, None),
+    ('Beyond Beer-Tea and Lemonade', 'Simply Spiked Lemonade Variety 12/12C SC', None, 21.99, 23.49, 18.99, 20.99, 19.99, 19.99, 21.49, 22.59, 20.25, None, None, None, None, None),
+    ('Beyond Beer-Tea and Lemonade', 'The Beast Tea Variety 12/12C SC', None, 17.99, 19.99, 17.99, None, 18.99, 18.99, None, 19.59, None, None, None, None, None, None),
+    ('Beyond Beer-Sweet FAB', 'The Beast Unleashed Variety 1 12/12C SC', None, 17.99, 19.99, 18.99, 20.99, 18.99, 18.99, 17.49, 19.59, None, None, None, None, None, None),
+    ('Beyond Beer-Seltzer', 'Topo Chico Hd Seltzer Marg VP 12/12C SC', None, 19.99, 23.49, 18.99, 20.99, 19.99, 19.99, 21.49, 22.59, 19.8, None, None, None, None, None),
+    ('Beyond Beer-Seltzer', 'Truly Hd Seltzer Berry Variety 12/12C SC', None, 19.99, 21.49, 19.99, 20.99, 19.99, 19.99, 19.99, 21.59, 18.8, None, None, None, None, None),
+    ('Beyond Beer-Seltzer', 'Vizzy Seltzer Variety 1 12/12C SC', None, 19.99, None, 18.99, 20.99, None, 19.99, 21.49, 22.59, 19.25, None, None, None, None, None),
+    ('Beyond Beer-Seltzer', 'White Claw Variety Pk HrdSeltzer 12/12C SC', None, 19.99, 22.99, 18.99, 20.99, 19.99, 19.99, 17.94, 22.59, 20.25, None, None, None, None, None),
     ('Core Plus', 'Bud Light Platinum 12/12C SC', None, 17.49, 18.49, 17.99, 17.99, 16.99, 17.49, 16.49, 19.59, 17, None, None, None, None, None),
     ('Core Plus', 'Michelob Ultra 12/16AL', None, 19.49, 23.49, 19.99, 21.99, 18.99, 17.49, 21.49, 21.19, 23.3, None, None, None, None, None),
-    ('Value', 'Keystone Light 15/12C', None, 9.99, 12.49, 10.99, 12.49, 10.49, None, 10.99, 12.79, 8.95, None, None, None, None, None),
+    ('Value-Low', 'Keystone Light 15/12C', None, 9.99, 12.49, 10.99, 12.49, 10.49, None, 10.99, 12.79, 8.95, None, None, None, None, None),
     ('Value', "Milwaukee's Best Ice 15/12C", None, 9.49, 11.99, 8.49, 12.49, 8.99, None, 10.49, 11.59, 10.1, None, None, None, None, None),
-    ('Value', 'Natural Light 15/12C', None, 11.99, 11.99, 12.49, 12.49, 12.49, 11.99, 12.99, 13.59, 10.95, None, None, None, None, None),
+    ('Value-High', 'Natural Light 15/12C', None, 11.99, 11.99, 12.49, 12.49, 12.49, 11.99, 12.99, 13.59, 10.95, None, None, None, None, None),
     ('Core', 'Bud Light 15/16AL', None, 23.99, 22.99, 21.99, 22.99, 21.99, 21.99, 22.49, 23.59, 22.1, None, None, None, None, None),
     ('Core', 'Budweiser 15/16AL', None, 20.99, 22.99, 21.99, 22.99, 21.99, 21.99, 22.49, 23.59, 22.1, None, None, None, None, None),
     ('Core', 'Coors Light 15/16AL', None, 20.99, 22.49, 20.99, 22.99, 21.99, 21.99, 22.49, 23.59, 20.35, None, None, None, None, None),
@@ -286,7 +286,7 @@ sc_chas_data = [
     ('Value', 'Natural Light 24/12C', None, 20.99, 20.99, 20.99, 22.49, 20.99, 20.99, 20.49, 22.99, 21.55, None, None, None, None, None),
     ('Premium', 'Coronita Extra 24/7B', None, 25.99, 26.49, 24.99, 27.99, 26.99, 26.99, 25.49, 27.59, 18.5, None, None, None, None, None),
     ('Premium', 'Modelo Modelito 24/7B', None, 25.99, 29.99, 24.99, 27.99, 26.99, 25.99, 25.49, 27.59, None, None, None, None, None, None),
-    ('Beyond Beer', 'Twisted Tea 3/24C', None, 9.99, 10.89, 10.99, None, 9.99, None, None, 11.69, None, None, None, None, None, None),
+    ('Beyond Beer-Tea and Lemonade', 'Twisted Tea 3/24C', None, 9.99, 10.89, 10.99, None, 9.99, None, None, 11.69, None, None, None, None, None, None),
     ('Core', 'Miller Lite 3/24C', None, 8.49, 8.69, 7.99, 8.49, 8.99, None, 8.49, 9.59, 7.2, None, None, None, None, None),
     ('Premium', 'Heineken 3/24C', None, 7.49, 8.79, 6.99, 7.49, 6.99, None, None, 8.19, None, None, None, None, None, None),
     ('Premium', 'Modelo 3/24C', None, 10.99, 12.49, 10.99, 10.99, 10.49, None, None, 12.79, 9.3, None, None, None, None, None),
@@ -294,11 +294,11 @@ sc_chas_data = [
     ('Core Plus', 'Michelob Ultra 3/25C', None, 9.99, 10.89, 9.49, 10.49, 9.99, None, 9.99, 10.99, 10.25, None, None, None, None, None),
     ('Value', 'Natural Light 3/25C', None, 7.49, 6.29, 7.89, 6.49, 6.99, None, None, 7.99, 7.1, None, None, None, None, None),
     ('Premium', 'Heineken 4/16C', None, 2.79, 2.99, 2.89, 2.39, 2.79, None, 2.79, 2.99, None, None, None, None, None, None),
-    ('Beyond Beer', 'Mikes Hard Lemonade 6/11B', None, 13.49, 12.79, 12.99, 12.49, 11.99, 14.99, 13.49, 14.99, 11.5, None, None, None, None, None),
-    ('Beyond Beer', 'Smirnoff Ice 6/11B', None, 13.99, 12.79, 11.99, 12.49, 11.49, 14.99, 13.49, 14.29, 11.5, None, None, None, None, None),
+    ('Beyond Beer-Tea and Lemonade', 'Mikes Hard Lemonade 6/11B', None, 13.49, 12.79, 12.99, 12.49, 11.99, 14.99, 13.49, 14.99, 11.5, None, None, None, None, None),
+    ('Beyond Beer-Sweet FAB', 'Smirnoff Ice 6/11B', None, 13.99, 12.79, 11.99, 12.49, 11.49, 14.99, 13.49, 14.29, 11.5, None, None, None, None, None),
     ('Super Premium', 'Stella Artois 6/11B', None, 13.49, 14.19, 13.99, 12.49, 12.99, 14.99, 12.99, 14.99, 11.5, None, None, None, None, None),
-    ('Beyond Beer', 'Angry Orchard Crisp Apple 6/12B', None, 14.49, 13.39, 13.99, 12.49, 12.49, 12.99, 12.99, 14.39, 11.5, None, None, None, None, None),
-    ('Beyond Beer', 'Twisted Tea 6/12B', None, 13.99, 12.29, 13.99, None, 11.99, 12.99, 12.49, 13.99, 11.1, None, None, None, None, None),
+    ('Beyond Beer-Cider', 'Angry Orchard Crisp Apple 6/12B', None, 14.49, 13.39, 13.99, 12.49, 12.49, 12.99, 12.99, 14.39, 11.5, None, None, None, None, None),
+    ('Beyond Beer-Tea and Lemonade', 'Twisted Tea 6/12B', None, 13.99, 12.29, 13.99, None, 11.99, 12.99, 12.49, 13.99, 11.1, None, None, None, None, None),
     ('Core', 'Bud Light 6/12B', None, 9.99, 9.69, 10.69, 9.49, 8.99, 10.99, 9.99, 11.59, 8.68, None, None, None, None, None),
     ('Core', 'Miller Lite 6/12B', None, 10.99, 9.59, 10.69, 9.49, 8.99, 10.99, 9.99, 10.89, 8.65, None, None, None, None, None),
     ('Core', 'Yuengling Traditional Lager 6/12B', None, 10.99, 10.59, 9.99, 9.49, 8.99, 10.99, 9.99, 10.89, 8.65, None, None, None, None, None),
@@ -326,8 +326,8 @@ sc_chas_data = [
 
 SC_MB_COMPETITORS = ['Circle K', 'Refuel Market', 'GPM Southeast', '7-Eleven', 'Parkers', 'Minuteman Food Mart', 'Dollar General', 'Food Lion', 'Publix', 'Walmart', 'Harris Teeter', "Lowe's Foods", 'Kroger']
 sc_mb_data = [
-    ('Beyond Beer', 'Clubtails Sex On the Beach 1/16C', None, 2.69, 2.69, None, 2.69, None, None, None, None, None, None, None, None, None),
-    ('Beyond Beer', 'Twisted Tea 1/24C', None, 3.99, 3.89, None, 3.99, None, None, None, None, None, None, None, None, None),
+    ('Beyond Beer-Sweet FAB', 'Clubtails Sex On the Beach 1/16C', None, 2.69, 2.69, None, 2.69, None, None, None, None, None, None, None, None, None),
+    ('Beyond Beer-Tea and Lemonade', 'Twisted Tea 1/24C', None, 3.99, 3.89, None, 3.99, None, None, None, None, None, None, None, None, None),
     ('Core', 'Coors Light 1/24C', None, 3.29, 3.09, None, 3.19, None, None, None, None, None, None, None, None, None),
     ('Premium', 'Modelo 1/24C', None, 4.29, 3.99, None, 3.99, None, None, None, None, None, None, None, None, None),
     ('Value', 'Icehouse 1/24C', None, 2.99, 2.89, None, 2.89, None, None, None, None, None, None, None, None, None),
@@ -340,15 +340,15 @@ sc_mb_data = [
     ('Core', 'Miller Lite 12/12B', None, 14.99, 15.69, None, 14.99, None, None, None, None, None, None, None, None, None),
     ('Core Plus', 'Michelob Ultra 12/12B', None, 17.99, 17.99, None, 17.99, None, None, None, None, None, None, None, None, None),
     ('Premium', 'Corona Extra 12/12B', None, 19.99, 20.99, None, 19.99, None, None, None, None, None, None, None, None, None),
-    ('Beyond Beer', 'Twisted Tea 12/12C', None, 17.99, 19.49, None, 17.99, None, None, None, None, None, None, None, None, None),
+    ('Beyond Beer-Tea and Lemonade', 'Twisted Tea 12/12C', None, 17.99, 19.49, None, 17.99, None, None, None, None, None, None, None, None, None),
     ('Core', 'Bud Light 12/12C', None, 14.99, 14.49, None, 14.99, None, None, None, None, None, None, None, None, None),
     ('Core', 'Budweiser 12/12C', None, 14.99, 14.49, None, 14.99, None, None, None, None, None, None, None, None, None),
     ('Core', 'Miller Lite 12/12C', None, 14.99, 14.49, None, 14.99, None, None, None, None, None, None, None, None, None),
     ('Core', 'Miller Lite 12/12C', None, 14.99, 14.49, None, 14.99, None, None, None, None, None, None, None, None, None),
     ('Premium', 'Modelo 12/12C', None, 19.99, 20.99, None, 19.99, None, None, None, None, None, None, None, None, None),
     ('Value', 'Busch Light 12/12C', None, 10.99, 11.99, None, 11.99, None, None, None, None, None, None, None, None, None),
-    ('Beyond Beer', 'White Claw Variety Pk HrdSeltzer 12/12C SC', None, 19.99, 22.99, None, 20.99, None, None, None, None, None, None, None, None, None),
-    ('Value', 'Natural Light 15/12C', None, 11.99, 11.99, None, 12.49, None, None, None, None, None, None, None, None, None),
+    ('Beyond Beer-Seltzer', 'White Claw Variety Pk HrdSeltzer 12/12C SC', None, 19.99, 22.99, None, 20.99, None, None, None, None, None, None, None, None, None),
+    ('Value-High', 'Natural Light 15/12C', None, 11.99, 11.99, None, 12.49, None, None, None, None, None, None, None, None, None),
     ('Core', 'Bud Light 15/16AL', None, 23.99, 22.99, None, 22.99, None, None, None, None, None, None, None, None, None),
     ('Core', 'Budweiser 15/16AL', None, 23.99, 22.99, None, 22.99, None, None, None, None, None, None, None, None, None),
     ('Core', 'Miller Lite 15/16AL', None, 23.99, 22.99, None, 22.99, None, None, None, None, None, None, None, None, None),
@@ -379,13 +379,13 @@ sc_col_data = [
     ('Core Plus', 'Michelob Ultra 24/12C', None, 26.49, 28.69, None, 28.49, None, None, None, None, None, None, None, None, None, None, None),
     ('Premium', 'Modelo 12/12C', None, 19.99, 20.99, None, 19.99, None, None, None, None, None, None, None, None, None, None, None),
     ('Premium', 'Modelo 24/12C', None, 32.99, 34.99, None, 32.99, None, None, None, None, None, None, None, None, None, None, None),
-    ('Value', 'Natural Light 15/12C', None, 11.99, 11.99, None, 12.49, None, None, None, None, None, None, None, None, None, None, None),
-    ('Beyond Beer', 'Twisted Tea 12/12C', None, 17.99, 19.49, None, 17.99, None, None, None, None, None, None, None, None, None, None, None),
+    ('Value-High', 'Natural Light 15/12C', None, 11.99, 11.99, None, 12.49, None, None, None, None, None, None, None, None, None, None, None),
+    ('Beyond Beer-Tea and Lemonade', 'Twisted Tea 12/12C', None, 17.99, 19.49, None, 17.99, None, None, None, None, None, None, None, None, None, None, None),
     ('Core', 'Miller Lite 12/12B', None, 14.99, 15.69, None, 14.99, None, None, None, None, None, None, None, None, None, None, None),
     ('Core', 'Miller Lite 12/12C', None, 14.99, 14.49, None, 14.99, None, None, None, None, None, None, None, None, None, None, None),
     ('Core', 'Miller Lite 15/16AL', None, 23.99, 22.99, None, 22.99, None, None, None, None, None, None, None, None, None, None, None),
     ('Core', 'Miller Lite 24/12C', None, 24.49, 25.99, None, 26.49, None, None, None, None, None, None, None, None, None, None, None),
-    ('Beyond Beer', 'White Claw Variety Pk HrdSeltzer 12/12C SC', None, 19.99, 22.99, None, 20.99, None, None, None, None, None, None, None, None, None, None, None),
+    ('Beyond Beer-Seltzer', 'White Claw Variety Pk HrdSeltzer 12/12C SC', None, 19.99, 22.99, None, 20.99, None, None, None, None, None, None, None, None, None, None, None),
 ]
 
 SC_GVL_COMPETITORS = ['Circle K', 'QT', 'Stop-A-Minit', '7-Eleven', 'Spinx', 'Dollar General', 'Food Lion', 'Ingles Markets', 'Walmart', 'Harris Teeter', "Lowe's Foods"]
@@ -406,13 +406,13 @@ sc_gvl_data = [
     ('Core Plus', 'Michelob Ultra 24/12C', None, 26.49, None, None, 28.49, None, None, None, None, None, None, None),
     ('Premium', 'Modelo 12/12C', None, 19.99, None, None, 19.99, None, None, None, None, None, None, None),
     ('Premium', 'Modelo 24/12C', None, 32.99, None, None, 32.99, None, None, None, None, None, None, None),
-    ('Value', 'Natural Light 15/12C', None, 11.99, None, None, 12.49, None, None, None, None, None, None, None),
-    ('Beyond Beer', 'Twisted Tea 12/12C', None, 17.99, None, None, 17.99, None, None, None, None, None, None, None),
+    ('Value-High', 'Natural Light 15/12C', None, 11.99, None, None, 12.49, None, None, None, None, None, None, None),
+    ('Beyond Beer-Tea and Lemonade', 'Twisted Tea 12/12C', None, 17.99, None, None, 17.99, None, None, None, None, None, None, None),
     ('Core', 'Miller Lite 12/12B', None, 14.99, None, None, 14.99, None, None, None, None, None, None, None),
     ('Core', 'Miller Lite 12/12C', None, 14.99, None, None, 14.99, None, None, None, None, None, None, None),
     ('Core', 'Miller Lite 15/16AL', None, 23.99, None, None, 22.99, None, None, None, None, None, None, None),
     ('Core', 'Miller Lite 24/12C', None, 24.49, None, None, 26.49, None, None, None, None, None, None, None),
-    ('Beyond Beer', 'White Claw Variety Pk HrdSeltzer 12/12C SC', None, 19.99, None, None, 20.99, None, None, None, None, None, None, None),
+    ('Beyond Beer-Seltzer', 'White Claw Variety Pk HrdSeltzer 12/12C SC', None, 19.99, None, None, 20.99, None, None, None, None, None, None, None),
 ]
 
 SC_FLO_COMPETITORS = ['Circle K', 'Refuel Market', 'GPM Southeast', '7-Eleven', 'Tucker Oil', 'Smith - Rogers', 'Enmark', 'Dollar General', 'Food Lion', 'Walmart', 'Harris Teeter', "Lowe's Foods"]
@@ -433,13 +433,13 @@ sc_flo_data = [
     ('Core Plus', 'Michelob Ultra 24/12C', None, 26.49, 28.69, None, 28.49, None, None, None, None, None, None, None, None),
     ('Premium', 'Modelo 12/12C', None, 19.99, 20.99, None, 19.99, None, None, None, None, None, None, None, None),
     ('Premium', 'Modelo 24/12C', None, 32.99, 34.99, None, 32.99, None, None, None, None, None, None, None, None),
-    ('Value', 'Natural Light 15/12C', None, 11.99, 11.99, None, 12.49, None, None, None, None, None, None, None, None),
-    ('Beyond Beer', 'Twisted Tea 12/12C', None, 17.99, 19.49, None, 17.99, None, None, None, None, None, None, None, None),
+    ('Value-High', 'Natural Light 15/12C', None, 11.99, 11.99, None, 12.49, None, None, None, None, None, None, None, None),
+    ('Beyond Beer-Tea and Lemonade', 'Twisted Tea 12/12C', None, 17.99, 19.49, None, 17.99, None, None, None, None, None, None, None, None),
     ('Core', 'Miller Lite 12/12B', None, 14.99, 15.69, None, 14.99, None, None, None, None, None, None, None, None),
     ('Core', 'Miller Lite 12/12C', None, 14.99, 14.49, None, 14.99, None, None, None, None, None, None, None, None),
     ('Core', 'Miller Lite 15/16AL', None, 23.99, 22.99, None, 22.99, None, None, None, None, None, None, None, None),
     ('Core', 'Miller Lite 24/12C', None, 24.49, 25.99, None, 26.49, None, None, None, None, None, None, None, None),
-    ('Beyond Beer', 'White Claw Variety Pk HrdSeltzer 12/12C SC', None, 19.99, 22.99, None, 20.99, None, None, None, None, None, None, None, None),
+    ('Beyond Beer-Seltzer', 'White Claw Variety Pk HrdSeltzer 12/12C SC', None, 19.99, 22.99, None, 20.99, None, None, None, None, None, None, None, None),
 ]
 
 SC_SAV_COMPETITORS = ['Circle K', 'Parkers', 'Enmark', 'Dollar General', 'Food Lion', 'Publix', 'Walmart', 'Harris Teeter', 'Kroger']
@@ -475,15 +475,15 @@ sc_sav_data = [
     ('Value', 'Busch Light 12/12B', None, None, 12.49, None, None, None, None, None, None, None),
     ('Value', 'Busch Light 12/12C', None, 10.99, 12.49, None, None, None, None, None, None, None),
     ('Value', 'Busch Light 24/12C', None, 22.99, 22.99, None, None, None, None, None, None, None),
-    ('Beyond Beer', 'Clubtails Sex On the Beach 1/16C', None, None, 2.49, None, None, None, None, None, None, None),
+    ('Beyond Beer-Sweet FAB', 'Clubtails Sex On the Beach 1/16C', None, None, 2.49, None, None, None, None, None, None, None),
     ('Premium', 'Corona Extra 12/12B', None, 19.49, None, None, None, None, None, None, None, None),
     ('Premium', 'Coronita Extra 24/7B', None, 26.99, None, None, None, None, None, None, None, None),
     ('Super Premium', 'Goose Island Beer HugTropical 1/19C', None, None, 3.99, None, None, None, None, None, None, None),
-    ('Beyond Beer', 'J Bootlegger Alcatraz Sour Apple 10 pct 1/7B', None, None, 2.99, None, None, None, None, None, None, None),
-    ('Beyond Beer', 'J Bootlegger Sng Sng Sour Grape 12 pct 1/7B', None, None, 2.99, None, None, None, None, None, None, None),
+    ('Beyond Beer-Sweet FAB', 'J Bootlegger Alcatraz Sour Apple 10 pct 1/7B', None, None, 2.99, None, None, None, None, None, None, None),
+    ('Beyond Beer-Sweet FAB', 'J Bootlegger Sng Sng Sour Grape 12 pct 1/7B', None, None, 2.99, None, None, None, None, None, None, None),
     ('Core Plus', 'Land Shark Lager 12/12C', None, None, 16.99, None, None, None, None, None, None, None),
     ('Core Plus', 'Land Shark Lager 6/12B', None, None, 12.49, None, None, None, None, None, None, None),
-    ('Beyond Beer', 'MD 2020 Spk Punch Sweet Blue Ras 1/16C', None, None, 2.49, None, None, None, None, None, None, None),
+    ('Beyond Beer-Low', 'MD 2020 Spk Punch Sweet Blue Ras 1/16C', None, None, 2.49, None, None, None, None, None, None, None),
     ('Core Plus', 'Michelob Ultra 1/16AL', None, None, 2.59, None, None, None, None, None, None, None),
     ('Core Plus', 'Michelob Ultra 8/16C', None, None, 15.99, None, None, None, None, None, None, None),
     ('Core Plus', 'Michelob Ultra 1/25C', None, None, 3.89, None, None, None, None, None, None, None),
@@ -493,7 +493,7 @@ sc_sav_data = [
     ('Core Plus', 'Michelob Ultra 24/12C', None, 28.99, 28.99, None, None, None, None, None, None, None),
     ('Core Plus', 'Michelob Ultra 6/12B', None, None, 12.49, None, None, None, None, None, None, None),
     ('Core Plus', 'Michelob Ultra 8/16C', None, None, 15.99, None, None, None, None, None, None, None),
-    ('Beyond Beer', 'Michelob Ultra Org Seltzer VarP3 12/12C SC', None, None, 18.99, None, None, None, None, None, None, None),
+    ('Beyond Beer-Seltzer', 'Michelob Ultra Org Seltzer VarP3 12/12C SC', None, None, 18.99, None, None, None, None, None, None, None),
     ('Core', 'Miller Lite 12/12B', None, 13.99, None, None, None, None, None, None, None, None),
     ('Core', 'Miller Lite 12/12B', None, 13.99, None, None, None, None, None, None, None, None),
     ('Core', 'Miller Lite 12/12C', None, 13.99, None, None, None, None, None, None, None, None),
@@ -504,18 +504,18 @@ sc_sav_data = [
     ('Premium', 'Modelo 24/12C', None, 26.99, None, None, None, None, None, None, None, None),
     ('Value', '15.99', None, None, 9.49, None, None, None, None, None, None, None),
     ('Value', 'Natural Light 1/25C', None, None, 2.89, None, None, None, None, None, None, None),
-    ('Value', 'Natural Light 15/12C', None, 12.49, 13.49, None, None, None, None, None, None, None),
+    ('Value-High', 'Natural Light 15/12C', None, 12.49, 13.49, None, None, None, None, None, None, None),
     ('Value', 'Natural Light 24/12C', None, None, 21.99, None, None, None, None, None, None, None),
     ('Super Premium', 'New Belgium Voodoo Ranger ImpIPA 1/19C', None, None, 3.99, None, None, None, None, None, None, None),
     ('Super Premium', 'New Belgium Voodoo Ranger ImpIPA 6/12B', None, None, 13.99, None, None, None, None, None, None, None),
-    ('Beyond Beer', 'New Belgium Voodoo Ranger Tea 1/24C', None, None, 3.99, None, None, None, None, None, None, None),
-    ('Beyond Beer', 'New Belgium Voodoo Ranger TeaVP1 12/12C', None, None, 17.99, None, None, None, None, None, None, None),
-    ('Beyond Beer', 'Ritas Lime-A-Rita 1/16C', None, None, 2.49, None, None, None, None, None, None, None),
-    ('Beyond Beer', 'The Beast Tea Original 1/24C', None, None, 3.79, None, None, None, None, None, None, None),
-    ('Beyond Beer', 'The Beast Unleashed Mean Green 1/16C', None, None, 2.49, None, None, None, None, None, None, None),
-    ('Beyond Beer', 'The Beast Unleashed Variety 1 12/12C SC', None, None, 16.99, None, None, None, None, None, None, None),
-    ('Beyond Beer', 'Twisted Tea 12/12C', None, 18.49, None, None, None, None, None, None, None, None),
-    ('Beyond Beer', 'White Claw Variety Pk HrdSeltzer 12/12C SC', None, 17.99, None, None, None, None, None, None, None, None),
+    ('Beyond Beer-Tea and Lemonade', 'New Belgium Voodoo Ranger Tea 1/24C', None, None, 3.99, None, None, None, None, None, None, None),
+    ('Beyond Beer-Tea and Lemonade', 'New Belgium Voodoo Ranger TeaVP1 12/12C', None, None, 17.99, None, None, None, None, None, None, None),
+    ('Beyond Beer-Low', 'Ritas Lime-A-Rita 1/16C', None, None, 2.49, None, None, None, None, None, None, None),
+    ('Beyond Beer-Tea and Lemonade', 'The Beast Tea Original 1/24C', None, None, 3.79, None, None, None, None, None, None, None),
+    ('Beyond Beer-Sweet FAB', 'The Beast Unleashed Mean Green 1/16C', None, None, 2.49, None, None, None, None, None, None, None),
+    ('Beyond Beer-Sweet FAB', 'The Beast Unleashed Variety 1 12/12C SC', None, None, 16.99, None, None, None, None, None, None, None),
+    ('Beyond Beer-Tea and Lemonade', 'Twisted Tea 12/12C', None, 18.49, None, None, None, None, None, None, None, None),
+    ('Beyond Beer-Seltzer', 'White Claw Variety Pk HrdSeltzer 12/12C SC', None, 17.99, None, None, None, None, None, None, None, None),
     ('Super Premium', 'Wicked Weed Pernicious IPA 1/19C', None, None, 3.99, None, None, None, None, None, None, None),
     ('Super Premium', 'Wicked Weed Pernicious IPA 6/12C', None, None, 15.99, None, None, None, None, None, None, None),
     ('Core', 'Yuengling Traditional Lager 1/24C', None, None, 3.39, None, None, None, None, None, None, None),
@@ -542,28 +542,28 @@ MARKETS = {
 # Columns: WAMP, Brand, Product, Wholesaler, Package, UPC, Barcode
 CHS_UPC_DATA = [
     ('Core','Bud Light','Bud Light TWS 1/16AL','Southern Crown Partners','1/16AL','18200007958','U(a18200*KKRTPs(x'),
-    ('Core','Budweiser','Budweiser 1/16AL','Southern Crown Partners','1/16AL','1820000473','U(a18200*KKORNp(u'),
+    ('Core','Budweiser','Budweiser 1/16AL','Southern Crown Partners','1/16AL','18200004735','U(a18200*KKORNp(u'),
     ('Core','Coors','Coors Light 1/16AL','Henry J. Lee Reyes','1/16AL','71990301033','U(a71990*NKLKNn(X'),
-    ('Core','Miller','Miller Lite 1/16AL','Henry J. Lee Reyes','1/16AL','3410000376','U(a34100*KKNRQk(U'),
+    ('Core','Miller','Miller Lite 1/16AL','Henry J. Lee Reyes','1/16AL','34100003760','U(a34100*KKNRQk(U'),
     ('Core Plus','Bud Light Extension','Bud Light Lime 1/16AL','Southern Crown Partners','1/16AL','18200002151','U(a18200*KKMLPl(V'),
     ('Core Plus','Michelob Ultra','Michelob Ultra 1/16AL','Southern Crown Partners','1/16AL','18200006654','U(a18200*KKQQPo(Y'),
-    ('Beyond Beer','Bold Rock Cider','Bold Rock Cider Apple 1/16C','Henry J. Lee Reyes','1/16C','85908800357','x(i59088*KKNPRr(w'),
-    ('Beyond Beer','Clubtails','Clubtails Sex On the Beach 1/16C','Southern Crown Partners','1/16C','684746400074','v(g84746*OKKKRo(Y'),
-    ('Beyond Beer','MD AB','MD 2020 Spk Punch Sweet Blue Ras 1/16C','Southern Crown Partners','1/16C','18200262098','U(a18200*MQMKTs(x'),
-    ('Beyond Beer','Mikes','Mikes HARDER Lemonade 1/16C','Henry J. Lee Reyes','1/16C','635985258759','v(g35985*MPSRPt(y'),
-    ('Beyond Beer','Ritas','Ritas Lime-A-Rita 1/16C','Southern Crown Partners','1/16C','18200001741','U(a18200*KKLROl(V'),
+    ('Beyond Beer-Cider','Bold Rock Cider','Bold Rock Cider Apple 1/16C','Henry J. Lee Reyes','1/16C','859088003577','x(i59088*KKNPRr(w'),
+    ('Beyond Beer-Sweet FAB','Clubtails','Clubtails Sex On the Beach 1/16C','Southern Crown Partners','1/16C','684746400074','v(g84746*OKKKRo(Y'),
+    ('Beyond Beer-Low','MD AB','MD 2020 Spk Punch Sweet Blue Ras 1/16C','Southern Crown Partners','1/16C','18200262098','U(a18200*MQMKTs(x'),
+    ('Beyond Beer-Tea and Lemonade','Mikes','Mikes HARDER Lemonade 1/16C','Henry J. Lee Reyes','1/16C','635985258759','v(g35985*MPSRPt(y'),
+    ('Beyond Beer-Low','Ritas','Ritas Lime-A-Rita 1/16C','Southern Crown Partners','1/16C','18200001741','U(a18200*KKLROl(V'),
     ('Beyond Beer',"Seagram's Escapes","Seagram's Escapes JamaicanMeHapy 1/16C",'Henry J. Lee Reyes','1/16C','70310011669','U(a70310*KLLQQt(y'),
-    ('Beyond Beer','Smirnoff Ice','Smirnoff Ice Smash Peach Mango 1/16C','Henry J. Lee Reyes','1/16C','82000786238','U(a82000*RSQMNs(x'),
-    ('Beyond Beer','The Beast Unleashed','The Beast Unleashed Mean Green 1/16C','Southern Crown Partners','1/16C','810117130015','x(i10117*LNKKLp(u'),
-    ('Beyond Beer','Truly','Truly Hd Seltzer Wild Berry 1/16C','Southern Crown Partners','1/16C','87692007296','U(a87692*KKRMTq(v'),
-    ('Premium','Stella Artois Import','Stella Artois Import 1/15C','Henry J. Lee Reyes','1/16C','18200005060','U(a18200*KKPKQk(U'),
-    ('Premium','Heineken','Heineken 1/16C','Southern Crown Partners','1/16C','7289000716','U(a72890*KKRLQm(W'),
+    ('Beyond Beer-Sweet FAB','Smirnoff Ice','Smirnoff Ice Smash Peach Mango 1/16C','Henry J. Lee Reyes','1/16C','82000786238','U(a82000*RSQMNs(x'),
+    ('Beyond Beer-Sweet FAB','The Beast Unleashed','The Beast Unleashed Mean Green 1/16C','Southern Crown Partners','1/16C','810117130015','x(i10117*LNKKLp(u'),
+    ('Beyond Beer-Seltzer','Truly','Truly Hd Seltzer Wild Berry 1/16C','Southern Crown Partners','1/16C','87692007296','U(a87692*KKRMTq(v'),
+    ('Super Premium','Stella Artois Import','Stella Artois Import 1/15C','Henry J. Lee Reyes','1/16C','18200005060','U(a18200*KKPKQk(U'),
+    ('Premium','Heineken','Heineken 1/16C','Southern Crown Partners','1/16C','72890007162','U(a72890*KKRLQm(W'),
     ('Premium','Modelo','Modelo 1/16C','Henry J. Lee Reyes','1/16C','80660957609','80660957609'),
     ('Premium','Corona','Corona Extra 1/16C','Henry J. Lee Reyes','1/16C','80660956886','U(a80660*TPQSSq(v'),
     ('Premium',"Redd's","Redd's Apple Ale 1/16C",'Henry J. Lee Reyes','1/16C','34100007805','U(a34100*KKRSKp(u'),
-    ('Beyond Beer','Steel Reserve','Steel Reserve Alloy Spkd Pineapl 1/16C x4','Henry J. Lee Reyes','1/16C','78250006127','U(a78250*KKQLMr(w'),
+    ('Beyond Beer-Low','Steel Reserve','Steel Reserve Alloy Spkd Pineapl 1/16C x4','Henry J. Lee Reyes','1/16C','78250006127','U(a78250*KKQLMr(w'),
     ('Core','Coors','Coors Light 1/16C x4','Henry J. Lee Reyes','1/16C','71990302023','U(a71990*NKMKMn(X'),
-    ('Core','Miller','Miller Lite 1/16C x4','Henry J. Lee Reyes','1/16C','3410000158S','U(a34100*KKLPSm(W'),
+    ('Core','Miller','Miller Lite 1/16C x4','Henry J. Lee Reyes','1/16C','034100001582','U(a34100*KKLPSm(W'),
     ('Core','Yuengling','Yuengling Traditional Lager 1/16C x4','Henry J. Lee Reyes','1/16C','89924600169','U(a89924*QKKLQt(y'),
     ('Core Plus','Michelob Ultra','Michelob Ultra 1/16C x4','Southern Crown Partners','1/16C','18200005244','U(a18200*KKPMOo(Y'),
     ('Core','Budweiser','Bud Light 1/16 C x8','Southern Crown Partners','1/16C','18200001154','18200001154'),
@@ -575,28 +575,28 @@ CHS_UPC_DATA = [
     ('Value','Miller High Life','Miller High Life 1/16C x6','Henry J. Lee Reyes','1/16C','34100000073','U(a34100*KKKKRn(X'),
     ('Value','Natural','Natural Light 1/16C x6','Southern Crown Partners','1/16C','18200000430','U(a18200*KKKONk(U'),
     ('Value','Pabst','Pabst 1/16C x6','Henry J. Lee Reyes','1/16C','22100000742','U(a22100*KKKROm(W'),
-    ('Beyond Beer','Angry Orchard','Angry Orchard Crisp Apple 1/19C','Southern Crown Partners','1/19C','87692023777','87692023777'),
-    ('Beyond Beer','White Claw','White Claw Blk Cherry HrdSeltzer 1/19C','Henry J. Lee Reyes','1/19C','635985801986','635985801986'),
-    ('Super Premium','Creature Comforts','Creature Comforts Flash Cat 1/19C','Henry J. Lee Reyes','1/19C','86001172132','x(i60011*RMLNMl(V'),
+    ('Beyond Beer-Cider','Angry Orchard','Angry Orchard Crisp Apple 1/19C','Southern Crown Partners','1/19C','87692023777','87692023777'),
+    ('Beyond Beer-Seltzer','White Claw','White Claw Blk Cherry HrdSeltzer 1/19C','Henry J. Lee Reyes','1/19C','635985801986','635985801986'),
+    ('Super Premium','Creature Comforts','Creature Comforts Flash Cat 1/19C','Henry J. Lee Reyes','1/19C','860011721321','x(i60011*RMLNMl(V'),
     ('Super Premium','Goose Island','Goose Island Beer HugTropical 1/19C','Southern Crown Partners','1/19C','736920211089','w(h36920*MLLKSt(y'),
     ('Super Premium','New Belgium','New Belgium Voodoo Ranger ImpIPA 1/19C','Southern Crown Partners','1/19C','754527010218','w(h54527*KLKMLs(x'),
     ('Super Premium','Sweetwater','Sweetwater Goin Coastal 1/19C','Henry J. Lee Reyes','1/19C','631234840041','v(g31234*SOKKOl(V'),
     ('Super Premium','Terrapin','Terrapin Hopsecutioner IPA 1/19C','Henry J. Lee Reyes','1/19C','852304007878','x(i52304*KKRSRs(x'),
     ('Super Premium','Wicked Weed','Wicked Weed Pernicious IPA 1/19C','Southern Crown Partners','1/19C','857531005284','x(i57531*KKPMSo(Y'),
-    ('Beyond Beer','Fireball','Fireball Cinnamon Malt 16.5 1/200B','Southern Crown Partners','1/200B','88004069667','88004069667'),
+    ('Beyond Beer-Sweet FAB','Fireball','Fireball Cinnamon Malt 16.5 1/200B','Southern Crown Partners','1/200B','88004069667','88004069667'),
     ('Premium','Heineken','Heineken 1/22B','Southern Crown Partners','1/22B','72890004789','U(a72890*KKORSt(y'),
     ('Super Premium','Stella Artois','Stella Artois 1/22B','Henry J. Lee Reyes','1/22B','786150000571','w(h86150*KKKPRl(V'),
-    ('Beyond Beer','AriZona Hard','AriZona Hard Iced Tea Lemon 1/22C','Henry J. Lee Reyes','1/22C','613008763732','v(g13008*RQNRNm(W'),
-    ('Beyond Beer','Mikes','Mikes HARDER Lemonade 1/23.5C','Henry J. Lee Reyes','1/23.5C','635985245834','v(g35985*MOPSNo(Y'),
-    ('Beyond Beer','Smirnoff Ice','Smirnoff Ice Screwdriver 1/24B','Henry J. Lee Reyes','1/24B','82000762126','U(a82000*RQMLMq(v'),
+    ('Beyond Beer-Tea and Lemonade','AriZona Hard','AriZona Hard Iced Tea Lemon 1/22C','Henry J. Lee Reyes','1/22C','613008763732','v(g13008*RQNRNm(W'),
+    ('Beyond Beer-Tea and Lemonade','Mikes','Mikes HARDER Lemonade 1/23.5C','Henry J. Lee Reyes','1/23.5C','635985245834','v(g35985*MOPSNo(Y'),
+    ('Beyond Beer-Sweet FAB','Smirnoff Ice','Smirnoff Ice Screwdriver 1/24B','Henry J. Lee Reyes','1/24B','82000762126','U(a82000*RQMLMq(v'),
     ('Premium','Corona','Corona Extra 1/24B','Henry J. Lee Reyes','1/24B','80660956411','U(a80660*TPQOLl(V'),
-    ('Beyond Beer','Arnold Palmer Hard Tea','Arnold Palmer Spkd Half&Half 1/24C','Henry J. Lee Reyes','1/24C','613008748296','v(g13008*ROSMTq(v'),
-    ('Beyond Beer','Four','Four Loko Gold 14 pct 1/24C','Southern Crown Partners','1/24C','849806001169','x(i49806*KKLLQt(y'),
-    ('Beyond Beer','New Belgium','New Belgium Voodoo Ranger Tea 1/24C','Southern Crown Partners','1/24C','754527011642','w(h54527*KLLQOm(W'),
-    ('Beyond Beer','Simply Spiked','Simply Spiked Lemonade 1/24C','Henry J. Lee Reyes','1/24C','810078780168','x(i10078*RSKLQs(x'),
-    ('Beyond Beer','The Beast Unleashed','The Beast Tea Original 1/24C','Southern Crown Partners','1/24C','810117131135','x(i10117*LNKNPk(U'),
-    ('Beyond Beer','Truly','Truly Hd Seltzer Wild Berry 1/24C','Southern Crown Partners','1/24C','87692009511','U(a87692*KKTPLl(V'),
-    ('Beyond Beer','Twisted Tea','Twisted Tea 1/24C','Southern Crown Partners','1/24C','87692832317','U(a87692*SNMNLr(w'),
+    ('Beyond Beer-Tea and Lemonade','Arnold Palmer Hard Tea','Arnold Palmer Spkd Half&Half 1/24C','Henry J. Lee Reyes','1/24C','613008748296','v(g13008*ROSMTq(v'),
+    ('Beyond Beer-Sweet FAB','Four','Four Loko Gold 14 pct 1/24C','Southern Crown Partners','1/24C','849806001169','x(i49806*KKLLQt(y'),
+    ('Beyond Beer-Tea and Lemonade','New Belgium','New Belgium Voodoo Ranger Tea 1/24C','Southern Crown Partners','1/24C','754527011642','w(h54527*KLLQOm(W'),
+    ('Beyond Beer-Tea and Lemonade','Simply Spiked','Simply Spiked Lemonade 1/24C','Henry J. Lee Reyes','1/24C','810078780168','x(i10078*RSKLQs(x'),
+    ('Beyond Beer-Tea and Lemonade','The Beast Unleashed','The Beast Tea Original 1/24C','Southern Crown Partners','1/24C','810117131135','x(i10117*LNKNPk(U'),
+    ('Beyond Beer-Seltzer','Truly','Truly Hd Seltzer Wild Berry 1/24C','Southern Crown Partners','1/24C','87692009511','U(a87692*KKTPLl(V'),
+    ('Beyond Beer-Tea and Lemonade','Twisted Tea','Twisted Tea 1/24C','Southern Crown Partners','1/24C','87692832317','U(a87692*SNMNLr(w'),
     ('Core','Coors','Coors Light 1/24C','Henry J. Lee Reyes','1/24C','71990300654','U(a71990*NKKQPo(Y'),
     ('Core','Yuengling','Yuengling Traditional Lager 1/24C','Henry J. Lee Reyes','1/24C','89924600244','U(a89924*QKKMOo(Y'),
     ('Premium','Corona','Corona Extra 1/24C','Henry J. Lee Reyes','1/24C','80660956435','U(a80660*TPQONp(u'),
@@ -607,7 +607,7 @@ CHS_UPC_DATA = [
     ('Value','Keystone','Keystone Light 1/24C','Henry J. Lee Reyes','1/24C','71990480240','U(a71990*OSKMOk(U'),
     ('Value','Steel Res. High Gr','Steel Res. High Gravity 1/24C','Henry J. Lee Reyes','1/24C','78250003287','U(a78250*KKNMSr(w'),
     ('Core','Bud Light','Bud Light 1/25C','Southern Crown Partners','1/25C','18200250019','U(a18200*MPKKLt(y'),
-    ('Core','Budweiser','Budweiser 1/25C','Southern Crown Partners','1/25C','1820025000','U(a18200*MPKKKm(W'),
+    ('Core','Budweiser','Budweiser 1/25C','Southern Crown Partners','1/25C','18200250002','U(a18200*MPKKKm(W'),
     ('Core Plus','Bud Light Chelada','Bud Light Chelada 1/25C','Southern Crown Partners','1/25C','18200255083','U(a18200*MPPKSn(X'),
     ('Core Plus','Bud Light Platinum','Bud Light Platinum 1/25C','Southern Crown Partners','1/25C','18200255434','U(a18200*MPPONo(Y'),
     ('Core Plus','Michelob Ultra','Michelob Ultra 1/25C','Southern Crown Partners','1/25C','18200250101','U(a18200*MPKLKl(V'),
@@ -626,30 +626,28 @@ CHS_UPC_DATA = [
     ('Value','Miller High Life','Miller High Life 1/40PL','Henry J. Lee Reyes','1/40PL','34100007638','U(a34100*KKRQNs(x'),
     ('Value','Olde English 800','Olde Eng 800 1/42PL','Henry J. Lee Reyes','1/42PL','34100006228','U(a34100*KKQMMs(x'),
     ('Value','Steel Res. High Gr','Steel Res. High Gravity 1/42PL','Henry J. Lee Reyes','1/42PL','78250003348','U(a78250*KKNNOs(x'),
-    ('Beyond Beer','Four','Four Loko Remix Blue Razz Smsh 1/500BX','Southern Crown Partners','1/500BX','84980600603','x(i49806*KKQKNo(Y'),
+    ('Beyond Beer-Sweet FAB','Four','Four Loko Remix Blue Razz Smsh 1/500BX','Southern Crown Partners','1/500BX','849806006034','x(i49806*KKQKNo(Y'),
     ('Wine','Beatbox','Beatbox Blue Razzberry 1/500BX','Southern Crown Partners','1/500BX','851133006137','x(i51133*KKQLNr(w'),
-    ('Beyond Beer','Four','Four Loko Pregame Jungle Juice 10 pct 1/7B','Southern Crown Partners','1/7B','84980600606','x(i49806*KKQKQp(u'),
-    ('Beyond Beer','Four','Four Loko Pregame Sour Blue Razz 13.9 pct 1/7B','Southern Crown Partners','1/7B','849806002906','x(i49806*KKMTKq(v'),
-    ('Beyond Beer','Johnny Bootlegger','J Bootlegger Alcatraz Sour Apple 10 pct 1/7B','Southern Crown Partners','1/7B','68474680180','v(g84746*SKLSKm(W'),
-    ('Beyond Beer','Johnny Bootlegger','J Bootlegger Sng Sng Sour Grape 12 pct 1/7B','Southern Crown Partners','1/7B','684746375105','v(g84746*NRPLKp(u'),
+    ('Beyond Beer-Sweet FAB','Four','Four Loko Pregame Jungle Juice 10 pct 1/7B','Southern Crown Partners','1/7B','849806006065','x(i49806*KKQKQp(u'),
+    ('Beyond Beer-Sweet FAB','Four','Four Loko Pregame Sour Blue Razz 13.9 pct 1/7B','Southern Crown Partners','1/7B','849806002906','x(i49806*KKMTKq(v'),
+    ('Beyond Beer-Sweet FAB','Johnny Bootlegger','J Bootlegger Alcatraz Sour Apple 10 pct 1/7B','Southern Crown Partners','1/7B','684746801802','v(g84746*SKLSKm(W'),
+    ('Beyond Beer-Sweet FAB','Johnny Bootlegger','J Bootlegger Sng Sng Sour Grape 12 pct 1/7B','Southern Crown Partners','1/7B','684746375105','v(g84746*NRPLKp(u'),
     ('Wine','Big Sipz','Big Sipz Chocolate 1/7C','Southern Crown Partners','1/7C','850028324264','x(i50028*NMOMQo(Y'),
     ('Wine','BuzzBallz Chillers','BuzzBallz Chillers Cocoa Chiller 1/7C','Henry J. Lee Reyes','1/7C','857641002890','x(i57641*KKMSTk(U'),
     ('Super Premium','Stella Artois','Stella Artois 12/11B','Henry J. Lee Reyes','12/11B','786150000144','w(h86150*KKKLOo(Y'),
     ('Core','Bud Light','Bud Light 12/12B','Southern Crown Partners','12/12B','18200007699','U(a18200*KKRQTt(y'),
-    ('Core','Budweiser','Budweiser 12/12B','Southern Crown Partners','12/12B','1820000771','U(a18200*KKRRLm(W'),
+    ('Core','Budweiser','Budweiser 12/12B','Southern Crown Partners','12/12B','18200007712','U(a18200*KKRRLm(W'),
     ('Core','Miller','Miller Lite 12/12B','Henry J. Lee Reyes','12/12B','34100575090','U(a34100*PRPKTk(U'),
-    ('Core','Miller','Miller Lite 12/12B','Henry J. Lee Reyes','12/12B','3410057509','U(a34100*PRPKTk(U'),
     ('Core Plus','Michelob Ultra','Michelob Ultra 12/12B','Southern Crown Partners','12/12B','18200059902','U(a18200*KPTTKm(W'),
     ('Premium','Corona','Corona Extra 12/12B','Henry J. Lee Reyes','12/12B','80660956152','U(a80660*TPQLPm(W'),
     ('Premium','Heineken','Heineken 12/12B','Southern Crown Partners','12/12B','72890000163','U(a72890*KKKLQn(X'),
-    ('Value','Busch Light','Busch Light 12/12B','Southern Crown Partners','12/12B','1820000989','U(a18200*KKTSTl(V'),
+    ('Value','Busch Light','Busch Light 12/12B','Southern Crown Partners','12/12B','18200009891','U(a18200*KKTSTl(V'),
     ('Value','Natural','Natural Light 12/12B','Southern Crown Partners','12/12B','18200009303','U(a18200*KKTNKn(X'),
-    ('Beyond Beer','New Belgium','New Belgium Voodoo Ranger TeaVP1 12/12C','Southern Crown Partners','12/12C','754527006518','w(h54527*KKQPLs(x'),
-    ('Beyond Beer','Twisted Tea','Twisted Tea 12/12C','Southern Crown Partners','12/12C','87692831341','U(a87692*SNLNOl(V'),
+    ('Beyond Beer-Tea and Lemonade','New Belgium','New Belgium Voodoo Ranger TeaVP1 12/12C','Southern Crown Partners','12/12C','754527006518','w(h54527*KKQPLs(x'),
+    ('Beyond Beer-Tea and Lemonade','Twisted Tea','Twisted Tea 12/12C','Southern Crown Partners','12/12C','87692831341','U(a87692*SNLNOl(V'),
     ('Core','Bud Light','Bud Light 12/12C','Southern Crown Partners','12/12C','18200530470','U(a18200*PNKORk(U'),
-    ('Core','Budweiser','Budweiser 12/12C','Southern Crown Partners','12/12C','1820011047','U(a18200*LLKORo(Y'),
+    ('Core','Budweiser','Budweiser 12/12C','Southern Crown Partners','12/12C','18200110474','U(a18200*LLKORo(Y'),
     ('Core','Miller','Miller Lite 12/12C','Henry J. Lee Reyes','12/12C','34100576363','U(a34100*PRQNQn(X'),
-    ('Core','Miller','Miller Lite 12/12C','Henry J. Lee Reyes','12/12C','3410057636','U(a34100*PRQNQn(X'),
     ('Core','Yuengling','Yuengling Traditional Lager 12/12C','Henry J. Lee Reyes','12/12C','89924278986','U(a89924*MRSTSq(v'),
     ('Core Plus','Land Shark','Land Shark Lager 12/12C','Southern Crown Partners','12/12C','18200209833','U(a18200*MKTSNn(X'),
     ('Premium','Modelo','Modelo 12/12C','Henry J. Lee Reyes','12/12C','80660957159','U(a80660*TPRLPt(y'),
@@ -658,45 +656,45 @@ CHS_UPC_DATA = [
     ('Value','Miller Ice House','Icehouse 12/12C','Henry J. Lee Reyes','12/12C','34100626020','U(a34100*QMQKMk(U'),
     ('Value','Miller High Life','Miller High Life 12/12C','Henry J. Lee Reyes','12/12C','34100016364','U(a34100*KLQNQo(Y'),
     ('Value','Pabst','Pabst 12/12C','Henry J. Lee Reyes','12/12C','22100001701','U(a22100*KKLRKl(V'),
-    ('Beyond Beer','AriZona Hard','AriZona Hard Iced Tea Variety 12/12C SC','Henry J. Lee Reyes','12/12C SC','613008763831','v(g13008*RQNSNl(V'),
-    ('Beyond Beer','Corona','Corona Seltzer Variety Pack 2 12/12C SC','Henry J. Lee Reyes','12/12C SC','33544000687','U(a33544*KKKQSr(w'),
-    ('Beyond Beer','Michelob Ultra Seltzer','Michelob Ultra Org Seltzer VarP3 12/12C SC','Southern Crown Partners','12/12C SC','18200203374','U(a18200*MKNNRo(Y'),
-    ('Beyond Beer','Mikes','Mikes Hard Variety Pack 12/12C SC','Henry J. Lee Reyes','12/12C SC','635985260011','v(g35985*MQKKLl(V'),
-    ('Beyond Beer','Simply Spiked','Simply Spiked Lemonade Variety 12/12C SC','Henry J. Lee Reyes','12/12C SC','810078780205','x(i10078*RSKMKp(u'),
-    ('Beyond Beer','The Beast Unleashed','The Beast Tea Variety 12/12C SC','Southern Crown Partners','12/12C SC','810117131241','x(i10117*LNKNMt(y'),
-    ('Beyond Beer','The Beast Unleashed','The Beast Unleashed Variety 1 12/12C SC','Southern Crown Partners','12/12C SC','810117130183','x(i10117*LNKLSn(X'),
-    ('Beyond Beer','Topo Chico','Topo Chico Hd Seltzer Marg VP 12/12C SC','Henry J. Lee Reyes','12/12C SC','810078780380','x(i10078*RSKNSk(U'),
-    ('Beyond Beer','Truly','Truly Hd Seltzer Berry Variety 12/12C SC','Southern Crown Partners','12/12C SC','87692006862','U(a87692*KKQSQm(W'),
-    ('Beyond Beer','Vizzy Seltzer','Vizzy Seltzer Variety 1 12/12C SC','Henry J. Lee Reyes','12/12C SC','34100012328','U(a34100*KLMNMs(x'),
-    ('Beyond Beer','White Claw','White Claw Variety Pk HrdSeltzer 12/12C SC','Henry J. Lee Reyes','12/12C SC','635985548904','v(g35985*POSTKo(Y'),
+    ('Beyond Beer-Tea and Lemonade','AriZona Hard','AriZona Hard Iced Tea Variety 12/12C SC','Henry J. Lee Reyes','12/12C SC','613008763831','v(g13008*RQNSNl(V'),
+    ('Beyond Beer-Seltzer','Corona','Corona Seltzer Variety Pack 2 12/12C SC','Henry J. Lee Reyes','12/12C SC','33544000687','U(a33544*KKKQSr(w'),
+    ('Beyond Beer-Seltzer','Michelob Ultra Seltzer','Michelob Ultra Org Seltzer VarP3 12/12C SC','Southern Crown Partners','12/12C SC','18200203374','U(a18200*MKNNRo(Y'),
+    ('Beyond Beer-Tea and Lemonade','Mikes','Mikes Hard Variety Pack 12/12C SC','Henry J. Lee Reyes','12/12C SC','635985260011','v(g35985*MQKKLl(V'),
+    ('Beyond Beer-Tea and Lemonade','Simply Spiked','Simply Spiked Lemonade Variety 12/12C SC','Henry J. Lee Reyes','12/12C SC','810078780205','x(i10078*RSKMKp(u'),
+    ('Beyond Beer-Tea and Lemonade','The Beast Unleashed','The Beast Tea Variety 12/12C SC','Southern Crown Partners','12/12C SC','810117131241','x(i10117*LNKNMt(y'),
+    ('Beyond Beer-Sweet FAB','The Beast Unleashed','The Beast Unleashed Variety 1 12/12C SC','Southern Crown Partners','12/12C SC','810117130183','x(i10117*LNKLSn(X'),
+    ('Beyond Beer-Seltzer','Topo Chico','Topo Chico Hd Seltzer Marg VP 12/12C SC','Henry J. Lee Reyes','12/12C SC','810078780380','x(i10078*RSKNSk(U'),
+    ('Beyond Beer-Seltzer','Truly','Truly Hd Seltzer Berry Variety 12/12C SC','Southern Crown Partners','12/12C SC','87692006862','U(a87692*KKQSQm(W'),
+    ('Beyond Beer-Seltzer','Vizzy Seltzer','Vizzy Seltzer Variety 1 12/12C SC','Henry J. Lee Reyes','12/12C SC','34100012328','U(a34100*KLMNMs(x'),
+    ('Beyond Beer-Seltzer','White Claw','White Claw Variety Pk HrdSeltzer 12/12C SC','Henry J. Lee Reyes','12/12C SC','635985548904','v(g35985*POSTKo(Y'),
     ('Core Plus','Bud Light Platinum','Bud Light Platinum 12/12C SC','Southern Crown Partners','12/12C SC','18200209949','U(a18200*MKTTOt(y'),
     ('Core Plus','Michelob Ultra','Michelob Ultra 12/16AL','Southern Crown Partners','12/16AL','18200200595','U(a18200*MKKPTp(u'),
-    ('Beyond Beer','Bold Rock Cider','Bold Rock Cider Apple 15/12C','Henry J. Lee Reyes','15/12C','85908800392','x(i59088*KKNTMs(x'),
-    ('Value','Keystone','Keystone Light 15/12C','Henry J. Lee Reyes','15/12C','71990480455','U(a71990*OSKOPp(u'),
+    ('Beyond Beer-Cider','Bold Rock Cider','Bold Rock Cider Apple 15/12C','Henry J. Lee Reyes','15/12C','859088003928','x(i59088*KKNTMs(x'),
+    ('Value-Low','Keystone','Keystone Light 15/12C','Henry J. Lee Reyes','15/12C','71990480455','U(a71990*OSKOPp(u'),
     ('Value','Milwaukees Best',"Milwaukee's Best Ice 15/12C",'Henry J. Lee Reyes','15/12C','34100303440','U(a34100*NKNOOk(U'),
-    ('Value','Natural','Natural Light 15/12C','Southern Crown Partners','15/12C','18200200779','U(a18200*MKKRRt(y'),
+    ('Value-High','Natural','Natural Light 15/12C','Southern Crown Partners','15/12C','18200200779','U(a18200*MKKRRt(y'),
     ('Core','Bud Light','Bud Light 15/16AL','Southern Crown Partners','15/16AL','18200965388','U(a18200*TQPNSs(x'),
-    ('Core','Budweiser','Budweiser 15/16AL','Southern Crown Partners','15/16AL','1820096539','U(a18200*TQPNTp(u'),
+    ('Core','Budweiser','Budweiser 15/16AL','Southern Crown Partners','15/16AL','18200965395','U(a18200*TQPNTp(u'),
     ('Core','Coors','Coors Light 15/16AL','Henry J. Lee Reyes','15/16AL','71990095277','U(a71990*KTPMRr(w'),
-    ('Core','Miller','Miller Lite 15/16AL','Henry J. Lee Reyes','15/16AL','3410057707','U(a34100*PRRKRk(U'),
-    ('Core','Miller','Miller Lite 18/12B','Henry J. Lee Reyes','18/12B','3410057256','U(a34100*PRMPQn(X'),
+    ('Core','Miller','Miller Lite 15/16AL','Henry J. Lee Reyes','15/16AL','34100577070','U(a34100*PRRKRk(U'),
+    ('Core','Miller','Miller Lite 18/12B','Henry J. Lee Reyes','18/12B','34100572563','U(a34100*PRMPQn(X'),
     ('Premium','Corona','Corona Extra 18/12B','Henry J. Lee Reyes','18/12B','80660956800','U(a80660*TPQSKk(U'),
     ('Premium','Heineken','Heineken 18/12B','Southern Crown Partners','18/12B','72890001528','U(a72890*KKLPMs(x'),
     ('Core','Bud Light','Bud Light 18/12C','Southern Crown Partners','18/12C','18200532184','U(a18200*PNMLSo(Y'),
     ('Core','Coors','Coors Light 18/12C','Henry J. Lee Reyes','18/12C','71990300173','U(a71990*NKKLRn(X'),
-    ('Core','Miller','Miller Lite 18/12C','Henry J. Lee Reyes','18/12C','3410057340','U(a34100*PRNOKt(y'),
+    ('Core','Miller','Miller Lite 18/12C','Henry J. Lee Reyes','18/12C','34100573409','U(a34100*PRNOKt(y'),
     ('Premium','Modelo','Modelo 18/12B','Henry J. Lee Reyes','18/12B','80660957579','80660957579'),
     ('Premium','Modelo','Modelo 18/12C','Henry J. Lee Reyes','18/12C','80660957111','U(a80660*TPRLLl(V'),
     ('Value','Miller Ice House','Icehouse 18/12C','Henry J. Lee Reyes','18/12C','34100623401','U(a34100*QMNOKl(V'),
     ('Value','Miller High Life','Miller High Life 18/12C','Henry J. Lee Reyes','18/12C','34100013400','U(a34100*KLNOKk(U'),
     ('Value','Pabst','Pabst 18/12C','Henry J. Lee Reyes','18/12C','22100001572','U(a22100*KKLPRm(W'),
     ('Core Plus','Michelob Ultra','Michelob Ultra 18/12C SC','Southern Crown Partners','18/12C SC','18200967214','U(a18200*TQRMLo(Y'),
-    ('Core','Budweiser','Budweiser 24/12BBB','Southern Crown Partners','24/12BBB','1820011349','U(a18200*LLNOTt(y'),
-    ('Core','Miller','Miller Lite 24/12BBB','Henry J. Lee Reyes','24/12BBB','3410057243','U(a34100*PRMONn(X'),
+    ('Core','Budweiser','Budweiser 24/12BBB','Southern Crown Partners','24/12BBB','18200113499','U(a18200*LLNOTt(y'),
+    ('Core','Miller','Miller Lite 24/12BBB','Henry J. Lee Reyes','24/12BBB','34100572433','U(a34100*PRMONn(X'),
     ('Core','Bud Light','Bud Light 24/12C','Southern Crown Partners','24/12C','18200531682','U(a18200*PNLQSm(W'),
-    ('Core','Budweiser','Budweiser 24/12C','Southern Crown Partners','24/12C','1820011168','U(a18200*LLLQSq(v'),
+    ('Core','Budweiser','Budweiser 24/12C','Southern Crown Partners','24/12C','18200111686','U(a18200*LLLQSq(v'),
     ('Core','Coors','Coors Light 24/12C','Henry J. Lee Reyes','24/12C','71990316006','U(a71990*NLQKKq(v'),
-    ('Core','Miller','Miller Lite 24/12C','Henry J. Lee Reyes','24/12C','3410057306','U(a34100*PRNKQp(u'),
+    ('Core','Miller','Miller Lite 24/12C','Henry J. Lee Reyes','24/12C','34100573065','U(a34100*PRNKQp(u'),
     ('Core','Yuengling','Yuengling Traditional Lager 24/12C','Henry J. Lee Reyes','24/12C','89924880073','U(a89924*SSKKRn(X'),
     ('Core Plus','Michelob Ultra','Michelob Ultra 24/12C','Southern Crown Partners','24/12C','18200967153','U(a18200*TQRLPn(X'),
     ('Premium','Heineken','Heineken 24/12C','Southern Crown Partners','24/12C','72890000279','U(a72890*KKKMRt(y'),
@@ -708,7 +706,7 @@ CHS_UPC_DATA = [
     ('Value','Natural','Natural Light 24/12C','Southern Crown Partners','24/12C','18200151682','U(a18200*LPLQSm(W'),
     ('Premium','Corona','Coronita Extra 24/7B','Henry J. Lee Reyes','24/7B','80660954080','U(a80660*TPOKSk(U'),
     ('Premium','Modelo','Modelo Modelito 24/7B','Henry J. Lee Reyes','24/7B','33544000212','U(a33544*KKKMLm(W'),
-    ('Beyond Beer','Twisted Tea','Twisted Tea 3/24C','Southern Crown Partners','3/24C','87692009832','U(a87692*KKTSNm(W'),
+    ('Beyond Beer-Tea and Lemonade','Twisted Tea','Twisted Tea 3/24C','Southern Crown Partners','3/24C','87692009832','U(a87692*KKTSNm(W'),
     ('Core','Miller','Miller Lite 3/24C','Henry J. Lee Reyes','3/24C','34100576639','U(a34100*PRQQNt(y'),
     ('Premium','Heineken','Heineken 3/24C','Southern Crown Partners','3/24C','72890006448','U(a72890*KKQOOs(x'),
     ('Premium','Modelo','Modelo 3/24C','Henry J. Lee Reyes','3/24C','80660957746','U(a80660*TPRROq(v'),
@@ -716,11 +714,11 @@ CHS_UPC_DATA = [
     ('Core Plus','Michelob Ultra','Michelob Ultra 3/25C','Southern Crown Partners','3/25C','18200249815','U(a18200*MOTSLp(u'),
     ('Value','Natural','Natural Light 3/25C','Southern Crown Partners','3/25C','18200219870','U(a18200*MLTSRk(U'),
     ('Premium','Heineken','Heineken 4/16C','Southern Crown Partners','4/16C','72890000835','U(a72890*KKKSNp(u'),
-    ('Beyond Beer','Mikes','Mikes Hard Lemonade 6/11B','Henry J. Lee Reyes','6/11B','635985100621','v(g35985*LKKQMl(V'),
-    ('Beyond Beer','Smirnoff Ice','Smirnoff Ice 6/11B','Henry J. Lee Reyes','6/11B','82000723851','U(a82000*RMNSPl(V'),
+    ('Beyond Beer-Tea and Lemonade','Mikes','Mikes Hard Lemonade 6/11B','Henry J. Lee Reyes','6/11B','635985100621','v(g35985*LKKQMl(V'),
+    ('Beyond Beer-Sweet FAB','Smirnoff Ice','Smirnoff Ice 6/11B','Henry J. Lee Reyes','6/11B','82000723851','U(a82000*RMNSPl(V'),
     ('Super Premium','Stella Artois','Stella Artois 6/11B','Henry J. Lee Reyes','6/11B','786150000014','w(h86150*KKKKLo(Y'),
-    ('Beyond Beer','Angry Orchard','Angry Orchard Crisp Apple 6/12B','Southern Crown Partners','6/12B','87692821021','U(a87692*SMLKMl(V'),
-    ('Beyond Beer','Twisted Tea','Twisted Tea 6/12B','Southern Crown Partners','6/12B','87692831020','U(a87692*SNLKMk(U'),
+    ('Beyond Beer-Cider','Angry Orchard','Angry Orchard Crisp Apple 6/12B','Southern Crown Partners','6/12B','87692821021','U(a87692*SMLKMl(V'),
+    ('Beyond Beer-Tea and Lemonade','Twisted Tea','Twisted Tea 6/12B','Southern Crown Partners','6/12B','87692831020','U(a87692*SNLKMk(U'),
     ('Core','Bud Light','Bud Light 6/12B','Southern Crown Partners','6/12B','18200008337','U(a18200*KKSNNr(w'),
     ('Core','Miller','Miller Lite 6/12B','Henry J. Lee Reyes','6/12B','34100575052','U(a34100*PRPKPm(W'),
     ('Core','Yuengling','Yuengling Traditional Lager 6/12B','Henry J. Lee Reyes','6/12B','89924278917','U(a89924*MRSTLr(w'),
@@ -750,30 +748,30 @@ CHS_UPC_DATA = [
 # Columns: WAMP, Brand, Product, Wholesaler, Package, UPC, Barcode
 MYR_UPC_DATA = [
     ('Core','','Bud Light TWS 1/16AL','Southern Crown Partners','1/16AL','18200007958','U(a18200*KKRTPs(x'),
-    ('Core','','Budweiser 1/16AL','Southern Crown Partners','1/16AL','1820000473','U(a18200*KKORNp(u'),
+    ('Core','','Budweiser 1/16AL','Southern Crown Partners','1/16AL','18200004735','U(a18200*KKORNp(u'),
     ('Core','','Coors Light 1/16AL','Yahnis','1/16AL','71990301033','U(a71990*NKLKNn(X'),
-    ('Core','','Miller Lite 1/16AL','Yahnis','1/16AL','3410000376','U(a34100*KKNRQk(U'),
+    ('Core','','Miller Lite 1/16AL','Yahnis','1/16AL','34100003760','U(a34100*KKNRQk(U'),
     ('Core Plus','','Bud Light Lime 1/16AL','Southern Crown Partners','1/16AL','18200002151','U(a18200*KKMLPl(V'),
     ('Core Plus','','Michelob Ultra 1/16AL','Southern Crown Partners','1/16AL','18200006654','U(a18200*KKQQPo(Y'),
-    ('Beyond Beer','','MD 2020 Spk Punch Sweet Blue Ras 1/16C','Southern Crown Partners','1/16C','18200262098','U(a18200*MQMKTs(x'),
-    ('Beyond Beer','','Ritas Lime-A-Rita 1/16C','Southern Crown Partners','1/16C','18200001741','U(a18200*KKLROl(V'),
-    ('Beyond Beer','','The Beast Unleashed Mean Green 1/16C','Southern Crown Partners','1/16C','810117130015','x(i10117*LNKKLp(u'),
-    ('Beyond Beer','','Truly Hd Seltzer Wild Berry 1/16C','Southern Crown Partners','1/16C','87692007296','U(a87692*KKRMTq(v'),
-    ('Beyond Beer','','Bold Rock Cider Apple 1/16C','Yahnis','1/16C','85908800357','x(i59088*KKNPRr(w'),
-    ('Beyond Beer','','Clubtails Sex On the Beach 1/16C','Yahnis','1/16C','684746400074','v(g84746*OKKKRo(Y'),
-    ('Beyond Beer','','Mikes HARDER Lemonade 1/16C','Yahnis','1/16C','635985258759','v(g35985*MPSRPt(y'),
+    ('Beyond Beer-Low','','MD 2020 Spk Punch Sweet Blue Ras 1/16C','Southern Crown Partners','1/16C','18200262098','U(a18200*MQMKTs(x'),
+    ('Beyond Beer-Low','','Ritas Lime-A-Rita 1/16C','Southern Crown Partners','1/16C','18200001741','U(a18200*KKLROl(V'),
+    ('Beyond Beer-Sweet FAB','','The Beast Unleashed Mean Green 1/16C','Southern Crown Partners','1/16C','810117130015','x(i10117*LNKKLp(u'),
+    ('Beyond Beer-Seltzer','','Truly Hd Seltzer Wild Berry 1/16C','Southern Crown Partners','1/16C','87692007296','U(a87692*KKRMTq(v'),
+    ('Beyond Beer-Cider','','Bold Rock Cider Apple 1/16C','Yahnis','1/16C','859088003577','x(i59088*KKNPRr(w'),
+    ('Beyond Beer-Sweet FAB','','Clubtails Sex On the Beach 1/16C','Yahnis','1/16C','684746400074','v(g84746*OKKKRo(Y'),
+    ('Beyond Beer-Tea and Lemonade','','Mikes HARDER Lemonade 1/16C','Yahnis','1/16C','635985258759','v(g35985*MPSRPt(y'),
     ('Beyond Beer','',"Seagram's Escapes JamaicanMeHapy 1/16C",'Yahnis','1/16C','70310011669','U(a70310*KLLQQt(y'),
-    ('Beyond Beer','','Smirnoff Ice Smash Peach Mango 1/16C','Yahnis','1/16C','82000786238','U(a82000*RSQMNs(x'),
+    ('Beyond Beer-Sweet FAB','','Smirnoff Ice Smash Peach Mango 1/16C','Yahnis','1/16C','82000786238','U(a82000*RSQMNs(x'),
     ('Premium','','Corona Extra 1/16C','Southern Crown Partners','1/16C','80660956886','U(a80660*TPQSSq(v'),
-    ('Premium','','Heineken 1/16C','Yahnis','1/16C','7289000716','U(a72890*KKRLQm(W'),
+    ('Premium','','Heineken 1/16C','Yahnis','1/16C','72890007162','U(a72890*KKRLQm(W'),
     ('Premium','',"Redd's Apple Ale 1/16C",'Yahnis','1/16C','34100007805','U(a34100*KKRSKp(u'),
     ('Super Premium','','Stella Artois Import 1/15C','Southern Crown Partners','1/16C','18200005060','U(a18200*KKPKQk(U'),
-    ('Beyond Beer','','Steel Reserve Alloy Spkd Pineapl 1/16C x4','Yahnis','1/16C x4','78250006127','U(a78250*KKQLMr(w'),
+    ('Beyond Beer-Low','','Steel Reserve Alloy Spkd Pineapl 1/16C x4','Yahnis','1/16C x4','78250006127','U(a78250*KKQLMr(w'),
     ('Core','','Coors Light 1/16C x4','Yahnis','1/16C x4','71990302023','U(a71990*NKMKMn(X'),
-    ('Core','','Miller Lite 1/16C x4','Yahnis','1/16C x4','3410000158S','U(a34100*KKLPSm(W'),
+    ('Core','','Miller Lite 1/16C x4','Yahnis','1/16C x4','034100001582','U(a34100*KKLPSm(W'),
     ('Core','','Yuengling Traditional Lager 1/16C x4','Yahnis','1/16C x4','89924600169','U(a89924*QKKLQt(y'),
     ('Core Plus','','Michelob Ultra 1/16C x4','Southern Crown Partners','1/16C x4','18200005244','U(a18200*KKPMOo(Y'),
-    ('Core','','Budweiser 1/16C x6','Southern Crown Partners','1/16C x6','1820000018S','U(a18200*KKKLSs(x'),
+    ('Core','','Budweiser 1/16C x6','Southern Crown Partners','1/16C x6','018200000188','U(a18200*KKKLSs(x'),
     ('Value','','Bud Ice 1/16C x6','Southern Crown Partners','1/16C x6','18200002434','U(a18200*KKMONo(Y'),
     ('Value','','Bud Ice 1/16C x6','Southern Crown Partners','1/16C x6','18200002434','U(a18200*KKMONo(Y'),
     ('Value','','Busch Light 1/16C x6','Southern Crown Partners','1/16C x6','18200004261','U(a18200*KKOMQl(V'),
@@ -781,28 +779,28 @@ MYR_UPC_DATA = [
     ('Value','','Icehouse 1/16C x6','Yahnis','1/16C x6','34100008826','U(a34100*KKSSMq(v'),
     ('Value','','Miller High Life 1/16C x6','Yahnis','1/16C x6','34100000073','U(a34100*KKKKRn(X'),
     ('Value','','Pabst 1/16C x6','Yahnis','1/16C x6','22100000742','U(a22100*KKKROm(W'),
-    ('Beyond Beer','','Angry Orchard Crisp Apple 1/19C','Southern Crown Partners','1/19C','87692023777','87692023777'),
-    ('Beyond Beer','','White Claw Blk Cherry HrdSeltzer 1/19C','Yahnis','1/19C','635985801986','635985801986'),
+    ('Beyond Beer-Cider','','Angry Orchard Crisp Apple 1/19C','Southern Crown Partners','1/19C','87692023777','87692023777'),
+    ('Beyond Beer-Seltzer','','White Claw Blk Cherry HrdSeltzer 1/19C','Yahnis','1/19C','635985801986','635985801986'),
     ('Super Premium','','Goose Island Beer HugTropical 1/19C','Southern Crown Partners','1/19C','736920211089','w(h36920*MLLKSt(y'),
     ('Super Premium','','New Belgium Voodoo Ranger ImpIPA 1/19C','Southern Crown Partners','1/19C','754527010218','w(h54527*KLKMLs(x'),
     ('Super Premium','','Wicked Weed Pernicious IPA 1/19C','Southern Crown Partners','1/19C','857531005284','x(i57531*KKPMSo(Y'),
-    ('Super Premium','','Creature Comforts Flash Cat 1/19C','Yahnis','1/19C','86001172132','x(i60011*RMLNMl(V'),
+    ('Super Premium','','Creature Comforts Flash Cat 1/19C','Yahnis','1/19C','860011721321','x(i60011*RMLNMl(V'),
     ('Super Premium','','Sweetwater Goin Coastal 1/19C','Yahnis','1/19C','631234840041','v(g31234*SOKKOl(V'),
     ('Super Premium','','Terrapin Hopsecutioner IPA 1/19C','Southern Crown Partners','1/19C','852304007878','x(i52304*KKRSRs(x'),
-    ('Beyond Beer','','Fireball Cinnamon Malt 16.5 1/200B','Southern Crown Partners','1/200B','88004069667','88004069667'),
+    ('Beyond Beer-Sweet FAB','','Fireball Cinnamon Malt 16.5 1/200B','Southern Crown Partners','1/200B','88004069667','88004069667'),
     ('Premium','','Heineken 1/22B','Yahnis','1/22B','72890004789','U(a72890*KKORSt(y'),
     ('Super Premium','','Stella Artois 1/22B','Southern Crown Partners','1/22B','786150000571','w(h86150*KKKPRl(V'),
-    ('Beyond Beer','','AriZona Hard Iced Tea Lemon 1/22C','Yahnis','1/22C','613008763732','v(g13008*RQNRNm(W'),
-    ('Beyond Beer','','Mikes HARDER Lemonade 1/23.5C','Yahnis','1/23.5C','635985245834','v(g35985*MOPSNo(Y'),
-    ('Beyond Beer','','Smirnoff Ice Screwdriver 1/24B','Yahnis','1/24B','82000762126','U(a82000*RQMLMq(v'),
+    ('Beyond Beer-Tea and Lemonade','','AriZona Hard Iced Tea Lemon 1/22C','Yahnis','1/22C','613008763732','v(g13008*RQNRNm(W'),
+    ('Beyond Beer-Tea and Lemonade','','Mikes HARDER Lemonade 1/23.5C','Yahnis','1/23.5C','635985245834','v(g35985*MOPSNo(Y'),
+    ('Beyond Beer-Sweet FAB','','Smirnoff Ice Screwdriver 1/24B','Yahnis','1/24B','82000762126','U(a82000*RQMLMq(v'),
     ('Premium','','Corona Extra 1/24B','Southern Crown Partners','1/24B','80660956411','U(a80660*TPQOLl(V'),
-    ('Beyond Beer','','Four Loko Gold 14 pct 1/24C','Southern Crown Partners','1/24C','849806001169','x(i49806*KKLLQt(y'),
-    ('Beyond Beer','','New Belgium Voodoo Ranger Tea 1/24C','Southern Crown Partners','1/24C','754527011642','w(h54527*KLLQOm(W'),
-    ('Beyond Beer','','The Beast Tea Original 1/24C','Southern Crown Partners','1/24C','810117131135','x(i10117*LNKNPk(U'),
-    ('Beyond Beer','','Truly Hd Seltzer Wild Berry 1/24C','Southern Crown Partners','1/24C','87692009511','U(a87692*KKTPLl(V'),
-    ('Beyond Beer','','Twisted Tea 1/24C','Southern Crown Partners','1/24C','87692832317','U(a87692*SNMNLr(w'),
-    ('Beyond Beer','','Arnold Palmer Spkd Half&Half 1/24C','Yahnis','1/24C','613008748296','v(g13008*ROSMTq(v'),
-    ('Beyond Beer','','Simply Spiked Lemonade 1/24C','Yahnis','1/24C','810078780168','x(i10078*RSKLQs(x'),
+    ('Beyond Beer-Sweet FAB','','Four Loko Gold 14 pct 1/24C','Southern Crown Partners','1/24C','849806001169','x(i49806*KKLLQt(y'),
+    ('Beyond Beer-Tea and Lemonade','','New Belgium Voodoo Ranger Tea 1/24C','Southern Crown Partners','1/24C','754527011642','w(h54527*KLLQOm(W'),
+    ('Beyond Beer-Tea and Lemonade','','The Beast Tea Original 1/24C','Southern Crown Partners','1/24C','810117131135','x(i10117*LNKNPk(U'),
+    ('Beyond Beer-Seltzer','','Truly Hd Seltzer Wild Berry 1/24C','Southern Crown Partners','1/24C','87692009511','U(a87692*KKTPLl(V'),
+    ('Beyond Beer-Tea and Lemonade','','Twisted Tea 1/24C','Southern Crown Partners','1/24C','87692832317','U(a87692*SNMNLr(w'),
+    ('Beyond Beer-Tea and Lemonade','','Arnold Palmer Spkd Half&Half 1/24C','Yahnis','1/24C','613008748296','v(g13008*ROSMTq(v'),
+    ('Beyond Beer-Tea and Lemonade','','Simply Spiked Lemonade 1/24C','Yahnis','1/24C','810078780168','x(i10078*RSKLQs(x'),
     ('Core','','Coors Light 1/24C','Yahnis','1/24C','71990300654','U(a71990*NKKQPo(Y'),
     ('Core','','Yuengling Traditional Lager 1/24C','Yahnis','1/24C','89924600244','U(a89924*QKKMOo(Y'),
     ('Premium','','Corona Extra 1/24C','Southern Crown Partners','1/24C','80660956435','U(a80660*TPQONp(u'),
@@ -813,7 +811,7 @@ MYR_UPC_DATA = [
     ('Value','','Keystone Light 1/24C','Yahnis','1/24C','71990480240','U(a71990*OSKMOk(U'),
     ('Value','','Steel Res. High Gravity 1/24C','Yahnis','1/24C','78250003287','U(a78250*KKNMSr(w'),
     ('Core','','Bud Light 1/25C','Southern Crown Partners','1/25C','18200250019','U(a18200*MPKKLt(y'),
-    ('Core','','Budweiser 1/25C','Southern Crown Partners','1/25C','1820025000','U(a18200*MPKKKm(W'),
+    ('Core','','Budweiser 1/25C','Southern Crown Partners','1/25C','18200250002','U(a18200*MPKKKm(W'),
     ('Core Plus','','Bud Light Chelada 1/25C','Southern Crown Partners','1/25C','18200255083','U(a18200*MPPKSn(X'),
     ('Core Plus','','Bud Light Platinum 1/25C','Southern Crown Partners','1/25C','18200255434','U(a18200*MPPONo(Y'),
     ('Core Plus','','Michelob Ultra 1/25C','Southern Crown Partners','1/25C','18200250101','U(a18200*MPKLKl(V'),
@@ -823,7 +821,7 @@ MYR_UPC_DATA = [
     ('Value','','Natural Light 1/25C','Southern Crown Partners','1/25C','18200250026','U(a18200*MPKKMq(v'),
     ('Value','','Pabst 1/25C','Yahnis','1/25C','22100000049','U(a22100*KKKKOt(y'),
     ('Value','','Schlitz Malt 1/25C','Yahnis','1/25C','52300000457','U(a52300*KKKOPr(w'),
-    ('Core','','Bud Light 1/32B','Southern Crown Partners','1/32B','1820000117','U(a18200*KKLLRs(x'),
+    ('Core','','Bud Light 1/32B','Southern Crown Partners','1/32B','18200001178','U(a18200*KKLLRs(x'),
     ('Core Plus','','Michelob Ultra 1/32B','Southern Crown Partners','1/32B','18200002724','18200002724'),
     ('Premium','','Corona Familiar 1/32B','Southern Crown Partners','1/32B','80660956831','U(a80660*TPQSNl(V'),
     ('Premium','','Modelo 1/32B','Southern Crown Partners','1/32B','33544950906','33544950906'),
@@ -833,30 +831,28 @@ MYR_UPC_DATA = [
     ('Value','','Miller High Life 1/40PL','Yahnis','1/40PL','34100007638','U(a34100*KKRQNs(x'),
     ('Value','','Olde Eng 800 1/42PL','Yahnis','1/42PL','34100006228','U(a34100*KKQMMs(x'),
     ('Value','','Steel Res. High Gravity 1/42PL','Yahnis','1/42PL','78250003348','U(a78250*KKNNOs(x'),
-    ('Beyond Beer','','Four Loko Remix Blue Razz Smsh 1/500BX','Southern Crown Partners','1/500BX','84980600603','x(i49806*KKQKNo(Y'),
+    ('Beyond Beer-Sweet FAB','','Four Loko Remix Blue Razz Smsh 1/500BX','Southern Crown Partners','1/500BX','849806006034','x(i49806*KKQKNo(Y'),
     ('Wine','','Beatbox Blue Razzberry 1/500BX','Southern Crown Partners','1/500BX','851133006137','x(i51133*KKQLNr(w'),
-    ('Beyond Beer','','Four Loko Pregame Jungle Juice 10 pct 1/7B','Southern Crown Partners','1/7B','84980600606','x(i49806*KKQKQp(u'),
-    ('Beyond Beer','','Four Loko Pregame Sour Blue Razz 13.9 pct 1/7B','Southern Crown Partners','1/7B','849806002906','x(i49806*KKMTKq(v'),
-    ('Beyond Beer','','J Bootlegger Alcatraz Sour Apple 10 pct 1/7B','Yahnis','1/7B','68474680180','v(g84746*SKLSKm(W'),
-    ('Beyond Beer','','J Bootlegger Sng Sng Sour Grape 12 pct 1/7B','Yahnis','1/7B','684746375105','v(g84746*NRPLKp(u'),
+    ('Beyond Beer-Sweet FAB','','Four Loko Pregame Jungle Juice 10 pct 1/7B','Southern Crown Partners','1/7B','849806006065','x(i49806*KKQKQp(u'),
+    ('Beyond Beer-Sweet FAB','','Four Loko Pregame Sour Blue Razz 13.9 pct 1/7B','Southern Crown Partners','1/7B','849806002906','x(i49806*KKMTKq(v'),
+    ('Beyond Beer-Sweet FAB','','J Bootlegger Alcatraz Sour Apple 10 pct 1/7B','Yahnis','1/7B','684746801802','v(g84746*SKLSKm(W'),
+    ('Beyond Beer-Sweet FAB','','J Bootlegger Sng Sng Sour Grape 12 pct 1/7B','Yahnis','1/7B','684746375105','v(g84746*NRPLKp(u'),
     ('Wine','','Big Sipz Chocolate 1/7C','Southern Crown Partners','1/7C','850028324264','x(i50028*NMOMQo(Y'),
     ('Wine','','BuzzBallz Chillers Cocoa Chiller 1/7C','Yahnis','1/7C','857641002890','x(i57641*KKMSTk(U'),
     ('Super Premium','','Stella Artois 12/11B','Southern Crown Partners','12/11B','786150000144','w(h86150*KKKLOo(Y'),
     ('Core','','Bud Light 12/12B','Southern Crown Partners','12/12B','18200007699','U(a18200*KKRQTt(y'),
-    ('Core','','Budweiser 12/12B','Southern Crown Partners','12/12B','1820000771','U(a18200*KKRRLm(W'),
+    ('Core','','Budweiser 12/12B','Southern Crown Partners','12/12B','18200007712','U(a18200*KKRRLm(W'),
     ('Core','','Miller Lite 12/12B','Yahnis','12/12B','34100575090','U(a34100*PRPKTk(U'),
-    ('Core','','Miller Lite 12/12B','Yahnis','12/12B','3410057509','U(a34100*PRPKTk(U'),
     ('Core Plus','','Michelob Ultra 12/12B','Southern Crown Partners','12/12B','18200059902','U(a18200*KPTTKm(W'),
     ('Premium','','Corona Extra 12/12B','Southern Crown Partners','12/12B','80660956152','U(a80660*TPQLPm(W'),
     ('Premium','','Heineken 12/12B','Yahnis','12/12B','72890000163','U(a72890*KKKLQn(X'),
-    ('Value','','Busch Light 12/12B','Southern Crown Partners','12/12B','1820000989','U(a18200*KKTSTl(V'),
+    ('Value','','Busch Light 12/12B','Southern Crown Partners','12/12B','18200009891','U(a18200*KKTSTl(V'),
     ('Value','','Natural Light 12/12B','Southern Crown Partners','12/12B','18200009303','U(a18200*KKTNKn(X'),
-    ('Beyond Beer','','New Belgium Voodoo Ranger TeaVP1 12/12C','Southern Crown Partners','12/12C','754527006518','w(h54527*KKQPLs(x'),
-    ('Beyond Beer','','Twisted Tea 12/12C','Southern Crown Partners','12/12C','87692831341','U(a87692*SNLNOl(V'),
+    ('Beyond Beer-Tea and Lemonade','','New Belgium Voodoo Ranger TeaVP1 12/12C','Southern Crown Partners','12/12C','754527006518','w(h54527*KKQPLs(x'),
+    ('Beyond Beer-Tea and Lemonade','','Twisted Tea 12/12C','Southern Crown Partners','12/12C','87692831341','U(a87692*SNLNOl(V'),
     ('Core','','Bud Light 12/12C','Southern Crown Partners','12/12C','18200530470','U(a18200*PNKORk(U'),
-    ('Core','','Budweiser 12/12C','Southern Crown Partners','12/12C','1820011047','U(a18200*LLKORo(Y'),
+    ('Core','','Budweiser 12/12C','Southern Crown Partners','12/12C','18200110474','U(a18200*LLKORo(Y'),
     ('Core','','Miller Lite 12/12C','Yahnis','12/12C','34100576363','U(a34100*PRQNQn(X'),
-    ('Core','','Miller Lite 12/12C','Yahnis','12/12C','3410057636','U(a34100*PRQNQn(X'),
     ('Core','','Yuengling Traditional Lager 12/12C','Yahnis','12/12C','89924278986','U(a89924*MRSTSq(v'),
     ('Core Plus','','Land Shark Lager 12/12C','Southern Crown Partners','12/12C','18200209833','U(a18200*MKTSNn(X'),
     ('Premium','','Modelo 12/12C','Southern Crown Partners','12/12C','80660957159','U(a80660*TPRLPt(y'),
@@ -865,44 +861,44 @@ MYR_UPC_DATA = [
     ('Value','','Icehouse 12/12C','Yahnis','12/12C','34100626020','U(a34100*QMQKMk(U'),
     ('Value','','Miller High Life 12/12C','Yahnis','12/12C','34100016364','U(a34100*KLQNQo(Y'),
     ('Value','','Pabst 12/12C','Yahnis','12/12C','22100001701','U(a22100*KKLRKl(V'),
-    ('Beyond Beer','','Corona Seltzer Variety Pack 2 12/12C SC','Southern Crown Partners','12/12C SC','33544000687','U(a33544*KKKQSr(w'),
-    ('Beyond Beer','','Michelob Ultra Org Seltzer VarP3 12/12C SC','Southern Crown Partners','12/12C SC','18200203374','U(a18200*MKNNRo(Y'),
-    ('Beyond Beer','','The Beast Tea Variety 12/12C SC','Southern Crown Partners','12/12C SC','810117131241','x(i10117*LNKNMt(y'),
-    ('Beyond Beer','','The Beast Unleashed Variety 1 12/12C SC','Southern Crown Partners','12/12C SC','810117130183','x(i10117*LNKLSn(X'),
-    ('Beyond Beer','','Truly Hd Seltzer Berry Variety 12/12C SC','Southern Crown Partners','12/12C SC','87692006862','U(a87692*KKQSQm(W'),
-    ('Beyond Beer','','AriZona Hard Iced Tea Variety 12/12C SC','Yahnis','12/12C SC','613008763831','v(g13008*RQNSNl(V'),
-    ('Beyond Beer','','Mikes Hard Variety Pack 12/12C SC','Yahnis','12/12C SC','635985260011','v(g35985*MQKKLl(V'),
-    ('Beyond Beer','','Simply Spiked Lemonade Variety 12/12C SC','Yahnis','12/12C SC','810078780205','x(i10078*RSKMKp(u'),
-    ('Beyond Beer','','Topo Chico Hd Seltzer Marg VP 12/12C SC','Yahnis','12/12C SC','810078780380','x(i10078*RSKNSk(U'),
-    ('Beyond Beer','','Vizzy Seltzer Variety 1 12/12C SC','Yahnis','12/12C SC','34100012328','U(a34100*KLMNMs(x'),
-    ('Beyond Beer','','White Claw Variety Pk HrdSeltzer 12/12C SC','Yahnis','12/12C SC','635985548904','v(g35985*POSTKo(Y'),
+    ('Beyond Beer-Seltzer','','Corona Seltzer Variety Pack 2 12/12C SC','Southern Crown Partners','12/12C SC','33544000687','U(a33544*KKKQSr(w'),
+    ('Beyond Beer-Seltzer','','Michelob Ultra Org Seltzer VarP3 12/12C SC','Southern Crown Partners','12/12C SC','18200203374','U(a18200*MKNNRo(Y'),
+    ('Beyond Beer-Tea and Lemonade','','The Beast Tea Variety 12/12C SC','Southern Crown Partners','12/12C SC','810117131241','x(i10117*LNKNMt(y'),
+    ('Beyond Beer-Sweet FAB','','The Beast Unleashed Variety 1 12/12C SC','Southern Crown Partners','12/12C SC','810117130183','x(i10117*LNKLSn(X'),
+    ('Beyond Beer-Seltzer','','Truly Hd Seltzer Berry Variety 12/12C SC','Southern Crown Partners','12/12C SC','87692006862','U(a87692*KKQSQm(W'),
+    ('Beyond Beer-Tea and Lemonade','','AriZona Hard Iced Tea Variety 12/12C SC','Yahnis','12/12C SC','613008763831','v(g13008*RQNSNl(V'),
+    ('Beyond Beer-Tea and Lemonade','','Mikes Hard Variety Pack 12/12C SC','Yahnis','12/12C SC','635985260011','v(g35985*MQKKLl(V'),
+    ('Beyond Beer-Tea and Lemonade','','Simply Spiked Lemonade Variety 12/12C SC','Yahnis','12/12C SC','810078780205','x(i10078*RSKMKp(u'),
+    ('Beyond Beer-Seltzer','','Topo Chico Hd Seltzer Marg VP 12/12C SC','Yahnis','12/12C SC','810078780380','x(i10078*RSKNSk(U'),
+    ('Beyond Beer-Seltzer','','Vizzy Seltzer Variety 1 12/12C SC','Yahnis','12/12C SC','34100012328','U(a34100*KLMNMs(x'),
+    ('Beyond Beer-Seltzer','','White Claw Variety Pk HrdSeltzer 12/12C SC','Yahnis','12/12C SC','635985548904','v(g35985*POSTKo(Y'),
     ('Core Plus','','Bud Light Platinum 12/12C SC','Southern Crown Partners','12/12C SC','18200209949','U(a18200*MKTTOt(y'),
     ('Core Plus','','Michelob Ultra 12/16AL','Southern Crown Partners','12/16AL','18200200595','U(a18200*MKKPTp(u'),
-    ('Beyond Beer','','Bold Rock Cider Apple 15/12C','Yahnis','15/12C','85908800392','x(i59088*KKNTMs(x'),
-    ('Value','','Natural Light 15/12C','Southern Crown Partners','15/12C','18200200779','U(a18200*MKKRRt(y'),
-    ('Value','','Keystone Light 15/12C','Yahnis','15/12C','71990480455','U(a71990*OSKOPp(u'),
+    ('Beyond Beer-Cider','','Bold Rock Cider Apple 15/12C','Yahnis','15/12C','859088003928','x(i59088*KKNTMs(x'),
+    ('Value-High','','Natural Light 15/12C','Southern Crown Partners','15/12C','18200200779','U(a18200*MKKRRt(y'),
+    ('Value-Low','','Keystone Light 15/12C','Yahnis','15/12C','71990480455','U(a71990*OSKOPp(u'),
     ('Value','',"Milwaukee's Best Ice 15/12C",'Yahnis','15/12C','34100303440','U(a34100*NKNOOk(U'),
     ('Core','','Bud Light 15/16AL','Southern Crown Partners','15/16AL','18200965388','U(a18200*TQPNSs(x'),
-    ('Core','','Budweiser 15/16AL','Southern Crown Partners','15/16AL','1820096539','U(a18200*TQPNTp(u'),
+    ('Core','','Budweiser 15/16AL','Southern Crown Partners','15/16AL','18200965395','U(a18200*TQPNTp(u'),
     ('Core','','Coors Light 15/16AL','Yahnis','15/16AL','71990095277','U(a71990*KTPMRr(w'),
-    ('Core','','Miller Lite 15/16AL','Yahnis','15/16AL','3410057707','U(a34100*PRRKRk(U'),
-    ('Core','','Miller Lite 18/12B','Yahnis','18/12B','3410057256','U(a34100*PRMPQn(X'),
+    ('Core','','Miller Lite 15/16AL','Yahnis','15/16AL','34100577070','U(a34100*PRRKRk(U'),
+    ('Core','','Miller Lite 18/12B','Yahnis','18/12B','34100572563','U(a34100*PRMPQn(X'),
     ('Premium','','Corona Extra 18/12B','Southern Crown Partners','18/12B','80660956800','U(a80660*TPQSKk(U'),
     ('Premium','','Heineken 18/12B','Yahnis','18/12B','72890001528','U(a72890*KKLPMs(x'),
     ('Core','','Bud Light 18/12C','Southern Crown Partners','18/12C','18200532184','U(a18200*PNMLSo(Y'),
     ('Core','','Coors Light 18/12C','Yahnis','18/12C','71990300173','U(a71990*NKKLRn(X'),
-    ('Core','','Miller Lite 18/12C','Yahnis','18/12C','3410057340','U(a34100*PRNOKt(y'),
+    ('Core','','Miller Lite 18/12C','Yahnis','18/12C','34100573409','U(a34100*PRNOKt(y'),
     ('Premium','','Modelo 18/12C','Southern Crown Partners','18/12C','80660957111','U(a80660*TPRLLl(V'),
     ('Value','','Icehouse 18/12C','Yahnis','18/12C','34100623401','U(a34100*QMNOKl(V'),
     ('Value','','Miller High Life 18/12C','Yahnis','18/12C','34100013400','U(a34100*KLNOKk(U'),
     ('Value','','Pabst 18/12C','Yahnis','18/12C','22100001572','U(a22100*KKLPRm(W'),
     ('Core Plus','','Michelob Ultra 18/12C SC','Southern Crown Partners','18/12C SC','18200967214','U(a18200*TQRMLo(Y'),
-    ('Core','','Budweiser 24/12BBB','Southern Crown Partners','24/12BBB','1820011349','U(a18200*LLNOTt(y'),
-    ('Core','','Miller Lite 24/12BBB','Yahnis','24/12BBB','3410057243','U(a34100*PRMONn(X'),
+    ('Core','','Budweiser 24/12BBB','Southern Crown Partners','24/12BBB','18200113499','U(a18200*LLNOTt(y'),
+    ('Core','','Miller Lite 24/12BBB','Yahnis','24/12BBB','34100572433','U(a34100*PRMONn(X'),
     ('Core','','Bud Light 24/12C','Southern Crown Partners','24/12C','18200531682','U(a18200*PNLQSm(W'),
-    ('Core','','Budweiser 24/12C','Southern Crown Partners','24/12C','1820011168','U(a18200*LLLQSq(v'),
+    ('Core','','Budweiser 24/12C','Southern Crown Partners','24/12C','18200111686','U(a18200*LLLQSq(v'),
     ('Core','','Coors Light 24/12C','Yahnis','24/12C','71990316006','U(a71990*NLQKKq(v'),
-    ('Core','','Miller Lite 24/12C','Yahnis','24/12C','3410057306','U(a34100*PRNKQp(u'),
+    ('Core','','Miller Lite 24/12C','Yahnis','24/12C','34100573065','U(a34100*PRNKQp(u'),
     ('Core','','Yuengling Traditional Lager 24/12C','Yahnis','24/12C','89924880073','U(a89924*SSKKRn(X'),
     ('Core Plus','','Michelob Ultra 24/12C','Southern Crown Partners','24/12C','18200967153','U(a18200*TQRLPn(X'),
     ('Premium','','Modelo 24/12C','Southern Crown Partners','24/12C','80660957104','U(a80660*TPRLKo(Y'),
@@ -914,7 +910,7 @@ MYR_UPC_DATA = [
     ('Value','','Miller High Life 24/12C','Yahnis','24/12C','34100013066','U(a34100*KLNKQq(v'),
     ('Premium','','Coronita Extra 24/7B','Southern Crown Partners','24/7B','80660954080','U(a80660*TPOKSk(U'),
     ('Premium','','Modelo Modelito 24/7B','Southern Crown Partners','24/7B','33544000212','U(a33544*KKKMLm(W'),
-    ('Beyond Beer','','Twisted Tea 3/24C','Southern Crown Partners','3/24C','87692009832','U(a87692*KKTSNm(W'),
+    ('Beyond Beer-Tea and Lemonade','','Twisted Tea 3/24C','Southern Crown Partners','3/24C','87692009832','U(a87692*KKTSNm(W'),
     ('Core','','Miller Lite 3/24C','Yahnis','3/24C','34100576639','U(a34100*PRQQNt(y'),
     ('Premium','','Modelo 3/24C','Southern Crown Partners','3/24C','80660957746','U(a80660*TPRROq(v'),
     ('Premium','','Heineken 3/24C','Yahnis','3/24C','72890006448','U(a72890*KKQOOs(x'),
@@ -922,11 +918,11 @@ MYR_UPC_DATA = [
     ('Core Plus','','Michelob Ultra 3/25C','Southern Crown Partners','3/25C','18200249815','U(a18200*MOTSLp(u'),
     ('Value','','Natural Light 3/25C','Southern Crown Partners','3/25C','18200219870','U(a18200*MLTSRk(U'),
     ('Premium','','Heineken 4/16C','Yahnis','4/16C','72890000835','U(a72890*KKKSNp(u'),
-    ('Beyond Beer','','Mikes Hard Lemonade 6/11B','Yahnis','6/11B','635985100621','v(g35985*LKKQMl(V'),
-    ('Beyond Beer','','Smirnoff Ice 6/11B','Yahnis','6/11B','82000723851','U(a82000*RMNSPl(V'),
+    ('Beyond Beer-Tea and Lemonade','','Mikes Hard Lemonade 6/11B','Yahnis','6/11B','635985100621','v(g35985*LKKQMl(V'),
+    ('Beyond Beer-Sweet FAB','','Smirnoff Ice 6/11B','Yahnis','6/11B','82000723851','U(a82000*RMNSPl(V'),
     ('Super Premium','','Stella Artois 6/11B','Southern Crown Partners','6/11B','786150000014','w(h86150*KKKKLo(Y'),
-    ('Beyond Beer','','Angry Orchard Crisp Apple 6/12B','Southern Crown Partners','6/12B','87692821021','U(a87692*SMLKMl(V'),
-    ('Beyond Beer','','Twisted Tea 6/12B','Southern Crown Partners','6/12B','87692831020','U(a87692*SNLKMk(U'),
+    ('Beyond Beer-Cider','','Angry Orchard Crisp Apple 6/12B','Southern Crown Partners','6/12B','87692821021','U(a87692*SMLKMl(V'),
+    ('Beyond Beer-Tea and Lemonade','','Twisted Tea 6/12B','Southern Crown Partners','6/12B','87692831020','U(a87692*SNLKMk(U'),
     ('Core','','Bud Light 6/12B','Southern Crown Partners','6/12B','18200008337','U(a18200*KKSNNr(w'),
     ('Core','','Miller Lite 6/12B','Yahnis','6/12B','34100575052','U(a34100*PRPKPm(W'),
     ('Core','','Yuengling Traditional Lager 6/12B','Yahnis','6/12B','89924278917','U(a89924*MRSTLr(w'),
@@ -955,8 +951,8 @@ MYR_UPC_DATA = [
 # ── FLORENCE UPC DATA (auto-generated from Pricing_Barcode_Survey_Updated.xlsx)
 # Columns: WAMP, Brand, Product, Wholesaler, Package, UPC, Barcode
 FLO_UPC_DATA = [
-    ('Beyond Beer','Angry Orchard','Angry Orchard Crisp Apple 1/19C','Southern Crown Partners','1/19C','87692023777','87692023777'),
-    ('Beyond Beer','Angry Orchard','Angry Orchard Crisp Apple 6/12B','Southern Crown Partners','6/12B','87692821021','U(a87692*SMLKMl(V'),
+    ('Beyond Beer-Cider','Angry Orchard','Angry Orchard Crisp Apple 1/19C','Southern Crown Partners','1/19C','87692023777','87692023777'),
+    ('Beyond Beer-Cider','Angry Orchard','Angry Orchard Crisp Apple 6/12B','Southern Crown Partners','6/12B','87692821021','U(a87692*SMLKMl(V'),
     ('Wine','Beatbox','Beatbox Blue Razzberry 1/500BX','Southern Crown Partners','1/500BX','851133006137','x(i51133*KKQLNr(w'),
     ('Wine','Big Sipz','Big Sipz Chocolate 1/7C','Southern Crown Partners','1/7C','850028324264','x(i50028*NMOMQo(Y'),
     ('Value','Bud Ice','Bud Ice 1/16C x6','Southern Crown Partners','1/16C x6','18200002434','U(a18200*KKMONo(Y'),
@@ -964,7 +960,7 @@ FLO_UPC_DATA = [
     ('Value','Bud Ice','Bud Ice 1/25C','Southern Crown Partners','1/25C','18200250064','U(a18200*MPKKQo(Y'),
     ('Value','Bud Ice','Bud Ice 1/40B','Southern Crown Partners','1/40B','18200002441','U(a18200*KKMOOl(V'),
     ('Core','Bud Light','Bud Light 1/25C','Southern Crown Partners','1/25C','18200250019','U(a18200*MPKKLt(y'),
-    ('Core','Bud Light','Bud Light 1/32B','Southern Crown Partners','1/32B','1820000117','U(a18200*KKLLRs(x'),
+    ('Core','Bud Light','Bud Light 1/32B','Southern Crown Partners','1/32B','18200001178','U(a18200*KKLLRs(x'),
     ('Core','Bud Light','Bud Light 12/12B','Southern Crown Partners','12/12B','18200007699','U(a18200*KKRQTt(y'),
     ('Core','Bud Light','Bud Light 12/12C','Southern Crown Partners','12/12C','18200530470','U(a18200*PNKORk(U'),
     ('Core','Bud Light','Bud Light 15/16AL','Southern Crown Partners','15/16AL','18200965388','U(a18200*TQPNSs(x'),
@@ -980,19 +976,19 @@ FLO_UPC_DATA = [
     ('Core Plus','Bud Light Platinum','Bud Light Platinum 12/12C SC','Southern Crown Partners','12/12C SC','18200209949','U(a18200*MKTTOt(y'),
     ('Core Plus','Bud Light Platinum','Bud Light Platinum 6/12B','Southern Crown Partners','6/12B','18200189937','U(a18200*LSTTNr(w'),
     ('Core','Bud Light','Bud Light TWS 1/16AL','Southern Crown Partners','1/16AL','18200007958','U(a18200*KKRTPs(x'),
-    ('Core','Budweiser','Budweiser 1/16AL','Southern Crown Partners','1/16AL','1820000473','U(a18200*KKORNp(u'),
-    ('Core','Budweiser','Budweiser 1/16C x6','Southern Crown Partners','1/16C x6','1820000018S','U(a18200*KKKLSs(x'),
-    ('Core','Budweiser','Budweiser 1/25C','Southern Crown Partners','1/25C','1820025000','U(a18200*MPKKKm(W'),
-    ('Core','Budweiser','Budweiser 12/12B','Southern Crown Partners','12/12B','1820000771','U(a18200*KKRRLm(W'),
-    ('Core','Budweiser','Budweiser 12/12C','Southern Crown Partners','12/12C','1820011047','U(a18200*LLKORo(Y'),
-    ('Core','Budweiser','Budweiser 15/16AL','Southern Crown Partners','15/16AL','1820096539','U(a18200*TQPNTp(u'),
-    ('Core','Budweiser','Budweiser 24/12BBB','Southern Crown Partners','24/12BBB','1820011349','U(a18200*LLNOTt(y'),
-    ('Core','Budweiser','Budweiser 24/12C','Southern Crown Partners','24/12C','1820011168','U(a18200*LLLQSq(v'),
+    ('Core','Budweiser','Budweiser 1/16AL','Southern Crown Partners','1/16AL','18200004735','U(a18200*KKORNp(u'),
+    ('Core','Budweiser','Budweiser 1/16C x6','Southern Crown Partners','1/16C x6','018200000188','U(a18200*KKKLSs(x'),
+    ('Core','Budweiser','Budweiser 1/25C','Southern Crown Partners','1/25C','18200250002','U(a18200*MPKKKm(W'),
+    ('Core','Budweiser','Budweiser 12/12B','Southern Crown Partners','12/12B','18200007712','U(a18200*KKRRLm(W'),
+    ('Core','Budweiser','Budweiser 12/12C','Southern Crown Partners','12/12C','18200110474','U(a18200*LLKORo(Y'),
+    ('Core','Budweiser','Budweiser 15/16AL','Southern Crown Partners','15/16AL','18200965395','U(a18200*TQPNTp(u'),
+    ('Core','Budweiser','Budweiser 24/12BBB','Southern Crown Partners','24/12BBB','18200113499','U(a18200*LLNOTt(y'),
+    ('Core','Budweiser','Budweiser 24/12C','Southern Crown Partners','24/12C','18200111686','U(a18200*LLLQSq(v'),
     ('Value','Busch','Busch Ice 12/12C','Southern Crown Partners','12/12C','18200009570','U(a18200*KKTPRk(U'),
     ('Value','Busch','Busch Ice 24/12C','Southern Crown Partners','24/12C','18200661686','U(a18200*QQLQSq(v'),
     ('Value','Busch Light','Busch Light 1/16C x6','Southern Crown Partners','1/16C x6','18200004261','U(a18200*KKOMQl(V'),
     ('Value','Busch Light','Busch Light 1/25C','Southern Crown Partners','1/25C','18200250040','U(a18200*MPKKOk(U'),
-    ('Value','Busch Light','Busch Light 12/12B','Southern Crown Partners','12/12B','1820000989','U(a18200*KKTSTl(V'),
+    ('Value','Busch Light','Busch Light 12/12B','Southern Crown Partners','12/12B','18200009891','U(a18200*KKTSTl(V'),
     ('Value','Busch Light','Busch Light 12/12C','Southern Crown Partners','12/12C','18200008016','U(a18200*KKSKLq(v'),
     ('Value','Busch Light','Busch Light 24/12C','Southern Crown Partners','24/12C','18200861673','U(a18200*SQLQRn(X'),
     ('Value','Busch Light','Busch Light 8/16C','Southern Crown Partners','8/16C','18200201905','U(a18200*MKLTKp(u'),
@@ -1003,18 +999,18 @@ FLO_UPC_DATA = [
     ('Premium','Corona','Corona Extra 18/12B','Yahnis','18/12B','80660956800','U(a80660*TPQSKk(U'),
     ('Premium','Corona','Corona Extra 6/12B','Yahnis','6/12B','80660956053','U(a80660*TPQKPn(X'),
     ('Premium','Corona','Corona Familiar 1/32B','Yahnis','1/32B','80660956831','U(a80660*TPQSNl(V'),
-    ('Beyond Beer','Corona','Corona Seltzer Variety Pack 2 12/12C SC','Yahnis','12/12C SC','33544000687','U(a33544*KKKQSr(w'),
+    ('Beyond Beer-Seltzer','Corona','Corona Seltzer Variety Pack 2 12/12C SC','Yahnis','12/12C SC','33544000687','U(a33544*KKKQSr(w'),
     ('Premium','Corona','Coronita Extra 24/7B','Yahnis','24/7B','80660954080','U(a80660*TPOKSk(U'),
-    ('Beyond Beer','Fireball','Fireball Cinnamon Malt 16.5 1/200B','Southern Crown Partners','1/200B','88004069667','88004069667'),
-    ('Beyond Beer','Four','Four Loko Gold 14 pct 1/24C','Southern Crown Partners','1/24C','849806001169','x(i49806*KKLLQt(y'),
-    ('Beyond Beer','Four','Four Loko Pregame Jungle Juice 10 pct 1/7B','Southern Crown Partners','1/7B','84980600606','x(i49806*KKQKQp(u'),
-    ('Beyond Beer','Four','Four Loko Pregame Sour Blue Razz 13.9 pct 1/7B','Southern Crown Partners','1/7B','849806002906','x(i49806*KKMTKq(v'),
-    ('Beyond Beer','Four','Four Loko Remix Blue Razz Smsh 1/500BX','Southern Crown Partners','1/500BX','84980600603','x(i49806*KKQKNo(Y'),
+    ('Beyond Beer-Sweet FAB','Fireball','Fireball Cinnamon Malt 16.5 1/200B','Southern Crown Partners','1/200B','88004069667','88004069667'),
+    ('Beyond Beer-Sweet FAB','Four','Four Loko Gold 14 pct 1/24C','Southern Crown Partners','1/24C','849806001169','x(i49806*KKLLQt(y'),
+    ('Beyond Beer-Sweet FAB','Four','Four Loko Pregame Jungle Juice 10 pct 1/7B','Southern Crown Partners','1/7B','849806006065','x(i49806*KKQKQp(u'),
+    ('Beyond Beer-Sweet FAB','Four','Four Loko Pregame Sour Blue Razz 13.9 pct 1/7B','Southern Crown Partners','1/7B','849806002906','x(i49806*KKMTKq(v'),
+    ('Beyond Beer-Sweet FAB','Four','Four Loko Remix Blue Razz Smsh 1/500BX','Southern Crown Partners','1/500BX','849806006034','x(i49806*KKQKNo(Y'),
     ('Super Premium','Goose Island','Goose Island Beer HugTropical 1/19C','Southern Crown Partners','1/19C','736920211089','w(h36920*MLLKSt(y'),
     ('Value','King Cobra','King Cobra 1/40B','Southern Crown Partners','1/40B','18200001314','U(a18200*KKLNLo(Y'),
     ('Core Plus','Land Shark','Land Shark Lager 12/12C','Southern Crown Partners','12/12C','18200209833','U(a18200*MKTSNn(X'),
     ('Core Plus','Land Shark','Land Shark Lager 6/12B','Southern Crown Partners','6/12B','18200129827','U(a18200*LMTSMr(w'),
-    ('Beyond Beer','MD AB','MD 2020 Spk Punch Sweet Blue Ras 1/16C','Southern Crown Partners','1/16C','18200262098','U(a18200*MQMKTs(x'),
+    ('Beyond Beer-Low','MD AB','MD 2020 Spk Punch Sweet Blue Ras 1/16C','Southern Crown Partners','1/16C','18200262098','U(a18200*MQMKTs(x'),
     ('Core Plus','Michelob Ultra','Michelob Ultra 1/16AL','Southern Crown Partners','1/16AL','18200006654','U(a18200*KKQQPo(Y'),
     ('Core Plus','Michelob Ultra','Michelob Ultra 1/16C x4','Southern Crown Partners','1/16C x4','18200005244','U(a18200*KKPMOo(Y'),
     ('Core Plus','Michelob Ultra','Michelob Ultra 1/25C','Southern Crown Partners','1/25C','18200250101','U(a18200*MPKLKl(V'),
@@ -1026,7 +1022,7 @@ FLO_UPC_DATA = [
     ('Core Plus','Michelob Ultra','Michelob Ultra 3/25C','Southern Crown Partners','3/25C','18200249815','U(a18200*MOTSLp(u'),
     ('Core Plus','Michelob Ultra','Michelob Ultra 6/12B','Southern Crown Partners','6/12B','18200059896','U(a18200*KPTSTq(v'),
     ('Core Plus','Michelob Ultra','Michelob Ultra 8/16C','Southern Crown Partners','8/16C','18200239861','U(a18200*MNTSQl(V'),
-    ('Beyond Beer','Michelob Ultra Seltzer','Michelob Ultra Org Seltzer VarP3 12/12C SC','Southern Crown Partners','12/12C SC','18200203374','U(a18200*MKNNRo(Y'),
+    ('Beyond Beer-Seltzer','Michelob Ultra Seltzer','Michelob Ultra Org Seltzer VarP3 12/12C SC','Southern Crown Partners','12/12C SC','18200203374','U(a18200*MKNNRo(Y'),
     ('Premium','Modelo','Modelo 1/24C','Yahnis','1/24C','80660957210','U(a80660*TPRMLk(U'),
     ('Premium','Modelo','Modelo 1/32B','Yahnis','1/32B','33544950906','33544950906'),
     ('Premium','Modelo','Modelo 12/12C','Yahnis','12/12C','80660957159','U(a80660*TPRLPt(y'),
@@ -1039,30 +1035,30 @@ FLO_UPC_DATA = [
     ('Value','Natural','Natural Light 1/16C x6','Southern Crown Partners','1/16C x6','18200000430','U(a18200*KKKONk(U'),
     ('Value','Natural','Natural Light 1/25C','Southern Crown Partners','1/25C','18200250026','U(a18200*MPKKMq(v'),
     ('Value','Natural','Natural Light 12/12B','Southern Crown Partners','12/12B','18200009303','U(a18200*KKTNKn(X'),
-    ('Value','Natural','Natural Light 15/12C','Southern Crown Partners','15/12C','18200200779','U(a18200*MKKRRt(y'),
+    ('Value-High','Natural','Natural Light 15/12C','Southern Crown Partners','15/12C','18200200779','U(a18200*MKKRRt(y'),
     ('Value','Natural','Natural Light 24/12C','Southern Crown Partners','24/12C','18200151682','U(a18200*LPLQSm(W'),
     ('Value','Natural','Natural Light 3/25C','Southern Crown Partners','3/25C','18200219870','U(a18200*MLTSRk(U'),
     ('Value','Natural','Natural Light 8/16C','Southern Crown Partners','8/16C','18200239823','U(a18200*MNTSMn(X'),
     ('Super Premium','New Belgium','New Belgium Voodoo Ranger ImpIPA 1/19C','Southern Crown Partners','1/19C','754527010218','w(h54527*KLKMLs(x'),
     ('Super Premium','New Belgium','New Belgium Voodoo Ranger ImpIPA 6/12B','Southern Crown Partners','6/12B','754527004217','w(h54527*KKOMLr(w'),
-    ('Beyond Beer','New Belgium','New Belgium Voodoo Ranger Tea 1/24C','Southern Crown Partners','1/24C','754527011642','w(h54527*KLLQOm(W'),
-    ('Beyond Beer','New Belgium','New Belgium Voodoo Ranger TeaVP1 12/12C','Southern Crown Partners','12/12C','754527006518','w(h54527*KKQPLs(x'),
-    ('Beyond Beer','Ritas','Ritas Lime-A-Rita 1/16C','Southern Crown Partners','1/16C','18200001741','U(a18200*KKLROl(V'),
+    ('Beyond Beer-Tea and Lemonade','New Belgium','New Belgium Voodoo Ranger Tea 1/24C','Southern Crown Partners','1/24C','754527011642','w(h54527*KLLQOm(W'),
+    ('Beyond Beer-Tea and Lemonade','New Belgium','New Belgium Voodoo Ranger TeaVP1 12/12C','Southern Crown Partners','12/12C','754527006518','w(h54527*KKQPLs(x'),
+    ('Beyond Beer-Low','Ritas','Ritas Lime-A-Rita 1/16C','Southern Crown Partners','1/16C','18200001741','U(a18200*KKLROl(V'),
     ('Super Premium','Stella Artois','Stella Artois 1/22B','Southern Crown Partners','1/22B','786150000571','w(h86150*KKKPRl(V'),
     ('Super Premium','Stella Artois','Stella Artois 12/11B','Southern Crown Partners','12/11B','786150000144','w(h86150*KKKLOo(Y'),
     ('Super Premium','Stella Artois','Stella Artois 6/11B','Southern Crown Partners','6/11B','786150000014','w(h86150*KKKKLo(Y'),
     ('Super Premium','Stella Artois Import','Stella Artois Import 1/15C','Southern Crown Partners','1/15C','18200005060','U(a18200*KKPKQk(U'),
-    ('Beyond Beer','The Beast Unleashed','The Beast Tea Original 1/24C','Southern Crown Partners','1/24C','810117131135','x(i10117*LNKNPk(U'),
-    ('Beyond Beer','The Beast Unleashed','The Beast Tea Variety 12/12C SC','Southern Crown Partners','12/12C SC','810117131241','x(i10117*LNKNMt(y'),
-    ('Beyond Beer','The Beast Unleashed','The Beast Unleashed Mean Green 1/16C','Southern Crown Partners','1/16C','810117130015','x(i10117*LNKKLp(u'),
-    ('Beyond Beer','The Beast Unleashed','The Beast Unleashed Variety 1 12/12C SC','Southern Crown Partners','12/12C SC','810117130183','x(i10117*LNKLSn(X'),
-    ('Beyond Beer','Truly','Truly Hd Seltzer Berry Variety 12/12C SC','Southern Crown Partners','12/12C SC','87692006862','U(a87692*KKQSQm(W'),
-    ('Beyond Beer','Truly','Truly Hd Seltzer Wild Berry 1/16C','Southern Crown Partners','1/16C','87692007296','U(a87692*KKRMTq(v'),
-    ('Beyond Beer','Truly','Truly Hd Seltzer Wild Berry 1/24C','Southern Crown Partners','1/24C','87692009511','U(a87692*KKTPLl(V'),
-    ('Beyond Beer','Twisted Tea','Twisted Tea 1/24C','Southern Crown Partners','1/24C','87692832317','U(a87692*SNMNLr(w'),
-    ('Beyond Beer','Twisted Tea','Twisted Tea 12/12C','Southern Crown Partners','12/12C','87692831341','U(a87692*SNLNOl(V'),
-    ('Beyond Beer','Twisted Tea','Twisted Tea 3/24C','Southern Crown Partners','3/24C','87692009832','U(a87692*KKTSNm(W'),
-    ('Beyond Beer','Twisted Tea','Twisted Tea 6/12B','Southern Crown Partners','6/12B','87692831020','U(a87692*SNLKMk(U'),
+    ('Beyond Beer-Tea and Lemonade','The Beast Unleashed','The Beast Tea Original 1/24C','Southern Crown Partners','1/24C','810117131135','x(i10117*LNKNPk(U'),
+    ('Beyond Beer-Tea and Lemonade','The Beast Unleashed','The Beast Tea Variety 12/12C SC','Southern Crown Partners','12/12C SC','810117131241','x(i10117*LNKNMt(y'),
+    ('Beyond Beer-Sweet FAB','The Beast Unleashed','The Beast Unleashed Mean Green 1/16C','Southern Crown Partners','1/16C','810117130015','x(i10117*LNKKLp(u'),
+    ('Beyond Beer-Sweet FAB','The Beast Unleashed','The Beast Unleashed Variety 1 12/12C SC','Southern Crown Partners','12/12C SC','810117130183','x(i10117*LNKLSn(X'),
+    ('Beyond Beer-Seltzer','Truly','Truly Hd Seltzer Berry Variety 12/12C SC','Southern Crown Partners','12/12C SC','87692006862','U(a87692*KKQSQm(W'),
+    ('Beyond Beer-Seltzer','Truly','Truly Hd Seltzer Wild Berry 1/16C','Southern Crown Partners','1/16C','87692007296','U(a87692*KKRMTq(v'),
+    ('Beyond Beer-Seltzer','Truly','Truly Hd Seltzer Wild Berry 1/24C','Southern Crown Partners','1/24C','87692009511','U(a87692*KKTPLl(V'),
+    ('Beyond Beer-Tea and Lemonade','Twisted Tea','Twisted Tea 1/24C','Southern Crown Partners','1/24C','87692832317','U(a87692*SNMNLr(w'),
+    ('Beyond Beer-Tea and Lemonade','Twisted Tea','Twisted Tea 12/12C','Southern Crown Partners','12/12C','87692831341','U(a87692*SNLNOl(V'),
+    ('Beyond Beer-Tea and Lemonade','Twisted Tea','Twisted Tea 3/24C','Southern Crown Partners','3/24C','87692009832','U(a87692*KKTSNm(W'),
+    ('Beyond Beer-Tea and Lemonade','Twisted Tea','Twisted Tea 6/12B','Southern Crown Partners','6/12B','87692831020','U(a87692*SNLKMk(U'),
     ('Super Premium','Wicked Weed','Wicked Weed Pernicious IPA 1/19C','Southern Crown Partners','1/19C','857531005284','x(i57531*KKPMSo(Y'),
     ('Super Premium','Wicked Weed','Wicked Weed Pernicious IPA 6/12C','Southern Crown Partners','6/12C','853340008188','x(i53340*KKSLSs(x'),
     ('Premium','Heineken','Heineken 1/22B','Yahnis','1/22B','72890004789','U(a72890*KKORSt(y'),
@@ -1073,16 +1069,16 @@ FLO_UPC_DATA = [
     ('Premium','Heineken','Heineken 3/24C','Yahnis','3/24C','72890006448','U(a72890*KKQOOs(x'),
     ('Premium','Heineken','Heineken 4/16C','Yahnis','4/16C','72890000835','U(a72890*KKKSNp(u'),
     ('Premium','Heineken','Heineken 6/12B','Yahnis','6/12B','72890000118','U(a72890*KKKLLs(x'),
-    ('Beyond Beer','Johnny Bootlegger','J Bootlegger Alcatraz Sour Apple 10 pct 1/7B','Yahnis','1/7B','68474680180','v(g84746*SKLSKm(W'),
-    ('Beyond Beer','Johnny Bootlegger','J Bootlegger Sng Sng Sour Grape 12 pct 1/7B','Yahnis','1/7B','684746375105','v(g84746*NRPLKp(u'),
-    ('Beyond Beer','AriZona Hard','AriZona Hard Iced Tea Lemon 1/22C','Yahnis','1/22C','613008763732','v(g13008*RQNRNm(W'),
-    ('Beyond Beer','AriZona Hard','AriZona Hard Iced Tea Variety 12/12C SC','Yahnis','12/12C SC','613008763831','v(g13008*RQNSNl(V'),
-    ('Beyond Beer','Arnold Palmer Hard Tea','Arnold Palmer Spkd Half&Half 1/24C','Yahnis','1/24C','613008748296','v(g13008*ROSMTq(v'),
+    ('Beyond Beer-Sweet FAB','Johnny Bootlegger','J Bootlegger Alcatraz Sour Apple 10 pct 1/7B','Yahnis','1/7B','684746801802','v(g84746*SKLSKm(W'),
+    ('Beyond Beer-Sweet FAB','Johnny Bootlegger','J Bootlegger Sng Sng Sour Grape 12 pct 1/7B','Yahnis','1/7B','684746375105','v(g84746*NRPLKp(u'),
+    ('Beyond Beer-Tea and Lemonade','AriZona Hard','AriZona Hard Iced Tea Lemon 1/22C','Yahnis','1/22C','613008763732','v(g13008*RQNRNm(W'),
+    ('Beyond Beer-Tea and Lemonade','AriZona Hard','AriZona Hard Iced Tea Variety 12/12C SC','Yahnis','12/12C SC','613008763831','v(g13008*RQNSNl(V'),
+    ('Beyond Beer-Tea and Lemonade','Arnold Palmer Hard Tea','Arnold Palmer Spkd Half&Half 1/24C','Yahnis','1/24C','613008748296','v(g13008*ROSMTq(v'),
     ('Premium','Blue Moon','Blue Moon Belgian White Ale 6/12B','Yahnis','6/12B','71990095116','U(a71990*KTPLLq(v'),
-    ('Beyond Beer','Bold Rock Cider','Bold Rock Cider Apple 1/16C','Yahnis','1/16C','85908800357','x(i59088*KKNPRr(w'),
-    ('Beyond Beer','Bold Rock Cider','Bold Rock Cider Apple 15/12C','Yahnis','15/12C','85908800392','x(i59088*KKNTMs(x'),
+    ('Beyond Beer-Cider','Bold Rock Cider','Bold Rock Cider Apple 1/16C','Yahnis','1/16C','859088003577','x(i59088*KKNPRr(w'),
+    ('Beyond Beer-Cider','Bold Rock Cider','Bold Rock Cider Apple 15/12C','Yahnis','15/12C','859088003928','x(i59088*KKNTMs(x'),
     ('Wine','BuzzBallz Chillers','BuzzBallz Chillers Cocoa Chiller 1/7C','Yahnis','1/7C','857641002890','x(i57641*KKMSTk(U'),
-    ('Beyond Beer','Clubtails','Clubtails Sex On the Beach 1/16C','Yahnis','1/16C','684746400074','v(g84746*OKKKRo(Y'),
+    ('Beyond Beer-Sweet FAB','Clubtails','Clubtails Sex On the Beach 1/16C','Yahnis','1/16C','684746400074','v(g84746*OKKKRo(Y'),
     ('Core','Coors','Coors Light 1/16AL','Yahnis','1/16AL','71990301033','U(a71990*NKLKNn(X'),
     ('Core','Coors','Coors Light 1/16C x4','Yahnis','1/16C x4','71990302023','U(a71990*NKMKMn(X'),
     ('Core','Coors','Coors Light 1/24C','Yahnis','1/24C','71990300654','U(a71990*NKKQPo(Y'),
@@ -1091,8 +1087,8 @@ FLO_UPC_DATA = [
     ('Core','Coors','Coors Light 24/12C','Yahnis','24/12C','71990316006','U(a71990*NLQKKq(v'),
     ('Core','Coors','Coors Light 8/16C','Yahnis','8/16C','71990170462','U(a71990*LRKOQm(W'),
     ('Core','Coors','Coors Light 9/16AL','Yahnis','9/16AL','71990301040','U(a71990*NKLKOk(U'),
-    ('Super Premium','Creature Comforts','Creature Comforts Flash Cat 1/19C','Yahnis','1/19C','86001172132','x(i60011*RMLNMl(V'),
-    ('Premium','Heineken','Heineken 1/16C','Yahnis','1/16C','7289000716','U(a72890*KKRLQm(W'),
+    ('Super Premium','Creature Comforts','Creature Comforts Flash Cat 1/19C','Yahnis','1/19C','860011721321','x(i60011*RMLNMl(V'),
+    ('Premium','Heineken','Heineken 1/16C','Yahnis','1/16C','72890007162','U(a72890*KKRLQm(W'),
     ('Value','Miller Ice House','Icehouse 1/16C x6','Yahnis','1/16C x6','34100008826','U(a34100*KKSSMq(v'),
     ('Value','Miller Ice House','Icehouse 1/24C','Yahnis','1/24C','34100008802','U(a34100*KKSSKm(W'),
     ('Value','Miller Ice House','Icehouse 1/40B','Yahnis','1/40B','34100002787','U(a34100*KKSSOk(U'),
@@ -1101,28 +1097,26 @@ FLO_UPC_DATA = [
     ('Value','Miller Ice House','Icehouse 24/12C','Yahnis','24/12C','34100623067','U(a34100*QMNKQr(w'),
     ('Value','Miller Ice House','Icehouse 6/12B','Yahnis','6/12B','34100625054','U(a34100*QMPKPo(Y'),
     ('Value','Keystone','Keystone Light 1/24C','Yahnis','1/24C','71990480240','U(a71990*OSKMOk(U'),
-    ('Value','Keystone','Keystone Light 15/12C','Yahnis','15/12C','71990480455','U(a71990*OSKOPp(u'),
-    ('Beyond Beer','Mikes','Mikes Hard Lemonade 6/11B','Yahnis','6/11B','635985100621','v(g35985*LKKQMl(V'),
-    ('Beyond Beer','Mikes','Mikes Hard Variety Pack 12/12C SC','Yahnis','12/12C SC','635985260011','v(g35985*MQKKLl(V'),
-    ('Beyond Beer','Mikes','Mikes HARDER Lemonade 1/16C','Yahnis','1/16C','635985258759','v(g35985*MPSRPt(y'),
-    ('Beyond Beer','Mikes','Mikes HARDER Lemonade 1/23.5C','Yahnis','1/23.5C','635985245834','v(g35985*MOPSNo(Y'),
+    ('Value-Low','Keystone','Keystone Light 15/12C','Yahnis','15/12C','71990480455','U(a71990*OSKOPp(u'),
+    ('Beyond Beer-Tea and Lemonade','Mikes','Mikes Hard Lemonade 6/11B','Yahnis','6/11B','635985100621','v(g35985*LKKQMl(V'),
+    ('Beyond Beer-Tea and Lemonade','Mikes','Mikes Hard Variety Pack 12/12C SC','Yahnis','12/12C SC','635985260011','v(g35985*MQKKLl(V'),
+    ('Beyond Beer-Tea and Lemonade','Mikes','Mikes HARDER Lemonade 1/16C','Yahnis','1/16C','635985258759','v(g35985*MPSRPt(y'),
+    ('Beyond Beer-Tea and Lemonade','Mikes','Mikes HARDER Lemonade 1/23.5C','Yahnis','1/23.5C','635985245834','v(g35985*MOPSNo(Y'),
     ('Value','Miller High Life','Miller High Life 1/16C x6','Yahnis','1/16C x6','34100000073','U(a34100*KKKKRn(X'),
     ('Value','Miller High Life','Miller High Life 1/40PL','Yahnis','1/40PL','34100007638','U(a34100*KKRQNs(x'),
     ('Value','Miller High Life','Miller High Life 12/12C','Yahnis','12/12C','34100016364','U(a34100*KLQNQo(Y'),
     ('Value','Miller High Life','Miller High Life 18/12C','Yahnis','18/12C','34100013400','U(a34100*KLNOKk(U'),
     ('Value','Miller High Life','Miller High Life 24/12C','Yahnis','24/12C','34100013066','U(a34100*KLNKQq(v'),
     ('Value','Miller High Life','Miller High Life 6/12B','Yahnis','6/12B','34100015053','U(a34100*KLPKPn(X'),
-    ('Core','Miller','Miller Lite 1/16AL','Yahnis','1/16AL','3410000376','U(a34100*KKNRQk(U'),
-    ('Core','Miller','Miller Lite 1/16C x4','Yahnis','1/16C x4','3410000158S','U(a34100*KKLPSm(W'),
+    ('Core','Miller','Miller Lite 1/16AL','Yahnis','1/16AL','34100003760','U(a34100*KKNRQk(U'),
+    ('Core','Miller','Miller Lite 1/16C x4','Yahnis','1/16C x4','034100001582','U(a34100*KKLPSm(W'),
     ('Core','Miller','Miller Lite 12/12B','Yahnis','12/12B','34100575090','U(a34100*PRPKTk(U'),
-    ('Core','Miller','Miller Lite 12/12B','Yahnis','12/12B','3410057509','U(a34100*PRPKTk(U'),
     ('Core','Miller','Miller Lite 12/12C','Yahnis','12/12C','34100576363','U(a34100*PRQNQn(X'),
-    ('Core','Miller','Miller Lite 12/12C','Yahnis','12/12C','3410057636','U(a34100*PRQNQn(X'),
-    ('Core','Miller','Miller Lite 15/16AL','Yahnis','15/16AL','3410057707','U(a34100*PRRKRk(U'),
-    ('Core','Miller','Miller Lite 18/12B','Yahnis','18/12B','3410057256','U(a34100*PRMPQn(X'),
-    ('Core','Miller','Miller Lite 18/12C','Yahnis','18/12C','3410057340','U(a34100*PRNOKt(y'),
-    ('Core','Miller','Miller Lite 24/12BBB','Yahnis','24/12BBB','3410057243','U(a34100*PRMONn(X'),
-    ('Core','Miller','Miller Lite 24/12C','Yahnis','24/12C','3410057306','U(a34100*PRNKQp(u'),
+    ('Core','Miller','Miller Lite 15/16AL','Yahnis','15/16AL','34100577070','U(a34100*PRRKRk(U'),
+    ('Core','Miller','Miller Lite 18/12B','Yahnis','18/12B','34100572563','U(a34100*PRMPQn(X'),
+    ('Core','Miller','Miller Lite 18/12C','Yahnis','18/12C','34100573409','U(a34100*PRNOKt(y'),
+    ('Core','Miller','Miller Lite 24/12BBB','Yahnis','24/12BBB','34100572433','U(a34100*PRMONn(X'),
+    ('Core','Miller','Miller Lite 24/12C','Yahnis','24/12C','34100573065','U(a34100*PRNKQp(u'),
     ('Core','Miller','Miller Lite 3/24C','Yahnis','3/24C','34100576639','U(a34100*PRQQNt(y'),
     ('Core','Miller','Miller Lite 6/12B','Yahnis','6/12B','34100575052','U(a34100*PRPKPm(W'),
     ('Value','Milwaukees Best',"Milwaukee's Best Ice 15/12C",'Yahnis','15/12C','34100303440','U(a34100*NKNOOk(U'),
@@ -1136,20 +1130,20 @@ FLO_UPC_DATA = [
     ('Premium',"Redd's","Redd's Wicked Apple 1/24C",'Yahnis','1/24C','34100003234','U(a34100*KKNMNo(Y'),
     ('Value','Schlitz','Schlitz Malt 1/25C','Yahnis','1/25C','52300000457','U(a52300*KKKOPr(w'),
     ('Beyond Beer',"Seagram's Escapes","Seagram's Escapes JamaicanMeHapy 1/16C",'Yahnis','1/16C','70310011669','U(a70310*KLLQQt(y'),
-    ('Beyond Beer','Simply Spiked','Simply Spiked Lemonade 1/24C','Yahnis','1/24C','810078780168','x(i10078*RSKLQs(x'),
-    ('Beyond Beer','Simply Spiked','Simply Spiked Lemonade Variety 12/12C SC','Yahnis','12/12C SC','810078780205','x(i10078*RSKMKp(u'),
-    ('Beyond Beer','Smirnoff Ice','Smirnoff Ice 6/11B','Yahnis','6/11B','82000723851','U(a82000*RMNSPl(V'),
-    ('Beyond Beer','Smirnoff Ice','Smirnoff Ice Screwdriver 1/24B','Yahnis','1/24B','82000762126','U(a82000*RQMLMq(v'),
-    ('Beyond Beer','Smirnoff Ice','Smirnoff Ice Smash Peach Mango 1/16C','Yahnis','1/16C','82000786238','U(a82000*RSQMNs(x'),
+    ('Beyond Beer-Tea and Lemonade','Simply Spiked','Simply Spiked Lemonade 1/24C','Yahnis','1/24C','810078780168','x(i10078*RSKLQs(x'),
+    ('Beyond Beer-Tea and Lemonade','Simply Spiked','Simply Spiked Lemonade Variety 12/12C SC','Yahnis','12/12C SC','810078780205','x(i10078*RSKMKp(u'),
+    ('Beyond Beer-Sweet FAB','Smirnoff Ice','Smirnoff Ice 6/11B','Yahnis','6/11B','82000723851','U(a82000*RMNSPl(V'),
+    ('Beyond Beer-Sweet FAB','Smirnoff Ice','Smirnoff Ice Screwdriver 1/24B','Yahnis','1/24B','82000762126','U(a82000*RQMLMq(v'),
+    ('Beyond Beer-Sweet FAB','Smirnoff Ice','Smirnoff Ice Smash Peach Mango 1/16C','Yahnis','1/16C','82000786238','U(a82000*RSQMNs(x'),
     ('Value','Steel Res. High Gr','Steel Res. High Gravity 1/24C','Yahnis','1/24C','78250003287','U(a78250*KKNMSr(w'),
     ('Value','Steel Res. High Gr','Steel Res. High Gravity 1/42PL','Yahnis','1/42PL','78250003348','U(a78250*KKNNOs(x'),
-    ('Beyond Beer','Steel Reserve','Steel Reserve Alloy Spkd Pineapl 1/16C x4','Yahnis','1/16C x4','78250006127','U(a78250*KKQLMr(w'),
+    ('Beyond Beer-Low','Steel Reserve','Steel Reserve Alloy Spkd Pineapl 1/16C x4','Yahnis','1/16C x4','78250006127','U(a78250*KKQLMr(w'),
     ('Super Premium','Sweetwater','Sweetwater Goin Coastal 1/19C','Yahnis','1/19C','631234840041','v(g31234*SOKKOl(V'),
     ('Super Premium','Sweetwater','Sweetwater H A Z Y IPA 6/12C','Yahnis','6/12C','631234451124','v(g31234*OPLLMo(Y'),
-    ('Beyond Beer','Topo Chico','Topo Chico Hd Seltzer Marg VP 12/12C SC','Yahnis','12/12C SC','810078780380','x(i10078*RSKNSk(U'),
-    ('Beyond Beer','Vizzy Seltzer','Vizzy Seltzer Variety 1 12/12C SC','Yahnis','12/12C SC','34100012328','U(a34100*KLMNMs(x'),
-    ('Beyond Beer','White Claw','White Claw Blk Cherry HrdSeltzer 1/19C','Yahnis','1/19C','635985801986','635985801986'),
-    ('Beyond Beer','White Claw','White Claw Variety Pk HrdSeltzer 12/12C SC','Yahnis','12/12C SC','635985548904','v(g35985*POSTKo(Y'),
+    ('Beyond Beer-Seltzer','Topo Chico','Topo Chico Hd Seltzer Marg VP 12/12C SC','Yahnis','12/12C SC','810078780380','x(i10078*RSKNSk(U'),
+    ('Beyond Beer-Seltzer','Vizzy Seltzer','Vizzy Seltzer Variety 1 12/12C SC','Yahnis','12/12C SC','34100012328','U(a34100*KLMNMs(x'),
+    ('Beyond Beer-Seltzer','White Claw','White Claw Blk Cherry HrdSeltzer 1/19C','Yahnis','1/19C','635985801986','635985801986'),
+    ('Beyond Beer-Seltzer','White Claw','White Claw Variety Pk HrdSeltzer 12/12C SC','Yahnis','12/12C SC','635985548904','v(g35985*POSTKo(Y'),
     ('Core','Yuengling','Yuengling Traditional Lager 1/16C x4','Yahnis','1/16C x4','89924600169','U(a89924*QKKLQt(y'),
     ('Core','Yuengling','Yuengling Traditional Lager 1/24C','Yahnis','1/24C','89924600244','U(a89924*QKKMOo(Y'),
     ('Core','Yuengling','Yuengling Traditional Lager 12/12C','Yahnis','12/12C','89924278986','U(a89924*MRSTSq(v'),
@@ -1161,16 +1155,16 @@ FLO_UPC_DATA = [
 # ── COLUMBIA UPC DATA (auto-generated from Pricing_Barcode_Survey_Updated.xlsx)
 # Columns: WAMP, Brand, Product, Wholesaler, Package, UPC, Barcode
 COL_UPC_DATA = [
-    ('Beyond Beer','Angry Orchard','Angry Orchard Crisp Apple 1/19C','','1/19C','87692023777','87692023777'),
-    ('Beyond Beer','Angry Orchard','Angry Orchard Crisp Apple 6/12B','','6/12B','87692821021','U(a87692*SMLKMl(V'),
-    ('Wine','Beatbox','Beatbox Blue Razzberry 1/500BX','','1/500BX','851133006137','x(i51133*KKQLNr(w'),
+    ('Beyond Beer-Cider','Angry Orchard','Angry Orchard Crisp Apple 1/19C','Southern Crown Partners','1/19C','87692023777','87692023777'),
+    ('Beyond Beer-Cider','Angry Orchard','Angry Orchard Crisp Apple 6/12B','Southern Crown Partners','6/12B','87692821021','U(a87692*SMLKMl(V'),
+    ('Wine','Beatbox','Beatbox Blue Razzberry 1/500BX','Southern Crown Partners','1/500BX','851133006137','x(i51133*KKQLNr(w'),
     ('Wine','Big Sipz','Big Sipz Chocolate 1/7C','Southern Crown Partners','1/7C','850028324264','x(i50028*NMOMQo(Y'),
     ('Value','Bud Ice','Bud Ice 1/16C x6','Southern Crown Partners','1/16C x6','18200002434','U(a18200*KKMONo(Y'),
     ('Value','Bud Ice','Bud Ice 1/16C x6','Southern Crown Partners','1/16C x6','18200002434','U(a18200*KKMONo(Y'),
     ('Value','Bud Ice','Bud Ice 1/25C','Southern Crown Partners','1/25C','18200250064','U(a18200*MPKKQo(Y'),
     ('Value','Bud Ice','Bud Ice 1/40B','Southern Crown Partners','1/40B','18200002441','U(a18200*KKMOOl(V'),
     ('Core','Bud Light','Bud Light 1/25C','Southern Crown Partners','1/25C','18200250019','U(a18200*MPKKLt(y'),
-    ('Core','Bud Light','Bud Light 1/32B','Southern Crown Partners','1/32B','1820000117','U(a18200*KKLLRs(x'),
+    ('Core','Bud Light','Bud Light 1/32B','Southern Crown Partners','1/32B','18200001178','U(a18200*KKLLRs(x'),
     ('Core','Bud Light','Bud Light 12/12B','Southern Crown Partners','12/12B','18200007699','U(a18200*KKRQTt(y'),
     ('Core','Bud Light','Bud Light 12/12C','Southern Crown Partners','12/12C','18200530470','U(a18200*PNKORk(U'),
     ('Core','Bud Light','Bud Light 15/16AL','Southern Crown Partners','15/16AL','18200965388','U(a18200*TQPNSs(x'),
@@ -1186,41 +1180,41 @@ COL_UPC_DATA = [
     ('Core Plus','Bud Light Platinum','Bud Light Platinum 12/12C SC','Southern Crown Partners','12/12C SC','18200209949','U(a18200*MKTTOt(y'),
     ('Core Plus','Bud Light Platinum','Bud Light Platinum 6/12B','Southern Crown Partners','6/12B','18200189937','U(a18200*LSTTNr(w'),
     ('Core','Bud Light','Bud Light TWS 1/16AL','Southern Crown Partners','1/16AL','18200007958','U(a18200*KKRTPs(x'),
-    ('Core','Budweiser','Budweiser 1/16AL','Southern Crown Partners','1/16AL','1820000473','U(a18200*KKORNp(u'),
-    ('Core','Budweiser','Budweiser 1/16C x6','Southern Crown Partners','1/16C x6','1820000018S','U(a18200*KKKLSs(x'),
-    ('Core','Budweiser','Budweiser 1/25C','Southern Crown Partners','1/25C','1820025000','U(a18200*MPKKKm(W'),
-    ('Core','Budweiser','Budweiser 12/12B','Southern Crown Partners','12/12B','1820000771','U(a18200*KKRRLm(W'),
-    ('Core','Budweiser','Budweiser 12/12C','Southern Crown Partners','12/12C','1820011047','U(a18200*LLKORo(Y'),
-    ('Core','Budweiser','Budweiser 15/16AL','Southern Crown Partners','15/16AL','1820096539','U(a18200*TQPNTp(u'),
-    ('Core','Budweiser','Budweiser 24/12BBB','Southern Crown Partners','24/12BBB','1820011349','U(a18200*LLNOTt(y'),
-    ('Core','Budweiser','Budweiser 24/12C','Southern Crown Partners','24/12C','1820011168','U(a18200*LLLQSq(v'),
+    ('Core','Budweiser','Budweiser 1/16AL','Southern Crown Partners','1/16AL','18200004735','U(a18200*KKORNp(u'),
+    ('Core','Budweiser','Budweiser 1/16C x6','Southern Crown Partners','1/16C x6','018200000188','U(a18200*KKKLSs(x'),
+    ('Core','Budweiser','Budweiser 1/25C','Southern Crown Partners','1/25C','18200250002','U(a18200*MPKKKm(W'),
+    ('Core','Budweiser','Budweiser 12/12B','Southern Crown Partners','12/12B','18200007712','U(a18200*KKRRLm(W'),
+    ('Core','Budweiser','Budweiser 12/12C','Southern Crown Partners','12/12C','18200110474','U(a18200*LLKORo(Y'),
+    ('Core','Budweiser','Budweiser 15/16AL','Southern Crown Partners','15/16AL','18200965395','U(a18200*TQPNTp(u'),
+    ('Core','Budweiser','Budweiser 24/12BBB','Southern Crown Partners','24/12BBB','18200113499','U(a18200*LLNOTt(y'),
+    ('Core','Budweiser','Budweiser 24/12C','Southern Crown Partners','24/12C','18200111686','U(a18200*LLLQSq(v'),
     ('Value','Busch','Busch Ice 12/12C','Southern Crown Partners','12/12C','18200009570','U(a18200*KKTPRk(U'),
     ('Value','Busch','Busch Ice 24/12C','Southern Crown Partners','24/12C','18200661686','U(a18200*QQLQSq(v'),
     ('Value','Busch Light','Busch Light 1/16C x6','Southern Crown Partners','1/16C x6','18200004261','U(a18200*KKOMQl(V'),
     ('Value','Busch Light','Busch Light 1/25C','Southern Crown Partners','1/25C','18200250040','U(a18200*MPKKOk(U'),
-    ('Value','Busch Light','Busch Light 12/12B','Southern Crown Partners','12/12B','1820000989','U(a18200*KKTSTl(V'),
+    ('Value','Busch Light','Busch Light 12/12B','Southern Crown Partners','12/12B','18200009891','U(a18200*KKTSTl(V'),
     ('Value','Busch Light','Busch Light 12/12C','Southern Crown Partners','12/12C','18200008016','U(a18200*KKSKLq(v'),
     ('Value','Busch Light','Busch Light 24/12C','Southern Crown Partners','24/12C','18200861673','U(a18200*SQLQRn(X'),
     ('Value','Busch Light','Busch Light 8/16C','Southern Crown Partners','8/16C','18200201905','U(a18200*MKLTKp(u'),
-    ('Premium','Corona','Corona Extra 1/16C','','1/16C','80660956886','U(a80660*TPQSSq(v'),
-    ('Premium','Corona','Corona Extra 1/24B','','1/24B','80660956411','U(a80660*TPQOLl(V'),
-    ('Premium','Corona','Corona Extra 1/24C','','1/24C','80660956435','U(a80660*TPQONp(u'),
-    ('Premium','Corona','Corona Extra 12/12B','','12/12B','80660956152','U(a80660*TPQLPm(W'),
-    ('Premium','Corona','Corona Extra 18/12B','','18/12B','80660956800','U(a80660*TPQSKk(U'),
-    ('Premium','Corona','Corona Extra 6/12B','','6/12B','80660956053','U(a80660*TPQKPn(X'),
-    ('Premium','Corona','Corona Familiar 1/32B','','1/32B','80660956831','U(a80660*TPQSNl(V'),
-    ('Beyond Beer','Corona','Corona Seltzer Variety Pack 2 12/12C SC','','12/12C SC','33544000687','U(a33544*KKKQSr(w'),
-    ('Premium','Corona','Coronita Extra 24/7B','','24/7B','80660954080','U(a80660*TPOKSk(U'),
-    ('Beyond Beer','Fireball','Fireball Cinnamon Malt 16.5 1/200B','Southern Crown Partners','1/200B','88004069667','88004069667'),
-    ('Beyond Beer','Four','Four Loko Gold 14 pct 1/24C','Southern Crown Partners','1/24C','849806001169','x(i49806*KKLLQt(y'),
-    ('Beyond Beer','Four','Four Loko Pregame Jungle Juice 10 pct 1/7B','Southern Crown Partners','1/7B','84980600606','x(i49806*KKQKQp(u'),
-    ('Beyond Beer','Four','Four Loko Pregame Sour Blue Razz 13.9 pct 1/7B','Southern Crown Partners','1/7B','849806002906','x(i49806*KKMTKq(v'),
-    ('Beyond Beer','Four','Four Loko Remix Blue Razz Smsh 1/500BX','Southern Crown Partners','1/500BX','84980600603','x(i49806*KKQKNo(Y'),
+    ('Premium','Corona','Corona Extra 1/16C','Henry J. Lee Reyes','1/16C','80660956886','U(a80660*TPQSSq(v'),
+    ('Premium','Corona','Corona Extra 1/24B','Henry J. Lee Reyes','1/24B','80660956411','U(a80660*TPQOLl(V'),
+    ('Premium','Corona','Corona Extra 1/24C','Henry J. Lee Reyes','1/24C','80660956435','U(a80660*TPQONp(u'),
+    ('Premium','Corona','Corona Extra 12/12B','Henry J. Lee Reyes','12/12B','80660956152','U(a80660*TPQLPm(W'),
+    ('Premium','Corona','Corona Extra 18/12B','Henry J. Lee Reyes','18/12B','80660956800','U(a80660*TPQSKk(U'),
+    ('Premium','Corona','Corona Extra 6/12B','Henry J. Lee Reyes','6/12B','80660956053','U(a80660*TPQKPn(X'),
+    ('Premium','Corona','Corona Familiar 1/32B','Henry J. Lee Reyes','1/32B','80660956831','U(a80660*TPQSNl(V'),
+    ('Beyond Beer-Seltzer','Corona','Corona Seltzer Variety Pack 2 12/12C SC','Henry J. Lee Reyes','12/12C SC','33544000687','U(a33544*KKKQSr(w'),
+    ('Premium','Corona','Coronita Extra 24/7B','Henry J. Lee Reyes','24/7B','80660954080','U(a80660*TPOKSk(U'),
+    ('Beyond Beer-Sweet FAB','Fireball','Fireball Cinnamon Malt 16.5 1/200B','Southern Crown Partners','1/200B','88004069667','88004069667'),
+    ('Beyond Beer-Sweet FAB','Four','Four Loko Gold 14 pct 1/24C','Southern Crown Partners','1/24C','849806001169','x(i49806*KKLLQt(y'),
+    ('Beyond Beer-Sweet FAB','Four','Four Loko Pregame Jungle Juice 10 pct 1/7B','Southern Crown Partners','1/7B','849806006065','x(i49806*KKQKQp(u'),
+    ('Beyond Beer-Sweet FAB','Four','Four Loko Pregame Sour Blue Razz 13.9 pct 1/7B','Southern Crown Partners','1/7B','849806002906','x(i49806*KKMTKq(v'),
+    ('Beyond Beer-Sweet FAB','Four','Four Loko Remix Blue Razz Smsh 1/500BX','Southern Crown Partners','1/500BX','849806006034','x(i49806*KKQKNo(Y'),
     ('Super Premium','Goose Island','Goose Island Beer HugTropical 1/19C','Southern Crown Partners','1/19C','736920211089','w(h36920*MLLKSt(y'),
     ('Value','King Cobra','King Cobra 1/40B','Southern Crown Partners','1/40B','18200001314','U(a18200*KKLNLo(Y'),
     ('Core Plus','Land Shark','Land Shark Lager 12/12C','Southern Crown Partners','12/12C','18200209833','U(a18200*MKTSNn(X'),
     ('Core Plus','Land Shark','Land Shark Lager 6/12B','Southern Crown Partners','6/12B','18200129827','U(a18200*LMTSMr(w'),
-    ('Beyond Beer','MD AB','MD 2020 Spk Punch Sweet Blue Ras 1/16C','Southern Crown Partners','1/16C','18200262098','U(a18200*MQMKTs(x'),
+    ('Beyond Beer-Low','MD AB','MD 2020 Spk Punch Sweet Blue Ras 1/16C','Southern Crown Partners','1/16C','18200262098','U(a18200*MQMKTs(x'),
     ('Core Plus','Michelob Ultra','Michelob Ultra 1/16AL','Southern Crown Partners','1/16AL','18200006654','U(a18200*KKQQPo(Y'),
     ('Core Plus','Michelob Ultra','Michelob Ultra 1/16C x4','Southern Crown Partners','1/16C x4','18200005244','U(a18200*KKPMOo(Y'),
     ('Core Plus','Michelob Ultra','Michelob Ultra 1/25C','Southern Crown Partners','1/25C','18200250101','U(a18200*MPKLKl(V'),
@@ -1232,151 +1226,149 @@ COL_UPC_DATA = [
     ('Core Plus','Michelob Ultra','Michelob Ultra 3/25C','Southern Crown Partners','3/25C','18200249815','U(a18200*MOTSLp(u'),
     ('Core Plus','Michelob Ultra','Michelob Ultra 6/12B','Southern Crown Partners','6/12B','18200059896','U(a18200*KPTSTq(v'),
     ('Core Plus','Michelob Ultra','Michelob Ultra 8/16C','Southern Crown Partners','8/16C','18200239861','U(a18200*MNTSQl(V'),
-    ('Beyond Beer','Michelob Ultra Seltzer','Michelob Ultra Org Seltzer VarP3 12/12C SC','Southern Crown Partners','12/12C SC','18200203374','U(a18200*MKNNRo(Y'),
-    ('Premium','Modelo','Modelo 1/24C','','1/24C','80660957210','U(a80660*TPRMLk(U'),
-    ('Premium','Modelo','Modelo 1/32B','','1/32B','33544950906','33544950906'),
-    ('Premium','Modelo','Modelo 12/12C','','12/12C','80660957159','U(a80660*TPRLPt(y'),
-    ('Premium','Modelo','Modelo 18/12C','','18/12C','80660957111','U(a80660*TPRLLl(V'),
-    ('Premium','Modelo','Modelo 24/12C','','24/12C','80660957104','U(a80660*TPRLKo(Y'),
-    ('Premium','Modelo','Modelo 3/24C','','3/24C','80660957746','U(a80660*TPRROq(v'),
-    ('Premium','Modelo','Modelo 6/12B','','6/12B','80660957654','U(a80660*TPRQPo(Y'),
-    ('Premium','Modelo','Modelo Modelito 24/7B','','24/7B','33544000212','U(a33544*KKKMLm(W'),
+    ('Beyond Beer-Seltzer','Michelob Ultra Seltzer','Michelob Ultra Org Seltzer VarP3 12/12C SC','Southern Crown Partners','12/12C SC','18200203374','U(a18200*MKNNRo(Y'),
+    ('Premium','Modelo','Modelo 1/24C','Henry J. Lee Reyes','1/24C','80660957210','U(a80660*TPRMLk(U'),
+    ('Premium','Modelo','Modelo 1/32B','Henry J. Lee Reyes','1/32B','33544950906','33544950906'),
+    ('Premium','Modelo','Modelo 12/12C','Henry J. Lee Reyes','12/12C','80660957159','U(a80660*TPRLPt(y'),
+    ('Premium','Modelo','Modelo 18/12C','Henry J. Lee Reyes','18/12C','80660957111','U(a80660*TPRLLl(V'),
+    ('Premium','Modelo','Modelo 24/12C','Henry J. Lee Reyes','24/12C','80660957104','U(a80660*TPRLKo(Y'),
+    ('Premium','Modelo','Modelo 3/24C','Henry J. Lee Reyes','3/24C','80660957746','U(a80660*TPRROq(v'),
+    ('Premium','Modelo','Modelo 6/12B','Henry J. Lee Reyes','6/12B','80660957654','U(a80660*TPRQPo(Y'),
+    ('Premium','Modelo','Modelo Modelito 24/7B','Henry J. Lee Reyes','24/7B','33544000212','U(a33544*KKKMLm(W'),
     ('Value','Natural','Natty Daddy 1/25C','Southern Crown Partners','1/25C','18200250132','U(a18200*MPKLNm(W'),
     ('Value','Natural','Natural Light 1/16C x6','Southern Crown Partners','1/16C x6','18200000430','U(a18200*KKKONk(U'),
     ('Value','Natural','Natural Light 1/25C','Southern Crown Partners','1/25C','18200250026','U(a18200*MPKKMq(v'),
     ('Value','Natural','Natural Light 12/12B','Southern Crown Partners','12/12B','18200009303','U(a18200*KKTNKn(X'),
-    ('Value','Natural','Natural Light 15/12C','Southern Crown Partners','15/12C','18200200779','U(a18200*MKKRRt(y'),
+    ('Value-High','Natural','Natural Light 15/12C','Southern Crown Partners','15/12C','18200200779','U(a18200*MKKRRt(y'),
     ('Value','Natural','Natural Light 24/12C','Southern Crown Partners','24/12C','18200151682','U(a18200*LPLQSm(W'),
     ('Value','Natural','Natural Light 3/25C','Southern Crown Partners','3/25C','18200219870','U(a18200*MLTSRk(U'),
     ('Value','Natural','Natural Light 8/16C','Southern Crown Partners','8/16C','18200239823','U(a18200*MNTSMn(X'),
     ('Super Premium','New Belgium','New Belgium Voodoo Ranger ImpIPA 1/19C','Southern Crown Partners','1/19C','754527010218','w(h54527*KLKMLs(x'),
     ('Super Premium','New Belgium','New Belgium Voodoo Ranger ImpIPA 6/12B','Southern Crown Partners','6/12B','754527004217','w(h54527*KKOMLr(w'),
-    ('Beyond Beer','New Belgium','New Belgium Voodoo Ranger Tea 1/24C','Southern Crown Partners','1/24C','754527011642','w(h54527*KLLQOm(W'),
-    ('Beyond Beer','New Belgium','New Belgium Voodoo Ranger TeaVP1 12/12C','Southern Crown Partners','12/12C','754527006518','w(h54527*KKQPLs(x'),
-    ('Beyond Beer','Ritas','Ritas Lime-A-Rita 1/16C','Southern Crown Partners','1/16C','18200001741','U(a18200*KKLROl(V'),
+    ('Beyond Beer-Tea and Lemonade','New Belgium','New Belgium Voodoo Ranger Tea 1/24C','Southern Crown Partners','1/24C','754527011642','w(h54527*KLLQOm(W'),
+    ('Beyond Beer-Tea and Lemonade','New Belgium','New Belgium Voodoo Ranger TeaVP1 12/12C','Southern Crown Partners','12/12C','754527006518','w(h54527*KKQPLs(x'),
+    ('Beyond Beer-Low','Ritas','Ritas Lime-A-Rita 1/16C','Southern Crown Partners','1/16C','18200001741','U(a18200*KKLROl(V'),
     ('Super Premium','Stella Artois','Stella Artois 1/22B','Southern Crown Partners','1/22B','786150000571','w(h86150*KKKPRl(V'),
     ('Super Premium','Stella Artois','Stella Artois 12/11B','Southern Crown Partners','12/11B','786150000144','w(h86150*KKKLOo(Y'),
     ('Super Premium','Stella Artois','Stella Artois 6/11B','Southern Crown Partners','6/11B','786150000014','w(h86150*KKKKLo(Y'),
     ('Super Premium','Stella Artois Import','Stella Artois Import 1/15C','Southern Crown Partners','1/15C','18200005060','U(a18200*KKPKQk(U'),
-    ('Beyond Beer','The Beast Unleashed','The Beast Tea Original 1/24C','Southern Crown Partners','1/24C','810117131135','x(i10117*LNKNPk(U'),
-    ('Beyond Beer','The Beast Unleashed','The Beast Tea Variety 12/12C SC','Southern Crown Partners','12/12C SC','810117131241','x(i10117*LNKNMt(y'),
-    ('Beyond Beer','The Beast Unleashed','The Beast Unleashed Mean Green 1/16C','Southern Crown Partners','1/16C','810117130015','x(i10117*LNKKLp(u'),
-    ('Beyond Beer','The Beast Unleashed','The Beast Unleashed Variety 1 12/12C SC','Southern Crown Partners','12/12C SC','810117130183','x(i10117*LNKLSn(X'),
-    ('Beyond Beer','Truly','Truly Hd Seltzer Berry Variety 12/12C SC','','12/12C SC','87692006862','U(a87692*KKQSQm(W'),
-    ('Beyond Beer','Truly','Truly Hd Seltzer Wild Berry 1/16C','','1/16C','87692007296','U(a87692*KKRMTq(v'),
-    ('Beyond Beer','Truly','Truly Hd Seltzer Wild Berry 1/24C','','1/24C','87692009511','U(a87692*KKTPLl(V'),
-    ('Beyond Beer','Twisted Tea','Twisted Tea 1/24C','','1/24C','87692832317','U(a87692*SNMNLr(w'),
-    ('Beyond Beer','Twisted Tea','Twisted Tea 12/12C','','12/12C','87692831341','U(a87692*SNLNOl(V'),
-    ('Beyond Beer','Twisted Tea','Twisted Tea 3/24C','','3/24C','87692009832','U(a87692*KKTSNm(W'),
-    ('Beyond Beer','Twisted Tea','Twisted Tea 6/12B','','6/12B','87692831020','U(a87692*SNLKMk(U'),
+    ('Beyond Beer-Tea and Lemonade','The Beast Unleashed','The Beast Tea Original 1/24C','Southern Crown Partners','1/24C','810117131135','x(i10117*LNKNPk(U'),
+    ('Beyond Beer-Tea and Lemonade','The Beast Unleashed','The Beast Tea Variety 12/12C SC','Southern Crown Partners','12/12C SC','810117131241','x(i10117*LNKNMt(y'),
+    ('Beyond Beer-Sweet FAB','The Beast Unleashed','The Beast Unleashed Mean Green 1/16C','Southern Crown Partners','1/16C','810117130015','x(i10117*LNKKLp(u'),
+    ('Beyond Beer-Sweet FAB','The Beast Unleashed','The Beast Unleashed Variety 1 12/12C SC','Southern Crown Partners','12/12C SC','810117130183','x(i10117*LNKLSn(X'),
+    ('Beyond Beer-Seltzer','Truly','Truly Hd Seltzer Berry Variety 12/12C SC','Southern Crown Partners','12/12C SC','87692006862','U(a87692*KKQSQm(W'),
+    ('Beyond Beer-Seltzer','Truly','Truly Hd Seltzer Wild Berry 1/16C','Southern Crown Partners','1/16C','87692007296','U(a87692*KKRMTq(v'),
+    ('Beyond Beer-Seltzer','Truly','Truly Hd Seltzer Wild Berry 1/24C','Southern Crown Partners','1/24C','87692009511','U(a87692*KKTPLl(V'),
+    ('Beyond Beer-Tea and Lemonade','Twisted Tea','Twisted Tea 1/24C','Southern Crown Partners','1/24C','87692832317','U(a87692*SNMNLr(w'),
+    ('Beyond Beer-Tea and Lemonade','Twisted Tea','Twisted Tea 12/12C','Southern Crown Partners','12/12C','87692831341','U(a87692*SNLNOl(V'),
+    ('Beyond Beer-Tea and Lemonade','Twisted Tea','Twisted Tea 3/24C','Southern Crown Partners','3/24C','87692009832','U(a87692*KKTSNm(W'),
+    ('Beyond Beer-Tea and Lemonade','Twisted Tea','Twisted Tea 6/12B','Southern Crown Partners','6/12B','87692831020','U(a87692*SNLKMk(U'),
     ('Super Premium','Wicked Weed','Wicked Weed Pernicious IPA 1/19C','Southern Crown Partners','1/19C','857531005284','x(i57531*KKPMSo(Y'),
     ('Super Premium','Wicked Weed','Wicked Weed Pernicious IPA 6/12C','Southern Crown Partners','6/12C','853340008188','x(i53340*KKSLSs(x'),
-    ('Premium','Heineken','Heineken 1/22B','','1/22B','72890004789','U(a72890*KKORSt(y'),
-    ('Premium','Heineken','Heineken 1/24C','','1/24C','72890001191','U(a72890*KKLLTl(V'),
-    ('Premium','Heineken','Heineken 12/12B','','12/12B','72890000163','U(a72890*KKKLQn(X'),
-    ('Premium','Heineken','Heineken 18/12B','','18/12B','72890001528','U(a72890*KKLPMs(x'),
-    ('Premium','Heineken','Heineken 24/12C','','24/12C','72890000279','U(a72890*KKKMRt(y'),
-    ('Premium','Heineken','Heineken 3/24C','','3/24C','72890006448','U(a72890*KKQOOs(x'),
-    ('Premium','Heineken','Heineken 4/16C','','4/16C','72890000835','U(a72890*KKKSNp(u'),
-    ('Premium','Heineken','Heineken 6/12B','','6/12B','72890000118','U(a72890*KKKLLs(x'),
-    ('Beyond Beer','Johnny Bootlegger','J Bootlegger Alcatraz Sour Apple 10 pct 1/7B','','1/7B','68474680180','v(g84746*SKLSKm(W'),
-    ('Beyond Beer','Johnny Bootlegger','J Bootlegger Sng Sng Sour Grape 12 pct 1/7B','','1/7B','684746375105','v(g84746*NRPLKp(u'),
-    ('Beyond Beer','AriZona Hard','AriZona Hard Iced Tea Lemon 1/22C','','1/22C','613008763732','v(g13008*RQNRNm(W'),
-    ('Beyond Beer','AriZona Hard','AriZona Hard Iced Tea Variety 12/12C SC','','12/12C SC','613008763831','v(g13008*RQNSNl(V'),
-    ('Beyond Beer','Arnold Palmer Hard Tea','Arnold Palmer Spkd Half&Half 1/24C','','1/24C','613008748296','v(g13008*ROSMTq(v'),
-    ('Premium','Blue Moon','Blue Moon Belgian White Ale 6/12B','','6/12B','71990095116','U(a71990*KTPLLq(v'),
-    ('Beyond Beer','Bold Rock Cider','Bold Rock Cider Apple 1/16C','','1/16C','85908800357','x(i59088*KKNPRr(w'),
-    ('Beyond Beer','Bold Rock Cider','Bold Rock Cider Apple 15/12C','','15/12C','85908800392','x(i59088*KKNTMs(x'),
-    ('Wine','BuzzBallz Chillers','BuzzBallz Chillers Cocoa Chiller 1/7C','','1/7C','857641002890','x(i57641*KKMSTk(U'),
-    ('Beyond Beer','Clubtails','Clubtails Sex On the Beach 1/16C','','1/16C','684746400074','v(g84746*OKKKRo(Y'),
-    ('Core','Coors','Coors Light 1/16AL','','1/16AL','71990301033','U(a71990*NKLKNn(X'),
-    ('Core','Coors','Coors Light 1/16C x4','','1/16C x4','71990302023','U(a71990*NKMKMn(X'),
-    ('Core','Coors','Coors Light 1/24C','','1/24C','71990300654','U(a71990*NKKQPo(Y'),
-    ('Core','Coors','Coors Light 15/16AL','','15/16AL','71990095277','U(a71990*KTPMRr(w'),
-    ('Core','Coors','Coors Light 18/12C','','18/12C','71990300173','U(a71990*NKKLRn(X'),
-    ('Core','Coors','Coors Light 24/12C','','24/12C','71990316006','U(a71990*NLQKKq(v'),
-    ('Core','Coors','Coors Light 8/16C','','8/16C','71990170462','U(a71990*LRKOQm(W'),
-    ('Core','Coors','Coors Light 9/16AL','','9/16AL','71990301040','U(a71990*NKLKOk(U'),
-    ('Super Premium','Creature Comforts','Creature Comforts Flash Cat 1/19C','','1/19C','86001172132','x(i60011*RMLNMl(V'),
-    ('Premium','Heineken','Heineken 1/16C','','1/16C','7289000716','U(a72890*KKRLQm(W'),
-    ('Value','Miller Ice House','Icehouse 1/16C x6','','1/16C x6','34100008826','U(a34100*KKSSMq(v'),
-    ('Value','Miller Ice House','Icehouse 1/24C','','1/24C','34100008802','U(a34100*KKSSKm(W'),
-    ('Value','Miller Ice House','Icehouse 1/40B','','1/40B','34100002787','U(a34100*KKSSOk(U'),
-    ('Value','Miller Ice House','Icehouse 12/12C','','12/12C','34100626020','U(a34100*QMQKMk(U'),
-    ('Value','Miller Ice House','Icehouse 18/12C','','18/12C','34100623401','U(a34100*QMNOKl(V'),
-    ('Value','Miller Ice House','Icehouse 24/12C','','24/12C','34100623067','U(a34100*QMNKQr(w'),
-    ('Value','Miller Ice House','Icehouse 6/12B','','6/12B','34100625054','U(a34100*QMPKPo(Y'),
-    ('Value','Keystone','Keystone Light 1/24C','','1/24C','71990480240','U(a71990*OSKMOk(U'),
-    ('Value','Keystone','Keystone Light 15/12C','','15/12C','71990480455','U(a71990*OSKOPp(u'),
-    ('Beyond Beer','Mikes','Mikes Hard Lemonade 6/11B','','6/11B','635985100621','v(g35985*LKKQMl(V'),
-    ('Beyond Beer','Mikes','Mikes Hard Variety Pack 12/12C SC','','12/12C SC','635985260011','v(g35985*MQKKLl(V'),
-    ('Beyond Beer','Mikes','Mikes HARDER Lemonade 1/16C','','1/16C','635985258759','v(g35985*MPSRPt(y'),
-    ('Beyond Beer','Mikes','Mikes HARDER Lemonade 1/23.5C','','1/23.5C','635985245834','v(g35985*MOPSNo(Y'),
-    ('Value','Miller High Life','Miller High Life 1/16C x6','','1/16C x6','34100000073','U(a34100*KKKKRn(X'),
-    ('Value','Miller High Life','Miller High Life 1/40PL','','1/40PL','34100007638','U(a34100*KKRQNs(x'),
-    ('Value','Miller High Life','Miller High Life 12/12C','','12/12C','34100016364','U(a34100*KLQNQo(Y'),
-    ('Value','Miller High Life','Miller High Life 18/12C','','18/12C','34100013400','U(a34100*KLNOKk(U'),
-    ('Value','Miller High Life','Miller High Life 24/12C','','24/12C','34100013066','U(a34100*KLNKQq(v'),
-    ('Value','Miller High Life','Miller High Life 6/12B','','6/12B','34100015053','U(a34100*KLPKPn(X'),
-    ('Core','Miller','Miller Lite 1/16AL','','1/16AL','3410000376','U(a34100*KKNRQk(U'),
-    ('Core','Miller','Miller Lite 1/16C x4','','1/16C x4','3410000158S','U(a34100*KKLPSm(W'),
-    ('Core','Miller','Miller Lite 12/12B','','12/12B','34100575090','U(a34100*PRPKTk(U'),
-    ('Core','Miller','Miller Lite 12/12B','','12/12B','3410057509','U(a34100*PRPKTk(U'),
-    ('Core','Miller','Miller Lite 12/12C','','12/12C','34100576363','U(a34100*PRQNQn(X'),
-    ('Core','Miller','Miller Lite 12/12C','','12/12C','3410057636','U(a34100*PRQNQn(X'),
-    ('Core','Miller','Miller Lite 15/16AL','','15/16AL','3410057707','U(a34100*PRRKRk(U'),
-    ('Core','Miller','Miller Lite 18/12B','','18/12B','3410057256','U(a34100*PRMPQn(X'),
-    ('Core','Miller','Miller Lite 18/12C','','18/12C','3410057340','U(a34100*PRNOKt(y'),
-    ('Core','Miller','Miller Lite 24/12BBB','','24/12BBB','3410057243','U(a34100*PRMONn(X'),
-    ('Core','Miller','Miller Lite 24/12C','','24/12C','3410057306','U(a34100*PRNKQp(u'),
-    ('Core','Miller','Miller Lite 3/24C','','3/24C','34100576639','U(a34100*PRQQNt(y'),
-    ('Core','Miller','Miller Lite 6/12B','','6/12B','34100575052','U(a34100*PRPKPm(W'),
+    ('Premium','Heineken','Heineken 1/22B','Southern Crown Partners','1/22B','72890004789','U(a72890*KKORSt(y'),
+    ('Premium','Heineken','Heineken 1/24C','Southern Crown Partners','1/24C','72890001191','U(a72890*KKLLTl(V'),
+    ('Premium','Heineken','Heineken 12/12B','Southern Crown Partners','12/12B','72890000163','U(a72890*KKKLQn(X'),
+    ('Premium','Heineken','Heineken 18/12B','Southern Crown Partners','18/12B','72890001528','U(a72890*KKLPMs(x'),
+    ('Premium','Heineken','Heineken 24/12C','Southern Crown Partners','24/12C','72890000279','U(a72890*KKKMRt(y'),
+    ('Premium','Heineken','Heineken 3/24C','Southern Crown Partners','3/24C','72890006448','U(a72890*KKQOOs(x'),
+    ('Premium','Heineken','Heineken 4/16C','Southern Crown Partners','4/16C','72890000835','U(a72890*KKKSNp(u'),
+    ('Premium','Heineken','Heineken 6/12B','Southern Crown Partners','6/12B','72890000118','U(a72890*KKKLLs(x'),
+    ('Beyond Beer-Sweet FAB','Johnny Bootlegger','J Bootlegger Alcatraz Sour Apple 10 pct 1/7B','Southern Crown Partners','1/7B','684746801802','v(g84746*SKLSKm(W'),
+    ('Beyond Beer-Sweet FAB','Johnny Bootlegger','J Bootlegger Sng Sng Sour Grape 12 pct 1/7B','Southern Crown Partners','1/7B','684746375105','v(g84746*NRPLKp(u'),
+    ('Beyond Beer-Tea and Lemonade','AriZona Hard','AriZona Hard Iced Tea Lemon 1/22C','Henry J. Lee Reyes','1/22C','613008763732','v(g13008*RQNRNm(W'),
+    ('Beyond Beer-Tea and Lemonade','AriZona Hard','AriZona Hard Iced Tea Variety 12/12C SC','Henry J. Lee Reyes','12/12C SC','613008763831','v(g13008*RQNSNl(V'),
+    ('Beyond Beer-Tea and Lemonade','Arnold Palmer Hard Tea','Arnold Palmer Spkd Half&Half 1/24C','Henry J. Lee Reyes','1/24C','613008748296','v(g13008*ROSMTq(v'),
+    ('Premium','Blue Moon','Blue Moon Belgian White Ale 6/12B','Henry J. Lee Reyes','6/12B','71990095116','U(a71990*KTPLLq(v'),
+    ('Beyond Beer-Cider','Bold Rock Cider','Bold Rock Cider Apple 1/16C','Henry J. Lee Reyes','1/16C','859088003577','x(i59088*KKNPRr(w'),
+    ('Beyond Beer-Cider','Bold Rock Cider','Bold Rock Cider Apple 15/12C','Henry J. Lee Reyes','15/12C','859088003928','x(i59088*KKNTMs(x'),
+    ('Wine','BuzzBallz Chillers','BuzzBallz Chillers Cocoa Chiller 1/7C','Henry J. Lee Reyes','1/7C','857641002890','x(i57641*KKMSTk(U'),
+    ('Beyond Beer-Sweet FAB','Clubtails','Clubtails Sex On the Beach 1/16C','Southern Crown Partners','1/16C','684746400074','v(g84746*OKKKRo(Y'),
+    ('Core','Coors','Coors Light 1/16AL','Henry J. Lee Reyes','1/16AL','71990301033','U(a71990*NKLKNn(X'),
+    ('Core','Coors','Coors Light 1/16C x4','Henry J. Lee Reyes','1/16C x4','71990302023','U(a71990*NKMKMn(X'),
+    ('Core','Coors','Coors Light 1/24C','Henry J. Lee Reyes','1/24C','71990300654','U(a71990*NKKQPo(Y'),
+    ('Core','Coors','Coors Light 15/16AL','Henry J. Lee Reyes','15/16AL','71990095277','U(a71990*KTPMRr(w'),
+    ('Core','Coors','Coors Light 18/12C','Henry J. Lee Reyes','18/12C','71990300173','U(a71990*NKKLRn(X'),
+    ('Core','Coors','Coors Light 24/12C','Henry J. Lee Reyes','24/12C','71990316006','U(a71990*NLQKKq(v'),
+    ('Core','Coors','Coors Light 8/16C','Henry J. Lee Reyes','8/16C','71990170462','U(a71990*LRKOQm(W'),
+    ('Core','Coors','Coors Light 9/16AL','Henry J. Lee Reyes','9/16AL','71990301040','U(a71990*NKLKOk(U'),
+    ('Super Premium','Creature Comforts','Creature Comforts Flash Cat 1/19C','Henry J. Lee Reyes','1/19C','860011721321','x(i60011*RMLNMl(V'),
+    ('Premium','Heineken','Heineken 1/16C','Southern Crown Partners','1/16C','72890007162','U(a72890*KKRLQm(W'),
+    ('Value','Miller Ice House','Icehouse 1/16C x6','Henry J. Lee Reyes','1/16C x6','34100008826','U(a34100*KKSSMq(v'),
+    ('Value','Miller Ice House','Icehouse 1/24C','Henry J. Lee Reyes','1/24C','34100008802','U(a34100*KKSSKm(W'),
+    ('Value','Miller Ice House','Icehouse 1/40B','Henry J. Lee Reyes','1/40B','34100002787','U(a34100*KKSSOk(U'),
+    ('Value','Miller Ice House','Icehouse 12/12C','Henry J. Lee Reyes','12/12C','34100626020','U(a34100*QMQKMk(U'),
+    ('Value','Miller Ice House','Icehouse 18/12C','Henry J. Lee Reyes','18/12C','34100623401','U(a34100*QMNOKl(V'),
+    ('Value','Miller Ice House','Icehouse 24/12C','Henry J. Lee Reyes','24/12C','34100623067','U(a34100*QMNKQr(w'),
+    ('Value','Miller Ice House','Icehouse 6/12B','Henry J. Lee Reyes','6/12B','34100625054','U(a34100*QMPKPo(Y'),
+    ('Value','Keystone','Keystone Light 1/24C','Henry J. Lee Reyes','1/24C','71990480240','U(a71990*OSKMOk(U'),
+    ('Value-Low','Keystone','Keystone Light 15/12C','Henry J. Lee Reyes','15/12C','71990480455','U(a71990*OSKOPp(u'),
+    ('Beyond Beer-Tea and Lemonade','Mikes','Mikes Hard Lemonade 6/11B','Henry J. Lee Reyes','6/11B','635985100621','v(g35985*LKKQMl(V'),
+    ('Beyond Beer-Tea and Lemonade','Mikes','Mikes Hard Variety Pack 12/12C SC','Henry J. Lee Reyes','12/12C SC','635985260011','v(g35985*MQKKLl(V'),
+    ('Beyond Beer-Tea and Lemonade','Mikes','Mikes HARDER Lemonade 1/16C','Henry J. Lee Reyes','1/16C','635985258759','v(g35985*MPSRPt(y'),
+    ('Beyond Beer-Tea and Lemonade','Mikes','Mikes HARDER Lemonade 1/23.5C','Henry J. Lee Reyes','1/23.5C','635985245834','v(g35985*MOPSNo(Y'),
+    ('Value','Miller High Life','Miller High Life 1/16C x6','Henry J. Lee Reyes','1/16C x6','34100000073','U(a34100*KKKKRn(X'),
+    ('Value','Miller High Life','Miller High Life 1/40PL','Henry J. Lee Reyes','1/40PL','34100007638','U(a34100*KKRQNs(x'),
+    ('Value','Miller High Life','Miller High Life 12/12C','Henry J. Lee Reyes','12/12C','34100016364','U(a34100*KLQNQo(Y'),
+    ('Value','Miller High Life','Miller High Life 18/12C','Henry J. Lee Reyes','18/12C','34100013400','U(a34100*KLNOKk(U'),
+    ('Value','Miller High Life','Miller High Life 24/12C','Henry J. Lee Reyes','24/12C','34100013066','U(a34100*KLNKQq(v'),
+    ('Value','Miller High Life','Miller High Life 6/12B','Henry J. Lee Reyes','6/12B','34100015053','U(a34100*KLPKPn(X'),
+    ('Core','Miller','Miller Lite 1/16AL','Henry J. Lee Reyes','1/16AL','34100003760','U(a34100*KKNRQk(U'),
+    ('Core','Miller','Miller Lite 1/16C x4','Henry J. Lee Reyes','1/16C x4','034100001582','U(a34100*KKLPSm(W'),
+    ('Core','Miller','Miller Lite 12/12B','Henry J. Lee Reyes','12/12B','34100575090','U(a34100*PRPKTk(U'),
+    ('Core','Miller','Miller Lite 12/12C','Henry J. Lee Reyes','12/12C','34100576363','U(a34100*PRQNQn(X'),
+    ('Core','Miller','Miller Lite 15/16AL','Henry J. Lee Reyes','15/16AL','34100577070','U(a34100*PRRKRk(U'),
+    ('Core','Miller','Miller Lite 18/12B','Henry J. Lee Reyes','18/12B','34100572563','U(a34100*PRMPQn(X'),
+    ('Core','Miller','Miller Lite 18/12C','Henry J. Lee Reyes','18/12C','34100573409','U(a34100*PRNOKt(y'),
+    ('Core','Miller','Miller Lite 24/12BBB','Henry J. Lee Reyes','24/12BBB','34100572433','U(a34100*PRMONn(X'),
+    ('Core','Miller','Miller Lite 24/12C','Henry J. Lee Reyes','24/12C','34100573065','U(a34100*PRNKQp(u'),
+    ('Core','Miller','Miller Lite 3/24C','Henry J. Lee Reyes','3/24C','34100576639','U(a34100*PRQQNt(y'),
+    ('Core','Miller','Miller Lite 6/12B','Henry J. Lee Reyes','6/12B','34100575052','U(a34100*PRPKPm(W'),
     ('Value','Milwaukees Best',"Milwaukee's Best Ice 15/12C",'','15/12C','34100303440','U(a34100*NKNOOk(U'),
-    ('Value','Olde English 800','Olde Eng 800 1/42PL','','1/42PL','34100006228','U(a34100*KKQMMs(x'),
-    ('Value','Pabst','Pabst 1/16C x6','','1/16C x6','22100000742','U(a22100*KKKROm(W'),
-    ('Value','Pabst','Pabst 1/25C','','1/25C','22100000049','U(a22100*KKKKOt(y'),
-    ('Value','Pabst','Pabst 12/12C','','12/12C','22100001701','U(a22100*KKLRKl(V'),
-    ('Value','Pabst','Pabst 18/12C','','18/12C','22100001572','U(a22100*KKLPRm(W'),
+    ('Value','Olde English 800','Olde Eng 800 1/42PL','Henry J. Lee Reyes','1/42PL','34100006228','U(a34100*KKQMMs(x'),
+    ('Value','Pabst','Pabst 1/16C x6','Henry J. Lee Reyes','1/16C x6','22100000742','U(a22100*KKKROm(W'),
+    ('Value','Pabst','Pabst 1/25C','Henry J. Lee Reyes','1/25C','22100000049','U(a22100*KKKKOt(y'),
+    ('Value','Pabst','Pabst 12/12C','Henry J. Lee Reyes','12/12C','22100001701','U(a22100*KKLRKl(V'),
+    ('Value','Pabst','Pabst 18/12C','Henry J. Lee Reyes','18/12C','22100001572','U(a22100*KKLPRm(W'),
     ('Premium',"Redd's","Redd's Apple Ale 1/16C",'','1/16C','34100007805','U(a34100*KKRSKp(u'),
     ('Premium',"Redd's","Redd's Apple Ale 6/12B",'','6/12B','34100087166','U(a34100*KSRLQq(v'),
     ('Premium',"Redd's","Redd's Wicked Apple 1/24C",'','1/24C','34100003234','U(a34100*KKNMNo(Y'),
-    ('Value','Schlitz','Schlitz Malt 1/25C','','1/25C','52300000457','U(a52300*KKKOPr(w'),
+    ('Value','Schlitz','Schlitz Malt 1/25C','Henry J. Lee Reyes','1/25C','52300000457','U(a52300*KKKOPr(w'),
     ('Beyond Beer',"Seagram's Escapes","Seagram's Escapes JamaicanMeHapy 1/16C",'','1/16C','70310011669','U(a70310*KLLQQt(y'),
-    ('Beyond Beer','Simply Spiked','Simply Spiked Lemonade 1/24C','','1/24C','810078780168','x(i10078*RSKLQs(x'),
-    ('Beyond Beer','Simply Spiked','Simply Spiked Lemonade Variety 12/12C SC','','12/12C SC','810078780205','x(i10078*RSKMKp(u'),
-    ('Beyond Beer','Smirnoff Ice','Smirnoff Ice 6/11B','','6/11B','82000723851','U(a82000*RMNSPl(V'),
-    ('Beyond Beer','Smirnoff Ice','Smirnoff Ice Screwdriver 1/24B','','1/24B','82000762126','U(a82000*RQMLMq(v'),
-    ('Beyond Beer','Smirnoff Ice','Smirnoff Ice Smash Peach Mango 1/16C','','1/16C','82000786238','U(a82000*RSQMNs(x'),
-    ('Value','Steel Res. High Gr','Steel Res. High Gravity 1/24C','','1/24C','78250003287','U(a78250*KKNMSr(w'),
-    ('Value','Steel Res. High Gr','Steel Res. High Gravity 1/42PL','','1/42PL','78250003348','U(a78250*KKNNOs(x'),
-    ('Beyond Beer','Steel Reserve','Steel Reserve Alloy Spkd Pineapl 1/16C x4','','1/16C x4','78250006127','U(a78250*KKQLMr(w'),
-    ('Super Premium','Sweetwater','Sweetwater Goin Coastal 1/19C','','1/19C','631234840041','v(g31234*SOKKOl(V'),
-    ('Super Premium','Sweetwater','Sweetwater H A Z Y IPA 6/12C','','6/12C','631234451124','v(g31234*OPLLMo(Y'),
-    ('Beyond Beer','Topo Chico','Topo Chico Hd Seltzer Marg VP 12/12C SC','','12/12C SC','810078780380','x(i10078*RSKNSk(U'),
-    ('Beyond Beer','Vizzy Seltzer','Vizzy Seltzer Variety 1 12/12C SC','','12/12C SC','34100012328','U(a34100*KLMNMs(x'),
-    ('Beyond Beer','White Claw','White Claw Blk Cherry HrdSeltzer 1/19C','','1/19C','635985801986','635985801986'),
-    ('Beyond Beer','White Claw','White Claw Variety Pk HrdSeltzer 12/12C SC','','12/12C SC','635985548904','v(g35985*POSTKo(Y'),
-    ('Core','Yuengling','Yuengling Traditional Lager 1/16C x4','','1/16C x4','89924600169','U(a89924*QKKLQt(y'),
-    ('Core','Yuengling','Yuengling Traditional Lager 1/24C','','1/24C','89924600244','U(a89924*QKKMOo(Y'),
-    ('Core','Yuengling','Yuengling Traditional Lager 12/12C','','12/12C','89924278986','U(a89924*MRSTSq(v'),
-    ('Core','Yuengling','Yuengling Traditional Lager 24/12C','','24/12C','89924880073','U(a89924*SSKKRn(X'),
-    ('Core','Yuengling','Yuengling Traditional Lager 6/12B','','6/12B','89924278917','U(a89924*MRSTLr(w'),
-    ('Super Premium','Terrapin','Terrapin Hopsecutioner IPA 1/19C','','1/19C','852304007878','x(i52304*KKRSRs(x'),
+    ('Beyond Beer-Tea and Lemonade','Simply Spiked','Simply Spiked Lemonade 1/24C','Henry J. Lee Reyes','1/24C','810078780168','x(i10078*RSKLQs(x'),
+    ('Beyond Beer-Tea and Lemonade','Simply Spiked','Simply Spiked Lemonade Variety 12/12C SC','Henry J. Lee Reyes','12/12C SC','810078780205','x(i10078*RSKMKp(u'),
+    ('Beyond Beer-Sweet FAB','Smirnoff Ice','Smirnoff Ice 6/11B','Henry J. Lee Reyes','6/11B','82000723851','U(a82000*RMNSPl(V'),
+    ('Beyond Beer-Sweet FAB','Smirnoff Ice','Smirnoff Ice Screwdriver 1/24B','Henry J. Lee Reyes','1/24B','82000762126','U(a82000*RQMLMq(v'),
+    ('Beyond Beer-Sweet FAB','Smirnoff Ice','Smirnoff Ice Smash Peach Mango 1/16C','Henry J. Lee Reyes','1/16C','82000786238','U(a82000*RSQMNs(x'),
+    ('Value','Steel Res. High Gr','Steel Res. High Gravity 1/24C','Henry J. Lee Reyes','1/24C','78250003287','U(a78250*KKNMSr(w'),
+    ('Value','Steel Res. High Gr','Steel Res. High Gravity 1/42PL','Henry J. Lee Reyes','1/42PL','78250003348','U(a78250*KKNNOs(x'),
+    ('Beyond Beer-Low','Steel Reserve','Steel Reserve Alloy Spkd Pineapl 1/16C x4','Henry J. Lee Reyes','1/16C x4','78250006127','U(a78250*KKQLMr(w'),
+    ('Super Premium','Sweetwater','Sweetwater Goin Coastal 1/19C','Henry J. Lee Reyes','1/19C','631234840041','v(g31234*SOKKOl(V'),
+    ('Super Premium','Sweetwater','Sweetwater H A Z Y IPA 6/12C','Henry J. Lee Reyes','6/12C','631234451124','v(g31234*OPLLMo(Y'),
+    ('Beyond Beer-Seltzer','Topo Chico','Topo Chico Hd Seltzer Marg VP 12/12C SC','Henry J. Lee Reyes','12/12C SC','810078780380','x(i10078*RSKNSk(U'),
+    ('Beyond Beer-Seltzer','Vizzy Seltzer','Vizzy Seltzer Variety 1 12/12C SC','Henry J. Lee Reyes','12/12C SC','34100012328','U(a34100*KLMNMs(x'),
+    ('Beyond Beer-Seltzer','White Claw','White Claw Blk Cherry HrdSeltzer 1/19C','Henry J. Lee Reyes','1/19C','635985801986','635985801986'),
+    ('Beyond Beer-Seltzer','White Claw','White Claw Variety Pk HrdSeltzer 12/12C SC','Henry J. Lee Reyes','12/12C SC','635985548904','v(g35985*POSTKo(Y'),
+    ('Core','Yuengling','Yuengling Traditional Lager 1/16C x4','Henry J. Lee Reyes','1/16C x4','89924600169','U(a89924*QKKLQt(y'),
+    ('Core','Yuengling','Yuengling Traditional Lager 1/24C','Henry J. Lee Reyes','1/24C','89924600244','U(a89924*QKKMOo(Y'),
+    ('Core','Yuengling','Yuengling Traditional Lager 12/12C','Henry J. Lee Reyes','12/12C','89924278986','U(a89924*MRSTSq(v'),
+    ('Core','Yuengling','Yuengling Traditional Lager 24/12C','Henry J. Lee Reyes','24/12C','89924880073','U(a89924*SSKKRn(X'),
+    ('Core','Yuengling','Yuengling Traditional Lager 6/12B','Henry J. Lee Reyes','6/12B','89924278917','U(a89924*MRSTLr(w'),
+    ('Super Premium','Terrapin','Terrapin Hopsecutioner IPA 1/19C','Henry J. Lee Reyes','1/19C','852304007878','x(i52304*KKRSRs(x'),
 ]
 
 # ── GREENVILLE UPC DATA (auto-generated from Pricing_Barcode_Survey_Updated.xlsx)
 # Columns: WAMP, Brand, Product, Wholesaler, Package, UPC, Barcode
 GVL_UPC_DATA = [
-    ('Beyond Beer','Angry Orchard','Angry Orchard Crisp Apple 1/19C','','1/19C','87692023777','87692023777'),
-    ('Beyond Beer','Angry Orchard','Angry Orchard Crisp Apple 6/12B','','6/12B','87692821021','U(a87692*SMLKMl(V'),
-    ('Wine','Beatbox','Beatbox Blue Razzberry 1/500BX','','1/500BX','851133006137','x(i51133*KKQLNr(w'),
+    ('Beyond Beer-Cider','Angry Orchard','Angry Orchard Crisp Apple 1/19C','Southern Crown Partners','1/19C','87692023777','87692023777'),
+    ('Beyond Beer-Cider','Angry Orchard','Angry Orchard Crisp Apple 6/12B','Southern Crown Partners','6/12B','87692821021','U(a87692*SMLKMl(V'),
+    ('Wine','Beatbox','Beatbox Blue Razzberry 1/500BX','Southern Crown Partners','1/500BX','851133006137','x(i51133*KKQLNr(w'),
     ('Wine','Big Sipz','Big Sipz Chocolate 1/7C','Southern Crown Partners','1/7C','850028324264','x(i50028*NMOMQo(Y'),
     ('Value','Bud Ice','Bud Ice 1/16C x6','Southern Crown Partners','1/16C x6','18200002434','U(a18200*KKMONo(Y'),
     ('Value','Bud Ice','Bud Ice 1/16C x6','Southern Crown Partners','1/16C x6','18200002434','U(a18200*KKMONo(Y'),
     ('Value','Bud Ice','Bud Ice 1/25C','Southern Crown Partners','1/25C','18200250064','U(a18200*MPKKQo(Y'),
     ('Value','Bud Ice','Bud Ice 1/40B','Southern Crown Partners','1/40B','18200002441','U(a18200*KKMOOl(V'),
     ('Core','Bud Light','Bud Light 1/25C','Southern Crown Partners','1/25C','18200250019','U(a18200*MPKKLt(y'),
-    ('Core','Bud Light','Bud Light 1/32B','Southern Crown Partners','1/32B','1820000117','U(a18200*KKLLRs(x'),
+    ('Core','Bud Light','Bud Light 1/32B','Southern Crown Partners','1/32B','18200001178','U(a18200*KKLLRs(x'),
     ('Core','Bud Light','Bud Light 12/12B','Southern Crown Partners','12/12B','18200007699','U(a18200*KKRQTt(y'),
     ('Core','Bud Light','Bud Light 12/12C','Southern Crown Partners','12/12C','18200530470','U(a18200*PNKORk(U'),
     ('Core','Bud Light','Bud Light 15/16AL','Southern Crown Partners','15/16AL','18200965388','U(a18200*TQPNSs(x'),
@@ -1392,41 +1384,41 @@ GVL_UPC_DATA = [
     ('Core Plus','Bud Light Platinum','Bud Light Platinum 12/12C SC','Southern Crown Partners','12/12C SC','18200209949','U(a18200*MKTTOt(y'),
     ('Core Plus','Bud Light Platinum','Bud Light Platinum 6/12B','Southern Crown Partners','6/12B','18200189937','U(a18200*LSTTNr(w'),
     ('Core','Bud Light','Bud Light TWS 1/16AL','Southern Crown Partners','1/16AL','18200007958','U(a18200*KKRTPs(x'),
-    ('Core','Budweiser','Budweiser 1/16AL','Southern Crown Partners','1/16AL','1820000473','U(a18200*KKORNp(u'),
-    ('Core','Budweiser','Budweiser 1/16C x6','Southern Crown Partners','1/16C x6','1820000018S','U(a18200*KKKLSs(x'),
-    ('Core','Budweiser','Budweiser 1/25C','Southern Crown Partners','1/25C','1820025000','U(a18200*MPKKKm(W'),
-    ('Core','Budweiser','Budweiser 12/12B','Southern Crown Partners','12/12B','1820000771','U(a18200*KKRRLm(W'),
-    ('Core','Budweiser','Budweiser 12/12C','Southern Crown Partners','12/12C','1820011047','U(a18200*LLKORo(Y'),
-    ('Core','Budweiser','Budweiser 15/16AL','Southern Crown Partners','15/16AL','1820096539','U(a18200*TQPNTp(u'),
-    ('Core','Budweiser','Budweiser 24/12BBB','Southern Crown Partners','24/12BBB','1820011349','U(a18200*LLNOTt(y'),
-    ('Core','Budweiser','Budweiser 24/12C','Southern Crown Partners','24/12C','1820011168','U(a18200*LLLQSq(v'),
+    ('Core','Budweiser','Budweiser 1/16AL','Southern Crown Partners','1/16AL','18200004735','U(a18200*KKORNp(u'),
+    ('Core','Budweiser','Budweiser 1/16C x6','Southern Crown Partners','1/16C x6','018200000188','U(a18200*KKKLSs(x'),
+    ('Core','Budweiser','Budweiser 1/25C','Southern Crown Partners','1/25C','18200250002','U(a18200*MPKKKm(W'),
+    ('Core','Budweiser','Budweiser 12/12B','Southern Crown Partners','12/12B','18200007712','U(a18200*KKRRLm(W'),
+    ('Core','Budweiser','Budweiser 12/12C','Southern Crown Partners','12/12C','18200110474','U(a18200*LLKORo(Y'),
+    ('Core','Budweiser','Budweiser 15/16AL','Southern Crown Partners','15/16AL','18200965395','U(a18200*TQPNTp(u'),
+    ('Core','Budweiser','Budweiser 24/12BBB','Southern Crown Partners','24/12BBB','18200113499','U(a18200*LLNOTt(y'),
+    ('Core','Budweiser','Budweiser 24/12C','Southern Crown Partners','24/12C','18200111686','U(a18200*LLLQSq(v'),
     ('Value','Busch','Busch Ice 12/12C','Southern Crown Partners','12/12C','18200009570','U(a18200*KKTPRk(U'),
     ('Value','Busch','Busch Ice 24/12C','Southern Crown Partners','24/12C','18200661686','U(a18200*QQLQSq(v'),
     ('Value','Busch Light','Busch Light 1/16C x6','Southern Crown Partners','1/16C x6','18200004261','U(a18200*KKOMQl(V'),
     ('Value','Busch Light','Busch Light 1/25C','Southern Crown Partners','1/25C','18200250040','U(a18200*MPKKOk(U'),
-    ('Value','Busch Light','Busch Light 12/12B','Southern Crown Partners','12/12B','1820000989','U(a18200*KKTSTl(V'),
+    ('Value','Busch Light','Busch Light 12/12B','Southern Crown Partners','12/12B','18200009891','U(a18200*KKTSTl(V'),
     ('Value','Busch Light','Busch Light 12/12C','Southern Crown Partners','12/12C','18200008016','U(a18200*KKSKLq(v'),
     ('Value','Busch Light','Busch Light 24/12C','Southern Crown Partners','24/12C','18200861673','U(a18200*SQLQRn(X'),
     ('Value','Busch Light','Busch Light 8/16C','Southern Crown Partners','8/16C','18200201905','U(a18200*MKLTKp(u'),
-    ('Premium','Corona','Corona Extra 1/16C','','1/16C','80660956886','U(a80660*TPQSSq(v'),
-    ('Premium','Corona','Corona Extra 1/24B','','1/24B','80660956411','U(a80660*TPQOLl(V'),
-    ('Premium','Corona','Corona Extra 1/24C','','1/24C','80660956435','U(a80660*TPQONp(u'),
-    ('Premium','Corona','Corona Extra 12/12B','','12/12B','80660956152','U(a80660*TPQLPm(W'),
-    ('Premium','Corona','Corona Extra 18/12B','','18/12B','80660956800','U(a80660*TPQSKk(U'),
-    ('Premium','Corona','Corona Extra 6/12B','','6/12B','80660956053','U(a80660*TPQKPn(X'),
-    ('Premium','Corona','Corona Familiar 1/32B','','1/32B','80660956831','U(a80660*TPQSNl(V'),
-    ('Beyond Beer','Corona','Corona Seltzer Variety Pack 2 12/12C SC','','12/12C SC','33544000687','U(a33544*KKKQSr(w'),
-    ('Premium','Corona','Coronita Extra 24/7B','','24/7B','80660954080','U(a80660*TPOKSk(U'),
-    ('Beyond Beer','Fireball','Fireball Cinnamon Malt 16.5 1/200B','Southern Crown Partners','1/200B','88004069667','88004069667'),
-    ('Beyond Beer','Four','Four Loko Gold 14 pct 1/24C','Southern Crown Partners','1/24C','849806001169','x(i49806*KKLLQt(y'),
-    ('Beyond Beer','Four','Four Loko Pregame Jungle Juice 10 pct 1/7B','Southern Crown Partners','1/7B','84980600606','x(i49806*KKQKQp(u'),
-    ('Beyond Beer','Four','Four Loko Pregame Sour Blue Razz 13.9 pct 1/7B','Southern Crown Partners','1/7B','849806002906','x(i49806*KKMTKq(v'),
-    ('Beyond Beer','Four','Four Loko Remix Blue Razz Smsh 1/500BX','Southern Crown Partners','1/500BX','84980600603','x(i49806*KKQKNo(Y'),
+    ('Premium','Corona','Corona Extra 1/16C','Henry J. Lee Reyes','1/16C','80660956886','U(a80660*TPQSSq(v'),
+    ('Premium','Corona','Corona Extra 1/24B','Henry J. Lee Reyes','1/24B','80660956411','U(a80660*TPQOLl(V'),
+    ('Premium','Corona','Corona Extra 1/24C','Henry J. Lee Reyes','1/24C','80660956435','U(a80660*TPQONp(u'),
+    ('Premium','Corona','Corona Extra 12/12B','Henry J. Lee Reyes','12/12B','80660956152','U(a80660*TPQLPm(W'),
+    ('Premium','Corona','Corona Extra 18/12B','Henry J. Lee Reyes','18/12B','80660956800','U(a80660*TPQSKk(U'),
+    ('Premium','Corona','Corona Extra 6/12B','Henry J. Lee Reyes','6/12B','80660956053','U(a80660*TPQKPn(X'),
+    ('Premium','Corona','Corona Familiar 1/32B','Henry J. Lee Reyes','1/32B','80660956831','U(a80660*TPQSNl(V'),
+    ('Beyond Beer-Seltzer','Corona','Corona Seltzer Variety Pack 2 12/12C SC','Henry J. Lee Reyes','12/12C SC','33544000687','U(a33544*KKKQSr(w'),
+    ('Premium','Corona','Coronita Extra 24/7B','Henry J. Lee Reyes','24/7B','80660954080','U(a80660*TPOKSk(U'),
+    ('Beyond Beer-Sweet FAB','Fireball','Fireball Cinnamon Malt 16.5 1/200B','Southern Crown Partners','1/200B','88004069667','88004069667'),
+    ('Beyond Beer-Sweet FAB','Four','Four Loko Gold 14 pct 1/24C','Southern Crown Partners','1/24C','849806001169','x(i49806*KKLLQt(y'),
+    ('Beyond Beer-Sweet FAB','Four','Four Loko Pregame Jungle Juice 10 pct 1/7B','Southern Crown Partners','1/7B','849806006065','x(i49806*KKQKQp(u'),
+    ('Beyond Beer-Sweet FAB','Four','Four Loko Pregame Sour Blue Razz 13.9 pct 1/7B','Southern Crown Partners','1/7B','849806002906','x(i49806*KKMTKq(v'),
+    ('Beyond Beer-Sweet FAB','Four','Four Loko Remix Blue Razz Smsh 1/500BX','Southern Crown Partners','1/500BX','849806006034','x(i49806*KKQKNo(Y'),
     ('Super Premium','Goose Island','Goose Island Beer HugTropical 1/19C','Southern Crown Partners','1/19C','736920211089','w(h36920*MLLKSt(y'),
     ('Value','King Cobra','King Cobra 1/40B','Southern Crown Partners','1/40B','18200001314','U(a18200*KKLNLo(Y'),
     ('Core Plus','Land Shark','Land Shark Lager 12/12C','Southern Crown Partners','12/12C','18200209833','U(a18200*MKTSNn(X'),
     ('Core Plus','Land Shark','Land Shark Lager 6/12B','Southern Crown Partners','6/12B','18200129827','U(a18200*LMTSMr(w'),
-    ('Beyond Beer','MD AB','MD 2020 Spk Punch Sweet Blue Ras 1/16C','Southern Crown Partners','1/16C','18200262098','U(a18200*MQMKTs(x'),
+    ('Beyond Beer-Low','MD AB','MD 2020 Spk Punch Sweet Blue Ras 1/16C','Southern Crown Partners','1/16C','18200262098','U(a18200*MQMKTs(x'),
     ('Core Plus','Michelob Ultra','Michelob Ultra 1/16AL','Southern Crown Partners','1/16AL','18200006654','U(a18200*KKQQPo(Y'),
     ('Core Plus','Michelob Ultra','Michelob Ultra 1/16C x4','Southern Crown Partners','1/16C x4','18200005244','U(a18200*KKPMOo(Y'),
     ('Core Plus','Michelob Ultra','Michelob Ultra 1/25C','Southern Crown Partners','1/25C','18200250101','U(a18200*MPKLKl(V'),
@@ -1438,151 +1430,149 @@ GVL_UPC_DATA = [
     ('Core Plus','Michelob Ultra','Michelob Ultra 3/25C','Southern Crown Partners','3/25C','18200249815','U(a18200*MOTSLp(u'),
     ('Core Plus','Michelob Ultra','Michelob Ultra 6/12B','Southern Crown Partners','6/12B','18200059896','U(a18200*KPTSTq(v'),
     ('Core Plus','Michelob Ultra','Michelob Ultra 8/16C','Southern Crown Partners','8/16C','18200239861','U(a18200*MNTSQl(V'),
-    ('Beyond Beer','Michelob Ultra Seltzer','Michelob Ultra Org Seltzer VarP3 12/12C SC','Southern Crown Partners','12/12C SC','18200203374','U(a18200*MKNNRo(Y'),
-    ('Premium','Modelo','Modelo 1/24C','','1/24C','80660957210','U(a80660*TPRMLk(U'),
-    ('Premium','Modelo','Modelo 1/32B','','1/32B','33544950906','33544950906'),
-    ('Premium','Modelo','Modelo 12/12C','','12/12C','80660957159','U(a80660*TPRLPt(y'),
-    ('Premium','Modelo','Modelo 18/12C','','18/12C','80660957111','U(a80660*TPRLLl(V'),
-    ('Premium','Modelo','Modelo 24/12C','','24/12C','80660957104','U(a80660*TPRLKo(Y'),
-    ('Premium','Modelo','Modelo 3/24C','','3/24C','80660957746','U(a80660*TPRROq(v'),
-    ('Premium','Modelo','Modelo 6/12B','','6/12B','80660957654','U(a80660*TPRQPo(Y'),
-    ('Premium','Modelo','Modelo Modelito 24/7B','','24/7B','33544000212','U(a33544*KKKMLm(W'),
+    ('Beyond Beer-Seltzer','Michelob Ultra Seltzer','Michelob Ultra Org Seltzer VarP3 12/12C SC','Southern Crown Partners','12/12C SC','18200203374','U(a18200*MKNNRo(Y'),
+    ('Premium','Modelo','Modelo 1/24C','Henry J. Lee Reyes','1/24C','80660957210','U(a80660*TPRMLk(U'),
+    ('Premium','Modelo','Modelo 1/32B','Henry J. Lee Reyes','1/32B','33544950906','33544950906'),
+    ('Premium','Modelo','Modelo 12/12C','Henry J. Lee Reyes','12/12C','80660957159','U(a80660*TPRLPt(y'),
+    ('Premium','Modelo','Modelo 18/12C','Henry J. Lee Reyes','18/12C','80660957111','U(a80660*TPRLLl(V'),
+    ('Premium','Modelo','Modelo 24/12C','Henry J. Lee Reyes','24/12C','80660957104','U(a80660*TPRLKo(Y'),
+    ('Premium','Modelo','Modelo 3/24C','Henry J. Lee Reyes','3/24C','80660957746','U(a80660*TPRROq(v'),
+    ('Premium','Modelo','Modelo 6/12B','Henry J. Lee Reyes','6/12B','80660957654','U(a80660*TPRQPo(Y'),
+    ('Premium','Modelo','Modelo Modelito 24/7B','Henry J. Lee Reyes','24/7B','33544000212','U(a33544*KKKMLm(W'),
     ('Value','Natural','Natty Daddy 1/25C','Southern Crown Partners','1/25C','18200250132','U(a18200*MPKLNm(W'),
     ('Value','Natural','Natural Light 1/16C x6','Southern Crown Partners','1/16C x6','18200000430','U(a18200*KKKONk(U'),
     ('Value','Natural','Natural Light 1/25C','Southern Crown Partners','1/25C','18200250026','U(a18200*MPKKMq(v'),
     ('Value','Natural','Natural Light 12/12B','Southern Crown Partners','12/12B','18200009303','U(a18200*KKTNKn(X'),
-    ('Value','Natural','Natural Light 15/12C','Southern Crown Partners','15/12C','18200200779','U(a18200*MKKRRt(y'),
+    ('Value-High','Natural','Natural Light 15/12C','Southern Crown Partners','15/12C','18200200779','U(a18200*MKKRRt(y'),
     ('Value','Natural','Natural Light 24/12C','Southern Crown Partners','24/12C','18200151682','U(a18200*LPLQSm(W'),
     ('Value','Natural','Natural Light 3/25C','Southern Crown Partners','3/25C','18200219870','U(a18200*MLTSRk(U'),
     ('Value','Natural','Natural Light 8/16C','Southern Crown Partners','8/16C','18200239823','U(a18200*MNTSMn(X'),
     ('Super Premium','New Belgium','New Belgium Voodoo Ranger ImpIPA 1/19C','Southern Crown Partners','1/19C','754527010218','w(h54527*KLKMLs(x'),
     ('Super Premium','New Belgium','New Belgium Voodoo Ranger ImpIPA 6/12B','Southern Crown Partners','6/12B','754527004217','w(h54527*KKOMLr(w'),
-    ('Beyond Beer','New Belgium','New Belgium Voodoo Ranger Tea 1/24C','Southern Crown Partners','1/24C','754527011642','w(h54527*KLLQOm(W'),
-    ('Beyond Beer','New Belgium','New Belgium Voodoo Ranger TeaVP1 12/12C','Southern Crown Partners','12/12C','754527006518','w(h54527*KKQPLs(x'),
-    ('Beyond Beer','Ritas','Ritas Lime-A-Rita 1/16C','Southern Crown Partners','1/16C','18200001741','U(a18200*KKLROl(V'),
+    ('Beyond Beer-Tea and Lemonade','New Belgium','New Belgium Voodoo Ranger Tea 1/24C','Southern Crown Partners','1/24C','754527011642','w(h54527*KLLQOm(W'),
+    ('Beyond Beer-Tea and Lemonade','New Belgium','New Belgium Voodoo Ranger TeaVP1 12/12C','Southern Crown Partners','12/12C','754527006518','w(h54527*KKQPLs(x'),
+    ('Beyond Beer-Low','Ritas','Ritas Lime-A-Rita 1/16C','Southern Crown Partners','1/16C','18200001741','U(a18200*KKLROl(V'),
     ('Super Premium','Stella Artois','Stella Artois 1/22B','Southern Crown Partners','1/22B','786150000571','w(h86150*KKKPRl(V'),
     ('Super Premium','Stella Artois','Stella Artois 12/11B','Southern Crown Partners','12/11B','786150000144','w(h86150*KKKLOo(Y'),
     ('Super Premium','Stella Artois','Stella Artois 6/11B','Southern Crown Partners','6/11B','786150000014','w(h86150*KKKKLo(Y'),
     ('Super Premium','Stella Artois Import','Stella Artois Import 1/15C','Southern Crown Partners','1/15C','18200005060','U(a18200*KKPKQk(U'),
-    ('Beyond Beer','The Beast Unleashed','The Beast Tea Original 1/24C','Southern Crown Partners','1/24C','810117131135','x(i10117*LNKNPk(U'),
-    ('Beyond Beer','The Beast Unleashed','The Beast Tea Variety 12/12C SC','Southern Crown Partners','12/12C SC','810117131241','x(i10117*LNKNMt(y'),
-    ('Beyond Beer','The Beast Unleashed','The Beast Unleashed Mean Green 1/16C','Southern Crown Partners','1/16C','810117130015','x(i10117*LNKKLp(u'),
-    ('Beyond Beer','The Beast Unleashed','The Beast Unleashed Variety 1 12/12C SC','Southern Crown Partners','12/12C SC','810117130183','x(i10117*LNKLSn(X'),
-    ('Beyond Beer','Truly','Truly Hd Seltzer Berry Variety 12/12C SC','','12/12C SC','87692006862','U(a87692*KKQSQm(W'),
-    ('Beyond Beer','Truly','Truly Hd Seltzer Wild Berry 1/16C','','1/16C','87692007296','U(a87692*KKRMTq(v'),
-    ('Beyond Beer','Truly','Truly Hd Seltzer Wild Berry 1/24C','','1/24C','87692009511','U(a87692*KKTPLl(V'),
-    ('Beyond Beer','Twisted Tea','Twisted Tea 1/24C','','1/24C','87692832317','U(a87692*SNMNLr(w'),
-    ('Beyond Beer','Twisted Tea','Twisted Tea 12/12C','','12/12C','87692831341','U(a87692*SNLNOl(V'),
-    ('Beyond Beer','Twisted Tea','Twisted Tea 3/24C','','3/24C','87692009832','U(a87692*KKTSNm(W'),
-    ('Beyond Beer','Twisted Tea','Twisted Tea 6/12B','','6/12B','87692831020','U(a87692*SNLKMk(U'),
+    ('Beyond Beer-Tea and Lemonade','The Beast Unleashed','The Beast Tea Original 1/24C','Southern Crown Partners','1/24C','810117131135','x(i10117*LNKNPk(U'),
+    ('Beyond Beer-Tea and Lemonade','The Beast Unleashed','The Beast Tea Variety 12/12C SC','Southern Crown Partners','12/12C SC','810117131241','x(i10117*LNKNMt(y'),
+    ('Beyond Beer-Sweet FAB','The Beast Unleashed','The Beast Unleashed Mean Green 1/16C','Southern Crown Partners','1/16C','810117130015','x(i10117*LNKKLp(u'),
+    ('Beyond Beer-Sweet FAB','The Beast Unleashed','The Beast Unleashed Variety 1 12/12C SC','Southern Crown Partners','12/12C SC','810117130183','x(i10117*LNKLSn(X'),
+    ('Beyond Beer-Seltzer','Truly','Truly Hd Seltzer Berry Variety 12/12C SC','Southern Crown Partners','12/12C SC','87692006862','U(a87692*KKQSQm(W'),
+    ('Beyond Beer-Seltzer','Truly','Truly Hd Seltzer Wild Berry 1/16C','Southern Crown Partners','1/16C','87692007296','U(a87692*KKRMTq(v'),
+    ('Beyond Beer-Seltzer','Truly','Truly Hd Seltzer Wild Berry 1/24C','Southern Crown Partners','1/24C','87692009511','U(a87692*KKTPLl(V'),
+    ('Beyond Beer-Tea and Lemonade','Twisted Tea','Twisted Tea 1/24C','Southern Crown Partners','1/24C','87692832317','U(a87692*SNMNLr(w'),
+    ('Beyond Beer-Tea and Lemonade','Twisted Tea','Twisted Tea 12/12C','Southern Crown Partners','12/12C','87692831341','U(a87692*SNLNOl(V'),
+    ('Beyond Beer-Tea and Lemonade','Twisted Tea','Twisted Tea 3/24C','Southern Crown Partners','3/24C','87692009832','U(a87692*KKTSNm(W'),
+    ('Beyond Beer-Tea and Lemonade','Twisted Tea','Twisted Tea 6/12B','Southern Crown Partners','6/12B','87692831020','U(a87692*SNLKMk(U'),
     ('Super Premium','Wicked Weed','Wicked Weed Pernicious IPA 1/19C','Southern Crown Partners','1/19C','857531005284','x(i57531*KKPMSo(Y'),
     ('Super Premium','Wicked Weed','Wicked Weed Pernicious IPA 6/12C','Southern Crown Partners','6/12C','853340008188','x(i53340*KKSLSs(x'),
-    ('Premium','Heineken','Heineken 1/22B','','1/22B','72890004789','U(a72890*KKORSt(y'),
-    ('Premium','Heineken','Heineken 1/24C','','1/24C','72890001191','U(a72890*KKLLTl(V'),
-    ('Premium','Heineken','Heineken 12/12B','','12/12B','72890000163','U(a72890*KKKLQn(X'),
-    ('Premium','Heineken','Heineken 18/12B','','18/12B','72890001528','U(a72890*KKLPMs(x'),
-    ('Premium','Heineken','Heineken 24/12C','','24/12C','72890000279','U(a72890*KKKMRt(y'),
-    ('Premium','Heineken','Heineken 3/24C','','3/24C','72890006448','U(a72890*KKQOOs(x'),
-    ('Premium','Heineken','Heineken 4/16C','','4/16C','72890000835','U(a72890*KKKSNp(u'),
-    ('Premium','Heineken','Heineken 6/12B','','6/12B','72890000118','U(a72890*KKKLLs(x'),
-    ('Beyond Beer','Johnny Bootlegger','J Bootlegger Alcatraz Sour Apple 10 pct 1/7B','','1/7B','68474680180','v(g84746*SKLSKm(W'),
-    ('Beyond Beer','Johnny Bootlegger','J Bootlegger Sng Sng Sour Grape 12 pct 1/7B','','1/7B','684746375105','v(g84746*NRPLKp(u'),
-    ('Beyond Beer','AriZona Hard','AriZona Hard Iced Tea Lemon 1/22C','','1/22C','613008763732','v(g13008*RQNRNm(W'),
-    ('Beyond Beer','AriZona Hard','AriZona Hard Iced Tea Variety 12/12C SC','','12/12C SC','613008763831','v(g13008*RQNSNl(V'),
-    ('Beyond Beer','Arnold Palmer Hard Tea','Arnold Palmer Spkd Half&Half 1/24C','','1/24C','613008748296','v(g13008*ROSMTq(v'),
-    ('Premium','Blue Moon','Blue Moon Belgian White Ale 6/12B','','6/12B','71990095116','U(a71990*KTPLLq(v'),
-    ('Beyond Beer','Bold Rock Cider','Bold Rock Cider Apple 1/16C','','1/16C','85908800357','x(i59088*KKNPRr(w'),
-    ('Beyond Beer','Bold Rock Cider','Bold Rock Cider Apple 15/12C','','15/12C','85908800392','x(i59088*KKNTMs(x'),
-    ('Wine','BuzzBallz Chillers','BuzzBallz Chillers Cocoa Chiller 1/7C','','1/7C','857641002890','x(i57641*KKMSTk(U'),
-    ('Beyond Beer','Clubtails','Clubtails Sex On the Beach 1/16C','','1/16C','684746400074','v(g84746*OKKKRo(Y'),
-    ('Core','Coors','Coors Light 1/16AL','','1/16AL','71990301033','U(a71990*NKLKNn(X'),
-    ('Core','Coors','Coors Light 1/16C x4','','1/16C x4','71990302023','U(a71990*NKMKMn(X'),
-    ('Core','Coors','Coors Light 1/24C','','1/24C','71990300654','U(a71990*NKKQPo(Y'),
-    ('Core','Coors','Coors Light 15/16AL','','15/16AL','71990095277','U(a71990*KTPMRr(w'),
-    ('Core','Coors','Coors Light 18/12C','','18/12C','71990300173','U(a71990*NKKLRn(X'),
-    ('Core','Coors','Coors Light 24/12C','','24/12C','71990316006','U(a71990*NLQKKq(v'),
-    ('Core','Coors','Coors Light 8/16C','','8/16C','71990170462','U(a71990*LRKOQm(W'),
-    ('Core','Coors','Coors Light 9/16AL','','9/16AL','71990301040','U(a71990*NKLKOk(U'),
-    ('Super Premium','Creature Comforts','Creature Comforts Flash Cat 1/19C','','1/19C','86001172132','x(i60011*RMLNMl(V'),
-    ('Premium','Heineken','Heineken 1/16C','','1/16C','7289000716','U(a72890*KKRLQm(W'),
-    ('Value','Miller Ice House','Icehouse 1/16C x6','','1/16C x6','34100008826','U(a34100*KKSSMq(v'),
-    ('Value','Miller Ice House','Icehouse 1/24C','','1/24C','34100008802','U(a34100*KKSSKm(W'),
-    ('Value','Miller Ice House','Icehouse 1/40B','','1/40B','34100002787','U(a34100*KKSSOk(U'),
-    ('Value','Miller Ice House','Icehouse 12/12C','','12/12C','34100626020','U(a34100*QMQKMk(U'),
-    ('Value','Miller Ice House','Icehouse 18/12C','','18/12C','34100623401','U(a34100*QMNOKl(V'),
-    ('Value','Miller Ice House','Icehouse 24/12C','','24/12C','34100623067','U(a34100*QMNKQr(w'),
-    ('Value','Miller Ice House','Icehouse 6/12B','','6/12B','34100625054','U(a34100*QMPKPo(Y'),
-    ('Value','Keystone','Keystone Light 1/24C','','1/24C','71990480240','U(a71990*OSKMOk(U'),
-    ('Value','Keystone','Keystone Light 15/12C','','15/12C','71990480455','U(a71990*OSKOPp(u'),
-    ('Beyond Beer','Mikes','Mikes Hard Lemonade 6/11B','','6/11B','635985100621','v(g35985*LKKQMl(V'),
-    ('Beyond Beer','Mikes','Mikes Hard Variety Pack 12/12C SC','','12/12C SC','635985260011','v(g35985*MQKKLl(V'),
-    ('Beyond Beer','Mikes','Mikes HARDER Lemonade 1/16C','','1/16C','635985258759','v(g35985*MPSRPt(y'),
-    ('Beyond Beer','Mikes','Mikes HARDER Lemonade 1/23.5C','','1/23.5C','635985245834','v(g35985*MOPSNo(Y'),
-    ('Value','Miller High Life','Miller High Life 1/16C x6','','1/16C x6','34100000073','U(a34100*KKKKRn(X'),
-    ('Value','Miller High Life','Miller High Life 1/40PL','','1/40PL','34100007638','U(a34100*KKRQNs(x'),
-    ('Value','Miller High Life','Miller High Life 12/12C','','12/12C','34100016364','U(a34100*KLQNQo(Y'),
-    ('Value','Miller High Life','Miller High Life 18/12C','','18/12C','34100013400','U(a34100*KLNOKk(U'),
-    ('Value','Miller High Life','Miller High Life 24/12C','','24/12C','34100013066','U(a34100*KLNKQq(v'),
-    ('Value','Miller High Life','Miller High Life 6/12B','','6/12B','34100015053','U(a34100*KLPKPn(X'),
-    ('Core','Miller','Miller Lite 1/16AL','','1/16AL','3410000376','U(a34100*KKNRQk(U'),
-    ('Core','Miller','Miller Lite 1/16C x4','','1/16C x4','3410000158S','U(a34100*KKLPSm(W'),
-    ('Core','Miller','Miller Lite 12/12B','','12/12B','34100575090','U(a34100*PRPKTk(U'),
-    ('Core','Miller','Miller Lite 12/12B','','12/12B','3410057509','U(a34100*PRPKTk(U'),
-    ('Core','Miller','Miller Lite 12/12C','','12/12C','34100576363','U(a34100*PRQNQn(X'),
-    ('Core','Miller','Miller Lite 12/12C','','12/12C','3410057636','U(a34100*PRQNQn(X'),
-    ('Core','Miller','Miller Lite 15/16AL','','15/16AL','3410057707','U(a34100*PRRKRk(U'),
-    ('Core','Miller','Miller Lite 18/12B','','18/12B','3410057256','U(a34100*PRMPQn(X'),
-    ('Core','Miller','Miller Lite 18/12C','','18/12C','3410057340','U(a34100*PRNOKt(y'),
-    ('Core','Miller','Miller Lite 24/12BBB','','24/12BBB','3410057243','U(a34100*PRMONn(X'),
-    ('Core','Miller','Miller Lite 24/12C','','24/12C','3410057306','U(a34100*PRNKQp(u'),
-    ('Core','Miller','Miller Lite 3/24C','','3/24C','34100576639','U(a34100*PRQQNt(y'),
-    ('Core','Miller','Miller Lite 6/12B','','6/12B','34100575052','U(a34100*PRPKPm(W'),
+    ('Premium','Heineken','Heineken 1/22B','Southern Crown Partners','1/22B','72890004789','U(a72890*KKORSt(y'),
+    ('Premium','Heineken','Heineken 1/24C','Southern Crown Partners','1/24C','72890001191','U(a72890*KKLLTl(V'),
+    ('Premium','Heineken','Heineken 12/12B','Southern Crown Partners','12/12B','72890000163','U(a72890*KKKLQn(X'),
+    ('Premium','Heineken','Heineken 18/12B','Southern Crown Partners','18/12B','72890001528','U(a72890*KKLPMs(x'),
+    ('Premium','Heineken','Heineken 24/12C','Southern Crown Partners','24/12C','72890000279','U(a72890*KKKMRt(y'),
+    ('Premium','Heineken','Heineken 3/24C','Southern Crown Partners','3/24C','72890006448','U(a72890*KKQOOs(x'),
+    ('Premium','Heineken','Heineken 4/16C','Southern Crown Partners','4/16C','72890000835','U(a72890*KKKSNp(u'),
+    ('Premium','Heineken','Heineken 6/12B','Southern Crown Partners','6/12B','72890000118','U(a72890*KKKLLs(x'),
+    ('Beyond Beer-Sweet FAB','Johnny Bootlegger','J Bootlegger Alcatraz Sour Apple 10 pct 1/7B','Southern Crown Partners','1/7B','684746801802','v(g84746*SKLSKm(W'),
+    ('Beyond Beer-Sweet FAB','Johnny Bootlegger','J Bootlegger Sng Sng Sour Grape 12 pct 1/7B','Southern Crown Partners','1/7B','684746375105','v(g84746*NRPLKp(u'),
+    ('Beyond Beer-Tea and Lemonade','AriZona Hard','AriZona Hard Iced Tea Lemon 1/22C','Henry J. Lee Reyes','1/22C','613008763732','v(g13008*RQNRNm(W'),
+    ('Beyond Beer-Tea and Lemonade','AriZona Hard','AriZona Hard Iced Tea Variety 12/12C SC','Henry J. Lee Reyes','12/12C SC','613008763831','v(g13008*RQNSNl(V'),
+    ('Beyond Beer-Tea and Lemonade','Arnold Palmer Hard Tea','Arnold Palmer Spkd Half&Half 1/24C','Henry J. Lee Reyes','1/24C','613008748296','v(g13008*ROSMTq(v'),
+    ('Premium','Blue Moon','Blue Moon Belgian White Ale 6/12B','Henry J. Lee Reyes','6/12B','71990095116','U(a71990*KTPLLq(v'),
+    ('Beyond Beer-Cider','Bold Rock Cider','Bold Rock Cider Apple 1/16C','Henry J. Lee Reyes','1/16C','859088003577','x(i59088*KKNPRr(w'),
+    ('Beyond Beer-Cider','Bold Rock Cider','Bold Rock Cider Apple 15/12C','Henry J. Lee Reyes','15/12C','859088003928','x(i59088*KKNTMs(x'),
+    ('Wine','BuzzBallz Chillers','BuzzBallz Chillers Cocoa Chiller 1/7C','Henry J. Lee Reyes','1/7C','857641002890','x(i57641*KKMSTk(U'),
+    ('Beyond Beer-Sweet FAB','Clubtails','Clubtails Sex On the Beach 1/16C','Southern Crown Partners','1/16C','684746400074','v(g84746*OKKKRo(Y'),
+    ('Core','Coors','Coors Light 1/16AL','Henry J. Lee Reyes','1/16AL','71990301033','U(a71990*NKLKNn(X'),
+    ('Core','Coors','Coors Light 1/16C x4','Henry J. Lee Reyes','1/16C x4','71990302023','U(a71990*NKMKMn(X'),
+    ('Core','Coors','Coors Light 1/24C','Henry J. Lee Reyes','1/24C','71990300654','U(a71990*NKKQPo(Y'),
+    ('Core','Coors','Coors Light 15/16AL','Henry J. Lee Reyes','15/16AL','71990095277','U(a71990*KTPMRr(w'),
+    ('Core','Coors','Coors Light 18/12C','Henry J. Lee Reyes','18/12C','71990300173','U(a71990*NKKLRn(X'),
+    ('Core','Coors','Coors Light 24/12C','Henry J. Lee Reyes','24/12C','71990316006','U(a71990*NLQKKq(v'),
+    ('Core','Coors','Coors Light 8/16C','Henry J. Lee Reyes','8/16C','71990170462','U(a71990*LRKOQm(W'),
+    ('Core','Coors','Coors Light 9/16AL','Henry J. Lee Reyes','9/16AL','71990301040','U(a71990*NKLKOk(U'),
+    ('Super Premium','Creature Comforts','Creature Comforts Flash Cat 1/19C','Henry J. Lee Reyes','1/19C','860011721321','x(i60011*RMLNMl(V'),
+    ('Premium','Heineken','Heineken 1/16C','Southern Crown Partners','1/16C','72890007162','U(a72890*KKRLQm(W'),
+    ('Value','Miller Ice House','Icehouse 1/16C x6','Henry J. Lee Reyes','1/16C x6','34100008826','U(a34100*KKSSMq(v'),
+    ('Value','Miller Ice House','Icehouse 1/24C','Henry J. Lee Reyes','1/24C','34100008802','U(a34100*KKSSKm(W'),
+    ('Value','Miller Ice House','Icehouse 1/40B','Henry J. Lee Reyes','1/40B','34100002787','U(a34100*KKSSOk(U'),
+    ('Value','Miller Ice House','Icehouse 12/12C','Henry J. Lee Reyes','12/12C','34100626020','U(a34100*QMQKMk(U'),
+    ('Value','Miller Ice House','Icehouse 18/12C','Henry J. Lee Reyes','18/12C','34100623401','U(a34100*QMNOKl(V'),
+    ('Value','Miller Ice House','Icehouse 24/12C','Henry J. Lee Reyes','24/12C','34100623067','U(a34100*QMNKQr(w'),
+    ('Value','Miller Ice House','Icehouse 6/12B','Henry J. Lee Reyes','6/12B','34100625054','U(a34100*QMPKPo(Y'),
+    ('Value','Keystone','Keystone Light 1/24C','Henry J. Lee Reyes','1/24C','71990480240','U(a71990*OSKMOk(U'),
+    ('Value-Low','Keystone','Keystone Light 15/12C','Henry J. Lee Reyes','15/12C','71990480455','U(a71990*OSKOPp(u'),
+    ('Beyond Beer-Tea and Lemonade','Mikes','Mikes Hard Lemonade 6/11B','Henry J. Lee Reyes','6/11B','635985100621','v(g35985*LKKQMl(V'),
+    ('Beyond Beer-Tea and Lemonade','Mikes','Mikes Hard Variety Pack 12/12C SC','Henry J. Lee Reyes','12/12C SC','635985260011','v(g35985*MQKKLl(V'),
+    ('Beyond Beer-Tea and Lemonade','Mikes','Mikes HARDER Lemonade 1/16C','Henry J. Lee Reyes','1/16C','635985258759','v(g35985*MPSRPt(y'),
+    ('Beyond Beer-Tea and Lemonade','Mikes','Mikes HARDER Lemonade 1/23.5C','Henry J. Lee Reyes','1/23.5C','635985245834','v(g35985*MOPSNo(Y'),
+    ('Value','Miller High Life','Miller High Life 1/16C x6','Henry J. Lee Reyes','1/16C x6','34100000073','U(a34100*KKKKRn(X'),
+    ('Value','Miller High Life','Miller High Life 1/40PL','Henry J. Lee Reyes','1/40PL','34100007638','U(a34100*KKRQNs(x'),
+    ('Value','Miller High Life','Miller High Life 12/12C','Henry J. Lee Reyes','12/12C','34100016364','U(a34100*KLQNQo(Y'),
+    ('Value','Miller High Life','Miller High Life 18/12C','Henry J. Lee Reyes','18/12C','34100013400','U(a34100*KLNOKk(U'),
+    ('Value','Miller High Life','Miller High Life 24/12C','Henry J. Lee Reyes','24/12C','34100013066','U(a34100*KLNKQq(v'),
+    ('Value','Miller High Life','Miller High Life 6/12B','Henry J. Lee Reyes','6/12B','34100015053','U(a34100*KLPKPn(X'),
+    ('Core','Miller','Miller Lite 1/16AL','Henry J. Lee Reyes','1/16AL','34100003760','U(a34100*KKNRQk(U'),
+    ('Core','Miller','Miller Lite 1/16C x4','Henry J. Lee Reyes','1/16C x4','034100001582','U(a34100*KKLPSm(W'),
+    ('Core','Miller','Miller Lite 12/12B','Henry J. Lee Reyes','12/12B','34100575090','U(a34100*PRPKTk(U'),
+    ('Core','Miller','Miller Lite 12/12C','Henry J. Lee Reyes','12/12C','34100576363','U(a34100*PRQNQn(X'),
+    ('Core','Miller','Miller Lite 15/16AL','Henry J. Lee Reyes','15/16AL','34100577070','U(a34100*PRRKRk(U'),
+    ('Core','Miller','Miller Lite 18/12B','Henry J. Lee Reyes','18/12B','34100572563','U(a34100*PRMPQn(X'),
+    ('Core','Miller','Miller Lite 18/12C','Henry J. Lee Reyes','18/12C','34100573409','U(a34100*PRNOKt(y'),
+    ('Core','Miller','Miller Lite 24/12BBB','Henry J. Lee Reyes','24/12BBB','34100572433','U(a34100*PRMONn(X'),
+    ('Core','Miller','Miller Lite 24/12C','Henry J. Lee Reyes','24/12C','34100573065','U(a34100*PRNKQp(u'),
+    ('Core','Miller','Miller Lite 3/24C','Henry J. Lee Reyes','3/24C','34100576639','U(a34100*PRQQNt(y'),
+    ('Core','Miller','Miller Lite 6/12B','Henry J. Lee Reyes','6/12B','34100575052','U(a34100*PRPKPm(W'),
     ('Value','Milwaukees Best',"Milwaukee's Best Ice 15/12C",'','15/12C','34100303440','U(a34100*NKNOOk(U'),
-    ('Value','Olde English 800','Olde Eng 800 1/42PL','','1/42PL','34100006228','U(a34100*KKQMMs(x'),
-    ('Value','Pabst','Pabst 1/16C x6','','1/16C x6','22100000742','U(a22100*KKKROm(W'),
-    ('Value','Pabst','Pabst 1/25C','','1/25C','22100000049','U(a22100*KKKKOt(y'),
-    ('Value','Pabst','Pabst 12/12C','','12/12C','22100001701','U(a22100*KKLRKl(V'),
-    ('Value','Pabst','Pabst 18/12C','','18/12C','22100001572','U(a22100*KKLPRm(W'),
+    ('Value','Olde English 800','Olde Eng 800 1/42PL','Henry J. Lee Reyes','1/42PL','34100006228','U(a34100*KKQMMs(x'),
+    ('Value','Pabst','Pabst 1/16C x6','Henry J. Lee Reyes','1/16C x6','22100000742','U(a22100*KKKROm(W'),
+    ('Value','Pabst','Pabst 1/25C','Henry J. Lee Reyes','1/25C','22100000049','U(a22100*KKKKOt(y'),
+    ('Value','Pabst','Pabst 12/12C','Henry J. Lee Reyes','12/12C','22100001701','U(a22100*KKLRKl(V'),
+    ('Value','Pabst','Pabst 18/12C','Henry J. Lee Reyes','18/12C','22100001572','U(a22100*KKLPRm(W'),
     ('Premium',"Redd's","Redd's Apple Ale 1/16C",'','1/16C','34100007805','U(a34100*KKRSKp(u'),
     ('Premium',"Redd's","Redd's Apple Ale 6/12B",'','6/12B','34100087166','U(a34100*KSRLQq(v'),
     ('Premium',"Redd's","Redd's Wicked Apple 1/24C",'','1/24C','34100003234','U(a34100*KKNMNo(Y'),
-    ('Value','Schlitz','Schlitz Malt 1/25C','','1/25C','52300000457','U(a52300*KKKOPr(w'),
+    ('Value','Schlitz','Schlitz Malt 1/25C','Henry J. Lee Reyes','1/25C','52300000457','U(a52300*KKKOPr(w'),
     ('Beyond Beer',"Seagram's Escapes","Seagram's Escapes JamaicanMeHapy 1/16C",'','1/16C','70310011669','U(a70310*KLLQQt(y'),
-    ('Beyond Beer','Simply Spiked','Simply Spiked Lemonade 1/24C','','1/24C','810078780168','x(i10078*RSKLQs(x'),
-    ('Beyond Beer','Simply Spiked','Simply Spiked Lemonade Variety 12/12C SC','','12/12C SC','810078780205','x(i10078*RSKMKp(u'),
-    ('Beyond Beer','Smirnoff Ice','Smirnoff Ice 6/11B','','6/11B','82000723851','U(a82000*RMNSPl(V'),
-    ('Beyond Beer','Smirnoff Ice','Smirnoff Ice Screwdriver 1/24B','','1/24B','82000762126','U(a82000*RQMLMq(v'),
-    ('Beyond Beer','Smirnoff Ice','Smirnoff Ice Smash Peach Mango 1/16C','','1/16C','82000786238','U(a82000*RSQMNs(x'),
-    ('Value','Steel Res. High Gr','Steel Res. High Gravity 1/24C','','1/24C','78250003287','U(a78250*KKNMSr(w'),
-    ('Value','Steel Res. High Gr','Steel Res. High Gravity 1/42PL','','1/42PL','78250003348','U(a78250*KKNNOs(x'),
-    ('Beyond Beer','Steel Reserve','Steel Reserve Alloy Spkd Pineapl 1/16C x4','','1/16C x4','78250006127','U(a78250*KKQLMr(w'),
-    ('Super Premium','Sweetwater','Sweetwater Goin Coastal 1/19C','','1/19C','631234840041','v(g31234*SOKKOl(V'),
-    ('Super Premium','Sweetwater','Sweetwater H A Z Y IPA 6/12C','','6/12C','631234451124','v(g31234*OPLLMo(Y'),
-    ('Beyond Beer','Topo Chico','Topo Chico Hd Seltzer Marg VP 12/12C SC','','12/12C SC','810078780380','x(i10078*RSKNSk(U'),
-    ('Beyond Beer','Vizzy Seltzer','Vizzy Seltzer Variety 1 12/12C SC','','12/12C SC','34100012328','U(a34100*KLMNMs(x'),
-    ('Beyond Beer','White Claw','White Claw Blk Cherry HrdSeltzer 1/19C','','1/19C','635985801986','635985801986'),
-    ('Beyond Beer','White Claw','White Claw Variety Pk HrdSeltzer 12/12C SC','','12/12C SC','635985548904','v(g35985*POSTKo(Y'),
-    ('Core','Yuengling','Yuengling Traditional Lager 1/16C x4','','1/16C x4','89924600169','U(a89924*QKKLQt(y'),
-    ('Core','Yuengling','Yuengling Traditional Lager 1/24C','','1/24C','89924600244','U(a89924*QKKMOo(Y'),
-    ('Core','Yuengling','Yuengling Traditional Lager 12/12C','','12/12C','89924278986','U(a89924*MRSTSq(v'),
-    ('Core','Yuengling','Yuengling Traditional Lager 24/12C','','24/12C','89924880073','U(a89924*SSKKRn(X'),
-    ('Core','Yuengling','Yuengling Traditional Lager 6/12B','','6/12B','89924278917','U(a89924*MRSTLr(w'),
-    ('Super Premium','Terrapin','Terrapin Hopsecutioner IPA 1/19C','','1/19C','852304007878','x(i52304*KKRSRs(x'),
+    ('Beyond Beer-Tea and Lemonade','Simply Spiked','Simply Spiked Lemonade 1/24C','Henry J. Lee Reyes','1/24C','810078780168','x(i10078*RSKLQs(x'),
+    ('Beyond Beer-Tea and Lemonade','Simply Spiked','Simply Spiked Lemonade Variety 12/12C SC','Henry J. Lee Reyes','12/12C SC','810078780205','x(i10078*RSKMKp(u'),
+    ('Beyond Beer-Sweet FAB','Smirnoff Ice','Smirnoff Ice 6/11B','Henry J. Lee Reyes','6/11B','82000723851','U(a82000*RMNSPl(V'),
+    ('Beyond Beer-Sweet FAB','Smirnoff Ice','Smirnoff Ice Screwdriver 1/24B','Henry J. Lee Reyes','1/24B','82000762126','U(a82000*RQMLMq(v'),
+    ('Beyond Beer-Sweet FAB','Smirnoff Ice','Smirnoff Ice Smash Peach Mango 1/16C','Henry J. Lee Reyes','1/16C','82000786238','U(a82000*RSQMNs(x'),
+    ('Value','Steel Res. High Gr','Steel Res. High Gravity 1/24C','Henry J. Lee Reyes','1/24C','78250003287','U(a78250*KKNMSr(w'),
+    ('Value','Steel Res. High Gr','Steel Res. High Gravity 1/42PL','Henry J. Lee Reyes','1/42PL','78250003348','U(a78250*KKNNOs(x'),
+    ('Beyond Beer-Low','Steel Reserve','Steel Reserve Alloy Spkd Pineapl 1/16C x4','Henry J. Lee Reyes','1/16C x4','78250006127','U(a78250*KKQLMr(w'),
+    ('Super Premium','Sweetwater','Sweetwater Goin Coastal 1/19C','Henry J. Lee Reyes','1/19C','631234840041','v(g31234*SOKKOl(V'),
+    ('Super Premium','Sweetwater','Sweetwater H A Z Y IPA 6/12C','Henry J. Lee Reyes','6/12C','631234451124','v(g31234*OPLLMo(Y'),
+    ('Beyond Beer-Seltzer','Topo Chico','Topo Chico Hd Seltzer Marg VP 12/12C SC','Henry J. Lee Reyes','12/12C SC','810078780380','x(i10078*RSKNSk(U'),
+    ('Beyond Beer-Seltzer','Vizzy Seltzer','Vizzy Seltzer Variety 1 12/12C SC','Henry J. Lee Reyes','12/12C SC','34100012328','U(a34100*KLMNMs(x'),
+    ('Beyond Beer-Seltzer','White Claw','White Claw Blk Cherry HrdSeltzer 1/19C','Henry J. Lee Reyes','1/19C','635985801986','635985801986'),
+    ('Beyond Beer-Seltzer','White Claw','White Claw Variety Pk HrdSeltzer 12/12C SC','Henry J. Lee Reyes','12/12C SC','635985548904','v(g35985*POSTKo(Y'),
+    ('Core','Yuengling','Yuengling Traditional Lager 1/16C x4','Henry J. Lee Reyes','1/16C x4','89924600169','U(a89924*QKKLQt(y'),
+    ('Core','Yuengling','Yuengling Traditional Lager 1/24C','Henry J. Lee Reyes','1/24C','89924600244','U(a89924*QKKMOo(Y'),
+    ('Core','Yuengling','Yuengling Traditional Lager 12/12C','Henry J. Lee Reyes','12/12C','89924278986','U(a89924*MRSTSq(v'),
+    ('Core','Yuengling','Yuengling Traditional Lager 24/12C','Henry J. Lee Reyes','24/12C','89924880073','U(a89924*SSKKRn(X'),
+    ('Core','Yuengling','Yuengling Traditional Lager 6/12B','Henry J. Lee Reyes','6/12B','89924278917','U(a89924*MRSTLr(w'),
+    ('Super Premium','Terrapin','Terrapin Hopsecutioner IPA 1/19C','Henry J. Lee Reyes','1/19C','852304007878','x(i52304*KKRSRs(x'),
 ]
 
 # ── SAVANNAH UPC DATA (auto-generated from Pricing_Barcode_Survey_Updated.xlsx)
 # Columns: WAMP, Brand, Product, Wholesaler, Package, UPC, Barcode
 SAV_UPC_DATA = [
-    ('Beyond Beer','Angry Orchard','Angry Orchard Crisp Apple 1/19C','','1/19C','87692023777','87692023777'),
-    ('Beyond Beer','Angry Orchard','Angry Orchard Crisp Apple 6/12B','','6/12B','87692821021','U(a87692*SMLKMl(V'),
-    ('Beyond Beer','AriZona Hard','AriZona Hard Iced Tea Lemon 1/22C','','1/22C','613008763732','v(g13008*RQNRNm(W'),
-    ('Beyond Beer','AriZona Hard','AriZona Hard Iced Tea Variety 12/12C SC','','12/12C SC','613008763831','v(g13008*RQNSNl(V'),
-    ('Beyond Beer','Arnold Palmer Hard Tea','Arnold Palmer Spkd Half&Half 1/24C','','1/24C','613008748296','v(g13008*ROSMTq(v'),
-    ('Wine','Beatbox','Beatbox Blue Razzberry 1/500BX','','1/500BX','851133006137','x(i51133*KKQLNr(w'),
+    ('Beyond Beer-Cider','Angry Orchard','Angry Orchard Crisp Apple 1/19C','Southern Crown Partners','1/19C','87692023777','87692023777'),
+    ('Beyond Beer-Cider','Angry Orchard','Angry Orchard Crisp Apple 6/12B','Southern Crown Partners','6/12B','87692821021','U(a87692*SMLKMl(V'),
+    ('Beyond Beer-Tea and Lemonade','AriZona Hard','AriZona Hard Iced Tea Lemon 1/22C','Henry J. Lee Reyes','1/22C','613008763732','v(g13008*RQNRNm(W'),
+    ('Beyond Beer-Tea and Lemonade','AriZona Hard','AriZona Hard Iced Tea Variety 12/12C SC','Henry J. Lee Reyes','12/12C SC','613008763831','v(g13008*RQNSNl(V'),
+    ('Beyond Beer-Tea and Lemonade','Arnold Palmer Hard Tea','Arnold Palmer Spkd Half&Half 1/24C','Henry J. Lee Reyes','1/24C','613008748296','v(g13008*ROSMTq(v'),
+    ('Wine','Beatbox','Beatbox Blue Razzberry 1/500BX','Southern Crown Partners','1/500BX','851133006137','x(i51133*KKQLNr(w'),
     ('Wine','Big Sipz','Big Sipz Chocolate 1/7C','Southern Crown Partners','1/7C','850028324264','x(i50028*NMOMQo(Y'),
-    ('Premium','Blue Moon','Blue Moon Belgian White Ale 6/12B','','6/12B','71990095116','U(a71990*KTPLLq(v'),
-    ('Beyond Beer','Bold Rock Cider','Bold Rock Cider Apple 1/16C','','1/16C','85908800357','x(i59088*KKNPRr(w'),
-    ('Beyond Beer','Bold Rock Cider','Bold Rock Cider Apple 15/12C','','15/12C','85908800392','x(i59088*KKNTMs(x'),
+    ('Premium','Blue Moon','Blue Moon Belgian White Ale 6/12B','Henry J. Lee Reyes','6/12B','71990095116','U(a71990*KTPLLq(v'),
+    ('Beyond Beer-Cider','Bold Rock Cider','Bold Rock Cider Apple 1/16C','Henry J. Lee Reyes','1/16C','859088003577','x(i59088*KKNPRr(w'),
+    ('Beyond Beer-Cider','Bold Rock Cider','Bold Rock Cider Apple 15/12C','Henry J. Lee Reyes','15/12C','859088003928','x(i59088*KKNTMs(x'),
     ('Value','Bud Ice','Bud Ice 1/16C x6','Southern Crown Partners','1/16C x6','18200002434','U(a18200*KKMONo(Y'),
     ('Value','Bud Ice','Bud Ice 1/16C x6','Southern Crown Partners','1/16C x6','18200002434','U(a18200*KKMONo(Y'),
     ('Value','Bud Ice','Bud Ice 1/25C','Southern Crown Partners','1/25C','18200250064','U(a18200*MPKKQo(Y'),
@@ -1619,56 +1609,56 @@ SAV_UPC_DATA = [
     ('Value','Busch Light','Busch Light 12/12C','Southern Crown Partners','12/12C','18200008016','U(a18200*KKSKLq(v'),
     ('Value','Busch Light','Busch Light 24/12C','Southern Crown Partners','24/12C','18200861673','U(a18200*SQLQRn(X'),
     ('Value','Busch Light','Busch Light 8/16C','Southern Crown Partners','8/16C','18200201905','U(a18200*MKLTKp(u'),
-    ('Wine','BuzzBallz Chillers','BuzzBallz Chillers Cocoa Chiller 1/7C','','1/7C','857641002890','x(i57641*KKMSTk(U'),
-    ('Beyond Beer','Clubtails','Clubtails Sex On the Beach 1/16C','Southern Crown Partners','1/16C','684746400074','v(g84746*OKKKRo(Y'),
-    ('Core','Coors','Coors Light 1/16AL','','1/16AL','71990301033','U(a71990*NKLKNn(X'),
-    ('Core','Coors','Coors Light 1/16C x4','','1/16C x4','71990302023','U(a71990*NKMKMn(X'),
-    ('Core','Coors','Coors Light 1/24C','','1/24C','71990300654','U(a71990*NKKQPo(Y'),
-    ('Core','Coors','Coors Light 15/16AL','','15/16AL','71990095277','U(a71990*KTPMRr(w'),
-    ('Core','Coors','Coors Light 18/12C','','18/12C','71990300173','U(a71990*NKKLRn(X'),
-    ('Core','Coors','Coors Light 24/12C','','24/12C','71990316006','U(a71990*NLQKKq(v'),
-    ('Core','Coors','Coors Light 8/16C','','8/16C','71990170462','U(a71990*LRKOQm(W'),
-    ('Core','Coors','Coors Light 9/16AL','','9/16AL','71990301040','U(a71990*NKLKOk(U'),
-    ('Premium','Corona','Corona Extra 1/16C','','1/16C','80660956886','U(a80660*TPQSSq(v'),
-    ('Premium','Corona','Corona Extra 1/24B','','1/24B','80660956411','U(a80660*TPQOLl(V'),
-    ('Premium','Corona','Corona Extra 1/24C','','1/24C','80660956435','U(a80660*TPQONp(u'),
-    ('Premium','Corona','Corona Extra 12/12B','','12/12B','80660956152','U(a80660*TPQLPm(W'),
-    ('Premium','Corona','Corona Extra 18/12B','','18/12B','80660956800','U(a80660*TPQSKk(U'),
-    ('Premium','Corona','Corona Extra 6/12B','','6/12B','80660956053','U(a80660*TPQKPn(X'),
-    ('Premium','Corona','Corona Familiar 1/32B','','1/32B','80660956831','U(a80660*TPQSNl(V'),
-    ('Beyond Beer','Corona','Corona Seltzer Variety Pack 2 12/12C SC','','12/12C SC','33544000687','U(a33544*KKKQSr(w'),
-    ('Premium','Corona','Coronita Extra 24/7B','','24/7B','80660954080','U(a80660*TPOKSk(U'),
-    ('Super Premium','Creature Comforts','Creature Comforts Flash Cat 1/19C','','1/19C','86001172132','x(i60011*RMLNMl(V'),
-    ('Beyond Beer','Fireball','Fireball Cinnamon Malt 16.5 1/200B','Southern Crown Partners','1/200B','88004069667','88004069667'),
-    ('Beyond Beer','Four','Four Loko Gold 14 pct 1/24C','','1/24C','849806001169','x(i49806*KKLLQt(y'),
-    ('Beyond Beer','Four','Four Loko Pregame Jungle Juice 10 pct 1/7B','','1/7B','84980600606','x(i49806*KKQKQp(u'),
-    ('Beyond Beer','Four','Four Loko Pregame Sour Blue Razz 13.9 pct 1/7B','','1/7B','849806002906','x(i49806*KKMTKq(v'),
-    ('Beyond Beer','Four','Four Loko Remix Blue Razz Smsh 1/500BX','','1/500BX','84980600603','x(i49806*KKQKNo(Y'),
+    ('Wine','BuzzBallz Chillers','BuzzBallz Chillers Cocoa Chiller 1/7C','Henry J. Lee Reyes','1/7C','857641002890','x(i57641*KKMSTk(U'),
+    ('Beyond Beer-Sweet FAB','Clubtails','Clubtails Sex On the Beach 1/16C','Southern Crown Partners','1/16C','684746400074','v(g84746*OKKKRo(Y'),
+    ('Core','Coors','Coors Light 1/16AL','Henry J. Lee Reyes','1/16AL','71990301033','U(a71990*NKLKNn(X'),
+    ('Core','Coors','Coors Light 1/16C x4','Henry J. Lee Reyes','1/16C x4','71990302023','U(a71990*NKMKMn(X'),
+    ('Core','Coors','Coors Light 1/24C','Henry J. Lee Reyes','1/24C','71990300654','U(a71990*NKKQPo(Y'),
+    ('Core','Coors','Coors Light 15/16AL','Henry J. Lee Reyes','15/16AL','71990095277','U(a71990*KTPMRr(w'),
+    ('Core','Coors','Coors Light 18/12C','Henry J. Lee Reyes','18/12C','71990300173','U(a71990*NKKLRn(X'),
+    ('Core','Coors','Coors Light 24/12C','Henry J. Lee Reyes','24/12C','71990316006','U(a71990*NLQKKq(v'),
+    ('Core','Coors','Coors Light 8/16C','Henry J. Lee Reyes','8/16C','71990170462','U(a71990*LRKOQm(W'),
+    ('Core','Coors','Coors Light 9/16AL','Henry J. Lee Reyes','9/16AL','71990301040','U(a71990*NKLKOk(U'),
+    ('Premium','Corona','Corona Extra 1/16C','Henry J. Lee Reyes','1/16C','80660956886','U(a80660*TPQSSq(v'),
+    ('Premium','Corona','Corona Extra 1/24B','Henry J. Lee Reyes','1/24B','80660956411','U(a80660*TPQOLl(V'),
+    ('Premium','Corona','Corona Extra 1/24C','Henry J. Lee Reyes','1/24C','80660956435','U(a80660*TPQONp(u'),
+    ('Premium','Corona','Corona Extra 12/12B','Henry J. Lee Reyes','12/12B','80660956152','U(a80660*TPQLPm(W'),
+    ('Premium','Corona','Corona Extra 18/12B','Henry J. Lee Reyes','18/12B','80660956800','U(a80660*TPQSKk(U'),
+    ('Premium','Corona','Corona Extra 6/12B','Henry J. Lee Reyes','6/12B','80660956053','U(a80660*TPQKPn(X'),
+    ('Premium','Corona','Corona Familiar 1/32B','Henry J. Lee Reyes','1/32B','80660956831','U(a80660*TPQSNl(V'),
+    ('Beyond Beer-Seltzer','Corona','Corona Seltzer Variety Pack 2 12/12C SC','Henry J. Lee Reyes','12/12C SC','33544000687','U(a33544*KKKQSr(w'),
+    ('Premium','Corona','Coronita Extra 24/7B','Henry J. Lee Reyes','24/7B','80660954080','U(a80660*TPOKSk(U'),
+    ('Super Premium','Creature Comforts','Creature Comforts Flash Cat 1/19C','Henry J. Lee Reyes','1/19C','860011721321','x(i60011*RMLNMl(V'),
+    ('Beyond Beer-Sweet FAB','Fireball','Fireball Cinnamon Malt 16.5 1/200B','Southern Crown Partners','1/200B','88004069667','88004069667'),
+    ('Beyond Beer-Sweet FAB','Four','Four Loko Gold 14 pct 1/24C','Southern Crown Partners','1/24C','849806001169','x(i49806*KKLLQt(y'),
+    ('Beyond Beer-Sweet FAB','Four','Four Loko Pregame Jungle Juice 10 pct 1/7B','Southern Crown Partners','1/7B','849806006065','x(i49806*KKQKQp(u'),
+    ('Beyond Beer-Sweet FAB','Four','Four Loko Pregame Sour Blue Razz 13.9 pct 1/7B','Southern Crown Partners','1/7B','849806002906','x(i49806*KKMTKq(v'),
+    ('Beyond Beer-Sweet FAB','Four','Four Loko Remix Blue Razz Smsh 1/500BX','Southern Crown Partners','1/500BX','849806006034','x(i49806*KKQKNo(Y'),
     ('Super Premium','Goose Island','Goose Island Beer HugTropical 1/19C','Southern Crown Partners','1/19C','736920211089','w(h36920*MLLKSt(y'),
-    ('Premium','Heineken','Heineken 1/16C','','1/16C','72890007162','U(a72890*KKRLQm(W'),
-    ('Premium','Heineken','Heineken 1/22B','','1/22B','72890004789','U(a72890*KKORSt(y'),
-    ('Premium','Heineken','Heineken 1/24C','','1/24C','72890001191','U(a72890*KKLLTl(V'),
-    ('Premium','Heineken','Heineken 12/12B','','12/12B','72890000163','U(a72890*KKKLQn(X'),
-    ('Premium','Heineken','Heineken 18/12B','','18/12B','72890001528','U(a72890*KKLPMs(x'),
-    ('Premium','Heineken','Heineken 24/12C','','24/12C','72890000279','U(a72890*KKKMRt(y'),
-    ('Premium','Heineken','Heineken 3/24C','','3/24C','72890006448','U(a72890*KKQOOs(x'),
-    ('Premium','Heineken','Heineken 4/16C','','4/16C','72890000835','U(a72890*KKKSNp(u'),
-    ('Premium','Heineken','Heineken 6/12B','','6/12B','72890000118','U(a72890*KKKLLs(x'),
-    ('Value','Miller Ice House','Icehouse 1/16C x6','','1/16C x6','34100008826','U(a34100*KKSSMq(v'),
-    ('Value','Miller Ice House','Icehouse 1/24C','','1/24C','34100008802','U(a34100*KKSSKm(W'),
-    ('Value','Miller Ice House','Icehouse 1/40B','','1/40B','34100002787','U(a34100*KKSSOk(U'),
-    ('Value','Miller Ice House','Icehouse 12/12C','','12/12C','34100626020','U(a34100*QMQKMk(U'),
-    ('Value','Miller Ice House','Icehouse 18/12C','','18/12C','34100623401','U(a34100*QMNOKl(V'),
-    ('Value','Miller Ice House','Icehouse 24/12C','','24/12C','34100623067','U(a34100*QMNKQr(w'),
-    ('Value','Miller Ice House','Icehouse 6/12B','','6/12B','34100625054','U(a34100*QMPKPo(Y'),
-    ('Beyond Beer','Johnny Bootlegger','J Bootlegger Alcatraz Sour Apple 10 pct 1/7B','Southern Crown Partners','1/7B','68474680180','v(g84746*SKLSKm(W'),
-    ('Beyond Beer','Johnny Bootlegger','J Bootlegger Sng Sng Sour Grape 12 pct 1/7B','Southern Crown Partners','1/7B','684746375105','v(g84746*NRPLKp(u'),
-    ('Value','Keystone','Keystone Light 1/24C','','1/24C','71990480240','U(a71990*OSKMOk(U'),
-    ('Value','Keystone','Keystone Light 15/12C','','15/12C','71990480455','U(a71990*OSKOPp(u'),
+    ('Premium','Heineken','Heineken 1/16C','Southern Crown Partners','1/16C','72890007162','U(a72890*KKRLQm(W'),
+    ('Premium','Heineken','Heineken 1/22B','Southern Crown Partners','1/22B','72890004789','U(a72890*KKORSt(y'),
+    ('Premium','Heineken','Heineken 1/24C','Southern Crown Partners','1/24C','72890001191','U(a72890*KKLLTl(V'),
+    ('Premium','Heineken','Heineken 12/12B','Southern Crown Partners','12/12B','72890000163','U(a72890*KKKLQn(X'),
+    ('Premium','Heineken','Heineken 18/12B','Southern Crown Partners','18/12B','72890001528','U(a72890*KKLPMs(x'),
+    ('Premium','Heineken','Heineken 24/12C','Southern Crown Partners','24/12C','72890000279','U(a72890*KKKMRt(y'),
+    ('Premium','Heineken','Heineken 3/24C','Southern Crown Partners','3/24C','72890006448','U(a72890*KKQOOs(x'),
+    ('Premium','Heineken','Heineken 4/16C','Southern Crown Partners','4/16C','72890000835','U(a72890*KKKSNp(u'),
+    ('Premium','Heineken','Heineken 6/12B','Southern Crown Partners','6/12B','72890000118','U(a72890*KKKLLs(x'),
+    ('Value','Miller Ice House','Icehouse 1/16C x6','Henry J. Lee Reyes','1/16C x6','34100008826','U(a34100*KKSSMq(v'),
+    ('Value','Miller Ice House','Icehouse 1/24C','Henry J. Lee Reyes','1/24C','34100008802','U(a34100*KKSSKm(W'),
+    ('Value','Miller Ice House','Icehouse 1/40B','Henry J. Lee Reyes','1/40B','34100002787','U(a34100*KKSSOk(U'),
+    ('Value','Miller Ice House','Icehouse 12/12C','Henry J. Lee Reyes','12/12C','34100626020','U(a34100*QMQKMk(U'),
+    ('Value','Miller Ice House','Icehouse 18/12C','Henry J. Lee Reyes','18/12C','34100623401','U(a34100*QMNOKl(V'),
+    ('Value','Miller Ice House','Icehouse 24/12C','Henry J. Lee Reyes','24/12C','34100623067','U(a34100*QMNKQr(w'),
+    ('Value','Miller Ice House','Icehouse 6/12B','Henry J. Lee Reyes','6/12B','34100625054','U(a34100*QMPKPo(Y'),
+    ('Beyond Beer-Sweet FAB','Johnny Bootlegger','J Bootlegger Alcatraz Sour Apple 10 pct 1/7B','Southern Crown Partners','1/7B','684746801802','v(g84746*SKLSKm(W'),
+    ('Beyond Beer-Sweet FAB','Johnny Bootlegger','J Bootlegger Sng Sng Sour Grape 12 pct 1/7B','Southern Crown Partners','1/7B','684746375105','v(g84746*NRPLKp(u'),
+    ('Value','Keystone','Keystone Light 1/24C','Henry J. Lee Reyes','1/24C','71990480240','U(a71990*OSKMOk(U'),
+    ('Value-Low','Keystone','Keystone Light 15/12C','Henry J. Lee Reyes','15/12C','71990480455','U(a71990*OSKOPp(u'),
     ('Value','King Cobra','King Cobra 1/40B','Southern Crown Partners','1/40B','18200001314','U(a18200*KKLNLo(Y'),
     ('Core Plus','Land Shark','Land Shark Lager 12/12C','Southern Crown Partners','12/12C','18200209833','U(a18200*MKTSNn(X'),
     ('Core Plus','Land Shark','Land Shark Lager 6/12B','Southern Crown Partners','6/12B','18200129827','U(a18200*LMTSMr(w'),
-    ('Beyond Beer','MD AB','MD 2020 Spk Punch Sweet Blue Ras 1/16C','Southern Crown Partners','1/16C','18200262098','U(a18200*MQMKTs(x'),
+    ('Beyond Beer-Low','MD AB','MD 2020 Spk Punch Sweet Blue Ras 1/16C','Southern Crown Partners','1/16C','18200262098','U(a18200*MQMKTs(x'),
     ('Core Plus','Michelob Ultra','Michelob Ultra 1/16AL','Southern Crown Partners','1/16AL','18200006654','U(a18200*KKQQPo(Y'),
     ('Core Plus','Michelob Ultra','Michelob Ultra 8/16C','Southern Crown Partners','8/16C','18200239861','18200239861'),
     ('Core Plus','Michelob Ultra','Michelob Ultra 1/25C','Southern Crown Partners','1/25C','18200250101','U(a18200*MPKLKl(V'),
@@ -1680,86 +1670,84 @@ SAV_UPC_DATA = [
     ('Core Plus','Michelob Ultra','Michelob Ultra 3/25C','Southern Crown Partners','3/25C','18200249815','U(a18200*MOTSLp(u'),
     ('Core Plus','Michelob Ultra','Michelob Ultra 6/12B','Southern Crown Partners','6/12B','18200059896','U(a18200*KPTSTq(v'),
     ('Core Plus','Michelob Ultra','Michelob Ultra 8/16C','Southern Crown Partners','8/16C','18200239861','U(a18200*MNTSQl(V'),
-    ('Beyond Beer','Michelob Ultra Seltzer','Michelob Ultra Org Seltzer VarP3 12/12C SC','Southern Crown Partners','12/12C SC','18200203374','U(a18200*MKNNRo(Y'),
-    ('Beyond Beer','Mikes','Mikes Hard Lemonade 6/11B','','6/11B','635985100621','v(g35985*LKKQMl(V'),
-    ('Beyond Beer','Mikes','Mikes Hard Variety Pack 12/12C SC','','12/12C SC','635985260011','v(g35985*MQKKLl(V'),
-    ('Beyond Beer','Mikes','Mikes HARDER Lemonade 1/16C','','1/16C','635985258759','v(g35985*MPSRPt(y'),
-    ('Beyond Beer','Mikes','Mikes HARDER Lemonade 1/23.5C','','1/23.5C','635985245834','v(g35985*MOPSNo(Y'),
-    ('Value','Miller High Life','Miller High Life 1/16C x6','','1/16C x6','34100000073','U(a34100*KKKKRn(X'),
-    ('Value','Miller High Life','Miller High Life 1/40PL','','1/40PL','34100007638','U(a34100*KKRQNs(x'),
-    ('Value','Miller High Life','Miller High Life 12/12C','','12/12C','34100016364','U(a34100*KLQNQo(Y'),
-    ('Value','Miller High Life','Miller High Life 18/12C','','18/12C','34100013400','U(a34100*KLNOKk(U'),
-    ('Value','Miller High Life','Miller High Life 24/12C','','24/12C','34100013066','U(a34100*KLNKQq(v'),
-    ('Value','Miller High Life','Miller High Life 6/12B','','6/12B','34100015053','U(a34100*KLPKPn(X'),
-    ('Core','Miller','Miller Lite 1/16AL','','1/16AL','34100003760','U(a34100*KKNRQk(U'),
-    ('Core','Miller','Miller Lite 1/16C x4','','1/16C x4','3410000158S','U(a34100*KKLPSm(W'),
-    ('Core','Miller','Miller Lite 12/12B','','12/12B','34100575090','U(a34100*PRPKTk(U'),
-    ('Core','Miller','Miller Lite 12/12B','','12/12B','34100575090','U(a34100*PRPKTk(U'),
-    ('Core','Miller','Miller Lite 12/12C','','12/12C','34100576363','U(a34100*PRQNQn(X'),
-    ('Core','Miller','Miller Lite 12/12C','','12/12C','34100576363','U(a34100*PRQNQn(X'),
-    ('Core','Miller','Miller Lite 15/16AL','','15/16AL','34100577070','U(a34100*PRRKRk(U'),
-    ('Core','Miller','Miller Lite 18/12B','','18/12B','34100572563','U(a34100*PRMPQn(X'),
-    ('Core','Miller','Miller Lite 18/12C','','18/12C','34100573409','U(a34100*PRNOKt(y'),
-    ('Core','Miller','Miller Lite 24/12BBB','','24/12BBB','34100572433','U(a34100*PRMONn(X'),
-    ('Core','Miller','Miller Lite 24/12C','','24/12C','34100573065','U(a34100*PRNKQp(u'),
-    ('Core','Miller','Miller Lite 3/24C','','3/24C','34100576639','U(a34100*PRQQNt(y'),
-    ('Core','Miller','Miller Lite 6/12B','','6/12B','34100575052','U(a34100*PRPKPm(W'),
+    ('Beyond Beer-Seltzer','Michelob Ultra Seltzer','Michelob Ultra Org Seltzer VarP3 12/12C SC','Southern Crown Partners','12/12C SC','18200203374','U(a18200*MKNNRo(Y'),
+    ('Beyond Beer-Tea and Lemonade','Mikes','Mikes Hard Lemonade 6/11B','Henry J. Lee Reyes','6/11B','635985100621','v(g35985*LKKQMl(V'),
+    ('Beyond Beer-Tea and Lemonade','Mikes','Mikes Hard Variety Pack 12/12C SC','Henry J. Lee Reyes','12/12C SC','635985260011','v(g35985*MQKKLl(V'),
+    ('Beyond Beer-Tea and Lemonade','Mikes','Mikes HARDER Lemonade 1/16C','Henry J. Lee Reyes','1/16C','635985258759','v(g35985*MPSRPt(y'),
+    ('Beyond Beer-Tea and Lemonade','Mikes','Mikes HARDER Lemonade 1/23.5C','Henry J. Lee Reyes','1/23.5C','635985245834','v(g35985*MOPSNo(Y'),
+    ('Value','Miller High Life','Miller High Life 1/16C x6','Henry J. Lee Reyes','1/16C x6','34100000073','U(a34100*KKKKRn(X'),
+    ('Value','Miller High Life','Miller High Life 1/40PL','Henry J. Lee Reyes','1/40PL','34100007638','U(a34100*KKRQNs(x'),
+    ('Value','Miller High Life','Miller High Life 12/12C','Henry J. Lee Reyes','12/12C','34100016364','U(a34100*KLQNQo(Y'),
+    ('Value','Miller High Life','Miller High Life 18/12C','Henry J. Lee Reyes','18/12C','34100013400','U(a34100*KLNOKk(U'),
+    ('Value','Miller High Life','Miller High Life 24/12C','Henry J. Lee Reyes','24/12C','34100013066','U(a34100*KLNKQq(v'),
+    ('Value','Miller High Life','Miller High Life 6/12B','Henry J. Lee Reyes','6/12B','34100015053','U(a34100*KLPKPn(X'),
+    ('Core','Miller','Miller Lite 1/16AL','Henry J. Lee Reyes','1/16AL','34100003760','U(a34100*KKNRQk(U'),
+    ('Core','Miller','Miller Lite 1/16C x4','Henry J. Lee Reyes','1/16C x4','034100001582','U(a34100*KKLPSm(W'),
+    ('Core','Miller','Miller Lite 12/12B','Henry J. Lee Reyes','12/12B','34100575090','U(a34100*PRPKTk(U'),
+    ('Core','Miller','Miller Lite 12/12C','Henry J. Lee Reyes','12/12C','34100576363','U(a34100*PRQNQn(X'),
+    ('Core','Miller','Miller Lite 15/16AL','Henry J. Lee Reyes','15/16AL','34100577070','U(a34100*PRRKRk(U'),
+    ('Core','Miller','Miller Lite 18/12B','Henry J. Lee Reyes','18/12B','34100572563','U(a34100*PRMPQn(X'),
+    ('Core','Miller','Miller Lite 18/12C','Henry J. Lee Reyes','18/12C','34100573409','U(a34100*PRNOKt(y'),
+    ('Core','Miller','Miller Lite 24/12BBB','Henry J. Lee Reyes','24/12BBB','34100572433','U(a34100*PRMONn(X'),
+    ('Core','Miller','Miller Lite 24/12C','Henry J. Lee Reyes','24/12C','34100573065','U(a34100*PRNKQp(u'),
+    ('Core','Miller','Miller Lite 3/24C','Henry J. Lee Reyes','3/24C','34100576639','U(a34100*PRQQNt(y'),
+    ('Core','Miller','Miller Lite 6/12B','Henry J. Lee Reyes','6/12B','34100575052','U(a34100*PRPKPm(W'),
     ('Value','Milwaukees Best',"Milwaukee's Best Ice 15/12C",'','15/12C','34100303440','U(a34100*NKNOOk(U'),
-    ('Premium','Modelo','Modelo 1/24C','','1/24C','80660957210','U(a80660*TPRMLk(U'),
-    ('Premium','Modelo','Modelo 1/32B','','1/32B','33544950906','33544950906'),
-    ('Premium','Modelo','Modelo 12/12C','','12/12C','80660957159','U(a80660*TPRLPt(y'),
-    ('Premium','Modelo','Modelo 18/12C','','18/12C','80660957111','U(a80660*TPRLLl(V'),
-    ('Premium','Modelo','Modelo 24/12C','','24/12C','80660957104','U(a80660*TPRLKo(Y'),
-    ('Premium','Modelo','Modelo 3/24C','','3/24C','80660957746','U(a80660*TPRROq(v'),
-    ('Premium','Modelo','Modelo 6/12B','','6/12B','80660957654','U(a80660*TPRQPo(Y'),
-    ('Premium','Modelo','Modelo Modelito 24/7B','','24/7B','33544000212','U(a33544*KKKMLm(W'),
+    ('Premium','Modelo','Modelo 1/24C','Henry J. Lee Reyes','1/24C','80660957210','U(a80660*TPRMLk(U'),
+    ('Premium','Modelo','Modelo 1/32B','Henry J. Lee Reyes','1/32B','33544950906','33544950906'),
+    ('Premium','Modelo','Modelo 12/12C','Henry J. Lee Reyes','12/12C','80660957159','U(a80660*TPRLPt(y'),
+    ('Premium','Modelo','Modelo 18/12C','Henry J. Lee Reyes','18/12C','80660957111','U(a80660*TPRLLl(V'),
+    ('Premium','Modelo','Modelo 24/12C','Henry J. Lee Reyes','24/12C','80660957104','U(a80660*TPRLKo(Y'),
+    ('Premium','Modelo','Modelo 3/24C','Henry J. Lee Reyes','3/24C','80660957746','U(a80660*TPRROq(v'),
+    ('Premium','Modelo','Modelo 6/12B','Henry J. Lee Reyes','6/12B','80660957654','U(a80660*TPRQPo(Y'),
+    ('Premium','Modelo','Modelo Modelito 24/7B','Henry J. Lee Reyes','24/7B','33544000212','U(a33544*KKKMLm(W'),
     ('Value','Natural','Natty Daddy 1/25C','Southern Crown Partners','1/25C','18200250132','U(a18200*MPKLNm(W'),
     ('Value','Natural','15.99','Southern Crown Partners','6/16C','18200000430','U(a18200*KKKONk(U'),
     ('Value','Natural','Natural Light 1/25C','Southern Crown Partners','1/25C','18200250026','U(a18200*MPKKMq(v'),
     ('Value','Natural','Natural Light 12/12B','Southern Crown Partners','12/12B','18200009303','U(a18200*KKTNKn(X'),
-    ('Value','Natural','Natural Light 15/12C','Southern Crown Partners','15/12C','18200200779','U(a18200*MKKRRt(y'),
+    ('Value-High','Natural','Natural Light 15/12C','Southern Crown Partners','15/12C','18200200779','U(a18200*MKKRRt(y'),
     ('Value','Natural','Natural Light 24/12C','Southern Crown Partners','24/12C','18200151682','U(a18200*LPLQSm(W'),
     ('Value','Natural','Natural Light 3/25C','Southern Crown Partners','3/25C','18200219870','U(a18200*MLTSRk(U'),
     ('Super Premium','New Belgium','New Belgium Voodoo Ranger ImpIPA 1/19C','Southern Crown Partners','1/19C','754527010218','w(h54527*KLKMLs(x'),
     ('Super Premium','New Belgium','New Belgium Voodoo Ranger ImpIPA 6/12B','Southern Crown Partners','6/12B','754527004217','w(h54527*KKOMLr(w'),
-    ('Beyond Beer','New Belgium','New Belgium Voodoo Ranger Tea 1/24C','Southern Crown Partners','1/24C','754527011642','w(h54527*KLLQOm(W'),
-    ('Beyond Beer','New Belgium','New Belgium Voodoo Ranger TeaVP1 12/12C','Southern Crown Partners','12/12C','754527006518','w(h54527*KKQPLs(x'),
-    ('Value','Olde English 800','Olde Eng 800 1/42PL','','1/42PL','34100006228','U(a34100*KKQMMs(x'),
-    ('Value','Pabst','Pabst 1/16C x6','','1/16C x6','22100000742','U(a22100*KKKROm(W'),
-    ('Value','Pabst','Pabst 1/25C','','1/25C','22100000049','U(a22100*KKKKOt(y'),
-    ('Value','Pabst','Pabst 12/12C','','12/12C','22100001701','U(a22100*KKLRKl(V'),
-    ('Value','Pabst','Pabst 18/12C','','18/12C','22100001572','U(a22100*KKLPRm(W'),
+    ('Beyond Beer-Tea and Lemonade','New Belgium','New Belgium Voodoo Ranger Tea 1/24C','Southern Crown Partners','1/24C','754527011642','w(h54527*KLLQOm(W'),
+    ('Beyond Beer-Tea and Lemonade','New Belgium','New Belgium Voodoo Ranger TeaVP1 12/12C','Southern Crown Partners','12/12C','754527006518','w(h54527*KKQPLs(x'),
+    ('Value','Olde English 800','Olde Eng 800 1/42PL','Henry J. Lee Reyes','1/42PL','34100006228','U(a34100*KKQMMs(x'),
+    ('Value','Pabst','Pabst 1/16C x6','Henry J. Lee Reyes','1/16C x6','22100000742','U(a22100*KKKROm(W'),
+    ('Value','Pabst','Pabst 1/25C','Henry J. Lee Reyes','1/25C','22100000049','U(a22100*KKKKOt(y'),
+    ('Value','Pabst','Pabst 12/12C','Henry J. Lee Reyes','12/12C','22100001701','U(a22100*KKLRKl(V'),
+    ('Value','Pabst','Pabst 18/12C','Henry J. Lee Reyes','18/12C','22100001572','U(a22100*KKLPRm(W'),
     ('Premium',"Redd's","Redd's Apple Ale 1/16C",'','1/16C','34100007805','U(a34100*KKRSKp(u'),
     ('Premium',"Redd's","Redd's Apple Ale 6/12B",'','6/12B','34100087166','U(a34100*KSRLQq(v'),
     ('Premium',"Redd's","Redd's Wicked Apple 1/24C",'','1/24C','34100003234','U(a34100*KKNMNo(Y'),
-    ('Beyond Beer','Ritas','Ritas Lime-A-Rita 1/16C','Southern Crown Partners','1/16C','18200001741','U(a18200*KKLROl(V'),
-    ('Value','Schlitz','Schlitz Malt 1/25C','','1/25C','52300000457','U(a52300*KKKOPr(w'),
+    ('Beyond Beer-Low','Ritas','Ritas Lime-A-Rita 1/16C','Southern Crown Partners','1/16C','18200001741','U(a18200*KKLROl(V'),
+    ('Value','Schlitz','Schlitz Malt 1/25C','Henry J. Lee Reyes','1/25C','52300000457','U(a52300*KKKOPr(w'),
     ('Beyond Beer',"Seagram's Escapes","Seagram's Escapes JamaicanMeHapy 1/16C",'','1/16C','70310011669','U(a70310*KLLQQt(y'),
-    ('Beyond Beer','Simply Spiked','Simply Spiked Lemonade 1/24C','','1/24C','810078780168','x(i10078*RSKLQs(x'),
-    ('Beyond Beer','Simply Spiked','Simply Spiked Lemonade Variety 12/12C SC','','12/12C SC','810078780205','x(i10078*RSKMKp(u'),
-    ('Beyond Beer','Smirnoff Ice','Smirnoff Ice 6/11B','','6/11B','82000723851','U(a82000*RMNSPl(V'),
-    ('Beyond Beer','Smirnoff Ice','Smirnoff Ice Screwdriver 1/24B','','1/24B','82000762126','U(a82000*RQMLMq(v'),
-    ('Beyond Beer','Smirnoff Ice','Smirnoff Ice Smash Peach Mango 1/16C','','1/16C','82000786238','U(a82000*RSQMNs(x'),
-    ('Value','Steel Res. High Gr','Steel Res. High Gravity 1/24C','','1/24C','78250003287','U(a78250*KKNMSr(w'),
-    ('Value','Steel Res. High Gr','Steel Res. High Gravity 1/42PL','','1/42PL','78250003348','U(a78250*KKNNOs(x'),
-    ('Beyond Beer','Steel Reserve','Steel Reserve Alloy Spkd Pineapl 1/16C x4','','1/16C x4','78250006127','U(a78250*KKQLMr(w'),
-    ('Super Premium','Stella Artois','Stella Artois 1/22B','','1/22B','786150000571','w(h86150*KKKPRl(V'),
-    ('Super Premium','Stella Artois','Stella Artois 12/11B','','12/11B','786150000144','w(h86150*KKKLOo(Y'),
-    ('Super Premium','Stella Artois','Stella Artois 6/11B','','6/11B','786150000014','w(h86150*KKKKLo(Y'),
-    ('Super Premium','Stella Artois Import','Stella Artois Import 1/15C','','1/15C','18200005060','U(a18200*KKPKQk(U'),
-    ('Super Premium','Sweetwater','Sweetwater Goin Coastal 1/19C','','1/19C','631234840041','v(g31234*SOKKOl(V'),
-    ('Super Premium','Sweetwater','Sweetwater H A Z Y IPA 6/12C','','6/12C','631234451124','v(g31234*OPLLMo(Y'),
-    ('Super Premium','Terrapin','Terrapin Hopsecutioner IPA 1/19C','','1/19C','852304007878','x(i52304*KKRSRs(x'),
-    ('Beyond Beer','The Beast Unleashed','The Beast Tea Original 1/24C','Southern Crown Partners','1/24C','810117131135','x(i10117*LNKNPk(U'),
-    ('Beyond Beer','The Beast Unleashed','The Beast Tea Variety 12/12C SC','Southern Crown Partners','12/12C SC','810117131241','x(i10117*LNKNMt(y'),
-    ('Beyond Beer','The Beast Unleashed','The Beast Unleashed Mean Green 1/16C','Southern Crown Partners','1/16C','810117130015','x(i10117*LNKKLp(u'),
-    ('Beyond Beer','The Beast Unleashed','The Beast Unleashed Variety 1 12/12C SC','Southern Crown Partners','12/12C SC','810117130183','x(i10117*LNKLSn(X'),
-    ('Beyond Beer','Topo Chico','Topo Chico Hd Seltzer Marg VP 12/12C SC','','12/12C SC','810078780380','x(i10078*RSKNSk(U'),
-    ('Beyond Beer','Truly','Truly Hd Seltzer Berry Variety 12/12C SC','','12/12C SC','87692006862','U(a87692*KKQSQm(W'),
-    ('Beyond Beer','Truly','Truly Hd Seltzer Wild Berry 1/16C','','1/16C','87692007296','U(a87692*KKRMTq(v'),
-    ('Beyond Beer','Truly','Truly Hd Seltzer Wild Berry 1/24C','','1/24C','87692009511','U(a87692*KKTPLl(V'),
-    ('Beyond Beer','Twisted Tea','Twisted Tea 1/24C','','1/24C','87692832317','U(a87692*SNMNLr(w'),
-    ('Beyond Beer','Twisted Tea','Twisted Tea 12/12C','','12/12C','87692831341','U(a87692*SNLNOl(V'),
+    ('Beyond Beer-Tea and Lemonade','Simply Spiked','Simply Spiked Lemonade 1/24C','Henry J. Lee Reyes','1/24C','810078780168','x(i10078*RSKLQs(x'),
+    ('Beyond Beer-Tea and Lemonade','Simply Spiked','Simply Spiked Lemonade Variety 12/12C SC','Henry J. Lee Reyes','12/12C SC','810078780205','x(i10078*RSKMKp(u'),
+    ('Beyond Beer-Sweet FAB','Smirnoff Ice','Smirnoff Ice 6/11B','Henry J. Lee Reyes','6/11B','82000723851','U(a82000*RMNSPl(V'),
+    ('Beyond Beer-Sweet FAB','Smirnoff Ice','Smirnoff Ice Screwdriver 1/24B','Henry J. Lee Reyes','1/24B','82000762126','U(a82000*RQMLMq(v'),
+    ('Beyond Beer-Sweet FAB','Smirnoff Ice','Smirnoff Ice Smash Peach Mango 1/16C','Henry J. Lee Reyes','1/16C','82000786238','U(a82000*RSQMNs(x'),
+    ('Value','Steel Res. High Gr','Steel Res. High Gravity 1/24C','Henry J. Lee Reyes','1/24C','78250003287','U(a78250*KKNMSr(w'),
+    ('Value','Steel Res. High Gr','Steel Res. High Gravity 1/42PL','Henry J. Lee Reyes','1/42PL','78250003348','U(a78250*KKNNOs(x'),
+    ('Beyond Beer-Low','Steel Reserve','Steel Reserve Alloy Spkd Pineapl 1/16C x4','Henry J. Lee Reyes','1/16C x4','78250006127','U(a78250*KKQLMr(w'),
+    ('Super Premium','Stella Artois','Stella Artois 1/22B','Henry J. Lee Reyes','1/22B','786150000571','w(h86150*KKKPRl(V'),
+    ('Super Premium','Stella Artois','Stella Artois 12/11B','Henry J. Lee Reyes','12/11B','786150000144','w(h86150*KKKLOo(Y'),
+    ('Super Premium','Stella Artois','Stella Artois 6/11B','Henry J. Lee Reyes','6/11B','786150000014','w(h86150*KKKKLo(Y'),
+    ('Super Premium','Stella Artois Import','Stella Artois Import 1/15C','Henry J. Lee Reyes','1/15C','18200005060','U(a18200*KKPKQk(U'),
+    ('Super Premium','Sweetwater','Sweetwater Goin Coastal 1/19C','Henry J. Lee Reyes','1/19C','631234840041','v(g31234*SOKKOl(V'),
+    ('Super Premium','Sweetwater','Sweetwater H A Z Y IPA 6/12C','Henry J. Lee Reyes','6/12C','631234451124','v(g31234*OPLLMo(Y'),
+    ('Super Premium','Terrapin','Terrapin Hopsecutioner IPA 1/19C','Henry J. Lee Reyes','1/19C','852304007878','x(i52304*KKRSRs(x'),
+    ('Beyond Beer-Tea and Lemonade','The Beast Unleashed','The Beast Tea Original 1/24C','Southern Crown Partners','1/24C','810117131135','x(i10117*LNKNPk(U'),
+    ('Beyond Beer-Tea and Lemonade','The Beast Unleashed','The Beast Tea Variety 12/12C SC','Southern Crown Partners','12/12C SC','810117131241','x(i10117*LNKNMt(y'),
+    ('Beyond Beer-Sweet FAB','The Beast Unleashed','The Beast Unleashed Mean Green 1/16C','Southern Crown Partners','1/16C','810117130015','x(i10117*LNKKLp(u'),
+    ('Beyond Beer-Sweet FAB','The Beast Unleashed','The Beast Unleashed Variety 1 12/12C SC','Southern Crown Partners','12/12C SC','810117130183','x(i10117*LNKLSn(X'),
+    ('Beyond Beer-Seltzer','Topo Chico','Topo Chico Hd Seltzer Marg VP 12/12C SC','Henry J. Lee Reyes','12/12C SC','810078780380','x(i10078*RSKNSk(U'),
+    ('Beyond Beer-Seltzer','Truly','Truly Hd Seltzer Berry Variety 12/12C SC','Southern Crown Partners','12/12C SC','87692006862','U(a87692*KKQSQm(W'),
+    ('Beyond Beer-Seltzer','Truly','Truly Hd Seltzer Wild Berry 1/16C','Southern Crown Partners','1/16C','87692007296','U(a87692*KKRMTq(v'),
+    ('Beyond Beer-Seltzer','Truly','Truly Hd Seltzer Wild Berry 1/24C','Southern Crown Partners','1/24C','87692009511','U(a87692*KKTPLl(V'),
+    ('Beyond Beer-Tea and Lemonade','Twisted Tea','Twisted Tea 1/24C','','1/24C','87692832317','U(a87692*SNMNLr(w'),
+    ('Beyond Beer-Tea and Lemonade','Twisted Tea','Twisted Tea 12/12C','','12/12C','87692831341','U(a87692*SNLNOl(V'),
     ('Beyond Beer','Twisted Tea','Twisted Tea 3/24C','','3/24C','87692009832','U(a87692*KKTSNm(W'),
     ('Beyond Beer','Twisted Tea','Twisted Tea 6/12B','','6/12B','87692831020','U(a87692*SNLKMk(U'),
     ('Beyond Beer','Vizzy Seltzer','Vizzy Seltzer Variety 1 12/12C SC','','12/12C SC','34100012328','U(a34100*KLMNMs(x'),
@@ -7298,7 +7286,7 @@ PREFILLED_PRICING = {
             'Buck Magement (Blue Water)': {'retail': 1.99, 'two_for': 3.5},
             'Dollar General': {'retail': 1.65},
         },
-        '1820000473': {
+        '18200004735': {
             'Circle K': {'retail': 1.49, 'two_for': 2.5},
             'Refuel Market': {'retail': 2.19, 'two_for': 3},
             'GPM Southeast': {'retail': 2.09, 'two_for': 3.5},
@@ -7320,7 +7308,7 @@ PREFILLED_PRICING = {
             'Buck Magement (Blue Water)': {'retail': 2.19, 'two_for': 2.29},
             'Dollar General': {'retail': 1.3},
         },
-        '3410000376': {
+        '34100003760': {
             'Circle K': {'retail': 1.49, 'two_for': 2.5},
             'Refuel Market': {'retail': 1.99, 'two_for': 3},
             'GPM Southeast': {'retail': 2.09, 'two_for': 3.5},
@@ -7441,7 +7429,7 @@ PREFILLED_PRICING = {
             'Spinx': {'retail': 2.79, 'two_for': 5},
             'Buck Magement (Blue Water)': {'retail': 2.99},
         },
-        '7289000716': {
+        '72890007162': {
             'Circle K': {'retail': 2.79, 'two_for': 4.5},
             'Refuel Market': {'retail': 2.99, 'two_for': 4.5},
             'GPM Southeast': {'retail': 2.89, 'two_for': 5},
@@ -7494,7 +7482,7 @@ PREFILLED_PRICING = {
             'Enmark': {'retail': 1.99},
             'Buck Magement (Blue Water)': {'retail': 2.19},
         },
-        '3410000158S': {
+        '034100001582': {
             'Circle K': {'retail': 1.99, 'two_for': 3.5},
             'Refuel Market': {'retail': 2.09, 'two_for': 3},
             'GPM Southeast': {'retail': 2.09, 'two_for': 3.5},
@@ -7904,7 +7892,7 @@ PREFILLED_PRICING = {
             'Buck Magement (Blue Water)': {'retail': 3.29, 'two_for': 5.5},
             'Dollar General': {'retail': 2.8},
         },
-        '1820025000': {
+        '18200250002': {
             'Circle K': {'retail': 3.29, 'two_for': 6},
             'Refuel Market': {'retail': 3.19, 'two_for': 5},
             'GPM Southeast': {'retail': 3.09, 'two_for': 5.5},
@@ -8112,7 +8100,7 @@ PREFILLED_PRICING = {
             'Buck Magement (Blue Water)': {'retail': 5.39},
             'Dollar General': {'retail': 3.7},
         },
-        '84980600606': {
+        '849806006065': {
             'Circle K': {'retail': 2.29, 'two_for': 4},
             'Refuel Market': {'retail': 2.29, 'two_for': 4},
             'GPM Southeast': {'retail': 2.89, 'two_for': 5},
@@ -8132,7 +8120,7 @@ PREFILLED_PRICING = {
             'Enmark': {'retail': 2.39},
             'Buck Magement (Blue Water)': {'retail': 2.29},
         },
-        '68474680180': {
+        '684746801802': {
             'Circle K': {'retail': 2.29, 'two_for': 4},
             'Refuel Market': {'retail': 2.29, 'two_for': 4},
             'GPM Southeast': {'retail': 2.89, 'two_for': 5},
@@ -8193,7 +8181,7 @@ PREFILLED_PRICING = {
             'Buck Magement (Blue Water)': {'retail': 16.79},
             'Dollar General': {'retail': 10.95},
         },
-        '1820000771': {
+        '18200007712': {
             'Circle K': {'retail': 14.99},
             'Refuel Market': {'retail': 15.49},
             'GPM Southeast': {'retail': 14.99},
@@ -8293,7 +8281,7 @@ PREFILLED_PRICING = {
             'Buck Magement (Blue Water)': {'retail': 15.79},
             'Dollar General': {'retail': 10.95},
         },
-        '1820011047': {
+        '18200110474': {
             'Circle K': {'retail': 14.99},
             'Refuel Market': {'retail': 14.49},
             'GPM Southeast': {'retail': 13.99},
@@ -8572,7 +8560,7 @@ PREFILLED_PRICING = {
             'Buck Magement (Blue Water)': {'retail': 23.59},
             'Dollar General': {'retail': 22.1},
         },
-        '1820096539': {
+        '18200965395': {
             'Circle K': {'retail': 20.99},
             'Refuel Market': {'retail': 22.99},
             'GPM Southeast': {'retail': 21.99},
@@ -8594,7 +8582,7 @@ PREFILLED_PRICING = {
             'Buck Magement (Blue Water)': {'retail': 23.59},
             'Dollar General': {'retail': 20.35},
         },
-        '3410057707': {
+        '34100577070': {
             'Circle K': {'retail': 23.99},
             'Refuel Market': {'retail': 22.99},
             '7-Eleven': {'retail': 22.99},
@@ -8715,7 +8703,7 @@ PREFILLED_PRICING = {
             'Buck Magement (Blue Water)': {'retail': 27.99},
             'Dollar General': {'retail': 26.4},
         },
-        '1820011168': {
+        '18200111686': {
             'Circle K': {'retail': 24.49},
             'Refuel Market': {'retail': 25.99},
             'GPM Southeast': {'retail': 25.99},
@@ -8737,7 +8725,7 @@ PREFILLED_PRICING = {
             'Buck Magement (Blue Water)': {'retail': 27.99},
             'Dollar General': {'retail': 24.9},
         },
-        '3410057306': {
+        '34100573065': {
             'Circle K': {'retail': 24.49},
             'Refuel Market': {'retail': 25.99},
             '7-Eleven': {'retail': 26.49},
@@ -9242,7 +9230,7 @@ PREFILLED_PRICING = {
             'Refuel Market': {'retail': 15.69},
             '7-Eleven': {'retail': 14.99},
         },
-        '1820000771': {
+        '18200007712': {
             'Refuel Market': {'retail': 15.69},
             '7-Eleven': {'retail': 14.99},
         },
@@ -9270,7 +9258,7 @@ PREFILLED_PRICING = {
             'Refuel Market': {'retail': 14.49},
             '7-Eleven': {'retail': 14.99},
         },
-        '1820011047': {
+        '18200110474': {
             'Refuel Market': {'retail': 14.49},
             '7-Eleven': {'retail': 14.99},
         },
@@ -9302,11 +9290,11 @@ PREFILLED_PRICING = {
             'Refuel Market': {'retail': 22.99},
             '7-Eleven': {'retail': 22.99},
         },
-        '1820096539': {
+        '18200965395': {
             'Refuel Market': {'retail': 22.99},
             '7-Eleven': {'retail': 22.99},
         },
-        '3410057707': {
+        '34100577070': {
             'Refuel Market': {'retail': 22.99},
             '7-Eleven': {'retail': 22.99},
         },
@@ -9314,11 +9302,11 @@ PREFILLED_PRICING = {
             'Refuel Market': {'retail': 25.99},
             '7-Eleven': {'retail': 26.49},
         },
-        '1820011168': {
+        '18200111686': {
             'Refuel Market': {'retail': 25.99},
             '7-Eleven': {'retail': 26.49},
         },
-        '3410057306': {
+        '34100573065': {
             'Refuel Market': {'retail': 25.99},
             '7-Eleven': {'retail': 26.49},
         },
@@ -9360,22 +9348,22 @@ PREFILLED_PRICING = {
             'Refuel Market': {'retail': 25.99},
             '7-Eleven': {'retail': 26.49},
         },
-        '1820000771': {
+        '18200007712': {
             'Circle K': {'retail': 14.99},
             'Refuel Market': {'retail': 15.69},
             '7-Eleven': {'retail': 14.99},
         },
-        '1820011047': {
+        '18200110474': {
             'Circle K': {'retail': 14.99},
             'Refuel Market': {'retail': 14.49},
             '7-Eleven': {'retail': 14.99},
         },
-        '1820096539': {
+        '18200965395': {
             'Circle K': {'retail': 23.99},
             'Refuel Market': {'retail': 22.99},
             '7-Eleven': {'retail': 22.99},
         },
-        '1820011168': {
+        '18200111686': {
             'Circle K': {'retail': 24.49},
             'Refuel Market': {'retail': 25.99},
             '7-Eleven': {'retail': 26.49},
@@ -9440,12 +9428,12 @@ PREFILLED_PRICING = {
             'Refuel Market': {'retail': 14.49},
             '7-Eleven': {'retail': 14.99},
         },
-        '3410057707': {
+        '34100577070': {
             'Circle K': {'retail': 23.99},
             'Refuel Market': {'retail': 22.99},
             '7-Eleven': {'retail': 22.99},
         },
-        '3410057306': {
+        '34100573065': {
             'Circle K': {'retail': 24.49},
             'Refuel Market': {'retail': 25.99},
             '7-Eleven': {'retail': 26.49},
@@ -9473,19 +9461,19 @@ PREFILLED_PRICING = {
             'Circle K': {'retail': 24.49},
             '7-Eleven': {'retail': 26.49},
         },
-        '1820000771': {
+        '18200007712': {
             'Circle K': {'retail': 14.99},
             '7-Eleven': {'retail': 14.99},
         },
-        '1820011047': {
+        '18200110474': {
             'Circle K': {'retail': 14.99},
             '7-Eleven': {'retail': 14.99},
         },
-        '1820096539': {
+        '18200965395': {
             'Circle K': {'retail': 23.99},
             '7-Eleven': {'retail': 22.99},
         },
-        '1820011168': {
+        '18200111686': {
             'Circle K': {'retail': 24.49},
             '7-Eleven': {'retail': 26.49},
         },
@@ -9537,11 +9525,11 @@ PREFILLED_PRICING = {
             'Circle K': {'retail': 14.99},
             '7-Eleven': {'retail': 14.99},
         },
-        '3410057707': {
+        '34100577070': {
             'Circle K': {'retail': 23.99},
             '7-Eleven': {'retail': 22.99},
         },
-        '3410057306': {
+        '34100573065': {
             'Circle K': {'retail': 24.49},
             '7-Eleven': {'retail': 26.49},
         },
@@ -9571,22 +9559,22 @@ PREFILLED_PRICING = {
             'Refuel Market': {'retail': 25.99},
             '7-Eleven': {'retail': 26.49},
         },
-        '1820000771': {
+        '18200007712': {
             'Circle K': {'retail': 14.99},
             'Refuel Market': {'retail': 15.69},
             '7-Eleven': {'retail': 14.99},
         },
-        '1820011047': {
+        '18200110474': {
             'Circle K': {'retail': 14.99},
             'Refuel Market': {'retail': 14.49},
             '7-Eleven': {'retail': 14.99},
         },
-        '1820096539': {
+        '18200965395': {
             'Circle K': {'retail': 23.99},
             'Refuel Market': {'retail': 22.99},
             '7-Eleven': {'retail': 22.99},
         },
-        '1820011168': {
+        '18200111686': {
             'Circle K': {'retail': 24.49},
             'Refuel Market': {'retail': 25.99},
             '7-Eleven': {'retail': 26.49},
@@ -9651,12 +9639,12 @@ PREFILLED_PRICING = {
             'Refuel Market': {'retail': 14.49},
             '7-Eleven': {'retail': 14.99},
         },
-        '3410057707': {
+        '34100577070': {
             'Circle K': {'retail': 23.99},
             'Refuel Market': {'retail': 22.99},
             '7-Eleven': {'retail': 22.99},
         },
-        '3410057306': {
+        '34100573065': {
             'Circle K': {'retail': 24.49},
             'Refuel Market': {'retail': 25.99},
             '7-Eleven': {'retail': 26.49},
@@ -9789,7 +9777,7 @@ PREFILLED_PRICING = {
         '34100008802': {
             'Circle K': {'two_for': 4.5},
         },
-        '68474680180': {
+        '684746801802': {
             'Parkers': {'retail': 2.99},
         },
         '684746375105': {
@@ -10021,17 +10009,68 @@ def pkg_group(package: str, wamp: str = "", brand: str = "") -> str:
     if qty == 9:
         return "Singles x9"
     if qty == 12:
+        if w == "Beyond Beer":
+            _search = b.lower()  # b = brand or product name passed as 3rd arg
+            # ── Cider ────────────────────────────────────────────────────────
+            if any(x in _search for x in ("angry orchard", "strongbow", "smith & forge",
+                                           "smith and forge", "woodchuck", "ace cider", "cider")):
+                return "BB 12-packs Cider"
+            # ── Seltzer ───────────────────────────────────────────────────────
+            if any(x in _search for x in ("white claw", "truly", "vizzy",
+                                           "corona seltzer", "topo chico",
+                                           "michelob ultra org", "michelob ultra seltzer",
+                                           "mich ultra org", "organic seltzer",
+                                           "hd seltzer", "hrdseltzer", "hard seltzer",
+                                           "bud light seltzer", "cacti", "bon & viv")):
+                return "BB 12-packs Seltzer"
+            # ── FMB High-ABV ──────────────────────────────────────────────────
+            if any(x in _search for x in ("four loko", "mike's hard", "mikes hard",
+                                           "beast unleashed", "beast tea", "the beast",
+                                           "ritas", "lime-a-rita", "straw-ber-rita",
+                                           "mang-o-rita", "hard mountain dew", "sparkling ice")):
+                return "BB 12-packs FMB High-ABV"
+            # ── FMB Low-ABV ───────────────────────────────────────────────────
+            if any(x in _search for x in ("twisted tea", "arizona hard", "arizona iced",
+                                           "hard iced tea", "simply spiked",
+                                           "new belgium", "voodoo ranger",
+                                           "smirnoff ice", "seagram", "bacardi")):
+                return "BB 12-packs FMB Low-ABV"
+            # ── FMB catch-all ─────────────────────────────────────────────────
+            return "BB 12-packs FMB"
         return "12-packs"
     if qty == 15:
         return "15-packs"
     if qty == 18:
         return "18-packs"
     if qty == 24:
-        # Split 7oz (Coronita/Modelito style) from standard 12oz 24-packs
         size_part = p.split("/")[1].lower() if "/" in p else ""
         if size_part.startswith("7"):
             return "24-packs (7oz)"
-        return "24-packs (12oz)"
+        # Split cans vs bottles for Core (and other WAMPs)
+        # Bottle indicators: B, NR, LN, GL, BTL
+        # Can indicators: C, AL, CAN
+        _is_bottle = any(size_part.endswith(x) for x in ("b","nr","ln","gl","btl")) or "bot" in size_part
+        _is_can    = any(size_part.endswith(x) for x in ("c","al","can")) and not _is_bottle
+        if w == "Core":
+            if _is_can:    return "Core 24-packs Cans"
+            if _is_bottle: return "Core 24-packs Bottles"
+            return "Core 24-packs"
+        if w == "Value":
+            if _is_can:    return "Value 24-packs Cans"
+            if _is_bottle: return "Value 24-packs Bottles"
+            return "Value 24-packs"
+        if w == "Premium":
+            if _is_can:    return "Premium 24-packs Cans"
+            if _is_bottle: return "Premium 24-packs Bottles"
+            return "Premium 24-packs"
+        if w == "Beyond Beer":
+            if _is_can:    return "BB 24-packs Cans"
+            if _is_bottle: return "BB 24-packs Bottles"
+            return "BB 24-packs"
+        # Generic fallback for any WAMP
+        if _is_can:    return "24-packs Cans"
+        if _is_bottle: return "24-packs Bottles"
+        return "24-packs"
     return "Wine/Other"
 
 
@@ -10087,33 +10126,111 @@ _MARKET_UPC_DATA = {
 }
 
 @st.cache_data
-def _get_upc_wamp_map() -> dict:
-    """
-    Build a UPC -> (WAMP, Brand) lookup from all hardcoded market UPC lists.
-    Used to enrich planogram rows with the correct WAMP tier and brand name.
-    Falls back to the first match found across markets for any given UPC.
-    """
-    upc_map = {}
-    for raw in _MARKET_UPC_DATA.values():
-        for row in raw:
-            # Tuple order: WAMP, Brand, Product, Wholesaler, Package, UPC, Barcode
-            wamp, brand, _, _, _, upc, _ = row
-            upc_str = str(upc).strip().split(".")[0]
-            if upc_str and upc_str not in upc_map:
-                upc_map[upc_str] = (str(wamp).strip(), str(brand).strip())
-    return upc_map
+def normalize_upc(upc_raw) -> str:
+    """Normalize any UPC-like string to a 12-digit UPC-A string.
 
-@st.cache_data
+    Rules applied in order:
+    1. Strip whitespace and drop any decimal suffix (e.g. '123.0' → '123').
+    2. Keep only digit characters.
+    3. Length handling:
+       - 13 digits → EAN-13; drop the leading '0' if present, giving 12-digit UPC-A.
+         If the leading digit is not '0', keep all 13 digits (legitimate EAN-13).
+       - 12 digits → already UPC-A; use as-is.
+       - 11 digits → UPC-A missing check digit; pad left with '0' to make 12 digits
+         (the scanner / barcode library will recompute the check digit).
+       - < 11 digits → left-pad with zeros to 12 digits.
+       - > 13 digits → truncate to 12 rightmost digits.
+    Returns the normalized string (always 12 digits).
+    """
+    s = str(upc_raw).strip().split(".")[0]          # drop decimal suffix
+    digits = "".join(ch for ch in s if ch.isdigit()) # digits only
+    n = len(digits)
+    if n == 13:
+        # EAN-13: strip leading zero → 12-digit UPC-A, else keep 13 (rare)
+        normalized = digits[1:] if digits[0] == "0" else digits[:12]
+    elif n == 12:
+        normalized = digits
+    elif n == 11:
+        normalized = "0" + digits                    # pad leading zero
+    elif n < 11:
+        normalized = digits.zfill(12)               # left-pad to 12
+    else:                                            # > 13
+        normalized = digits[:12]
+    return normalized
+
+
+@st.cache_data(show_spinner=False)
 def get_upc_df(market: str = "1 · Charleston"):
     """Return market-specific UPC list with correct per-SKU wholesaler assignments."""
     raw = _MARKET_UPC_DATA.get(market, CHS_UPC_DATA)
     # Columns: WAMP, Brand, Product, Wholesaler, Package, UPC, Barcode
     df = pd.DataFrame(raw, columns=["WAMP", "Brand", "Product", "Wholesaler", "Package", "UPC", "Barcode"])
+    # ── Normalize all UPCs to 12-digit UPC-A ────────────────────────────────
+    df["UPC"] = df["UPC"].apply(normalize_upc)
+    _uref, _nref = _load_wamp_reference()
+    if _uref or _nref:
+        def _wamp_from_ref(row):
+            u = str(row["UPC"]).strip().zfill(12)
+            if u in _uref: return _uref[u]
+            p = str(row["Product"]).strip()
+            if p in _nref: return _nref[p]
+            s = p.removesuffix(" SC").removesuffix(" SCP").strip()
+            if s in _nref: return _nref[s]
+            return str(row["WAMP"]).strip()
+        df["WAMP"] = df.apply(_wamp_from_ref, axis=1)
     df["Format"]   = df["Package"].apply(
         lambda p: "Singles" if str(p).startswith(("1/", "3/")) else "Packages"
     )
-    df["PkgGroup"] = df.apply(lambda r: pkg_group(r["Package"], r.get("WAMP",""), r.get("Brand","")), axis=1)
+    df["PkgGroup"] = df.apply(lambda r: pkg_group(r["Package"], r.get("WAMP",""), r.get("Brand","") or r.get("Product","")), axis=1)
     df["Wholesaler"] = df["Wholesaler"].fillna("").astype(str)
+
+    # ── Auto-assign wholesaler by Brand then product-prefix ─────────────
+    import re as _re_ws
+    def _brand_from_product(prod):
+        """Strip the package token to get the brand portion: 'Bud Light TWS 1/16AL' → 'Bud Light TWS'"""
+        return _re_ws.sub(r'\s*\d+/\d+.*$', '', str(prod)).strip()
+
+    # Pass 1: fill blanks from Brand column (exact brand match)
+    _assigned_df = df[df["Wholesaler"].ne("")]
+    if not _assigned_df.empty and "Brand" in df.columns:
+        _brand_ws = (
+            _assigned_df[_assigned_df["Brand"].ne("")]
+            .groupby("Brand")["Wholesaler"]
+            .agg(lambda x: x.mode()[0])
+        )
+        _blank = df["Wholesaler"].eq("") & df["Brand"].ne("")
+        if _blank.any():
+            df.loc[_blank, "Wholesaler"] = df.loc[_blank, "Brand"].map(_brand_ws).fillna("")
+
+    # Pass 2: fill remaining blanks by matching product brand prefix
+    # e.g. "Bud Light TWS 1/16AL" → brand_prefix="Bud Light TWS"
+    # matches "Bud Light TWS 1/16AL" → "Southern Crown Partners"
+    _blank2 = df["Wholesaler"].eq("")
+    if _blank2.any():
+        _assigned2 = df[df["Wholesaler"].ne("")].copy()
+        _assigned2["_pfx"] = _assigned2["Product"].apply(_brand_from_product)
+        _pfx_ws = (
+            _assigned2[_assigned2["_pfx"].ne("")]
+            .groupby("_pfx")["Wholesaler"]
+            .agg(lambda x: x.mode()[0])
+        )
+        # Sort by prefix length descending so longer/more specific prefixes match first
+        _pfx_ws_sorted = sorted(_pfx_ws.items(), key=lambda x: -len(x[0]))
+        def _lookup_pfx(prod):
+            prod_pfx = _brand_from_product(prod)
+            # Exact prefix match first
+            if prod_pfx in _pfx_ws:
+                return _pfx_ws[prod_pfx]
+            # Partial: check if prefixes share enough common words (at least 2)
+            prod_words = prod_pfx.lower().split()
+            for pfx, ws in _pfx_ws_sorted:
+                pfx_words = pfx.lower().split()
+                common = sum(1 for w in pfx_words if w in prod_words)
+                if common >= min(2, len(pfx_words), len(prod_words)):
+                    return ws
+            return ""
+        df.loc[_blank2, "Wholesaler"] = df.loc[_blank2, "Product"].apply(_lookup_pfx)
+
     return df
 
 
@@ -10172,44 +10289,257 @@ def _get_gsheets_client():
         return None
 
 def _append_to_survey_sheet(rows: list):
-    """Append a list of row-lists to the Survey Submissions Google Sheet."""
+    """Append a list of row-lists to the Survey Submissions Google Sheet.
+    Uses batch append — a single API call, which is atomic on the Sheets side
+    and eliminates the CSV race condition entirely."""
     try:
         _gc  = _get_gsheets_client()
         if _gc is None:
             return False
         _sh  = _gc.open_by_key(SURVEY_SHEET_ID)
         _ws  = _sh.sheet1
+        # Read existing header to detect which column order the sheet uses.
+        # The sheet may have been set up with "Our Price"/"Chain" or "Retail $"/"Parent Chain".
+        existing = _ws.get_all_values()
+        if not existing:
+            header = [
+                "Submitted At","Rep Name","Store","Market","Parent Chain",
+                "Customer ID","WAMP","Brand","Product","Package","UPC",
+                "Wholesaler","Retail $","2 for $",
+            ]
+            _ws.append_row(header, value_input_option="USER_ENTERED")
+        else:
+            # Re-order each row to match the sheet's ACTUAL header order so data
+            # lands in the right columns regardless of what names the sheet uses.
+            _hdr = existing[0]
+            # Canonical value map for each row (rows is list-of-lists in fixed order)
+            _fixed_keys = [
+                "Submitted At","Rep Name","Store","Market","Parent Chain",
+                "Customer ID","WAMP","Brand","Product","Package","UPC",
+                "Wholesaler","Retail $","2 for $",
+            ]
+            # Alternate names the sheet might use
+            _alt = {
+                "Price":            "Retail $",   # raw sheet column name
+                "Chain":            "Parent Chain",
+                "Our Price":        "Retail $",
+                "Comp Price":       "Wholesaler",  # sheet stores wholesaler name here
+                "2 for Price":      "2 for $",
+                "Wholesaler Name":  "Wholesaler",
+            }
+            # Normalise header to canonical names
+            _norm_hdr = [_alt.get(h, h) for h in _hdr]
+            _reordered = []
+            for row_vals in rows:
+                _row_dict = dict(zip(_fixed_keys, row_vals))
+                _reordered.append([_row_dict.get(col_name, "") for col_name in _norm_hdr])
+            rows = _reordered
         _ws.append_rows(rows, value_input_option="USER_ENTERED")
         return True
     except Exception:
         return False
 
-@st.cache_data(ttl=30)
-def load_survey_pricing(market_key):
-    """Load submitted survey prices from CSV (cached 30s)."""
-    import os as _os2
-    path = _os2.path.join(_os2.path.dirname(_os2.path.abspath(__file__)), "survey_results.csv")
-    if not _os2.path.exists(path):
-        return pd.DataFrame(), []
+
+@st.cache_data(ttl=120, show_spinner=False)
+def _get_mkt_ws_memory(market_key: str) -> dict:
+    """Return {product: wholesaler} from past submissions for this market. Cached 2 min."""
     try:
-        df_csv = pd.read_csv(path)
-        if "Rewards $" in df_csv.columns and "2 for $" not in df_csv.columns:
-            df_csv = df_csv.rename(columns={"Rewards $": "2 for $"})
-        df_csv = df_csv[df_csv["Retail $"].notna() & (df_csv["Retail $"] > 0)].copy()
-        if market_key and market_key != "All Markets":
-            market_name = market_key.split(" · ")[1]
-            df_csv = df_csv[df_csv["Market"].str.contains(market_name, case=False, na=False)]
-        if df_csv.empty:
-            return pd.DataFrame(), []
-        df_csv["Competitor"] = df_csv["Parent Chain"].str.strip()
-        df_csv["Single"]     = pd.to_numeric(df_csv["Retail $"], errors="coerce")
-        df_csv["PkgGroup"]   = df_csv.apply(lambda r: pkg_group(r["Package"], r.get("WAMP",""), r.get("Brand","")), axis=1)
-        keep = ["WAMP","PkgGroup","Brand","Product","UPC","Competitor","Single"]
-        if "Wholesaler" in df_csv.columns:
-            keep.append("Wholesaler")
-        chains = sorted(df_csv["Competitor"].dropna().unique())
-        return df_csv[keep].copy(), chains
+        _df = _load_all_survey_from_sheets()
+        if _df.empty or "Market" not in _df.columns or "Wholesaler" not in _df.columns:
+            return {}
+        _mkt_name = market_key.split(" · ")[1] if " · " in market_key else market_key
+        _mkt = _df[
+            _df["Market"].str.contains(_mkt_name, case=False, na=False) &
+            _df["Wholesaler"].fillna("").str.strip().ne("") &
+            _df["Product"].fillna("").str.strip().ne("")
+        ]
+        if _mkt.empty:
+            return {}
+        if "Submitted At" in _mkt.columns:
+            _mkt = _mkt.sort_values("Submitted At", ascending=True)
+        return dict(zip(_mkt["Product"].str.strip(), _mkt["Wholesaler"].str.strip()))
     except Exception:
+        return {}
+
+
+@st.cache_data(show_spinner=False)
+def _load_wamp_reference() -> tuple:
+    """Load UPC->WAMP and Name->WAMP from product_wamps.csv. Returns (upc_dict, name_dict)."""
+    import os as _osw
+    _path = _osw.path.join(_osw.path.dirname(_osw.path.abspath(__file__)), "product_wamps.csv")
+    if not _osw.path.exists(_path):
+        # CSV not found — return empty dicts (keyword fallback handles common cases)
+        return {}, {}
+    try:
+        _df = pd.read_csv(_path, dtype=str)
+        _df["UPC"] = _df["UPC"].str.strip().str.zfill(12)
+        _upc_map  = dict(zip(_df["UPC"],  _df["WAMP"]))
+        _name_map = {}
+        if "Name" in _df.columns:
+            _df["Name"] = _df["Name"].str.strip()
+            _name_map = dict(zip(_df["Name"], _df["WAMP"]))
+            # Also index by stripped name (without SC/SCP suffix)
+            _df["_stripped"] = _df["Name"].str.removesuffix(" SC").str.removesuffix(" SCP").str.strip()
+            for _, row in _df[_df["_stripped"] != _df["Name"]].iterrows():
+                if row["_stripped"] not in _name_map:
+                    _name_map[row["_stripped"]] = row["WAMP"]
+        return _upc_map, _name_map
+    except Exception as _e:
+        return {}, {}
+
+
+def _load_all_survey_from_sheets() -> pd.DataFrame:
+    """Pull every submitted row from Google Sheets. Always normalises column names."""
+    _COL_MAP = {
+        "Price":        "Retail $",   # raw sheet column name
+        "Our Price":    "Retail $",
+        "Comp Price":   "Wholesaler",
+        "2 for Price":  "2 for $",
+        "Chain":        "Parent Chain",
+        "Rewards $":    "2 for $",
+    }
+    _sheets_exc = None
+    try:
+        _gc = _get_gsheets_client()
+        if _gc is not None:
+            _sh  = _gc.open_by_key(SURVEY_SHEET_ID)
+            _ws  = _sh.sheet1
+            rows = _ws.get_all_values()
+            if len(rows) < 2:
+                return pd.DataFrame()
+            df_gs = pd.DataFrame(rows[1:], columns=rows[0])
+            df_gs = df_gs.rename(columns={k: v for k, v in _COL_MAP.items() if k in df_gs.columns})
+            if "Brand" not in df_gs.columns:
+                df_gs["Brand"] = ""
+            for _col in ("Retail $", "2 for $"):
+                if _col in df_gs.columns:
+                    df_gs[_col] = pd.to_numeric(df_gs[_col], errors="coerce")
+            return df_gs
+    except Exception as _e:
+        _sheets_exc = _e
+
+    # ── CSV fallback ──────────────────────────────────────────────────────
+    import os as _osf
+    _path = _osf.path.join(_osf.path.dirname(_osf.path.abspath(__file__)), "survey_results.csv")
+    if _osf.path.exists(_path):
+        try:
+            df_csv = pd.read_csv(_path)
+            df_csv = df_csv.rename(columns={k: v for k, v in _COL_MAP.items() if k in df_csv.columns})
+            if "Brand" not in df_csv.columns:
+                df_csv["Brand"] = ""
+            # Ensure price columns are numeric regardless of how CSV stored them
+            for _col in ("Retail $", "2 for $"):
+                if _col in df_csv.columns:
+                    df_csv[_col] = pd.to_numeric(df_csv[_col], errors="coerce")
+            return df_csv
+        except Exception:
+            pass
+
+    # Surface the Sheets error so it appears in the debug expander
+    if _sheets_exc is not None:
+        raise _sheets_exc
+    return pd.DataFrame()
+
+
+@st.cache_data(ttl=60, show_spinner=False)
+def load_survey_pricing(market_key: str, _v: int = 3):
+    """Load submitted survey prices from Google Sheets for the given market."""
+    import re as _re_sp
+    try:
+        df = _load_all_survey_from_sheets()
+        if df.empty:
+            return pd.DataFrame(), []
+
+        # Keep only rows with a real retail price
+        df = df[df["Retail $"].notna() & (df["Retail $"] > 0)].copy()
+        if df.empty:
+            return pd.DataFrame(), []
+
+        # Filter to the requested market
+        if market_key and market_key != "All Markets":
+            mkt_name = market_key.split(" · ")[1]
+            df = df[df["Market"].str.contains(mkt_name, case=False, na=False)]
+        if df.empty:
+            return pd.DataFrame(), []
+
+        # Build heatmap columns
+        df["Competitor"] = df["Parent Chain"].fillna("").str.strip()
+        df["Single"]     = df["Retail $"].astype(float)
+        if "UPC" in df.columns:
+            df["UPC"] = df["UPC"].apply(normalize_upc)
+
+        # Extract package token from product name if Package column is blank
+        def _extract_pkg(row):
+            pkg = str(row.get("Package", "")).strip()
+            if pkg and _re_sp.match(r"\d+/", pkg):
+                return pkg
+            m = _re_sp.search(r"(\d+/\d+[A-Za-z]+(?:\s*x\d+)?)", str(row.get("Product", "")))
+            return m.group(1) if m else pkg
+
+        df["Package"]  = df.apply(_extract_pkg, axis=1)
+
+        # Normalise WAMP — must be a valid WAMP category.
+        # If the sheet stored a brand name instead, look it up from the UPC master list.
+        _valid_wamps = {"Core", "Core Plus", "Value", "Premium", "Super Premium",
+                        "Beyond Beer", "Wine", "NABLAB", "Other", "Spirits",
+                        "Import Styles", "Value-High", "Value-Low",
+                        "Beyond Beer-Cider", "Beyond Beer-Seltzer",
+                        "Beyond Beer-Sweet FAB", "Beyond Beer-Tea and Lemonade",
+                        "Beyond Beer-Spirit-Based Cocktails", "Beyond Beer-Low",
+                        "Beyond Beer-Other", "Beyond Beer-Shareables",
+                        "Beyond Beer-Craft All Other", "Beyond Beer-Energy",
+                        "Beyond Beer-Flavored Beer", "Beyond Beer-IPA/Pale Ale",
+                        "Beyond Beer-Import Styles", "Beyond Beer-Liquor",
+                        "Beyond Beer-Malts And Ices", "Beyond Beer-Non Alc HB",
+                        "Beyond Beer-Wine"}
+        # Apply authoritative WAMP from reference CSV to all survey rows
+        _wamp_ref_s, _name_ref_s = _load_wamp_reference()
+        def _fix_wamp(row):
+            upc  = str(row.get("UPC", "")).strip().zfill(12)
+            prod = str(row.get("Product", "")).strip()
+            if upc in _wamp_ref_s:
+                return _wamp_ref_s[upc]
+            if prod in _name_ref_s:
+                return _name_ref_s[prod]
+            stripped = prod.removesuffix(" SC").removesuffix(" SCP").strip()
+            if stripped in _name_ref_s:
+                return _name_ref_s[stripped]
+            pl = prod.lower()
+            if any(x in pl for x in ("zero", "0.0", "corona na", "heineken 0",
+                    "budweiser zero", "odouls", "nablab", " na ", "non-alc")):
+                return "NABLAB"
+            return str(row.get("WAMP", "")).strip()
+        df["WAMP"] = df.apply(_fix_wamp, axis=1)
+
+        # Drop rows with no valid WAMP
+        df = df[df["WAMP"].fillna("").str.strip().ne("")]
+        if df.empty:
+            return pd.DataFrame(), []
+
+        df["PkgGroup"] = df.apply(
+            lambda r: pkg_group(r.get("Package", ""), r.get("WAMP", ""), r.get("Brand", "") or r.get("Product", "")), axis=1
+        )
+
+        # Backfill blank Wholesaler from UPC master list
+        if "Wholesaler" not in df.columns:
+            df["Wholesaler"] = ""
+        _blank = df["Wholesaler"].fillna("").eq("")
+        if _blank.any():
+            _upc_df = get_upc_df(market_key)
+            if not _upc_df.empty and "Wholesaler" in _upc_df.columns:
+                _ws_by_upc  = dict(zip(_upc_df["UPC"].astype(str).str.strip(), _upc_df["Wholesaler"]))
+                _ws_by_prod = dict(zip(_upc_df["Product"].astype(str).str.strip(), _upc_df["Wholesaler"]))
+                df.loc[_blank, "Wholesaler"] = (
+                    df.loc[_blank, "UPC"].astype(str).str.strip().map(_ws_by_upc)
+                    .fillna(df.loc[_blank, "Product"].astype(str).str.strip().map(_ws_by_prod))
+                    .fillna("")
+                )
+
+        keep = ["WAMP", "PkgGroup", "Brand", "Product", "UPC", "Competitor", "Single", "Wholesaler"]
+        keep = [c for c in keep if c in df.columns]
+        chains = sorted(df["Competitor"].dropna().unique())
+        return df[keep].copy(), chains
+    except Exception as _e:
         return pd.DataFrame(), []
 
 @st.cache_resource
@@ -10287,8 +10617,11 @@ def compute_presales_pivot(survey_df_json: str) -> str:
 
 
 @st.cache_data(show_spinner=False)
+@st.cache_data(show_spinner=False, max_entries=500)
 def _make_barcode_b64(upc_str: str, height_px: int = 80) -> str | None:
-    """Cached UPC-A / EAN-13 barcode image generator."""
+    """Cached UPC-A / EAN-13 barcode image generator.
+    Expects a 12-digit UPC-A string (already normalized by normalize_upc).
+    Falls back gracefully for 13-digit EAN-13 inputs."""
     try:
         from PIL import Image as PilImage
         from barcode import UPCA, EAN13
@@ -10296,8 +10629,19 @@ def _make_barcode_b64(upc_str: str, height_px: int = 80) -> str | None:
         from io import BytesIO as _BIO
         import base64 as _b64mod
         upc_str = str(upc_str).strip().split(".")[0]
+        # Normalize to 12 digits if not already done
+        digits = "".join(c for c in upc_str if c.isdigit())
+        if len(digits) == 13:
+            upc_str = digits[1:] if digits[0] == "0" else digits
+        elif len(digits) == 12:
+            upc_str = digits
+        elif len(digits) == 11:
+            upc_str = "0" + digits
+        else:
+            upc_str = digits.zfill(12)[:12]
         writer  = _IW()
-        bc_obj  = EAN13(upc_str[:12], writer=writer) if len(upc_str) >= 13 else UPCA(upc_str[:11], writer=writer)
+        # UPCA library takes 11 digits and computes check digit internally
+        bc_obj  = UPCA(upc_str[:11], writer=writer)
         buf = _BIO()
         bc_obj.write(buf, options={"write_text": True, "module_height": 15.0,
                                    "module_width": 0.8, "quiet_zone": 6.0, "dpi": 200,
@@ -10314,7 +10658,7 @@ def _make_barcode_b64(upc_str: str, height_px: int = 80) -> str | None:
     except Exception:
         return None
 
-@st.cache_data(show_spinner=False)
+@st.cache_data(show_spinner=False, max_entries=500)
 def _make_barcode_b64_from_font(code_str: str, height_px: int = 80) -> str | None:
     """Cached IDAutomation font-string → UPC-A barcode image."""
     import re as _re2
@@ -10554,7 +10898,7 @@ tab5, tab1, tab2 = st.tabs(["📱 UPC Scanner List", "📊 Discrepancy Heatmap",
 with tab1:
     _hm_hdr_col, _hm_btn_col = st.columns([6, 1])
     _hm_hdr_col.subheader("📊 Price Discrepancy Heatmap")
-    if _hm_btn_col.button("🔄 Refresh", help="Clear cached survey data and reload from CSV", key="hm_refresh"):
+    if _hm_btn_col.button("🔄 Refresh", help="Reload latest data from Google Sheets", key="hm_refresh"):
         load_survey_pricing.clear()
         compute_chain_deviation.clear()
         compute_product_pivot.clear()
@@ -10573,23 +10917,24 @@ with tab1:
         "8 · Vidalia":      {"lat": 32.2177, "lon": -82.4135, "label": "Vidalia, GA",             "zoom": 11},
         "9 · Fitzgerald":   {"lat": 31.7149, "lon": -83.2521, "label": "Fitzgerald, GA",          "zoom": 11},
     }
-    # Markets with hardcoded benchmark data OR rows in survey_results.csv
+    # Markets with hardcoded benchmark data OR rows in Google Sheets (source of truth)
     _hardcoded_has_data = {mkt for mkt, (mkt_data, _) in MARKETS.items()
                            if any(any(v is not None for v in row[3:]) for row in mkt_data)}
-    _csv_has_data = set()
+    _sheets_has_data = set()
     try:
-        import os as _os_hd
-        _csv_path_hd = _os_hd.path.join(_os_hd.path.dirname(_os_hd.path.abspath(__file__)), "survey_results.csv")
-        if _os_hd.path.exists(_csv_path_hd):
-            _csv_mkts = pd.read_csv(_csv_path_hd, usecols=["Market", "Retail $"])
-            _csv_mkts = _csv_mkts[_csv_mkts["Retail $"].notna() & (_csv_mkts["Retail $"] > 0)]
+        _sheets_df = _load_all_survey_from_sheets()
+        # Normalise column names before checking (sheet may use "Our Price" instead of "Retail $")
+        _sheets_df = _sheets_df.rename(columns={"Our Price": "Retail $", "Chain": "Parent Chain", "2 for Price": "2 for $", "Comp Price": "Wholesaler"})
+        if not _sheets_df.empty and "Market" in _sheets_df.columns and "Retail $" in _sheets_df.columns:
+            _sheets_df["Retail $"] = pd.to_numeric(_sheets_df["Retail $"], errors="coerce")
+            _sheets_df = _sheets_df[_sheets_df["Retail $"].notna() & (_sheets_df["Retail $"] > 0)]
             for _mkt_key in MARKET_GEO.keys():
                 _mkt_name = _mkt_key.split(" · ")[1]
-                if _csv_mkts["Market"].str.contains(_mkt_name, case=False, na=False).any():
-                    _csv_has_data.add(_mkt_key)
+                if _sheets_df["Market"].str.contains(_mkt_name, case=False, na=False).any():
+                    _sheets_has_data.add(_mkt_key)
     except Exception:
         pass
-    has_data = _hardcoded_has_data | _csv_has_data
+    has_data = _hardcoded_has_data | _sheets_has_data
 
     if "hm_market" not in st.session_state:
         st.session_state["hm_market"] = None
@@ -10766,33 +11111,67 @@ with tab1:
         st.info(f"📋 **{sel_mkt}** — No competitor pricing data loaded yet. "
                 f"Use the UPC Scanner tab to collect prices and submit a survey.")
     else:
-        survey_df, all_chains = load_survey_pricing(sel_mkt)
+        survey_df, all_chains = load_survey_pricing(sel_mkt, _v=3)
+        # Debug: show WAMP reference status
+        _uref_test, _nref_test = _load_wamp_reference()
+        if not _uref_test and not _nref_test:
+            st.warning("⚠️ product_wamps.csv not found — WAMP grouping may be incorrect. Add the file to your GitHub repo.")
+        else:
+            st.caption(f"✅ WAMP reference loaded: {len(_uref_test):,} UPCs, {len(_nref_test):,} names")
+        _using_live_data = not survey_df.empty
 
-        # Fall back to benchmark sc_*_data for any market if no CSV survey data
-        if survey_df.empty and sel_mkt in has_data:
+
+        # Always merge baseline data with live survey data.
+        # Live survey prices take priority — baseline fills chains not yet surveyed.
+        if sel_mkt in has_data:
+            import re as _re_pkg
             mkt_data, competitors = MARKETS[sel_mkt]
-            _rows = []
+            _base_rows = []
             for row in mkt_data:
                 wamp, product = row[0], row[1]
+                _pkg_match = _re_pkg.search(r"(\d+/\d+[A-Za-z]+(?:\s*x\d+)?)", str(product))
+                _pkg = _pkg_match.group(1) if _pkg_match else str(product)
+                # Look up WAMP from reference CSV
+                _urc, _nrc = _load_wamp_reference()
+                _ps = product.removesuffix(" SC").removesuffix(" SCP").strip()
+                if product in _nrc:
+                    _eff_wamp = _nrc[product]
+                elif _ps in _nrc:
+                    _eff_wamp = _nrc[_ps]
+                else:
+                    _pl = product.lower()
+                    _eff_wamp = "NABLAB" if any(x in _pl for x in (
+                        "zero", "0.0", " na ", "non-alc", "corona na",
+                        "heineken 0", "odouls", "nablab")) else wamp
                 for ci, comp in enumerate(competitors):
                     price = row[3 + ci] if (3 + ci) < len(row) else None
                     if price is not None:
-                        _rows.append({
-                            "WAMP": wamp, "Product": product,
+                        _base_rows.append({
+                            "WAMP": _eff_wamp, "Product": product,
                             "Competitor": comp, "Single": price,
-                            "PkgGroup": pkg_group(product, wamp, row[2] if len(row) > 2 else ""),
+                            "PkgGroup": pkg_group(_pkg, _eff_wamp, product),
                             "UPC": "", "Brand": "", "Wholesaler": "",
                         })
-            if _rows:
-                survey_df  = pd.DataFrame(_rows)
-                all_chains = sorted(survey_df["Competitor"].dropna().unique())
+            if _base_rows:
+                _base_df = pd.DataFrame(_base_rows)
+                if survey_df.empty:
+                    # No live data — use baseline entirely
+                    survey_df  = _base_df
+                    all_chains = sorted(survey_df["Competitor"].dropna().unique())
+                else:
+                    # Merge: keep live survey chains as-is, add baseline for unsurveyed chains
+                    _surveyed_chains = set(all_chains)
+                    _base_unsurveyed = _base_df[~_base_df["Competitor"].isin(_surveyed_chains)]
+                    if not _base_unsurveyed.empty:
+                        survey_df  = pd.concat([survey_df, _base_unsurveyed], ignore_index=True)
+                        all_chains = sorted(survey_df["Competitor"].dropna().unique())
 
-        # Always ensure Wholesaler column is populated from UPC lookup
-        # (CSV data may predate the Wholesaler field, or UPCs may have format differences)
-        if not survey_df.empty and ("Wholesaler" not in survey_df.columns or survey_df["Wholesaler"].fillna("").eq("").all()):
+        # Always fill any blank Wholesaler values from the UPC master list.
+        # Submitted surveys may have blank Wholesaler if the rep didn't touch the dropdown,
+        # so we ALWAYS backfill from UPC->Wholesaler and Product->Wholesaler maps.
+        if not survey_df.empty:
             _upc_df2  = get_upc_df(sel_mkt)
-            # Build UPC->Wholesaler map with multiple key formats to handle int/float/string mismatches
-            # Vectorised map builds — no iterrows()
+            # Build UPC->Wholesaler and Product->Wholesaler maps
             _ws_map2 = {}
             if "Wholesaler" in _upc_df2.columns:
                 _ws_map2 = dict(zip(
@@ -10804,12 +11183,17 @@ with tab1:
                 _has_ws   = _upc_df2[_upc_df2["Wholesaler"].astype(bool)]
                 _prod_ws2 = dict(zip(_has_ws["Product"].astype(str).str.strip(), _has_ws["Wholesaler"]))
 
-            # Vectorised wholesaler lookup — UPC first, product name fallback
-            _upc_series  = survey_df["UPC"].astype(str).str.strip().str.split(".").str[0]
-            _prod_series = survey_df["Product"].astype(str).str.strip()
-            survey_df["Wholesaler"] = _upc_series.map(_ws_map2).fillna(
-                _prod_series.map(_prod_ws2)
-            ).fillna("")
+            if "Wholesaler" not in survey_df.columns:
+                survey_df["Wholesaler"] = ""
+
+            # For any row where Wholesaler is blank, fill from UPC first, then product name
+            _blank_mask  = survey_df["Wholesaler"].fillna("").eq("")
+            if _blank_mask.any():
+                _upc_series  = survey_df.loc[_blank_mask, "UPC"].astype(str).str.strip().str.split(".").str[0]
+                _prod_series = survey_df.loc[_blank_mask, "Product"].astype(str).str.strip()
+                survey_df.loc[_blank_mask, "Wholesaler"] = _upc_series.map(_ws_map2).fillna(
+                    _prod_series.map(_prod_ws2)
+                ).fillna("")
 
         chain_cols = all_chains
 
@@ -10826,13 +11210,86 @@ with tab1:
             _existing_flags.update(_new_flags)
             st.session_state["county_flags"] = _existing_flags
 
+        # ── Chains with Pricing ───────────────────────────────────────────────
+        # Show every chain in this market, whether it has pricing, and source.
+        # Uses ALL known chains for this market (benchmark list) as the universe.
+        if sel_mkt in MARKETS:
+            _all_mkt_chains = sorted(set(MARKETS[sel_mkt][1]))  # all competitor chains
+            _live_chains    = set(all_chains) if not survey_df.empty else set()
+            _data_source    = "🟢 Live Survey" if _using_live_data else "🔵 Baseline"
+
+            # Build baseline chain set from sc_*_data (has pricing regardless of live survey)
+            _mkt_data, _mkt_comps = MARKETS[sel_mkt]
+            _baseline_chains = set(_mkt_comps)
+
+            _chain_rows = []
+            for _ch in _all_mkt_chains:
+                if _ch in _live_chains:
+                    _n_prod = survey_df[survey_df["Competitor"] == _ch]["Product"].nunique()                               if not survey_df.empty else 0
+                    _chain_rows.append({
+                        "Chain":    _ch,
+                        "Pricing":  "✅ Has Pricing",
+                        "Source":   "🟢 Live Survey",
+                        "Products": _n_prod,
+                    })
+                elif _ch in _baseline_chains:
+                    # Count baseline products for this chain
+                    _n_base = sum(
+                        1 for _brow in _mkt_data
+                        for _ci, _bc in enumerate(_mkt_comps)
+                        if _bc == _ch and (3 + _ci) < len(_brow) and _brow[3 + _ci] is not None
+                    )
+                    if _n_base > 0:
+                        _chain_rows.append({
+                            "Chain":    _ch,
+                            "Pricing":  "✅ Has Pricing",
+                            "Source":   "🔵 Baseline",
+                            "Products": _n_base,
+                        })
+                    else:
+                        _chain_rows.append({
+                            "Chain":    _ch,
+                            "Pricing":  "⬜ No Pricing",
+                            "Source":   "—",
+                            "Products": "—",
+                        })
+                else:
+                    _chain_rows.append({
+                        "Chain":    _ch,
+                        "Pricing":  "⬜ No Pricing",
+                        "Source":   "—",
+                        "Products": "—",
+                    })
+
+            _chain_cov_df = pd.DataFrame(_chain_rows)
+            _n_have = (_chain_cov_df["Pricing"] == "✅ Has Pricing").sum()
+            _n_total = len(_chain_cov_df)
+
+            with st.expander(
+                f"📋 Chains with Pricing — {_n_have} of {_n_total} chains in {geo['label']}",
+                expanded=(_n_have == 0)
+            ):
+                def _style_chain_cov(row):
+                    if row["Pricing"] == "✅ Has Pricing":
+                        return ["color:#22c55e;font-weight:600" if i == 1 else
+                                "color:#22c55e" if i == 2 else "" for i in range(len(row))]
+                    return ["color:#6b7280" if i in (1,2) else "" for i in range(len(row))]
+
+                st.dataframe(
+                    _chain_cov_df.style.apply(_style_chain_cov, axis=1),
+                    use_container_width=True,
+                    hide_index=True,
+                    height=min(400, 35 + 35 * len(_chain_cov_df)),
+                )
+                if _n_have == 0:
+                    st.info(
+                        f"No pricing data yet for {geo['label']}. "
+                        f"Use the **📱 UPC Scanner List** tab to submit surveys."
+                    )
+        # ── End Chains with Pricing ───────────────────────────────────────────
+
         if survey_df.empty:
-            st.info(
-                f"📋 **No survey data submitted for {geo['label']} yet.**  "
-                f"Use the **📱 UPC Scanner List** tab to scan products and enter retail prices, "
-                f"then hit **✅ Submit Survey** to save them. Once submitted, discrepancies "
-                f"will appear here automatically."
-            )
+            pass  # info already shown in expander above
         else:
             view = survey_df.copy()
 
@@ -10914,58 +11371,77 @@ with tab1:
                     # ── Chain selector — drives Product Price Gaps below ──────
                     _chain_filter_key = f"chain_filter_{geo['label']}"
                     _chain_opts = list(_pre_dev_df["Chain"])
-                    _cf_col1, _cf_col2 = st.columns([3, 1])
-                    with _cf_col1:
-                        sel_gap_chains = st.multiselect(
-                            "🔍 Filter Product Price Gaps by chain:",
-                            _chain_opts,
-                            default=[],
-                            placeholder="All Chains",
-                            key=_chain_filter_key,
-                            help="Select one or more chains, then choose Include or Exclude."
-                        )
-                    with _cf_col2:
-                        sel_gap_chain_mode = st.radio(
-                            "Mode",
-                            ["Include", "Exclude"],
-                            key=f"chain_filter_mode_{geo['label']}",
-                            horizontal=True,
-                            disabled=(len(sel_gap_chains) == 0),
-                            help="Include: show only selected chains · Exclude: hide selected chains"
-                        )
-                    # Keep backward-compat single value for title label
-                    sel_gap_chain = sel_gap_chains[0] if len(sel_gap_chains) == 1 else ("All Chains" if not sel_gap_chains else "Multiple")
-                    st.markdown("---")
+                    sel_gap_chains     = []
+                    sel_gap_chain_mode = "Include"
+                    sel_gap_chain      = "All Chains"
 
-            # ── Controls ──────────────────────────────────────────────────────
-            cc1, cc2, cc3, cc4 = st.columns([1, 1, 1, 1])
-            with cc1:
-                wamp_all  = sorted(view["WAMP"].unique())
-                sel_wamp  = st.multiselect("WAMP", wamp_all, default=[], placeholder="All WAMPs", key="d_wamp")
-            with cc2:
-                raw_groups     = view["PkgGroup"].unique().tolist()
-                ordered_groups = [g for g in PKG_GROUP_ORDER if g in raw_groups] +                                  [g for g in raw_groups if g not in PKG_GROUP_ORDER]
-                sel_pkg = st.multiselect("Package Group", ordered_groups, default=[],
-                                         placeholder="All Groups", key="d_pkg")
-            with cc3:
-                # Wholesaler filter — only show products I carry
-                _ws_avail = sorted([w for w in view["Wholesaler"].dropna().unique() if w]) if "Wholesaler" in view.columns else []
-                _ws_opts  = ["All Wholesalers"] + _ws_avail
-                sel_wholesaler = st.selectbox("🏭 My Wholesaler", _ws_opts, key="d_wholesaler",
-                                              help="Filter gap analysis to only products carried by this wholesaler")
+            # ── Unified filter bar ────────────────────────────────────────────
+            # Classify chains into format buckets
+            _SMALL_FORMAT = {
+                "Circle K", "Refuel Market", "GPM Southeast", "7-Eleven", "Spinx",
+                "Parkers", "Enmark", "Buck Magement (Blue Water)",
+                "Minuteman Food Mart", "Casey's", "Wawa", "Sheetz", "Quik Trip", "QT",
+                "RaceTrac", "Circle K GA", "Loves GA", "Murphy GA", "Nouria",
+                "Pilot GA", "QT GA", "WaWa", "Loves", "Pilot", "Flying J",
+                "Independent (GA)", "Independent (SC)",
+            }
+            _LARGE_FORMAT = {
+                "Food Lion", "Publix", "Walmart", "Harris Teeter", "Lowe's Foods",
+                "Kroger", "Ingles", "Aldi", "Lidl", "Target", "Sam's Club",
+                "Costco", "Trader Joe's", "Whole Foods", "Bi-Lo", "Winn-Dixie",
+                "Food City", "Giant", "Stop & Shop",
+            }
+            _DRUG_DOLLAR_FORMAT = {
+                "Dollar General", "Dollar Tree", "Family Dollar",
+                "CVS", "Walgreens", "Rite Aid",
+            }
+            _all_view_chains    = set(view["Competitor"].dropna().unique()) if "Competitor" in view.columns else set()
+            _chains_small       = sorted(_all_view_chains & _SMALL_FORMAT)
+            _chains_large       = sorted(_all_view_chains & _LARGE_FORMAT)
+            _chains_drug_dollar = sorted(_all_view_chains & _DRUG_DOLLAR_FORMAT)
+
+            fc1, fc2, fc3, fc4, fc5, fc6 = st.columns([2, 1, 2, 1, 1, 1])
+            with fc1:
+                wamp_all = sorted(view["WAMP"].unique())
+                sel_wamp = st.multiselect("WAMP", wamp_all, default=[], placeholder="All WAMPs", key="d_wamp")
+            with fc2:
+                _fmt_options = ["All", "Small", "Large", "Drug/Dollar"]
+                sel_chain_fmt = st.selectbox("Format", _fmt_options, key="d_chain_fmt")
+            with fc3:
+                _chain_opts_all = sorted(_all_view_chains)
+                sel_gap_chains = st.multiselect("Chain", _chain_opts_all, default=[],
+                                                placeholder="All Chains", key=f"chain_filter_{geo['label']}")
+                sel_gap_chain = sel_gap_chains[0] if len(sel_gap_chains) == 1 else ("All Chains" if not sel_gap_chains else "Multiple")
+            with fc4:
+                sel_gap_chain_mode = st.radio("Mode", ["Include", "Exclude"],
+                                              key=f"chain_filter_mode_{geo['label']}",
+                                              horizontal=True, disabled=(len(sel_gap_chains) == 0))
+            with fc5:
+                threshold = st.slider("Flag $", 0.10, 3.0, 0.10, 0.10, key="d_thresh")
+                show_2for = st.toggle("2-For", value=False, key="d_2for")
+            with fc6:
                 sel_format_gap = st.radio("Format", ["Both", "Singles", "Packages"],
-                                          horizontal=True, key="d_format_gap",
-                                          help="Filter SCP vs Competition gap section by product format")
-            with cc4:
-                threshold = st.slider("Flag threshold $", 0.10, 3.0, 0.10, 0.10, key="d_thresh")
-                show_2for = st.toggle("Show 2-For", value=False, key="d_2for")
+                                          horizontal=True, key="d_format_gap")
 
-            # Apply filters (wholesaler filter removed from view — gap section needs both wholesalers)
-            if sel_wamp: view = view[view["WAMP"].isin(sel_wamp)]
-            if sel_pkg:  view = view[view["PkgGroup"].isin(sel_pkg)]
-            # Apply format filter for gap section using _Format column
+            # Apply WAMP filter
+            if sel_wamp:
+                view = view[view["WAMP"].isin(sel_wamp)]
+
+            # Apply chain format filter
+            if sel_chain_fmt == "Small Format" and _chains_small:
+                view = view[view["Competitor"].isin(_chains_small)]
+            elif sel_chain_fmt == "Large Format" and _chains_large:
+                view = view[view["Competitor"].isin(_chains_large)]
+            elif sel_chain_fmt == "Drug/Dollar" and _chains_drug_dollar:
+                view = view[view["Competitor"].isin(_chains_drug_dollar)]
+
+            # Apply format filter
             if sel_format_gap != "Both" and "_Format" in view.columns:
                 view = view[view["_Format"] == sel_format_gap]
+
+            # Keep sel_pkg and sel_wholesaler as no-op defaults (used downstream)
+            sel_pkg        = []
+            sel_wholesaler = "All Wholesalers"
 
             st.markdown(f"### {geo['label']}")
             st.markdown("---")
@@ -11051,124 +11527,138 @@ with tab1:
                 flagged_groups.sort(key=lambda x: -x[9])
 
                 if not flagged_groups:
-                    st.success(f"✅ No groups where SCP products are priced ≥ ${threshold:.2f} above HJL products.")
+                    st.success(f"✅ No groups where SCP products are priced ≥ ${threshold:.2f} above {HJL} products.")
                 else:
-                    st.markdown(f"**{len(flagged_groups)} group(s) where SCP products are overpriced vs HJL**")
+                    st.markdown(f"**{len(flagged_groups)} group(s) where SCP products are overpriced vs {HJL}**")
 
-                    for (wamp, pkg, grp_clean, scp_rows, hjl_rows,
-                         scp_avg, hjl_avg, gap, overpriced_chains, max_gap, worst_chain) in flagged_groups:
+                    # Group by WAMP for hierarchical display
+                    from collections import defaultdict as _dd
+                    _by_wamp = _dd(list)
+                    for _fg in flagged_groups:
+                        _by_wamp[_fg[0]].append(_fg)
 
-                        sev = "🔴" if max_gap >= threshold * 2 else "🟡"
-                        n_scp = len(scp_rows)
-                        n_hjl = len(hjl_rows)
-
+                    for wamp, _wamp_groups in _by_wamp.items():
+                        _wamp_max_gap = max(g[9] for g in _wamp_groups)
+                        _wamp_sev = "🔴" if _wamp_max_gap >= threshold * 2 else "🟡"
                         with st.expander(
-                            f"{sev} **{wamp} · {pkg}** — {n_scp} SCP · {n_hjl} HJL products · "
-                            f"Max SCP disadvantage is **${max_gap:.2f}** at {worst_chain}",
+                            f"{_wamp_sev} **{wamp}** — {len(_wamp_groups)} package group(s) · "
+                            f"Max gap **${_wamp_max_gap:.2f}**",
                             expanded=False
                         ):
-                            chain_cols_here = list(grp_clean.columns)
-                            prod_labels     = [idx[-1] for idx in grp_clean.index]
+                            for (wamp, pkg, grp_clean, scp_rows, hjl_rows,
+                                 scp_avg, hjl_avg, gap, overpriced_chains, max_gap, worst_chain) in _wamp_groups:
 
-                            # Colour each cell: SCP rows vs HJL avg at that chain
-                            # positive = SCP higher than HJL avg, negative = SCP lower
-                            diff_mat = grp_clean.copy().astype(float)
-                            for prod_idx in grp_clean.index:
-                                ws = prod_ws_map.get(prod_idx[-1], "")
-                                for chain in chain_cols_here:
-                                    p = grp_clean.loc[prod_idx, chain]
-                                    ref = hjl_avg[chain] if ws == SCP else scp_avg[chain]
-                                    diff_mat.loc[prod_idx, chain] = round(p - ref, 2) if not pd.isna(p) and not pd.isna(ref) else float("nan")
+                                sev = "🔴" if max_gap >= threshold * 2 else "🟡"
+                                n_scp = len(scp_rows)
+                                n_hjl = len(hjl_rows)
 
-                            text_cells = []
-                            for prod_idx in grp_clean.index:
-                                ws = prod_ws_map.get(prod_idx[-1], "")
-                                tag = "SCP" if ws == SCP else ("HJL" if ws == HJL else "")
-                                rt = []
-                                for chain in chain_cols_here:
-                                    p = grp_clean.loc[prod_idx, chain]
-                                    d = diff_mat.loc[prod_idx, chain]
-                                    if pd.isna(p):
-                                        rt.append("—")
-                                    elif not pd.isna(d):
-                                        rt.append(f"${p:.2f}<br>({d:+.2f})")
-                                    else:
-                                        rt.append(f"${p:.2f}")
-                                text_cells.append(rt)
+                                with st.expander(
+                                    f"{sev} **{pkg}** — {n_scp} SCP · {n_hjl} {HJL} products · "
+                                    f"Max SCP disadvantage is **${max_gap:.2f}** at {worst_chain}",
+                                    expanded=False
+                                ):
+                                    chain_cols_here = list(grp_clean.columns)
+                                    prod_labels     = [idx[-1] for idx in grp_clean.index]
 
-                            # Label products with their wholesaler tag
-                            y_labels = []
-                            for idx in grp_clean.index:
-                                ws  = prod_ws_map.get(idx[-1], "")
-                                tag = " [SCP]" if ws == SCP else (" [HJL]" if ws == HJL else "")
-                                y_labels.append(idx[-1] + tag)
+                                    # Colour each cell: SCP rows vs HJL avg at that chain
+                                    # positive = SCP higher than HJL avg, negative = SCP lower
+                                    diff_mat = grp_clean.copy().astype(float)
+                                    for prod_idx in grp_clean.index:
+                                        ws = prod_ws_map.get(prod_idx[-1], "")
+                                        for chain in chain_cols_here:
+                                            p = grp_clean.loc[prod_idx, chain]
+                                            ref = hjl_avg[chain] if ws == SCP else scp_avg[chain]
+                                            diff_mat.loc[prod_idx, chain] = round(p - ref, 2) if not pd.isna(p) and not pd.isna(ref) else float("nan")
 
-                            fig_gap = go.Figure(data=go.Heatmap(
-                                z=diff_mat.values,
-                                x=chain_cols_here,
-                                y=y_labels,
-                                colorscale=[
-                                    [0.0, "#166534"],[0.3, "#22c55e"],[0.45, "#dcfce7"],
-                                    [0.5, "#f9fafb"],[0.55, "#fee2e2"],[0.7, "#ef4444"],[1.0, "#991b1b"]
-                                ],
-                                zmid=0,
-                                text=text_cells, texttemplate="%{text}", textfont={"size":10},
-                                hoverongaps=False,
-                                colorbar=dict(title="vs other WS", tickformat="+.2f", thickness=12, len=0.8),
-                                xgap=2, ygap=2,
-                            ))
-                            max_label_len = max(len(y) for y in y_labels)
-                            left_margin   = max(220, max_label_len * 7)
-                            fig_gap.update_layout(
-                                height=max(200, len(y_labels)*44+100),
-                                margin=dict(l=left_margin, r=20, t=40, b=10),
-                                xaxis=dict(side="top", tickangle=-30,
-                                           tickfont=dict(size=11, color="black",
-                                                        family="Arial Black, Arial, sans-serif")),
-                                yaxis=dict(
-                                    autorange="reversed",
-                                    tickfont=dict(size=11, color="black",
-                                                 family="Arial Black, Arial, sans-serif"),
-                                    automargin=False,
-                                    side="left",
-                                    ticklabelposition="outside left",
-                                ),
-                                plot_bgcolor="#f8fafc", paper_bgcolor="#ffffff",
-                            )
-                            fig_gap.update_yaxes(ticksuffix="  ")
-                            st.plotly_chart(fig_gap, use_container_width=True,
-                                            key=f"gap_{wamp}_{pkg}_{geo['label']}")
+                                    text_cells = []
+                                    for prod_idx in grp_clean.index:
+                                        ws = prod_ws_map.get(prod_idx[-1], "")
+                                        tag = "SCP" if ws == SCP else (HJL if ws == HJL else "")
+                                        rt = []
+                                        for chain in chain_cols_here:
+                                            p = grp_clean.loc[prod_idx, chain]
+                                            d = diff_mat.loc[prod_idx, chain]
+                                            if pd.isna(p):
+                                                rt.append("—")
+                                            elif not pd.isna(d):
+                                                rt.append(f"${p:.2f}<br>({d:+.2f})")
+                                            else:
+                                                rt.append(f"${p:.2f}")
+                                        text_cells.append(rt)
 
-                            # Per-chain callout: highest SCP price vs lowest HJL price
-                            st.markdown("**SCP vs HJL price per chain (flagged chains only):**")
-                            sp_cols_ui = st.columns(min(len(overpriced_chains), 4))
-                            for i, (chain_name, gap_val) in enumerate(
-                                overpriced_chains.sort_values(ascending=False).items()
-                            ):
-                                _scp_at_chain = grp_clean.loc[scp_rows, chain_name].dropna()
-                                _hjl_at_chain = grp_clean.loc[hjl_rows, chain_name].dropna()
-                                if _scp_at_chain.empty or _hjl_at_chain.empty:
-                                    continue
-                                scp_p = round(float(_scp_at_chain.max()), 2)
-                                hjl_p = round(float(_hjl_at_chain.min()), 2)
-                                real_gap = round(scp_p - hjl_p, 2)
-                                icon  = "🔴" if real_gap >= threshold * 2 else "🟡"
-                                sp_cols_ui[i % len(sp_cols_ui)].metric(
-                                    f"{icon} {chain_name[:24]}",
-                                    f"SCP ${scp_p:.2f}  vs  HJL ${hjl_p:.2f}",
-                                    f"SCP is ${real_gap:.2f} higher",
-                                    delta_color="inverse",
-                                )
+                                    # Label products with their wholesaler tag
+                                    y_labels = []
+                                    for idx in grp_clean.index:
+                                        ws  = prod_ws_map.get(idx[-1], "")
+                                        tag = " [SCP]" if ws == SCP else (f" [{HJL}]" if ws == HJL else "")
+                                        y_labels.append(idx[-1] + tag)
 
-                            if show_2for and "2 for $" in view.columns:
-                                t_grp = view[(view["WAMP"]==wamp) & (view["PkgGroup"]==pkg)].pivot_table(
-                                    index="Competitor", columns="Product", values="2 for $", aggfunc="mean"
-                                ).round(2)
-                                if not t_grp.empty:
-                                    st.markdown("**2-for prices:**")
-                                    st.dataframe(t_grp.style.format("${:.2f}", na_rep="—"),
-                                                 use_container_width=True,
-                                                 height=min(300, len(t_grp)*36+50))
+                                    fig_gap = go.Figure(data=go.Heatmap(
+                                        z=diff_mat.values,
+                                        x=chain_cols_here,
+                                        y=y_labels,
+                                        colorscale=[
+                                            [0.0, "#166534"],[0.3, "#22c55e"],[0.45, "#dcfce7"],
+                                            [0.5, "#f9fafb"],[0.55, "#fee2e2"],[0.7, "#ef4444"],[1.0, "#991b1b"]
+                                        ],
+                                        zmid=0,
+                                        text=text_cells, texttemplate="%{text}", textfont={"size":10},
+                                        hoverongaps=False,
+                                        colorbar=dict(title="vs other WS", tickformat="+.2f", thickness=12, len=0.8),
+                                        xgap=2, ygap=2,
+                                    ))
+                                    max_label_len = max(len(y) for y in y_labels)
+                                    left_margin   = max(220, max_label_len * 7)
+                                    fig_gap.update_layout(
+                                        height=max(200, len(y_labels)*44+100),
+                                        margin=dict(l=left_margin, r=20, t=40, b=10),
+                                        xaxis=dict(side="top", tickangle=-30,
+                                                   tickfont=dict(size=11, color="black",
+                                                                family="Arial Black, Arial, sans-serif")),
+                                        yaxis=dict(
+                                            autorange="reversed",
+                                            tickfont=dict(size=11, color="black",
+                                                         family="Arial Black, Arial, sans-serif"),
+                                            automargin=False,
+                                            side="left",
+                                            ticklabelposition="outside left",
+                                        ),
+                                        plot_bgcolor="#f8fafc", paper_bgcolor="#ffffff",
+                                    )
+                                    fig_gap.update_yaxes(ticksuffix="  ")
+                                    st.plotly_chart(fig_gap, use_container_width=True,
+                                                    key=f"gap_{wamp}_{pkg}_{geo['label']}")
+
+                                    # Per-chain callout: highest SCP price vs lowest HJL price
+                                    st.markdown(f"**SCP vs {HJL} price per chain (flagged chains only):**")
+                                    sp_cols_ui = st.columns(min(len(overpriced_chains), 4))
+                                    for i, (chain_name, gap_val) in enumerate(
+                                        overpriced_chains.sort_values(ascending=False).items()
+                                    ):
+                                        _scp_at_chain = grp_clean.loc[scp_rows, chain_name].dropna()
+                                        _hjl_at_chain = grp_clean.loc[hjl_rows, chain_name].dropna()
+                                        if _scp_at_chain.empty or _hjl_at_chain.empty:
+                                            continue
+                                        scp_p = round(float(_scp_at_chain.max()), 2)
+                                        hjl_p = round(float(_hjl_at_chain.min()), 2)
+                                        real_gap = round(scp_p - hjl_p, 2)
+                                        icon  = "🔴" if real_gap >= threshold * 2 else "🟡"
+                                        sp_cols_ui[i % len(sp_cols_ui)].metric(
+                                            f"{icon} {chain_name[:24]}",
+                                            f"SCP ${scp_p:.2f}  vs  {HJL} ${hjl_p:.2f}",
+                                            f"SCP is ${real_gap:.2f} higher",
+                                            delta_color="inverse",
+                                        )
+
+                                    if show_2for and "2 for $" in view.columns:
+                                        t_grp = view[(view["WAMP"]==wamp) & (view["PkgGroup"]==pkg)].pivot_table(
+                                            index="Competitor", columns="Product", values="2 for $", aggfunc="mean"
+                                        ).round(2)
+                                        if not t_grp.empty:
+                                            st.markdown("**2-for prices:**")
+                                            st.dataframe(t_grp.style.format("${:.2f}", na_rep="—"),
+                                                         use_container_width=True,
+                                                         height=min(300, len(t_grp)*36+50))
 
             st.markdown("---")
             st.caption(f"Data: {geo['label']} · Single prices from field surveys · Flag threshold: ${threshold:.2f}")
@@ -11241,13 +11731,13 @@ with tab1:
                         "Chain":        _chain,
                         "SCP Product":  _scp_repr[-1] if isinstance(_scp_repr, tuple) else _scp_repr,
                         "SCP Price ($)":  _scp_chain_avg,
-                        "HJL Product":  _hjl_repr[-1] if isinstance(_hjl_repr, tuple) else _hjl_repr,
-                        "HJL Price ($)":  _hjl_chain_avg,
+                        f"{_HJL} Product":  _hjl_repr[-1] if isinstance(_hjl_repr, tuple) else _hjl_repr,
+                        f"{_HJL} Price ($)":  _hjl_chain_avg,
                         "Gap ($)":      _g,
                     })
 
             if not _findings:
-                st.success(f"✅ No SCP overpricing vs HJL found above ${threshold:.2f} threshold.")
+                st.success(f"✅ No SCP overpricing vs {_HJL} found above ${threshold:.2f} threshold.")
             else:
                 _rpt_df = pd.DataFrame(_findings).sort_values("Gap ($)", ascending=False)
 
@@ -11271,7 +11761,7 @@ with tab1:
                             st.markdown(
                                 f"- **{_row['WAMP']} · {_row['Package']}** — "
                                 f"SCP *{_row['SCP Product']}* **${_row['SCP Price ($)']:.2f}** vs "
-                                f"HJL *{_row['HJL Product']}* **${_row['HJL Price ($)']:.2f}** "
+                                f"{_HJL} *{_row[f'{_HJL} Product']}* **${_row[f'{_HJL} Price ($)']:.2f}** "
                                 f"— SCP is **+${_row['Gap ($)']:.2f}** higher"
                             )
 
@@ -11506,49 +11996,46 @@ with tab5:
                     _pg_store_data  = _pg_norm[_norm_sel]
                     _pg_store_label = _norm_sel
 
-        scan_df = get_upc_df(sel_upc_market).copy()
+        # Load UPC master list ONCE, build O(1) lookup dict — never call inside loops
+        _upc_master_df = get_upc_df(sel_upc_market)
+        _master_by_upc = {str(r["UPC"]).strip(): r.to_dict()
+                          for _, r in _upc_master_df.iterrows()}
+        scan_df = _upc_master_df.copy()
 
-        # Build scan list — always use planogram rows directly if store has one
+        # Build scan list from planogram if store has one
         _using_planogram = False
-        if _pg_store_data and len(_pg_store_data.get('rows', [])) > 0:
+        if _pg_store_data and len(_pg_store_data.get("rows", [])) > 0:
             import re as _re_pg2
-            re = _re_pg2
-            # UPC -> (WAMP tier, Brand) from hardcoded market lists — gives correct
-            # tier labels (Core, Beyond Beer, etc.) for heatmap grouping
-            _upc_wamp_map = _get_upc_wamp_map()
             _rows = []
-            for _, _pr in _pg_store_data['rows'].iterrows():
-                _name = str(_pr.get('Name', '')).strip()
+            for _, _pr in _pg_store_data["rows"].iterrows():
+                _name = str(_pr.get("Name", "")).strip()
                 if not _name:
                     continue
-                # Use the Barcode column (11-digit) as the primary UPC for scanning
-                _barcode = str(_pr.get('Barcode', '')).strip().split('.')[0]
-                # Also keep the short UPC as fallback, stripping any letter suffixes
-                _upc_raw = re.sub(r'[A-Za-z]+$', '',
-                                  str(_pr.get('UPC', '')).strip().split('.')[0])
-                # Prefer the longer Barcode value for generation (always 11 digits)
-                _upc = _barcode if len(_barcode) >= 11 else _upc_raw
-                # Extract package string from product name tail
+                _barcode = str(_pr.get("Barcode", "")).strip().split(".")[0]
+                _upc_raw = _re_pg2.sub(r"[A-Za-z]+$", "",
+                                       str(_pr.get("UPC", "")).strip().split(".")[0])
+                _upc  = _barcode if len(_barcode) >= 11 else _upc_raw
                 _pkg_m = _re_pg2.search(
-                    r'(\d+/[\d.]+\w*(?:\s*x\d+)?)\s*$', _name, _re_pg2.IGNORECASE)
-                _pkg = _pkg_m.group(1).strip() if _pkg_m else ''
-                # Look up WAMP tier and Brand from hardcoded UPC lists.
-                # Try barcode first (11-digit), then short UPC.
-                # Fall back to planogram Family only if UPC not found.
-                _wamp_info = _upc_wamp_map.get(_barcode) or _upc_wamp_map.get(_upc_raw)
-                if _wamp_info:
-                    _wamp, _brand = _wamp_info
+                    r"(\d+/[\d.]+\w*(?:\s*x\d+)?)\s*$", _name, _re_pg2.IGNORECASE)
+                _pkg  = _pkg_m.group(1).strip() if _pkg_m else ""
+                _wamp = str(_pr.get("Family", "")).strip()
+                # O(1) dict lookup instead of DataFrame filter per row
+                _mr = _master_by_upc.get(_upc)
+                if _mr:
+                    _name = str(_mr.get("Product", "")).strip() or _name
+                    _pkg  = str(_mr.get("Package", "")).strip() or _pkg
+                    _wamp = str(_mr.get("WAMP",    "")).strip() or _wamp
+                    _ws   = str(_mr.get("Wholesaler", "")).strip()
                 else:
-                    _wamp  = str(_pr.get('Family', '')).strip()
-                    _brand = _wamp  # Family is the best brand approximation when UPC unknown
+                    _ws = ""
                 _rows.append({
-                    'WAMP':       _wamp,
-                    'Brand':      _brand,
-                    'Product':    _name,
-                    'Wholesaler': '',
-                    'Package':    _pkg,
-                    'UPC':        _upc,
-                    'Barcode':    _barcode,
+                    "WAMP":       _wamp,
+                    "Brand":      _wamp,
+                    "Product":    _name,
+                    "Wholesaler": _ws,
+                    "Package":    _pkg,
+                    "UPC":        _upc,
+                    "Barcode":    _barcode,
                 })
             if _rows:
                 scan_df = pd.DataFrame(_rows)
@@ -11580,16 +12067,47 @@ with tab5:
             scan_df = scan_df[mask]
         if sel_pkg != "All Groups":
             scan_df = scan_df[scan_df["PkgGroup"] == sel_pkg]
-        scan_df = scan_df.reset_index(drop=True)
+        # Sort by WAMP, PkgGroup, then package size numerically
+        # e.g. 1/16AL < 6/12C < 12/12C < 24/12C
+        import re as _re_sort
+        def _pkg_sort_key(pkg):
+            m = _re_sort.match(r"(\d+)/(\d+(?:\.\d+)?)", str(pkg).strip())
+            if m:
+                return (int(m.group(1)), float(m.group(2)))
+            return (999, 999)
+        scan_df["_sort_qty"]  = scan_df["Package"].apply(lambda p: _pkg_sort_key(p)[0])
+        scan_df["_sort_size"] = scan_df["Package"].apply(lambda p: _pkg_sort_key(p)[1])
+        # Sort by WAMP (logical order), then package size numerically
+        # Preserve original indices so session state keys stay valid
+        _wamp_order = ["Core", "Core Plus", "Value", "Premium", "Super Premium",
+                       "Import Styles", "Beyond Beer", "Beyond Beer-Cider",
+                       "Beyond Beer-Seltzer", "Beyond Beer-Sweet FAB",
+                       "Beyond Beer-Tea and Lemonade", "Beyond Beer-Spirit-Based Cocktails",
+                       "Beyond Beer-Low", "Beyond Beer-Other", "Beyond Beer-Shareables",
+                       "Beyond Beer-Craft All Other", "Beyond Beer-Flavored Beer",
+                       "Beyond Beer-Non Alc HB", "NABLAB", "Spirits", "Wine", "Other"]
+        _wamp_cat = pd.Categorical(scan_df["WAMP"], categories=_wamp_order, ordered=True)
+        scan_df = scan_df.assign(_wamp_sort=_wamp_cat.codes)
+        scan_df = scan_df.sort_values(
+            ["_sort_qty", "_sort_size", "_wamp_sort", "Product"],
+        ).drop(columns=["_sort_qty", "_sort_size", "_wamp_sort"])
 
-        # Key by market so prices survive store/filter changes within the same market
-        ss_key = f"prices_{sel_upc_market}"
+        # Key by market + store + format filter so prices are isolated per view.
+        # IMPORTANT: ss_key is used directly in Streamlit widget keys so it must
+        # contain only alphanumeric characters and underscores — no spaces, dots,
+        # slashes, or special characters like · which Streamlit rejects silently.
+        import re as _re_key
+        _fmt_slug   = _re_key.sub(r"[^a-zA-Z0-9]", "_", sel_fmt)
+        _pkg_slug   = _re_key.sub(r"[^a-zA-Z0-9]", "_", sel_pkg)
+        _store_slug = _re_key.sub(r"[^a-zA-Z0-9]", "_", (sel_store or "nostore"))[:40]
+        _mkt_slug   = _re_key.sub(r"[^a-zA-Z0-9]", "_", sel_upc_market)
+        ss_key = f"prices_{_mkt_slug}_{_store_slug}_{_fmt_slug}_{_pkg_slug}"
 
         # ── Progress tracking ─────────────────────────────────────────────────
         # Count already-entered prices (from session state)
         _entered_count = sum(
             1 for i in scan_df.index
-            if st.session_state.get(f"retail_{ss_key}_{i}") not in (None, 0.0, "")
+            if st.session_state.get(f"val_retail_{ss_key}_{i}") not in (None, 0.0, "")
         )
         _total_count = len(scan_df)
         _pct = _entered_count / _total_count if _total_count else 0
@@ -11615,7 +12133,7 @@ with tab5:
                 _grp_total = len(_grp_df)
                 _grp_filled = sum(
                     1 for i in _grp_df.index
-                    if st.session_state.get(f"retail_{ss_key}_{i}") not in (None, 0.0, "")
+                    if st.session_state.get(f"val_retail_{ss_key}_{i}") not in (None, 0.0, "")
                 )
                 _grp_rows.append({
                     "Package Group": _grp,
@@ -11641,8 +12159,8 @@ with tab5:
         import json as _json_mod
         _price_payload = {}
         for _i in scan_df.index:
-            _rv = st.session_state.get(f"retail_{ss_key}_{_i}")
-            _tv = st.session_state.get(f"twofor_{ss_key}_{_i}")  # may not exist yet
+            _rv = st.session_state.get(f"val_retail_{ss_key}_{_i}")
+            _tv = st.session_state.get(f"val_twofor_{ss_key}_{_i}")  # may not exist yet
             _wv = st.session_state.get(f"wholesaler_{ss_key}_{_i}", "")
             _dv = st.session_state.get(f"{ss_key}_done_{_i}", False)
             if _rv or _tv or _dv:
@@ -11702,9 +12220,9 @@ with tab5:
                 for _idx_str, _vals in _restored.items():
                     _idx = int(_idx_str)
                     if _vals.get("r") is not None:
-                        st.session_state[f"retail_{ss_key}_{_idx}"]     = float(_vals["r"])
+                        st.session_state[f"val_retail_{ss_key}_{_idx}"] = float(_vals["r"])
                     if _vals.get("t") is not None:
-                        st.session_state[f"twofor_{ss_key}_{_idx}"]     = float(_vals["t"])  # noqa
+                        st.session_state[f"val_twofor_{ss_key}_{_idx}"] = float(_vals["t"])  # noqa
                     if _vals.get("w"):
                         st.session_state[f"wholesaler_{ss_key}_{_idx}"] = _vals["w"]
                     if _vals.get("d"):
@@ -11737,8 +12255,8 @@ with tab5:
                 if _chain_data is None:
                     continue
                 # Only seed if not already set by user / localStorage restore
-                _rk = f"retail_{ss_key}_{_scan_idx}"
-                _tk = f"twofor_{ss_key}_{_scan_idx}"
+                _rk = f"val_retail_{ss_key}_{_scan_idx}"
+                _tk = f"val_twofor_{ss_key}_{_scan_idx}"
                 if not st.session_state.get(_rk):
                     _rv = _chain_data.get("retail")
                     if _rv is not None:
@@ -11755,82 +12273,102 @@ with tab5:
         # Pre-build wholesaler options (same for all rows in this market)
         _ws_options = [""] + MARKET_WHOLESALERS.get(sel_upc_market, ["Southern Crown Partners"])
 
-        # Pre-generate all barcodes as a single cached HTML block
-        @st.cache_data(show_spinner=False)
-        def _barcode_html_block(upcs: tuple, barcodes: tuple, products: tuple,
-                                packages: tuple, brands: tuple, wamps: tuple) -> list:
-            """Return list of (header_html, barcode_html) per row — cached by scan list."""
-            out = []
-            for upc, bc, prod, pkg, brand, wamp in zip(upcs, barcodes, products, packages, brands, wamps):
-                header = (
-                    f"<div style='display:flex;justify-content:space-between;"
-                    f"align-items:baseline;margin-bottom:4px'>"
-                    f"<span><strong>{prod}</strong> "
-                    f"<span style='font-size:0.8rem;color:grey'>{brand} · {wamp}</span></span>"
-                    f"<span style='background:#f0f2f6;border-radius:4px;padding:2px 8px;"
-                    f"font-size:0.78rem;font-weight:600'>{pkg}</span></div>"
-                )
-                b64 = _make_barcode_b64(str(upc).strip()) if len(str(upc).strip()) >= 11                       else _make_barcode_b64_from_font(str(bc))
-                if b64:
-                    barcode = (
-                        f"<div style='background:white;border:1px solid #ddd;border-radius:6px;"
-                        f"padding:8px 12px;margin:4px 0 8px;text-align:center'>"
-                        f"<img src='data:image/png;base64,{b64}' "
-                        f"style='width:100%;max-width:580px;height:85px;object-fit:contain;"
-                        f"image-rendering:crisp-edges;display:block;margin:0 auto'></div>"
-                    )
-                else:
-                    barcode = f"<p style='font-size:0.75rem;color:grey'>UPC: {upc or bc}</p>"
-                out.append((header, barcode))
-            return out
-
-        _upcs    = tuple(str(r["UPC"]).strip()  for _, r in scan_df.iterrows())
-        _bcs     = tuple(str(r["Barcode"])       for _, r in scan_df.iterrows())
-        _prods   = tuple(str(r["Product"])       for _, r in scan_df.iterrows())
-        _pkgs    = tuple(str(r["Package"])       for _, r in scan_df.iterrows())
-        _brands  = tuple(str(r["Brand"])         for _, r in scan_df.iterrows())
-        _wamps   = tuple(str(r["WAMP"])          for _, r in scan_df.iterrows())
-        _html_rows = _barcode_html_block(_upcs, _bcs, _prods, _pkgs, _brands, _wamps)
+        # Build a market-level Product→Wholesaler memory from all past submissions.
+        # Cached market-level wholesaler memory from past submissions
+        _mkt_ws_memory = _get_mkt_ws_memory(sel_upc_market)
 
         for idx_pos, (i, row) in enumerate(scan_df.iterrows()):
-            header_html, barcode_html = _html_rows[idx_pos]
-
-            _is_done = st.session_state.get(f"{ss_key}_done_{i}", False)
-            _has_retail = st.session_state.get(f"retail_{ss_key}_{i}") not in (None, 0.0, "")
-            _card_style = (
-                "border:1.5px solid #22c55e;background:#f0fdf4;"
-                if (_is_done or _has_retail) else "border:1px solid #e0e0e0;"
+            # Generate header and barcode inline — no caching, always fresh
+            _prod = str(row["Product"]).strip()
+            _pkg  = str(row["Package"]).strip()
+            _wamp = str(row["WAMP"]).strip()
+            _upc  = str(row["UPC"]).strip()
+            _bc   = str(row["Barcode"]).strip()
+            # Always show full product name with package
+            # If product name already contains the package token, show as-is
+            # otherwise append it: "Angry Orchard" + "1/19C" = "Angry Orchard 1/19C"
+            import re as _re_prod
+            _pkg_in_prod = _pkg and _re_prod.search(_re_prod.escape(_pkg), _prod)
+            _full_prod = _prod if _pkg_in_prod else f"{_prod} {_pkg}".strip() if _pkg else _prod
+            header_html = (
+                f"<div style='display:flex;justify-content:space-between;"
+                f"align-items:baseline;margin-bottom:4px'>"
+                f"<span><strong>{_full_prod}</strong> "
+                f"<span style='font-size:0.8rem;color:grey'>{_wamp}</span></span>"
+                f"</div>"
             )
+            # Always generate barcode (cached by UPC so fast after first load)
+            _b64 = _make_barcode_b64(_upc) if len(_upc) >= 11 else _make_barcode_b64_from_font(_bc)
+            if _b64:
+                barcode_html = (
+                    f"<div style='background:white;border:1px solid #ddd;border-radius:6px;"
+                    f"padding:8px 12px;margin:4px 0 8px;text-align:center'>"
+                    f"<img src='data:image/png;base64,{_b64}' "
+                    f"style='width:100%;max-width:580px;height:85px;object-fit:contain;"
+                    f"image-rendering:crisp-edges;display:block;margin:0 auto'></div>"
+                )
+            else:
+                barcode_html = f"<p style='font-size:0.75rem;color:grey'>UPC: {_upc or _bc}</p>"
 
-            # Collapse completed cards (show only header + done badge)
+
+            _is_done    = st.session_state.get(f"{ss_key}_done_{i}", False)
+            _retail_val = st.session_state.get(f"val_retail_{ss_key}_{i}")
+            _twofor_val = st.session_state.get(f"val_twofor_{ss_key}_{i}")
+            _ws_val     = st.session_state.get(f"wholesaler_{ss_key}_{i}", "")
+            _has_retail = _retail_val not in (None, 0.0, "")
+            _has_ws     = bool(_ws_val and _ws_val.strip())
+            _is_expanded = st.session_state.get(f"expand_{ss_key}_{i}", False)
+
+            # Card is collapsed if: done, or (has retail OR has wholesaler) and not manually expanded
+            _is_collapsed = _is_done  # only collapse when user clicks Done
+
+            # All open cards use the same neutral border — no green on priced cards
+            _card_style = "border:1px solid #e0e0e0;"
             if _is_done:
+                _card_style = "border:1.5px solid #22c55e;background:#f0fdf4;"
+
+            if _is_collapsed:
+                # Build badge label
+                if _is_done:
+                    _badge_color = "#22c55e"
+                    _badge_label = "✓ Done"
+                elif _has_retail:
+                    _twofor_disp = f" · 2/${float(_twofor_val):.2f}" if _twofor_val not in (None, 0.0, "") else ""
+                    _badge_color = "#3b82f6"
+                    _badge_label = f"✓ ${float(_retail_val):.2f}{_twofor_disp}"
+                else:
+                    _badge_color = "#6b7280"
+                    _badge_label = f"🏭 {_ws_val}"
+
                 st.markdown(
                     f"<div style='{_card_style}border-radius:8px;"
                     f"padding:8px 14px;margin-bottom:4px;display:flex;"
                     f"justify-content:space-between;align-items:center'>"
                     f"{header_html}"
-                    f"<span style='background:#22c55e;color:white;border-radius:12px;"
-                    f"padding:2px 10px;font-size:0.8rem;white-space:nowrap'>✓ Done</span>"
+                    f"<span style='background:{_badge_color};color:white;border-radius:12px;"
+                    f"padding:2px 10px;font-size:0.85rem;white-space:nowrap;font-weight:600'>"
+                    f"{_badge_label}</span>"
                     f"</div>",
                     unsafe_allow_html=True
                 )
-                # Minimal un-done checkbox (re-opens the card)
-                if st.checkbox("↩ Re-open", key=f"undone_{ss_key}_{i}", value=False,
-                               label_visibility="collapsed"):
-                    st.session_state[f"{ss_key}_done_{i}"] = False
-                    st.rerun()
-                # Still collect the row for export (use saved values)
+                _btn_col1, _btn_col2 = st.columns([1, 8])
+                with _btn_col1:
+                    if st.button("✏️", key=f"expand_btn_{ss_key}_{i}",
+                                 help="Edit", use_container_width=True):
+                        st.session_state[f"expand_{ss_key}_{i}"] = True
+                        st.session_state[f"{ss_key}_done_{i}"] = False
+                        st.rerun()
                 edited_rows.append({
                     "WAMP":       row["WAMP"], "Brand":   row["Brand"],
                     "Product":    row["Product"], "Package": row["Package"],
                     "UPC":        row["UPC"],  "Barcode": str(row["Barcode"]),
-                    "Wholesaler": st.session_state.get(f"wholesaler_{ss_key}_{i}", ""),
-                    "Retail $":   st.session_state.get(f"retail_{ss_key}_{i}"),
-                    "2 for $":    st.session_state.get(f"twofor_{ss_key}_{i}"),
+                    "Wholesaler": _ws_val,
+                    "Retail $":   float(_retail_val) if _has_retail else None,
+                    "2 for $":    float(_twofor_val) if _twofor_val not in (None, 0.0, "") else None,
                 })
                 continue
 
-            # Single st.markdown for all static HTML (header + barcode) — 1 call instead of 6
+            # ── Open card ─────────────────────────────────────────────────────
             st.markdown(
                 f"<div style='{_card_style}border-radius:8px;"
                 f"padding:10px 14px 6px;margin-bottom:4px'>"
@@ -11838,52 +12376,66 @@ with tab5:
                 unsafe_allow_html=True
             )
 
-            # Interactive inputs — unavoidable widgets but now only 4 per row (was 32)
-            fc1, fc2, fc3, fc4 = st.columns([2, 2, 2, 1])
-            with fc1:
-                retail = st.number_input(
-                    "💲 Retail $", min_value=0.0, step=0.01, format="%.2f",
-                    value=float(st.session_state[f"retail_{ss_key}_{i}"]) if st.session_state.get(f"retail_{ss_key}_{i}") else None,
-                    placeholder="0.00", key=f"retail_{ss_key}_{i}",
-                )
-            with fc2:
-                twofor = st.number_input(
-                    "2️⃣ 2 for $", min_value=0.0, step=0.01, format="%.2f",
-                    value=float(st.session_state.get(f"twofor_{ss_key}_{i}", 0) or 0) or None,
-                    placeholder="0.00", key=f"twofor_{ss_key}_{i}",
-                )
-            with fc3:
-                _ws_default = str(row["Wholesaler"]).strip() if "Wholesaler" in row.index else ""
-                if _ws_default not in _ws_options:
-                    _ws_default = ""
-                _ws_saved = st.session_state.get(f"wholesaler_{ss_key}_{i}", _ws_default)
-                if _ws_saved not in _ws_options:
-                    _ws_saved = _ws_default
-                wholesaler = st.selectbox(
-                    "🏭 Wholesaler", _ws_options,
-                    index=_ws_options.index(_ws_saved) if _ws_saved in _ws_options else 0,
-                    key=f"wholesaler_{ss_key}_{i}",
-                )
-            with fc4:
-                st.markdown("<br>", unsafe_allow_html=True)
-                _mark_done = st.checkbox(
-                    "✓ Done", key=f"done_chk_{ss_key}_{i}",
-                    value=False,
-                    help="Mark this SKU as complete and collapse the card"
-                )
-                if _mark_done:
-                    st.session_state[f"{ss_key}_done_{i}"] = True
-                    st.rerun()
+            # st.form prevents rerun on every keystroke — only reruns on Save/Done
+            with st.form(key=f"form_{ss_key}_{i}", border=False):
+                fc1, fc2, fc3, fc4, fc5 = st.columns([2, 2, 2, 1, 1])
+                with fc1:
+                    retail = st.number_input(
+                        "💲 Retail $", min_value=0.0, step=0.01, format="%.2f",
+                        value=float(_retail_val) if _has_retail else None,
+                        placeholder="0.00",
+                    )
+                with fc2:
+                    twofor = st.number_input(
+                        "2️⃣ 2 for $", min_value=0.0, step=0.01, format="%.2f",
+                        value=float(_twofor_val) if _twofor_val not in (None, 0.0, "") else None,
+                        placeholder="0.00",
+                    )
+                with fc3:
+                    # Priority: 1) session state (if non-blank) 2) market memory 3) UPC master list
+                    _ws_default = str(row["Wholesaler"]).strip() if "Wholesaler" in row.index else ""
+                    if _ws_default not in _ws_options:
+                        _ws_default = ""
+                    _product_name = str(row["Product"]).strip() if "Product" in row.index else ""
+                    _remembered_ws = _mkt_ws_memory.get(_product_name, "")
+                    if _remembered_ws and _remembered_ws in _ws_options:
+                        _ws_default = _remembered_ws
+                    # Only use session state if it has a real (non-blank) value
+                    _ws_saved = _ws_val if (_ws_val and _ws_val in _ws_options) else _ws_default
+                    wholesaler = st.selectbox(
+                        "🏭 Wholesaler", _ws_options,
+                        index=_ws_options.index(_ws_saved) if _ws_saved in _ws_options else 0,
+                    )
+                with fc4:
+                    st.markdown("<br>", unsafe_allow_html=True)
+                    _save_clicked = st.form_submit_button("💾 Save", use_container_width=True)
+                with fc5:
+                    st.markdown("<br>", unsafe_allow_html=True)
+                    _done_clicked = st.form_submit_button("✓ Done", use_container_width=True, type="primary")
 
             st.markdown("<div style='margin-bottom:8px'></div>", unsafe_allow_html=True)
 
+            if _save_clicked or _done_clicked:
+                # Always save wholesaler even without a price
+                if wholesaler:
+                    st.session_state[f"wholesaler_{ss_key}_{i}"] = wholesaler
+                if retail and float(retail) > 0:
+                    st.session_state[f"val_retail_{ss_key}_{i}"] = float(retail)
+                if twofor and float(twofor) > 0:
+                    st.session_state[f"val_twofor_{ss_key}_{i}"] = float(twofor)
+                if _done_clicked:
+                    st.session_state[f"{ss_key}_done_{i}"] = True
+                st.session_state[f"expand_{ss_key}_{i}"] = False
+                st.rerun()
+
+            # Export row always uses persisted session state values
             edited_rows.append({
                 "WAMP":       row["WAMP"], "Brand":   row["Brand"],
                 "Product":    row["Product"], "Package": row["Package"],
                 "UPC":        row["UPC"],  "Barcode": str(row["Barcode"]),
-                "Wholesaler": wholesaler,
-                "Retail $":   float(retail) if retail else None,
-                "2 for $":    float(twofor) if twofor else None,
+                "Wholesaler": st.session_state.get(f"wholesaler_{ss_key}_{i}", _ws_default),
+                "Retail $":   float(_retail_val) if _has_retail else None,
+                "2 for $":    float(_twofor_val) if _twofor_val not in (None, 0.0, "") else None,
             })
 
         edited = pd.DataFrame(edited_rows)
@@ -11921,6 +12473,9 @@ with tab5:
         # ── Rep Name ─────────────────────────────────────────────────────────
         _rep_name = st.text_input("👤 Rep Name", placeholder="Enter your name before submitting",
                                   key=f"rep_name_{ss_key}")
+        # Fall back to session state value in case widget hasn't propagated yet
+        if not _rep_name:
+            _rep_name = st.session_state.get(f"rep_name_{ss_key}", "")
 
         # ── Stats + action row ────────────────────────────────────────────────
         sa, sb, sc, sd = st.columns([1, 1, 1, 2])
@@ -11929,10 +12484,11 @@ with tab5:
             st.metric("Prices Entered", f"{filled} / {len(export_df)}")
 
         with sb:
-            # Show how many records already saved in the CSV
-            if os.path.exists(RESULTS_CSV):
-                saved_count = max(0, sum(1 for _ in open(RESULTS_CSV)) - 1)
-            else:
+            # Show how many records are in the authoritative Sheets store
+            try:
+                _sv_df = _load_all_survey_from_sheets()
+                saved_count = len(_sv_df) if not _sv_df.empty else 0
+            except Exception:
                 saved_count = 0
             st.metric("Total Saved Records", f"{saved_count}")
 
@@ -11942,7 +12498,7 @@ with tab5:
                          help="Collapse all cards that have a retail price entered",
                          disabled=(filled == 0)):
                 for _i in scan_df.index:
-                    if st.session_state.get(f"retail_{ss_key}_{_i}"):
+                    if st.session_state.get(f"val_retail_{ss_key}_{_i}"):
                         st.session_state[f"{ss_key}_done_{_i}"] = True
                 st.rerun()
 
@@ -11950,22 +12506,40 @@ with tab5:
             submit_col, dl_col = st.columns(2)
 
             with submit_col:
-                _submit_disabled = (filled == 0) or not _rep_name.strip()
-                _submit_help = "Enter your name above before submitting" if not _rep_name.strip() else "Saves all entered prices"
+                # Only require a rep name — allow submission with any number of prices
+                # (even just 1). Users doing partial surveys should never be blocked.
+                _rep_ok = bool(_rep_name.strip())
+                _submit_disabled = not _rep_ok
+                if not _rep_ok:
+                    _submit_help = "Enter your name above before submitting"
+                elif filled == 0:
+                    _submit_help = "⚠️ No prices entered yet — you can still submit to record a visit"
+                else:
+                    _submit_help = f"Submit {filled} price{'s' if filled != 1 else ''} to Google Sheets"
                 if st.button("✅ Submit Survey", type="primary", use_container_width=True,
                              disabled=_submit_disabled,
                              help=_submit_help):
-                    # Stamp timestamp and only save rows with a retail price
+                    # Collect only rows that have a retail price entered
                     now = _dt.datetime.now().strftime("%Y-%m-%d %H:%M:%S")
                     save_df = export_df[export_df["Retail $"].notna()].copy()
                     save_df["Submitted At"] = now
                     save_df["Rep Name"]     = _rep_name.strip()
 
-                    # Save locally to CSV
-                    file_exists = os.path.exists(RESULTS_CSV)
-                    save_df.to_csv(RESULTS_CSV, mode="a", header=not file_exists, index=False)
+                    if save_df.empty:
+                        # No prices — record a visit-only row so the rep is logged
+                        save_df = pd.DataFrame([{
+                            "Submitted At": now,
+                            "Rep Name":    _rep_name.strip(),
+                            "Store":       export_df["Store"].iloc[0] if len(export_df) else "",
+                            "Market":      export_df["Market"].iloc[0] if len(export_df) else "",
+                            "Parent Chain":export_df["Parent Chain"].iloc[0] if len(export_df) else "",
+                            "Customer ID": export_df["Customer ID"].iloc[0] if len(export_df) else "",
+                            "WAMP": "", "Brand": "", "Product": "— Visit logged (no prices) —",
+                            "Package": "", "UPC": "", "Wholesaler": "",
+                            "Retail $": "", "2 for $": "",
+                        }])
 
-                    # Write to Google Sheets
+                    # ── PRIMARY write: Google Sheets (atomic batch append — no race condition) ──
                     _gs_rows = []
                     for _, _gr in save_df.iterrows():
                         _gs_rows.append([
@@ -11976,29 +12550,50 @@ with tab5:
                             str(_gr.get("Parent Chain", "")),
                             str(_gr.get("Customer ID", "")),
                             str(_gr.get("WAMP", "")),
+                            str(_gr.get("Brand", "")),
                             str(_gr.get("Product", "")),
                             str(_gr.get("Package", "")),
                             str(_gr.get("UPC", "")),
+                            str(_gr.get("Wholesaler", "")),
                             str(_gr.get("Retail $", "")),
                             str(_gr.get("2 for $", "")),
                         ])
                     _gs_ok = _append_to_survey_sheet(_gs_rows)
 
-                    _gs_msg = " · Logged to Google Sheets ✅" if _gs_ok else " · Google Sheets unavailable ⚠️"
-                    st.success(f"✅ {len(save_df)} price{'s' if len(save_df) != 1 else ''} saved  ({now}){_gs_msg}")
+                    # ── SECONDARY write: local CSV fallback ──────────────────────
+                    try:
+                        import fcntl as _fcntl
+                        _file_exists = os.path.exists(RESULTS_CSV)
+                        with open(RESULTS_CSV, "a", newline="") as _f:
+                            _fcntl.flock(_f, _fcntl.LOCK_EX)
+                            save_df.to_csv(_f, mode="a", header=not _file_exists, index=False)
+                            _fcntl.flock(_f, _fcntl.LOCK_UN)
+                    except Exception:
+                        pass
+
+                    # Bust the 30-second Sheets read-cache so the heatmap refreshes immediately
+                    load_survey_pricing.clear()
+
+                    _price_count = len(save_df[save_df["Product"] != "— Visit logged (no prices) —"])
+                    _gs_msg = " · Saved to Google Sheets ✅" if _gs_ok else " · ⚠️ Google Sheets unavailable"
+                    if _price_count == 0:
+                        st.success(f"✅ Visit logged for {_rep_name.strip()} — no prices recorded  ({now}){_gs_msg}")
+                    else:
+                        st.success(f"✅ {_price_count} price{'s' if _price_count != 1 else ''} saved  ({now}){_gs_msg}")
                     st.balloons()
 
             with dl_col:
-                # Download all historical results
-                if os.path.exists(RESULTS_CSV):
-                    with open(RESULTS_CSV, "rb") as f_csv:
-                        st.download_button(
-                            "⬇ Download All Results",
-                            f_csv.read(),
-                            "survey_results.csv",
-                            "text/csv",
-                            use_container_width=True,
-                        )
+                # Download all historical results from Google Sheets (authoritative source)
+                _dl_df = _load_all_survey_from_sheets()
+                if not _dl_df.empty:
+                    st.download_button(
+                        "⬇ Download All Results",
+                        _dl_df.to_csv(index=False).encode(),
+                        "survey_results.csv",
+                        "text/csv",
+                        use_container_width=True,
+                        key=f"dl_results_top_{ss_key}",
+                    )
                 else:
                     st.download_button(
                         "⬇ Download All Results",
@@ -12007,19 +12602,33 @@ with tab5:
                         "text/csv",
                         use_container_width=True,
                         disabled=True,
+                        key=f"dl_results_top_disabled_{ss_key}",
                     )
 
         # ── Saved results preview ─────────────────────────────────────────────
-        if os.path.exists(RESULTS_CSV):
-            with st.expander("📂 View Saved Survey Results", expanded=False):
-                saved_df = pd.read_csv(RESULTS_CSV)
-                if "Submitted At" in saved_df.columns:
-                    saved_df = saved_df.sort_values("Submitted At", ascending=False)
-                st.dataframe(saved_df, use_container_width=True, hide_index=True, height=300)
-                if st.button("🗑️ Clear All Saved Results", type="secondary"):
-                    os.remove(RESULTS_CSV)
-                    st.warning("All saved results cleared.")
+        with st.expander("📂 View Saved Survey Results", expanded=False):
+            _preview_df = _load_all_survey_from_sheets()
+            if not _preview_df.empty:
+                if "Submitted At" in _preview_df.columns:
+                    _preview_df = _preview_df.sort_values("Submitted At", ascending=False)
+                st.dataframe(_preview_df, use_container_width=True, hide_index=True, height=300)
+                # Download from Sheets data (always current, even on Streamlit Cloud)
+                st.download_button(
+                    "⬇ Download All Results",
+                    _preview_df.to_csv(index=False).encode(),
+                    "survey_results.csv",
+                    "text/csv",
+                    use_container_width=True,
+                    key=f"dl_results_expander_{ss_key}",
+                )
+                st.caption("⚠️ 'Clear All' removes the local backup CSV only. To clear Google Sheets data, delete rows directly in the sheet.")
+                if st.button("🗑️ Clear Local CSV Backup", type="secondary"):
+                    if os.path.exists(RESULTS_CSV):
+                        os.remove(RESULTS_CSV)
+                    st.warning("Local CSV backup cleared. Google Sheets data is unaffected.")
                     st.rerun()
+            else:
+                st.info("No survey results found yet. Submit a survey above to get started.")
 
 
     # ── Filters & Add/Update Price ────────────────────────────────────────────
