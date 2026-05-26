@@ -11375,9 +11375,9 @@ with tab1:
                 view = view[view["WAMP"].isin(sel_wamp)]
 
             # Apply chain format filter
-            if sel_chain_fmt == "Small Format" and _chains_small:
+            if sel_chain_fmt == "Small" and _chains_small:
                 view = view[view["Competitor"].isin(_chains_small)]
-            elif sel_chain_fmt == "Large Format" and _chains_large:
+            elif sel_chain_fmt == "Large" and _chains_large:
                 view = view[view["Competitor"].isin(_chains_large)]
             elif sel_chain_fmt == "Drug/Dollar" and _chains_drug_dollar:
                 view = view[view["Competitor"].isin(_chains_drug_dollar)]
@@ -11405,7 +11405,9 @@ with tab1:
                     index=["WAMP","Package"], columns="Chain", values="Avg Price"
                 ).round(2)
                 _pre_pivot.columns.name = None
-                _pre_chains = [c for c in chain_cols if c in _pre_pivot.columns]
+                # Use only chains present in the filtered view
+                _filtered_chains = sorted(view["Competitor"].dropna().unique())
+                _pre_chains = [c for c in _filtered_chains if c in _pre_pivot.columns]
                 if _pre_chains:
                     _pre_pivot  = _pre_pivot[_pre_chains]
                     _pre_mktavg = _pre_pivot[_pre_chains].mean(axis=1).round(2)
