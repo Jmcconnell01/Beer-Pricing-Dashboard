@@ -10236,13 +10236,13 @@ def get_upc_df(market: str = "1 · Charleston"):
 
 PLANOGRAM_URL = "https://docs.google.com/spreadsheets/d/e/2PACX-1vQlrqK58HOY7cOmkPI1XTGkREzhPp21k8uqTQDGob8qOhZaO7e2FS_fLxjFI1IplCRPmmSTI7Asiqpf/pub?gid=1939743735&single=true&output=csv"
 
-@st.cache_data(ttl=3600, show_spinner=False)
+@st.cache_data(ttl=300, show_spinner=False)
 def load_planogram_index():
     """
     Fetch All_Items_All_Planograms from Google Sheets (published CSV) and return:
       exact_lookup: { "Circle K #2707332 (BLK)": {upcs, products} }
       name_lookup:  { "circle k #2707332":        {upcs, products} }
-    Cached for 1 hour. Falls back to empty dicts on any error.
+    Cached for 5 minutes. Falls back to empty dicts on any error.
     """
     import re as _re_pg, io as _io_pg
     try:
@@ -10251,7 +10251,7 @@ def load_planogram_index():
         _resp.raise_for_status()
         _pg = pd.read_csv(_io_pg.StringIO(_resp.text), header=0, low_memory=False)
         _pg.columns = ['_cust_num', 'Retail_Store', 'Family', 'Inner_Pack',
-                       'Name', 'Barcode', 'Desc11', 'GTIN', 'UPC']
+                       'Name', 'Barcode', 'Desc11', 'GTIN', 'UPC', 'WAMP']
         _pg = _pg[_pg['Name'] != 'Name'].copy()
         _pg['Name'] = _pg['Name'].astype(str).str.strip()
         _pg['UPC']  = _pg['UPC'].astype(str).str.strip().str.split('.').str[0]
@@ -10900,6 +10900,7 @@ with tab1:
     _hm_hdr_col.subheader("📊 Price Discrepancy Heatmap")
     if _hm_btn_col.button("🔄 Refresh", help="Reload latest data from Google Sheets", key="hm_refresh"):
         load_survey_pricing.clear()
+        load_planogram_index.clear()
         compute_chain_deviation.clear()
         compute_product_pivot.clear()
         compute_presales_pivot.clear()
@@ -11816,7 +11817,11 @@ with tab2:
 
 
 with tab5:
-    st.subheader("📱 UPC Scanner List")
+    _scanner_hdr_col, _scanner_btn_col = st.columns([6, 1])
+    _scanner_hdr_col.subheader("📱 UPC Scanner List")
+    if _scanner_btn_col.button("🔄 Refresh", help="Reload latest planogram from Google Sheets", key="scanner_refresh"):
+        load_planogram_index.clear()
+        st.rerun()
 
     # ── Mobile-friendly CSS & localStorage sync ───────────────────────────────
     st.markdown("""
