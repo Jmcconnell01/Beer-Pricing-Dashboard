@@ -10234,7 +10234,7 @@ def get_upc_df(market: str = "1 · Charleston"):
     return df
 
 
-PLANOGRAM_URL = "https://docs.google.com/spreadsheets/d/e/2PACX-1vQlrqK58HOY7cOmkPI1XTGkREzhPp21k8uqTQDGob8qOhZaO7e2FS_fLxjFI1IplCRPmmSTI7Asiqpf/pub?gid=1939743735&single=true&output=csv"
+PLANOGRAM_URL = "https://docs.google.com/spreadsheets/d/e/2PACX-1vQlrqK58HOY7cOmkPI1XTGkREzhPp21k8uqTQDGob8qOhZaO7e2FS_fLxjFI1IplCRPmmSTI7Asiqpf/pub?gid=1852497519&single=true&output=csv"
 
 @st.cache_data(ttl=300, show_spinner=False)
 def load_planogram_index():
@@ -10907,6 +10907,7 @@ with tab1:
     _hm_hdr_col.subheader("📊 Price Discrepancy Heatmap")
     if _hm_btn_col.button("🔄 Refresh", help="Reload latest data from Google Sheets", key="hm_refresh"):
         load_survey_pricing.clear()
+        load_planogram_index.clear()
         compute_chain_deviation.clear()
         compute_product_pivot.clear()
         compute_presales_pivot.clear()
@@ -11823,7 +11824,11 @@ with tab2:
 
 
 with tab5:
-    st.subheader("📱 UPC Scanner List")
+    _scanner_hdr_col, _scanner_btn_col = st.columns([6, 1])
+    _scanner_hdr_col.subheader("📱 UPC Scanner List")
+    if _scanner_btn_col.button("🔄 Refresh", help="Reload latest planogram from Google Sheets", key="scanner_refresh"):
+        load_planogram_index.clear()
+        st.rerun()
 
     # ── Mobile-friendly CSS & localStorage sync ───────────────────────────────
     st.markdown("""
@@ -12003,8 +12008,7 @@ with tab5:
                     _pg_store_data  = _pg_norm[_norm_sel]
                     _pg_store_label = _norm_sel
                 else:
-                    # 3. Customer number fallback — matches even when store name
-                    #    formatting differs between the account list and planogram.
+                    # 3. Customer number fallback — immune to name formatting differences
                     _cid = str(store_row["customer_id"]).strip() if store_row is not None else ""
                     if _cid and _cid in _pg_cust:
                         _pg_store_data  = _pg_cust[_cid]
@@ -12065,8 +12069,18 @@ with tab5:
                 f"📋 Showing **{len(scan_df)} store-specific products** from planogram.",
                 icon="✅")
         else:
-            _pg_reason = ("no planogram on file for this store"
-                          if not _pg_store_data else "no rows found — showing default list")
+            if not _pg_store_data:
+                _total_pg_stores = len(_pg_exact)
+                _cid_check = str(store_row["customer_id"]).strip() if store_row is not None else "?"
+                if _total_pg_stores == 0:
+                    _pg_reason = "planogram sheet is empty or unavailable — showing default list"
+                else:
+                    _pg_reason = (
+                        f"no planogram on file for this store "
+                        f"(Customer ID {_cid_check} not found in {_total_pg_stores:,} planogram stores)"
+                    )
+            else:
+                _pg_reason = "no rows found — showing default list"
             st.info(f"📦 Showing **default market scan list** ({_pg_reason}).")
         if sel_fmt != "All":
             scan_df = scan_df[scan_df["Format"] == sel_fmt]
