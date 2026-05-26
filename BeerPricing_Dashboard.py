@@ -10242,6 +10242,7 @@ def load_planogram_index():
     Fetch All_Items_All_Planograms from Google Sheets (published CSV) and return:
       exact_lookup: { "Circle K #2707332 (BLK)": {upcs, products} }
       name_lookup:  { "circle k #2707332":        {upcs, products} }
+      cust_lookup:  { "61143":                    {upcs, products} }
     Cached for 5 minutes. Falls back to empty dicts on any error.
     """
     import re as _re_pg, io as _io_pg
@@ -10258,17 +10259,23 @@ def load_planogram_index():
 
         exact_lookup = {}
         name_lookup  = {}
+        cust_lookup  = {}   # customer_number (str) → store data
         for store, grp in _pg.groupby('Retail_Store'):
             store = str(store).strip()
             upcs  = set(grp['UPC'].dropna().unique())
             prods = set(grp['Name'].dropna().unique())
-            exact_lookup[store] = {'upcs': upcs, 'products': prods, 'rows': grp.reset_index(drop=True)}
+            data  = {'upcs': upcs, 'products': prods, 'rows': grp.reset_index(drop=True)}
+            exact_lookup[store] = data
             norm = _re_pg.sub(r'\s*\([A-Z]+\)\s*$', '', store).strip().lower()
-            name_lookup[norm] = exact_lookup[store]
+            name_lookup[norm] = data
+            # Also key by wholesaler customer number for robust fallback matching
+            cust_num = str(grp['_cust_num'].iloc[0]).strip().split('.')[0]
+            if cust_num:
+                cust_lookup[cust_num] = data
 
-        return exact_lookup, name_lookup
+        return exact_lookup, name_lookup, cust_lookup
     except Exception:
-        return {}, {}
+        return {}, {}, {}
 
 SURVEY_SHEET_ID = "1noPalZFT_PdzaZY5bIRlkYdfTKy4SHNYfjngE3X07Fw"
 
@@ -10900,7 +10907,6 @@ with tab1:
     _hm_hdr_col.subheader("📊 Price Discrepancy Heatmap")
     if _hm_btn_col.button("🔄 Refresh", help="Reload latest data from Google Sheets", key="hm_refresh"):
         load_survey_pricing.clear()
-        load_planogram_index.clear()
         compute_chain_deviation.clear()
         compute_product_pivot.clear()
         compute_presales_pivot.clear()
@@ -11817,11 +11823,7 @@ with tab2:
 
 
 with tab5:
-    _scanner_hdr_col, _scanner_btn_col = st.columns([6, 1])
-    _scanner_hdr_col.subheader("📱 UPC Scanner List")
-    if _scanner_btn_col.button("🔄 Refresh", help="Reload latest planogram from Google Sheets", key="scanner_refresh"):
-        load_planogram_index.clear()
-        st.rerun()
+    st.subheader("📱 UPC Scanner List")
 
     # ── Mobile-friendly CSS & localStorage sync ───────────────────────────────
     st.markdown("""
@@ -11984,22 +11986,29 @@ with tab5:
     if sel_store and sel_store not in ("", "— Select a store —") and sel_upc_market != "All Markets":
 
         # Get market-specific UPC list (wholesaler varies by market)
-        _pg_exact, _pg_norm = load_planogram_index()
+        _pg_exact, _pg_norm, _pg_cust = load_planogram_index()
         # Try to match selected store to planogram
         _pg_store_data = None
         _pg_store_label = ""
         if sel_store:
             import re as _re_scan
-            # Try exact match first
+            # 1. Exact name match
             if sel_store in _pg_exact:
                 _pg_store_data  = _pg_exact[sel_store]
                 _pg_store_label = sel_store
             else:
-                # Try normalized match (strip market suffix, lowercase)
+                # 2. Normalized name match (strip market suffix, lowercase)
                 _norm_sel = _re_scan.sub(r'\s*\([A-Z]+\)\s*$', '', sel_store).strip().lower()
                 if _norm_sel in _pg_norm:
                     _pg_store_data  = _pg_norm[_norm_sel]
                     _pg_store_label = _norm_sel
+                else:
+                    # 3. Customer number fallback — matches even when store name
+                    #    formatting differs between the account list and planogram.
+                    _cid = str(store_row["customer_id"]).strip() if store_row is not None else ""
+                    if _cid and _cid in _pg_cust:
+                        _pg_store_data  = _pg_cust[_cid]
+                        _pg_store_label = _cid
 
         # Load UPC master list ONCE, build O(1) lookup dict — never call inside loops
         _upc_master_df = get_upc_df(sel_upc_market)
