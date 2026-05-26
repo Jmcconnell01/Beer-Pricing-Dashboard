@@ -11320,7 +11320,7 @@ with tab1:
                 "Wine Singles 7oz",
                 "Singles","Singles x4","Singles x6","Singles x9",
             }
-            view[\"_Format\"] = view[\"PkgGroup\"].apply(lambda g: \"Singles\" if g in _singles_grps else \"Packages\")
+            view["_Format"] = view["PkgGroup"].apply(lambda g: "Singles" if g in _singles_grps else "Packages")
 
             # ── Unified filter bar ────────────────────────────────────────────
             # Classify chains into format buckets
