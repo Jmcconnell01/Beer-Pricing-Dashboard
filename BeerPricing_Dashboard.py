@@ -12407,57 +12407,75 @@ with tab5:
                 unsafe_allow_html=True
             )
 
-            # st.form prevents rerun on every keystroke — only reruns on Save/Done
-            with st.form(key=f"form_{ss_key}_{i}", border=False):
-                fc1, fc2, fc3, fc4, fc5 = st.columns([2, 2, 2, 1, 1])
-                with fc1:
-                    retail = st.number_input(
-                        "💲 Retail $", min_value=0.0, step=0.01, format="%.2f",
-                        value=float(_retail_val) if _has_retail else None,
-                        placeholder="0.00",
-                    )
-                with fc2:
-                    twofor = st.number_input(
-                        "2️⃣ 2 for $", min_value=0.0, step=0.01, format="%.2f",
-                        value=float(_twofor_val) if _twofor_val not in (None, 0.0, "") else None,
-                        placeholder="0.00",
-                    )
-                with fc3:
-                    # Priority: 1) session state (if non-blank) 2) market memory 3) UPC master list
-                    _ws_default = str(row["Wholesaler"]).strip() if "Wholesaler" in row.index else ""
-                    if _ws_default not in _ws_options:
-                        _ws_default = ""
-                    _product_name = str(row["Product"]).strip() if "Product" in row.index else ""
-                    _remembered_ws = _mkt_ws_memory.get(_product_name, "")
-                    if _remembered_ws and _remembered_ws in _ws_options:
-                        _ws_default = _remembered_ws
-                    # Only use session state if it has a real (non-blank) value
-                    _ws_saved = _ws_val if (_ws_val and _ws_val in _ws_options) else _ws_default
-                    wholesaler = st.selectbox(
-                        "🏭 Wholesaler", _ws_options,
-                        index=_ws_options.index(_ws_saved) if _ws_saved in _ws_options else 0,
-                    )
-                with fc4:
-                    st.markdown("<br>", unsafe_allow_html=True)
-                    _save_clicked = st.form_submit_button("💾 Save", use_container_width=True)
-                with fc5:
-                    st.markdown("<br>", unsafe_allow_html=True)
-                    _done_clicked = st.form_submit_button("✓ Done", use_container_width=True, type="primary")
+            # ── Open card inputs — no st.form so values persist to session state
+            # immediately on change; Done is now optional (just collapses the card).
+            # Priority: 1) session state (if non-blank) 2) market memory 3) UPC master list
+            _ws_default = str(row["Wholesaler"]).strip() if "Wholesaler" in row.index else ""
+            if _ws_default not in _ws_options:
+                _ws_default = ""
+            _product_name = str(row["Product"]).strip() if "Product" in row.index else ""
+            _remembered_ws = _mkt_ws_memory.get(_product_name, "")
+            if _remembered_ws and _remembered_ws in _ws_options:
+                _ws_default = _remembered_ws
+            # Only use session state if it has a real (non-blank) value
+            _ws_saved = _ws_val if (_ws_val and _ws_val in _ws_options) else _ws_default
+
+            # on_change helpers — capture loop variable i by default argument
+            def _save_retail(i=i):
+                v = st.session_state.get(f"input_retail_{ss_key}_{i}")
+                if v and float(v) > 0:
+                    st.session_state[f"val_retail_{ss_key}_{i}"] = float(v)
+
+            def _save_twofor(i=i):
+                v = st.session_state.get(f"input_twofor_{ss_key}_{i}")
+                if v and float(v) > 0:
+                    st.session_state[f"val_twofor_{ss_key}_{i}"] = float(v)
+
+            def _save_ws(i=i):
+                v = st.session_state.get(f"input_ws_{ss_key}_{i}")
+                if v:
+                    st.session_state[f"wholesaler_{ss_key}_{i}"] = v
+
+            fc1, fc2, fc3, fc4 = st.columns([2, 2, 2, 1])
+            with fc1:
+                st.number_input(
+                    "💲 Retail $", min_value=0.0, step=0.01, format="%.2f",
+                    value=float(_retail_val) if _has_retail else None,
+                    placeholder="0.00",
+                    key=f"input_retail_{ss_key}_{i}",
+                    on_change=_save_retail,
+                )
+            with fc2:
+                st.number_input(
+                    "2️⃣ 2 for $", min_value=0.0, step=0.01, format="%.2f",
+                    value=float(_twofor_val) if _twofor_val not in (None, 0.0, "") else None,
+                    placeholder="0.00",
+                    key=f"input_twofor_{ss_key}_{i}",
+                    on_change=_save_twofor,
+                )
+            with fc3:
+                st.selectbox(
+                    "🏭 Wholesaler", _ws_options,
+                    index=_ws_options.index(_ws_saved) if _ws_saved in _ws_options else 0,
+                    key=f"input_ws_{ss_key}_{i}",
+                    on_change=_save_ws,
+                )
+            with fc4:
+                st.markdown("<br>", unsafe_allow_html=True)
+                _done_clicked = st.button("✓ Done", key=f"done_btn_{ss_key}_{i}",
+                                          use_container_width=True, type="primary")
 
             st.markdown("<div style='margin-bottom:8px'></div>", unsafe_allow_html=True)
 
-            if _save_clicked or _done_clicked:
-                # Always save wholesaler even without a price
-                if wholesaler:
-                    st.session_state[f"wholesaler_{ss_key}_{i}"] = wholesaler
-                if retail and float(retail) > 0:
-                    st.session_state[f"val_retail_{ss_key}_{i}"] = float(retail)
-                if twofor and float(twofor) > 0:
-                    st.session_state[f"val_twofor_{ss_key}_{i}"] = float(twofor)
-                if _done_clicked:
-                    st.session_state[f"{ss_key}_done_{i}"] = True
+            if _done_clicked:
+                st.session_state[f"{ss_key}_done_{i}"] = True
                 st.session_state[f"expand_{ss_key}_{i}"] = False
                 st.rerun()
+
+            # Read back the latest persisted values for the export row
+            _retail_val  = st.session_state.get(f"val_retail_{ss_key}_{i}")
+            _twofor_val  = st.session_state.get(f"val_twofor_{ss_key}_{i}")
+            _has_retail  = _retail_val not in (None, 0.0, "")
 
             # Export row always uses persisted session state values
             edited_rows.append({
