@@ -10978,6 +10978,115 @@ with tab1:
     sel_mkt = st.session_state["hm_market"]
     geo     = MARKET_GEO[sel_mkt] if sel_mkt else list(MARKET_GEO.values())[0]
 
+    # ── MAP ───────────────────────────────────────────────────────────────────
+    import plotly.graph_objects as go_map
+
+    map_lats   = [v["lat"]   for v in MARKET_GEO.values()]
+    map_lons   = [v["lon"]   for v in MARKET_GEO.values()]
+    map_names  = list(MARKET_GEO.keys())
+    map_labels = [v["label"] for v in MARKET_GEO.values()]
+
+    marker_colors = ["#8B1A1A" if m == sel_mkt else ("#64748b" if m in has_data else "#cbd5e1")
+                     for m in map_names]
+    marker_sizes  = [22 if m == sel_mkt else 15 for m in map_names]
+
+    if sel_mkt and st.session_state["hm_zoomed"] and sel_mkt in has_data:
+        map_center = dict(lat=geo["lat"], lon=geo["lon"])
+        map_zoom   = geo["zoom"]
+    else:
+        map_center = dict(lat=32.8, lon=-81.5)
+        map_zoom   = 5.5
+
+    _counties_geojson, _name_to_fips = _get_counties_geojson()
+
+    # Use flag counts stored from previous render (updated after survey loads below)
+    _stored_flags = st.session_state.get("county_flags", {})
+
+    fig_map = go_map.Figure()
+
+    # County fill layer (grey baseline, coloured where flags exist)
+    if _counties_geojson:
+        # Build FIPS → "County Name, ST" lookup for hover labels
+        _fips_to_name = {
+            f["id"]: f["properties"]["NAME"] + " County, " + f["properties"]["STATE"]
+            for f in _counties_geojson["features"]
+        }
+        _state_abbr = {"45": "SC", "13": "GA"}
+        _fips_to_name = {
+            f["id"]: f["properties"]["NAME"] + " County, "
+                     + _state_abbr.get(f["properties"]["STATE"], f["properties"]["STATE"])
+            for f in _counties_geojson["features"]
+        }
+
+        _all_fips   = [f["id"] for f in _counties_geojson["features"]]
+        _flag_vals  = [_stored_flags.get(f, 0) for f in _all_fips]
+        _county_names = [_fips_to_name.get(f, f) for f in _all_fips]
+
+        _fips_df = pd.DataFrame({
+            "fips":    _all_fips,
+            "flags":   _flag_vals,
+            "county":  _county_names,
+        })
+
+        fig_map.add_trace(go_map.Choroplethmapbox(
+            geojson=_counties_geojson,
+            locations=_fips_df["fips"],
+            z=_fips_df["flags"],
+            customdata=_fips_df["county"],
+            featureidkey="id",
+            colorscale=[[0, "#e8eaf0"], [0.01, "#fef3c7"],
+                        [0.4, "#f97316"], [1.0, "#991b1b"]],
+            zmin=0,
+            zmax=max(_fips_df["flags"].max(), 1),
+            marker_opacity=0.45,
+            marker_line_width=0.8,
+            marker_line_color="#94a3b8",
+            showscale=False,
+            hovertemplate="<b>%{customdata}</b><br>Pricing Flags: %{z}<extra></extra>",
+            name="Counties",
+        ))
+
+    # Market dot markers on top
+    fig_map.add_trace(go_map.Scattermapbox(
+        lat=map_lats, lon=map_lons,
+        mode="markers+text",
+        marker=dict(size=marker_sizes, color=marker_colors, opacity=0.95),
+        text=map_labels,
+        textposition="top right",
+        textfont=dict(size=11, color="#1a1a1a"),
+        customdata=map_names,
+        hovertemplate="<b>%{customdata}</b><br>%{text}<extra></extra>",
+        name="Markets",
+        showlegend=False,
+    ))
+
+    fig_map.update_layout(
+        mapbox=dict(style="carto-positron", center=map_center, zoom=map_zoom),
+        margin=dict(l=0, r=0, t=0, b=0),
+        height=420,
+        showlegend=False,
+        clickmode="event+select",
+    )
+
+    map_event = st.plotly_chart(
+        fig_map, use_container_width=True,
+        key="market_map", on_select="rerun", selection_mode="points"
+    )
+
+    if map_event and map_event.selection and map_event.selection.get("points"):
+        pt  = map_event.selection["points"][0]
+        idx = pt.get("point_index", None)
+        if idx is not None and idx < len(map_names):
+            clicked = map_names[idx]
+            if clicked != st.session_state["hm_market"]:
+                st.session_state["hm_market"] = clicked
+                st.session_state["hm_zoomed"] = True
+            else:
+                # Toggle off — deselect market entirely
+                st.session_state["hm_market"] = None
+                st.session_state["hm_zoomed"] = False
+            st.rerun()
+
     btn_cols = st.columns(len(MARKET_GEO))
     for col, mname in zip(btn_cols, MARKET_GEO.keys()):
         short  = mname.split(" · ")[1]
@@ -12298,75 +12407,57 @@ with tab5:
                 unsafe_allow_html=True
             )
 
-            # ── Open card inputs — no st.form so values persist to session state
-            # immediately on change; Done is now optional (just collapses the card).
-            # Priority: 1) session state (if non-blank) 2) market memory 3) UPC master list
-            _ws_default = str(row["Wholesaler"]).strip() if "Wholesaler" in row.index else ""
-            if _ws_default not in _ws_options:
-                _ws_default = ""
-            _product_name = str(row["Product"]).strip() if "Product" in row.index else ""
-            _remembered_ws = _mkt_ws_memory.get(_product_name, "")
-            if _remembered_ws and _remembered_ws in _ws_options:
-                _ws_default = _remembered_ws
-            # Only use session state if it has a real (non-blank) value
-            _ws_saved = _ws_val if (_ws_val and _ws_val in _ws_options) else _ws_default
-
-            # on_change helpers — capture loop variable i by default argument
-            def _save_retail(i=i):
-                v = st.session_state.get(f"input_retail_{ss_key}_{i}")
-                if v and float(v) > 0:
-                    st.session_state[f"val_retail_{ss_key}_{i}"] = float(v)
-
-            def _save_twofor(i=i):
-                v = st.session_state.get(f"input_twofor_{ss_key}_{i}")
-                if v and float(v) > 0:
-                    st.session_state[f"val_twofor_{ss_key}_{i}"] = float(v)
-
-            def _save_ws(i=i):
-                v = st.session_state.get(f"input_ws_{ss_key}_{i}")
-                if v:
-                    st.session_state[f"wholesaler_{ss_key}_{i}"] = v
-
-            fc1, fc2, fc3, fc4 = st.columns([2, 2, 2, 1])
-            with fc1:
-                st.number_input(
-                    "💲 Retail $", min_value=0.0, step=0.01, format="%.2f",
-                    value=float(_retail_val) if _has_retail else None,
-                    placeholder="0.00",
-                    key=f"input_retail_{ss_key}_{i}",
-                    on_change=_save_retail,
-                )
-            with fc2:
-                st.number_input(
-                    "2️⃣ 2 for $", min_value=0.0, step=0.01, format="%.2f",
-                    value=float(_twofor_val) if _twofor_val not in (None, 0.0, "") else None,
-                    placeholder="0.00",
-                    key=f"input_twofor_{ss_key}_{i}",
-                    on_change=_save_twofor,
-                )
-            with fc3:
-                st.selectbox(
-                    "🏭 Wholesaler", _ws_options,
-                    index=_ws_options.index(_ws_saved) if _ws_saved in _ws_options else 0,
-                    key=f"input_ws_{ss_key}_{i}",
-                    on_change=_save_ws,
-                )
-            with fc4:
-                st.markdown("<br>", unsafe_allow_html=True)
-                _done_clicked = st.button("✓ Done", key=f"done_btn_{ss_key}_{i}",
-                                          use_container_width=True, type="primary")
+            # st.form prevents rerun on every keystroke — only reruns on Save/Done
+            with st.form(key=f"form_{ss_key}_{i}", border=False):
+                fc1, fc2, fc3, fc4, fc5 = st.columns([2, 2, 2, 1, 1])
+                with fc1:
+                    retail = st.number_input(
+                        "💲 Retail $", min_value=0.0, step=0.01, format="%.2f",
+                        value=float(_retail_val) if _has_retail else None,
+                        placeholder="0.00",
+                    )
+                with fc2:
+                    twofor = st.number_input(
+                        "2️⃣ 2 for $", min_value=0.0, step=0.01, format="%.2f",
+                        value=float(_twofor_val) if _twofor_val not in (None, 0.0, "") else None,
+                        placeholder="0.00",
+                    )
+                with fc3:
+                    # Priority: 1) session state (if non-blank) 2) market memory 3) UPC master list
+                    _ws_default = str(row["Wholesaler"]).strip() if "Wholesaler" in row.index else ""
+                    if _ws_default not in _ws_options:
+                        _ws_default = ""
+                    _product_name = str(row["Product"]).strip() if "Product" in row.index else ""
+                    _remembered_ws = _mkt_ws_memory.get(_product_name, "")
+                    if _remembered_ws and _remembered_ws in _ws_options:
+                        _ws_default = _remembered_ws
+                    # Only use session state if it has a real (non-blank) value
+                    _ws_saved = _ws_val if (_ws_val and _ws_val in _ws_options) else _ws_default
+                    wholesaler = st.selectbox(
+                        "🏭 Wholesaler", _ws_options,
+                        index=_ws_options.index(_ws_saved) if _ws_saved in _ws_options else 0,
+                    )
+                with fc4:
+                    st.markdown("<br>", unsafe_allow_html=True)
+                    _save_clicked = st.form_submit_button("💾 Save", use_container_width=True)
+                with fc5:
+                    st.markdown("<br>", unsafe_allow_html=True)
+                    _done_clicked = st.form_submit_button("✓ Done", use_container_width=True, type="primary")
 
             st.markdown("<div style='margin-bottom:8px'></div>", unsafe_allow_html=True)
 
-            if _done_clicked:
-                st.session_state[f"{ss_key}_done_{i}"] = True
+            if _save_clicked or _done_clicked:
+                # Always save wholesaler even without a price
+                if wholesaler:
+                    st.session_state[f"wholesaler_{ss_key}_{i}"] = wholesaler
+                if retail and float(retail) > 0:
+                    st.session_state[f"val_retail_{ss_key}_{i}"] = float(retail)
+                if twofor and float(twofor) > 0:
+                    st.session_state[f"val_twofor_{ss_key}_{i}"] = float(twofor)
+                if _done_clicked:
+                    st.session_state[f"{ss_key}_done_{i}"] = True
                 st.session_state[f"expand_{ss_key}_{i}"] = False
                 st.rerun()
-
-            # Read back the latest persisted values for the export row
-            _retail_val  = st.session_state.get(f"val_retail_{ss_key}_{i}")
-            _twofor_val  = st.session_state.get(f"val_twofor_{ss_key}_{i}")
-            _has_retail  = _retail_val not in (None, 0.0, "")
 
             # Export row always uses persisted session state values
             edited_rows.append({
