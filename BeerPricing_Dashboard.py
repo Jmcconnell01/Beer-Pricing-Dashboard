@@ -12139,7 +12139,8 @@ with tab5:
         # Count already-entered prices (from session state)
         _entered_count = sum(
             1 for i in scan_df.index
-            if st.session_state.get(f"val_retail_{ss_key}_{i}") not in (None, 0.0, "")
+            if (st.session_state.get(f"_retail_input_{ss_key}_{i}") not in (None, 0.0, "")
+                or st.session_state.get(f"val_retail_{ss_key}_{i}") not in (None, 0.0, ""))
         )
         _total_count = len(scan_df)
         _pct = _entered_count / _total_count if _total_count else 0
@@ -12165,7 +12166,8 @@ with tab5:
                 _grp_total = len(_grp_df)
                 _grp_filled = sum(
                     1 for i in _grp_df.index
-                    if st.session_state.get(f"val_retail_{ss_key}_{i}") not in (None, 0.0, "")
+                    if (st.session_state.get(f"_retail_input_{ss_key}_{i}") not in (None, 0.0, "")
+                        or st.session_state.get(f"val_retail_{ss_key}_{i}") not in (None, 0.0, ""))
                 )
                 _grp_rows.append({
                     "Package Group": _grp,
@@ -12191,9 +12193,12 @@ with tab5:
         import json as _json_mod
         _price_payload = {}
         for _i in scan_df.index:
-            _rv = st.session_state.get(f"val_retail_{ss_key}_{_i}")
-            _tv = st.session_state.get(f"val_twofor_{ss_key}_{_i}")  # may not exist yet
-            _wv = st.session_state.get(f"wholesaler_{ss_key}_{_i}", "")
+            _rv = (st.session_state.get(f"_retail_input_{ss_key}_{_i}")
+                   or st.session_state.get(f"val_retail_{ss_key}_{_i}"))
+            _tv = (st.session_state.get(f"_twofor_input_{ss_key}_{_i}")
+                   or st.session_state.get(f"val_twofor_{ss_key}_{_i}"))
+            _wv = (st.session_state.get(f"_ws_input_{ss_key}_{_i}")
+                   or st.session_state.get(f"wholesaler_{ss_key}_{_i}", ""))
             _dv = st.session_state.get(f"{ss_key}_done_{_i}", False)
             if _rv or _tv or _dv:
                 _price_payload[str(_i)] = {"r": _rv, "t": _tv, "w": _wv, "d": _dv}
@@ -12344,9 +12349,14 @@ with tab5:
 
 
             _is_done    = st.session_state.get(f"{ss_key}_done_{i}", False)
-            _retail_val = st.session_state.get(f"val_retail_{ss_key}_{i}")
-            _twofor_val = st.session_state.get(f"val_twofor_{ss_key}_{i}")
-            _ws_val     = st.session_state.get(f"wholesaler_{ss_key}_{i}", "")
+            # Read directly from widget keys — no on_change means val_retail_ is never
+            # written during entry. Fall back to val_retail_ for localStorage-restored values.
+            _retail_val = (st.session_state.get(f"_retail_input_{ss_key}_{i}")
+                           or st.session_state.get(f"val_retail_{ss_key}_{i}"))
+            _twofor_val = (st.session_state.get(f"_twofor_input_{ss_key}_{i}")
+                           or st.session_state.get(f"val_twofor_{ss_key}_{i}"))
+            _ws_val     = (st.session_state.get(f"_ws_input_{ss_key}_{i}")
+                           or st.session_state.get(f"wholesaler_{ss_key}_{i}", ""))
             _has_retail = _retail_val not in (None, 0.0, "")
             _has_ws     = bool(_ws_val and _ws_val.strip())
             _is_expanded = st.session_state.get(f"expand_{ss_key}_{i}", False)
@@ -12408,37 +12418,23 @@ with tab5:
                 unsafe_allow_html=True
             )
 
-            # ── Open card inputs — no per-product form needed ─────────────────
-            # Values write directly to session state via on_change; the only
-            # submit required is the final "Submit Survey" button at the bottom.
+            # ── Open card inputs ──────────────────────────────────────────────
+            # No on_change callbacks — values are read directly from widget keys
+            # at export/submit time so the page doesn't reload after every input.
             fc1, fc2, fc3, fc4 = st.columns([2, 2, 3, 1])
             with fc1:
-                def _save_retail(k=f"val_retail_{ss_key}_{i}", wk=f"_retail_input_{ss_key}_{i}"):
-                    v = st.session_state.get(wk)
-                    if v and float(v) > 0:
-                        st.session_state[k] = float(v)
-                    elif v == 0.0 or v is None:
-                        st.session_state.pop(k, None)
                 st.number_input(
                     "💲 Retail $", min_value=0.0, step=0.01, format="%.2f",
                     value=float(_retail_val) if _has_retail else None,
                     placeholder="0.00",
                     key=f"_retail_input_{ss_key}_{i}",
-                    on_change=_save_retail,
                 )
             with fc2:
-                def _save_twofor(k=f"val_twofor_{ss_key}_{i}", wk=f"_twofor_input_{ss_key}_{i}"):
-                    v = st.session_state.get(wk)
-                    if v and float(v) > 0:
-                        st.session_state[k] = float(v)
-                    elif v == 0.0 or v is None:
-                        st.session_state.pop(k, None)
                 st.number_input(
                     "2️⃣ 2 for $", min_value=0.0, step=0.01, format="%.2f",
                     value=float(_twofor_val) if _twofor_val not in (None, 0.0, "") else None,
                     placeholder="0.00",
                     key=f"_twofor_input_{ss_key}_{i}",
-                    on_change=_save_twofor,
                 )
             with fc3:
                 # Priority: 1) session state (if non-blank) 2) market memory 3) UPC master list
@@ -12450,15 +12446,10 @@ with tab5:
                 if _remembered_ws and _remembered_ws in _ws_options:
                     _ws_default = _remembered_ws
                 _ws_saved = _ws_val if (_ws_val and _ws_val in _ws_options) else _ws_default
-                def _save_ws(k=f"wholesaler_{ss_key}_{i}", wk=f"_ws_input_{ss_key}_{i}"):
-                    v = st.session_state.get(wk)
-                    if v:
-                        st.session_state[k] = v
                 st.selectbox(
                     "🏭 Wholesaler", _ws_options,
                     index=_ws_options.index(_ws_saved) if _ws_saved in _ws_options else 0,
                     key=f"_ws_input_{ss_key}_{i}",
-                    on_change=_save_ws,
                 )
             with fc4:
                 st.markdown("<br>", unsafe_allow_html=True)
@@ -12470,14 +12461,24 @@ with tab5:
 
             st.markdown("<div style='margin-bottom:8px'></div>", unsafe_allow_html=True)
 
-            # Export row always uses persisted session state values
+            # Export row reads directly from widget keys (no on_change means val_retail_
+            # is never written — read widget key directly, fall back to localStorage-
+            # restored val_retail_ for values loaded on page start)
+            _export_retail = (st.session_state.get(f"_retail_input_{ss_key}_{i}")
+                              or st.session_state.get(f"val_retail_{ss_key}_{i}"))
+            _export_twofor = (st.session_state.get(f"_twofor_input_{ss_key}_{i}")
+                              or st.session_state.get(f"val_twofor_{ss_key}_{i}"))
+            _export_ws     = (st.session_state.get(f"_ws_input_{ss_key}_{i}")
+                              or st.session_state.get(f"wholesaler_{ss_key}_{i}", _ws_default))
+            _export_has_r  = _export_retail not in (None, 0.0, "")
+            _export_has_t  = _export_twofor not in (None, 0.0, "")
             edited_rows.append({
                 "WAMP":       row["WAMP"], "Brand":   row["Brand"],
                 "Product":    row["Product"], "Package": row["Package"],
                 "UPC":        row["UPC"],  "Barcode": str(row["Barcode"]),
-                "Wholesaler": st.session_state.get(f"wholesaler_{ss_key}_{i}", _ws_default),
-                "Retail $":   float(_retail_val) if _has_retail else None,
-                "2 for $":    float(_twofor_val) if _twofor_val not in (None, 0.0, "") else None,
+                "Wholesaler": _export_ws,
+                "Retail $":   float(_export_retail) if _export_has_r else None,
+                "2 for $":    float(_export_twofor) if _export_has_t else None,
             })
 
         edited = pd.DataFrame(edited_rows)
@@ -12537,10 +12538,13 @@ with tab5:
         with sc:
             st.markdown("<br>", unsafe_allow_html=True)
             if st.button("✓ Mark All Done", use_container_width=True,
-                         help="Collapse all cards that have a retail price entered",
-                         disabled=(filled == 0)):
+                         help="Collapse all cards that have a retail price entered"):
                 for _i in scan_df.index:
-                    if st.session_state.get(f"val_retail_{ss_key}_{_i}"):
+                    _has_price = (
+                        st.session_state.get(f"_retail_input_{ss_key}_{_i}") not in (None, 0.0, "")
+                        or st.session_state.get(f"val_retail_{ss_key}_{_i}") not in (None, 0.0, "")
+                    )
+                    if _has_price:
                         st.session_state[f"{ss_key}_done_{_i}"] = True
                 st.rerun()
 
