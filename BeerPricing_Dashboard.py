@@ -10949,143 +10949,144 @@ with tab1:
     if "hm_zoomed" not in st.session_state:
         st.session_state["hm_zoomed"] = False
 
-    # Pre-compute county flags for ALL markets with data on first load
-    # Reset cache key when function logic changes
-    if st.session_state.get("county_flags_version") != 2:
-        st.session_state.pop("county_flags_all_loaded", None)
-        st.session_state.pop("county_flags", None)
-        st.session_state["county_flags_version"] = 2
-    if "county_flags_all_loaded" not in st.session_state:
-        _counties_pre, _n2f_pre = _get_counties_geojson()
-        if _counties_pre:
-            _all_flags = {}
-            for _pmkt in has_data:
-                try:
-                    _pdf, _ = load_survey_pricing(_pmkt)
-                    if not _pdf.empty and "Wholesaler" in _pdf.columns:
-                        _pfl = _compute_county_flags(
-                            survey_json=_pdf.to_json(orient="split"),
-                            name_to_fips_json=__import__("json").dumps(_n2f_pre),
-                            mkt_label=_pmkt,
-                            threshold_val=0.50,
-                        )
-                        _all_flags.update(_pfl)
-                except Exception:
-                    pass
-            st.session_state["county_flags"] = _all_flags
-        st.session_state["county_flags_all_loaded"] = True
-
     sel_mkt = st.session_state["hm_market"]
     geo     = MARKET_GEO[sel_mkt] if sel_mkt else list(MARKET_GEO.values())[0]
 
-    # ── MAP ───────────────────────────────────────────────────────────────────
-    import plotly.graph_objects as go_map
+    # ── MAP (hidden — set _SHOW_MAP = True to re-enable) ─────────────────────
+    _SHOW_MAP = False
+    if _SHOW_MAP:
+        # Pre-compute county flags for ALL markets with data on first load
+        # Reset cache key when function logic changes
+        if st.session_state.get("county_flags_version") != 2:
+            st.session_state.pop("county_flags_all_loaded", None)
+            st.session_state.pop("county_flags", None)
+            st.session_state["county_flags_version"] = 2
+        if "county_flags_all_loaded" not in st.session_state:
+            _counties_pre, _n2f_pre = _get_counties_geojson()
+            if _counties_pre:
+                _all_flags = {}
+                for _pmkt in has_data:
+                    try:
+                        _pdf, _ = load_survey_pricing(_pmkt)
+                        if not _pdf.empty and "Wholesaler" in _pdf.columns:
+                            _pfl = _compute_county_flags(
+                                survey_json=_pdf.to_json(orient="split"),
+                                name_to_fips_json=__import__("json").dumps(_n2f_pre),
+                                mkt_label=_pmkt,
+                                threshold_val=0.50,
+                            )
+                            _all_flags.update(_pfl)
+                    except Exception:
+                        pass
+                st.session_state["county_flags"] = _all_flags
+            st.session_state["county_flags_all_loaded"] = True
+        import plotly.graph_objects as go_map
 
-    map_lats   = [v["lat"]   for v in MARKET_GEO.values()]
-    map_lons   = [v["lon"]   for v in MARKET_GEO.values()]
-    map_names  = list(MARKET_GEO.keys())
-    map_labels = [v["label"] for v in MARKET_GEO.values()]
+        map_lats   = [v["lat"]   for v in MARKET_GEO.values()]
+        map_lons   = [v["lon"]   for v in MARKET_GEO.values()]
+        map_names  = list(MARKET_GEO.keys())
+        map_labels = [v["label"] for v in MARKET_GEO.values()]
 
-    marker_colors = ["#8B1A1A" if m == sel_mkt else ("#64748b" if m in has_data else "#cbd5e1")
-                     for m in map_names]
-    marker_sizes  = [22 if m == sel_mkt else 15 for m in map_names]
+        marker_colors = ["#8B1A1A" if m == sel_mkt else ("#64748b" if m in has_data else "#cbd5e1")
+                         for m in map_names]
+        marker_sizes  = [22 if m == sel_mkt else 15 for m in map_names]
 
-    if sel_mkt and st.session_state["hm_zoomed"] and sel_mkt in has_data:
-        map_center = dict(lat=geo["lat"], lon=geo["lon"])
-        map_zoom   = geo["zoom"]
-    else:
-        map_center = dict(lat=32.8, lon=-81.5)
-        map_zoom   = 5.5
+        if sel_mkt and st.session_state["hm_zoomed"] and sel_mkt in has_data:
+            map_center = dict(lat=geo["lat"], lon=geo["lon"])
+            map_zoom   = geo["zoom"]
+        else:
+            map_center = dict(lat=32.8, lon=-81.5)
+            map_zoom   = 5.5
 
-    _counties_geojson, _name_to_fips = _get_counties_geojson()
+        _counties_geojson, _name_to_fips = _get_counties_geojson()
 
-    # Use flag counts stored from previous render (updated after survey loads below)
-    _stored_flags = st.session_state.get("county_flags", {})
+        # Use flag counts stored from previous render (updated after survey loads below)
+        _stored_flags = st.session_state.get("county_flags", {})
 
-    fig_map = go_map.Figure()
+        fig_map = go_map.Figure()
 
-    # County fill layer (grey baseline, coloured where flags exist)
-    if _counties_geojson:
-        # Build FIPS → "County Name, ST" lookup for hover labels
-        _fips_to_name = {
-            f["id"]: f["properties"]["NAME"] + " County, " + f["properties"]["STATE"]
-            for f in _counties_geojson["features"]
-        }
-        _state_abbr = {"45": "SC", "13": "GA"}
-        _fips_to_name = {
-            f["id"]: f["properties"]["NAME"] + " County, "
-                     + _state_abbr.get(f["properties"]["STATE"], f["properties"]["STATE"])
-            for f in _counties_geojson["features"]
-        }
+        # County fill layer (grey baseline, coloured where flags exist)
+        if _counties_geojson:
+            # Build FIPS → "County Name, ST" lookup for hover labels
+            _fips_to_name = {
+                f["id"]: f["properties"]["NAME"] + " County, " + f["properties"]["STATE"]
+                for f in _counties_geojson["features"]
+            }
+            _state_abbr = {"45": "SC", "13": "GA"}
+            _fips_to_name = {
+                f["id"]: f["properties"]["NAME"] + " County, "
+                         + _state_abbr.get(f["properties"]["STATE"], f["properties"]["STATE"])
+                for f in _counties_geojson["features"]
+            }
 
-        _all_fips   = [f["id"] for f in _counties_geojson["features"]]
-        _flag_vals  = [_stored_flags.get(f, 0) for f in _all_fips]
-        _county_names = [_fips_to_name.get(f, f) for f in _all_fips]
+            _all_fips   = [f["id"] for f in _counties_geojson["features"]]
+            _flag_vals  = [_stored_flags.get(f, 0) for f in _all_fips]
+            _county_names = [_fips_to_name.get(f, f) for f in _all_fips]
 
-        _fips_df = pd.DataFrame({
-            "fips":    _all_fips,
-            "flags":   _flag_vals,
-            "county":  _county_names,
-        })
+            _fips_df = pd.DataFrame({
+                "fips":    _all_fips,
+                "flags":   _flag_vals,
+                "county":  _county_names,
+            })
 
-        fig_map.add_trace(go_map.Choroplethmapbox(
-            geojson=_counties_geojson,
-            locations=_fips_df["fips"],
-            z=_fips_df["flags"],
-            customdata=_fips_df["county"],
-            featureidkey="id",
-            colorscale=[[0, "#e8eaf0"], [0.01, "#fef3c7"],
-                        [0.4, "#f97316"], [1.0, "#991b1b"]],
-            zmin=0,
-            zmax=max(_fips_df["flags"].max(), 1),
-            marker_opacity=0.45,
-            marker_line_width=0.8,
-            marker_line_color="#94a3b8",
-            showscale=False,
-            hovertemplate="<b>%{customdata}</b><br>Pricing Flags: %{z}<extra></extra>",
-            name="Counties",
+            fig_map.add_trace(go_map.Choroplethmapbox(
+                geojson=_counties_geojson,
+                locations=_fips_df["fips"],
+                z=_fips_df["flags"],
+                customdata=_fips_df["county"],
+                featureidkey="id",
+                colorscale=[[0, "#e8eaf0"], [0.01, "#fef3c7"],
+                            [0.4, "#f97316"], [1.0, "#991b1b"]],
+                zmin=0,
+                zmax=max(_fips_df["flags"].max(), 1),
+                marker_opacity=0.45,
+                marker_line_width=0.8,
+                marker_line_color="#94a3b8",
+                showscale=False,
+                hovertemplate="<b>%{customdata}</b><br>Pricing Flags: %{z}<extra></extra>",
+                name="Counties",
+            ))
+
+        # Market dot markers on top
+        fig_map.add_trace(go_map.Scattermapbox(
+            lat=map_lats, lon=map_lons,
+            mode="markers+text",
+            marker=dict(size=marker_sizes, color=marker_colors, opacity=0.95),
+            text=map_labels,
+            textposition="top right",
+            textfont=dict(size=11, color="#1a1a1a"),
+            customdata=map_names,
+            hovertemplate="<b>%{customdata}</b><br>%{text}<extra></extra>",
+            name="Markets",
+            showlegend=False,
         ))
 
-    # Market dot markers on top
-    fig_map.add_trace(go_map.Scattermapbox(
-        lat=map_lats, lon=map_lons,
-        mode="markers+text",
-        marker=dict(size=marker_sizes, color=marker_colors, opacity=0.95),
-        text=map_labels,
-        textposition="top right",
-        textfont=dict(size=11, color="#1a1a1a"),
-        customdata=map_names,
-        hovertemplate="<b>%{customdata}</b><br>%{text}<extra></extra>",
-        name="Markets",
-        showlegend=False,
-    ))
+        fig_map.update_layout(
+            mapbox=dict(style="carto-positron", center=map_center, zoom=map_zoom),
+            margin=dict(l=0, r=0, t=0, b=0),
+            height=420,
+            showlegend=False,
+            clickmode="event+select",
+        )
 
-    fig_map.update_layout(
-        mapbox=dict(style="carto-positron", center=map_center, zoom=map_zoom),
-        margin=dict(l=0, r=0, t=0, b=0),
-        height=420,
-        showlegend=False,
-        clickmode="event+select",
-    )
+        map_event = st.plotly_chart(
+            fig_map, use_container_width=True,
+            key="market_map", on_select="rerun", selection_mode="points"
+        )
 
-    map_event = st.plotly_chart(
-        fig_map, use_container_width=True,
-        key="market_map", on_select="rerun", selection_mode="points"
-    )
-
-    if map_event and map_event.selection and map_event.selection.get("points"):
-        pt  = map_event.selection["points"][0]
-        idx = pt.get("point_index", None)
-        if idx is not None and idx < len(map_names):
-            clicked = map_names[idx]
-            if clicked != st.session_state["hm_market"]:
-                st.session_state["hm_market"] = clicked
-                st.session_state["hm_zoomed"] = True
-            else:
-                # Toggle off — deselect market entirely
-                st.session_state["hm_market"] = None
-                st.session_state["hm_zoomed"] = False
-            st.rerun()
+        if map_event and map_event.selection and map_event.selection.get("points"):
+            pt  = map_event.selection["points"][0]
+            idx = pt.get("point_index", None)
+            if idx is not None and idx < len(map_names):
+                clicked = map_names[idx]
+                if clicked != st.session_state["hm_market"]:
+                    st.session_state["hm_market"] = clicked
+                    st.session_state["hm_zoomed"] = True
+                else:
+                    # Toggle off — deselect market entirely
+                    st.session_state["hm_market"] = None
+                    st.session_state["hm_zoomed"] = False
+                st.rerun()
 
     btn_cols = st.columns(len(MARKET_GEO))
     for col, mname in zip(btn_cols, MARKET_GEO.keys()):
@@ -11205,8 +11206,8 @@ with tab1:
 
         chain_cols = all_chains
 
-        # ── Compute county flag counts — merge all markets into session state ──
-        if not survey_df.empty and "Wholesaler" in survey_df.columns and _counties_geojson:
+        # ── Compute county flag counts (hidden with map — re-enable with _SHOW_MAP) ──
+        if _SHOW_MAP and not survey_df.empty and "Wholesaler" in survey_df.columns and _counties_geojson:
             _new_flags = _compute_county_flags(
                 survey_json=survey_df.to_json(orient="split"),
                 name_to_fips_json=__import__("json").dumps(_name_to_fips),
