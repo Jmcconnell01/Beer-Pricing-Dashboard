@@ -9943,7 +9943,7 @@ def pkg_group(package: str, wamp: str = "", brand: str = "") -> str:
     if p.startswith("1/"):
         size = p.split("/")[1].lower() if "/" in p else ""
 
-        if w == "Beyond Beer":
+        if w == "Beyond Beer" or w.startswith("Beyond Beer-"):
             if size.startswith(("16c","16al")):
                 if b in {"MD AB","Steel Reserve","Ritas","Seagram's Escapes"}:
                     return "BB Value Singles 16oz"
@@ -10009,7 +10009,7 @@ def pkg_group(package: str, wamp: str = "", brand: str = "") -> str:
     if qty == 9:
         return "Singles x9"
     if qty == 12:
-        if w == "Beyond Beer":
+        if w == "Beyond Beer" or w.startswith("Beyond Beer-"):
             _search = b.lower()  # b = brand or product name passed as 3rd arg
             # ── Cider ────────────────────────────────────────────────────────
             if any(x in _search for x in ("angry orchard", "strongbow", "smith & forge",
@@ -10063,7 +10063,7 @@ def pkg_group(package: str, wamp: str = "", brand: str = "") -> str:
             if _is_can:    return "Premium 24-packs Cans"
             if _is_bottle: return "Premium 24-packs Bottles"
             return "Premium 24-packs"
-        if w == "Beyond Beer":
+        if w == "Beyond Beer" or w.startswith("Beyond Beer-"):
             if _is_can:    return "BB 24-packs Cans"
             if _is_bottle: return "BB 24-packs Bottles"
             return "BB 24-packs"
