@@ -9949,8 +9949,9 @@ def pkg_group(package: str, wamp: str = "", brand: str = "") -> str:
                     return "BB Value Singles 16oz"
                 return "BB Singles 16oz"
             if size.startswith("19"):              return "BB Singles 19oz"
-            if size.startswith(("22","23","24b","24c")): return "BB Singles 22-24oz"
-            if size.startswith("7"):               return "BB Singles 7oz"
+            if size.startswith(("22","23")):       return "BB Singles 22-24oz"
+            if size.startswith(("24b","24c")):     return "BB Singles 24oz"
+            if size.startswith(("7","200")):       return "BB Singles 7oz"
             return "BB Singles Other"
 
         if w == "Core":
