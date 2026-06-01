@@ -10234,23 +10234,31 @@ def get_upc_df(market: str = "1 · Charleston"):
     return df
 
 
-PLANOGRAM_URL = "https://docs.google.com/spreadsheets/d/e/2PACX-1vQlrqK58HOY7cOmkPI1XTGkREzhPp21k8uqTQDGob8qOhZaO7e2FS_fLxjFI1IplCRPmmSTI7Asiqpf/pub?gid=1852497519&single=true&output=csv"
+PLANOGRAM_SHEET_ID = "17aJ7h5eBXyG8zlZtGlRAywMTZ3aQ4xBWpMBPztEVlak"
+PLANOGRAM_GID      = "1215767960"
 
 @st.cache_data(ttl=300, show_spinner=False)
 def load_planogram_index():
     """
-    Fetch All_Items_All_Planograms from Google Sheets (published CSV) and return:
-      exact_lookup: { "Circle K #2707332 (BLK)": {upcs, products} }
-      name_lookup:  { "circle k #2707332":        {upcs, products} }
-      cust_lookup:  { "61143":                    {upcs, products} }
+    Fetch All_Items_All_Planograms via gspread service account and return:
+      exact_lookup: { "Circle K #2707332 (BLK)": {upcs, products, rows} }
+      name_lookup:  { "circle k #2707332":        {upcs, products, rows} }
+      cust_lookup:  { "61143":                    {upcs, products, rows} }
     Cached for 5 minutes. Falls back to empty dicts on any error.
     """
-    import re as _re_pg, io as _io_pg
+    import re as _re_pg
     try:
-        import requests as _req_pg
-        _resp = _req_pg.get(PLANOGRAM_URL, timeout=30)
-        _resp.raise_for_status()
-        _pg = pd.read_csv(_io_pg.StringIO(_resp.text), header=0, low_memory=False)
+        _gc = _get_gsheets_client()
+        if _gc is None:
+            return {}, {}, {}
+        _sh  = _gc.open_by_key(PLANOGRAM_SHEET_ID)
+        # Find the correct worksheet by GID
+        _ws  = next((s for s in _sh.worksheets() if str(s.id) == PLANOGRAM_GID), _sh.sheet1)
+        _rows_raw = _ws.get_all_values()
+        if not _rows_raw or len(_rows_raw) < 2:
+            return {}, {}, {}
+        _pg = pd.DataFrame(_rows_raw[1:], columns=_rows_raw[0])
+        # Normalise column names to match expected schema
         _pg.columns = ['_cust_num', 'Retail_Store', 'Family', 'Inner_Pack',
                        'Name', 'Barcode', 'Desc11', 'GTIN', 'UPC', 'WAMP']
         _pg = _pg[_pg['Name'] != 'Name'].copy()
@@ -10259,7 +10267,7 @@ def load_planogram_index():
 
         exact_lookup = {}
         name_lookup  = {}
-        cust_lookup  = {}   # customer_number (str) → store data
+        cust_lookup  = {}
         for store, grp in _pg.groupby('Retail_Store'):
             store = str(store).strip()
             upcs  = set(grp['UPC'].dropna().unique())
@@ -10268,7 +10276,6 @@ def load_planogram_index():
             exact_lookup[store] = data
             norm = _re_pg.sub(r'\s*\([A-Z]+\)\s*$', '', store).strip().lower()
             name_lookup[norm] = data
-            # Also key by wholesaler customer number for robust fallback matching
             cust_num = str(grp['_cust_num'].iloc[0]).strip().split('.')[0]
             if cust_num:
                 cust_lookup[cust_num] = data
@@ -11996,6 +12003,25 @@ with tab5:
 
         # Get market-specific UPC list (wholesaler varies by market)
         _pg_exact, _pg_norm, _pg_cust = load_planogram_index()
+
+        # ── Planogram debug info ──────────────────────────────────────────────
+        with st.expander("🔍 Planogram Debug Info", expanded=False):
+            st.write(f"**Stores in planogram index:** {len(_pg_exact)}")
+            st.write(f"**Selected store:** `{sel_store}`")
+            if _pg_exact:
+                _sample = list(_pg_exact.keys())[:5]
+                st.write(f"**Sample planogram stores:** {_sample}")
+                import re as _re_dbg
+                _norm_dbg = _re_dbg.sub(r'\s*\([A-Z]+\)\s*$', '', sel_store).strip().lower()
+                st.write(f"**Normalized selected store:** `{_norm_dbg}`")
+                _cid_dbg = str(store_row["customer_id"]).strip() if store_row is not None else "N/A"
+                st.write(f"**Customer ID:** `{_cid_dbg}`")
+                st.write(f"**Exact match:** {sel_store in _pg_exact}")
+                st.write(f"**Norm match:** {_norm_dbg in _pg_norm}")
+                st.write(f"**Cust ID match:** {_cid_dbg in _pg_cust}")
+            else:
+                st.error("❌ Planogram index is EMPTY — gspread fetch likely failed.")
+
         # Try to match selected store to planogram
         _pg_store_data = None
         _pg_store_label = ""
@@ -12078,11 +12104,16 @@ with tab5:
                 _cid_check = str(store_row["customer_id"]).strip() if store_row is not None else "?"
                 if _total_pg_stores == 0:
                     _pg_reason = "planogram sheet is empty or unavailable — showing default list"
+                    st.warning(f"⚠️ DEBUG: Planogram returned 0 stores. gspread fetch likely failed.")
                 else:
                     _pg_reason = (
                         f"no planogram on file for this store "
                         f"(Customer ID {_cid_check} not found in {_total_pg_stores:,} planogram stores)"
                     )
+                    # Debug: show what store name we tried to match
+                    import re as _re_dbg
+                    _norm_dbg = _re_dbg.sub(r'\s*\([A-Z]+\)\s*$', '', sel_store).strip().lower()
+                    st.warning(f"⚠️ DEBUG: {_total_pg_stores:,} stores loaded. Tried exact='{sel_store}' norm='{_norm_dbg}' cid='{_cid_check}'. Sample keys: {list(_pg_exact.keys())[:5]}")
             else:
                 _pg_reason = "no rows found — showing default list"
             st.info(f"📦 Showing **default market scan list** ({_pg_reason}).")
