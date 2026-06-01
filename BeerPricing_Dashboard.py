@@ -12520,7 +12520,7 @@ with tab5:
             _rep_name = st.session_state.get(f"rep_name_{ss_key}", "")
 
         # ── Stats + action row ────────────────────────────────────────────────
-        sa, sb, sc, sd = st.columns([1, 1, 1, 2])
+        sa, sb = st.columns(2)
 
         with sa:
             st.metric("Prices Entered", f"{filled} / {len(export_df)}")
@@ -12534,138 +12534,129 @@ with tab5:
                 saved_count = 0
             st.metric("Total Saved Records", f"{saved_count}")
 
-        with sc:
-            st.markdown("<br>", unsafe_allow_html=True)
-            if st.button("✓ Mark All Done", use_container_width=True,
-                         help="Collapse all cards that have a retail price entered"):
-                for _i in scan_df.index:
-                    if st.session_state.get(f"val_retail_{ss_key}_{_i}") not in (None, 0.0, ""):
-                        st.session_state[f"{ss_key}_done_{_i}"] = True
-                st.rerun()
+        # ── Action buttons row ────────────────────────────────────────────
+        submit_col, dl_col = st.columns([1, 1])
 
-        with sd:
-            submit_col, dl_col = st.columns(2)
+        with submit_col:
+            # Only require a rep name — allow submission with any number of prices
+            # (even just 1). Users doing partial surveys should never be blocked.
+            _rep_ok = bool(_rep_name.strip())
+            _submit_disabled = not _rep_ok
+            if not _rep_ok:
+                _submit_help = "Enter your name above before submitting"
+            elif filled == 0:
+                _submit_help = "⚠️ No prices entered yet — you can still submit to record a visit"
+            else:
+                _submit_help = f"Submit {filled} price{'s' if filled != 1 else ''} to Google Sheets"
+            if st.button("✅ Submit Survey", type="primary", use_container_width=True,
+                         disabled=_submit_disabled,
+                         help=_submit_help):
+                # Collect only rows that have a retail price entered
+                now = _dt.datetime.now().strftime("%Y-%m-%d %H:%M:%S")
+                save_df = export_df[export_df["Retail $"].notna()].copy()
+                save_df["Submitted At"] = now
+                save_df["Rep Name"]     = _rep_name.strip()
 
-            with submit_col:
-                # Only require a rep name — allow submission with any number of prices
-                # (even just 1). Users doing partial surveys should never be blocked.
-                _rep_ok = bool(_rep_name.strip())
-                _submit_disabled = not _rep_ok
-                if not _rep_ok:
-                    _submit_help = "Enter your name above before submitting"
-                elif filled == 0:
-                    _submit_help = "⚠️ No prices entered yet — you can still submit to record a visit"
+                if save_df.empty:
+                    # No prices — record a visit-only row so the rep is logged
+                    save_df = pd.DataFrame([{
+                        "Submitted At": now,
+                        "Rep Name":    _rep_name.strip(),
+                        "Store":       export_df["Store"].iloc[0] if len(export_df) else "",
+                        "Market":      export_df["Market"].iloc[0] if len(export_df) else "",
+                        "Parent Chain":export_df["Parent Chain"].iloc[0] if len(export_df) else "",
+                        "Customer ID": export_df["Customer ID"].iloc[0] if len(export_df) else "",
+                        "WAMP": "", "Brand": "", "Product": "— Visit logged (no prices) —",
+                        "Package": "", "UPC": "", "Wholesaler": "",
+                        "Retail $": "", "2 for $": "",
+                    }])
+
+                # ── PRIMARY write: Google Sheets (atomic batch append — no race condition) ──
+                _gs_rows = []
+                for _, _gr in save_df.iterrows():
+                    _gs_rows.append([
+                        str(_gr.get("Submitted At", "")),
+                        str(_gr.get("Rep Name", "")),
+                        str(_gr.get("Store", "")),
+                        str(_gr.get("Market", "")),
+                        str(_gr.get("Parent Chain", "")),
+                        str(_gr.get("Customer ID", "")),
+                        str(_gr.get("WAMP", "")),
+                        str(_gr.get("Brand", "")),
+                        str(_gr.get("Product", "")),
+                        str(_gr.get("Package", "")),
+                        str(_gr.get("UPC", "")),
+                        str(_gr.get("Wholesaler", "")),
+                        str(_gr.get("Retail $", "")),
+                        str(_gr.get("2 for $", "")),
+                    ])
+                _gs_ok = _append_to_survey_sheet(_gs_rows)
+
+                # ── SECONDARY write: local CSV fallback ──────────────────────
+                try:
+                    import fcntl as _fcntl
+                    _file_exists = os.path.exists(RESULTS_CSV)
+                    with open(RESULTS_CSV, "a", newline="") as _f:
+                        _fcntl.flock(_f, _fcntl.LOCK_EX)
+                        save_df.to_csv(_f, mode="a", header=not _file_exists, index=False)
+                        _fcntl.flock(_f, _fcntl.LOCK_UN)
+                except Exception:
+                    pass
+
+                # Bust the 30-second Sheets read-cache so the heatmap refreshes immediately
+                load_survey_pricing.clear()
+
+                _price_count = len(save_df[save_df["Product"] != "— Visit logged (no prices) —"])
+                _gs_msg = " · Saved to Google Sheets ✅" if _gs_ok else " · ⚠️ Google Sheets unavailable"
+                if _price_count == 0:
+                    st.success(f"✅ Visit logged for {_rep_name.strip()} — no prices recorded  ({now}){_gs_msg}")
                 else:
-                    _submit_help = f"Submit {filled} price{'s' if filled != 1 else ''} to Google Sheets"
-                if st.button("✅ Submit Survey", type="primary", use_container_width=True,
-                             disabled=_submit_disabled,
-                             help=_submit_help):
-                    # Collect only rows that have a retail price entered
-                    now = _dt.datetime.now().strftime("%Y-%m-%d %H:%M:%S")
-                    save_df = export_df[export_df["Retail $"].notna()].copy()
-                    save_df["Submitted At"] = now
-                    save_df["Rep Name"]     = _rep_name.strip()
+                    st.success(f"✅ {_price_count} price{'s' if _price_count != 1 else ''} saved  ({now}){_gs_msg}")
+                st.balloons()
 
-                    if save_df.empty:
-                        # No prices — record a visit-only row so the rep is logged
-                        save_df = pd.DataFrame([{
-                            "Submitted At": now,
-                            "Rep Name":    _rep_name.strip(),
-                            "Store":       export_df["Store"].iloc[0] if len(export_df) else "",
-                            "Market":      export_df["Market"].iloc[0] if len(export_df) else "",
-                            "Parent Chain":export_df["Parent Chain"].iloc[0] if len(export_df) else "",
-                            "Customer ID": export_df["Customer ID"].iloc[0] if len(export_df) else "",
-                            "WAMP": "", "Brand": "", "Product": "— Visit logged (no prices) —",
-                            "Package": "", "UPC": "", "Wholesaler": "",
-                            "Retail $": "", "2 for $": "",
-                        }])
+        with dl_col:
+            _dl_btn_col, _bc_btn_col = st.columns(2)
 
-                    # ── PRIMARY write: Google Sheets (atomic batch append — no race condition) ──
-                    _gs_rows = []
-                    for _, _gr in save_df.iterrows():
-                        _gs_rows.append([
-                            str(_gr.get("Submitted At", "")),
-                            str(_gr.get("Rep Name", "")),
-                            str(_gr.get("Store", "")),
-                            str(_gr.get("Market", "")),
-                            str(_gr.get("Parent Chain", "")),
-                            str(_gr.get("Customer ID", "")),
-                            str(_gr.get("WAMP", "")),
-                            str(_gr.get("Brand", "")),
-                            str(_gr.get("Product", "")),
-                            str(_gr.get("Package", "")),
-                            str(_gr.get("UPC", "")),
-                            str(_gr.get("Wholesaler", "")),
-                            str(_gr.get("Retail $", "")),
-                            str(_gr.get("2 for $", "")),
-                        ])
-                    _gs_ok = _append_to_survey_sheet(_gs_rows)
-
-                    # ── SECONDARY write: local CSV fallback ──────────────────────
-                    try:
-                        import fcntl as _fcntl
-                        _file_exists = os.path.exists(RESULTS_CSV)
-                        with open(RESULTS_CSV, "a", newline="") as _f:
-                            _fcntl.flock(_f, _fcntl.LOCK_EX)
-                            save_df.to_csv(_f, mode="a", header=not _file_exists, index=False)
-                            _fcntl.flock(_f, _fcntl.LOCK_UN)
-                    except Exception:
-                        pass
-
-                    # Bust the 30-second Sheets read-cache so the heatmap refreshes immediately
-                    load_survey_pricing.clear()
-
-                    _price_count = len(save_df[save_df["Product"] != "— Visit logged (no prices) —"])
-                    _gs_msg = " · Saved to Google Sheets ✅" if _gs_ok else " · ⚠️ Google Sheets unavailable"
-                    if _price_count == 0:
-                        st.success(f"✅ Visit logged for {_rep_name.strip()} — no prices recorded  ({now}){_gs_msg}")
-                    else:
-                        st.success(f"✅ {_price_count} price{'s' if _price_count != 1 else ''} saved  ({now}){_gs_msg}")
-                    st.balloons()
-
-            with dl_col:
-                _dl_btn_col, _bc_btn_col = st.columns(2)
-
-                # ── Download All Results (Google Sheets) ──────────────────────
-                with _dl_btn_col:
-                    _dl_df = _load_all_survey_from_sheets()
-                    if not _dl_df.empty:
-                        st.download_button(
-                            "⬇ Download All Results",
-                            _dl_df.to_csv(index=False).encode(),
-                            "survey_results.csv",
-                            "text/csv",
-                            use_container_width=True,
-                            key=f"dl_results_top_{ss_key}",
-                        )
-                    else:
-                        st.download_button(
-                            "⬇ Download All Results",
-                            b"",
-                            "survey_results.csv",
-                            "text/csv",
-                            use_container_width=True,
-                            disabled=True,
-                            key=f"dl_results_top_disabled_{ss_key}",
-                        )
-
-                # ── Download Barcode List for this store ──────────────────────
-                with _bc_btn_col:
-                    _bc_cols = [c for c in ["WAMP", "Brand", "Product", "Package", "UPC", "Barcode"] if c in scan_df.columns]
-                    _bc_export = scan_df[_bc_cols].copy()
-                    # Prepend store/market context columns
-                    _bc_export.insert(0, "Market", sel_upc_market if sel_upc_market != "All Markets" else "")
-                    _bc_export.insert(1, "Store",  sel_store      if sel_store      != "All Stores"  else "")
-                    _safe_store = (sel_store if sel_store != "All Stores" else sel_upc_market or "store").replace(" ", "_").replace("/", "-")
+            # ── Download All Results (Google Sheets) ──────────────────────
+            with _dl_btn_col:
+                _dl_df = _load_all_survey_from_sheets()
+                if not _dl_df.empty:
                     st.download_button(
-                        "📋 Download Barcode List",
-                        _bc_export.to_csv(index=False).encode(),
-                        f"barcode_list_{_safe_store}.csv",
+                        "⬇ Download All Results",
+                        _dl_df.to_csv(index=False).encode(),
+                        "survey_results.csv",
                         "text/csv",
                         use_container_width=True,
-                        help="Download the UPC / barcode list for this store as a CSV",
-                        key=f"dl_barcode_{ss_key}",
+                        key=f"dl_results_top_{ss_key}",
                     )
+                else:
+                    st.download_button(
+                        "⬇ Download All Results",
+                        b"",
+                        "survey_results.csv",
+                        "text/csv",
+                        use_container_width=True,
+                        disabled=True,
+                        key=f"dl_results_top_disabled_{ss_key}",
+                    )
+
+            # ── Download Barcode List for this store ──────────────────────
+            with _bc_btn_col:
+                _bc_cols = [c for c in ["WAMP", "Brand", "Product", "Package", "UPC", "Barcode"] if c in scan_df.columns]
+                _bc_export = scan_df[_bc_cols].copy()
+                # Prepend store/market context columns
+                _bc_export.insert(0, "Market", sel_upc_market if sel_upc_market != "All Markets" else "")
+                _bc_export.insert(1, "Store",  sel_store      if sel_store      != "All Stores"  else "")
+                _safe_store = (sel_store if sel_store != "All Stores" else sel_upc_market or "store").replace(" ", "_").replace("/", "-")
+                st.download_button(
+                    "📋 Download Barcode List",
+                    _bc_export.to_csv(index=False).encode(),
+                    f"barcode_list_{_safe_store}.csv",
+                    "text/csv",
+                    use_container_width=True,
+                    help="Download the UPC / barcode list for this store as a CSV",
+                    key=f"dl_barcode_{ss_key}",
+                )
 
         # ── Saved results preview ─────────────────────────────────────────────
         with st.expander("📂 View Saved Survey Results", expanded=False):
