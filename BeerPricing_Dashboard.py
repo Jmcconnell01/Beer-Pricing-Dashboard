@@ -12624,26 +12624,47 @@ with tab5:
                     st.balloons()
 
             with dl_col:
-                # Download all historical results from Google Sheets (authoritative source)
-                _dl_df = _load_all_survey_from_sheets()
-                if not _dl_df.empty:
+                _dl_btn_col, _bc_btn_col = st.columns(2)
+
+                # ── Download All Results (Google Sheets) ──────────────────────
+                with _dl_btn_col:
+                    _dl_df = _load_all_survey_from_sheets()
+                    if not _dl_df.empty:
+                        st.download_button(
+                            "⬇ Download All Results",
+                            _dl_df.to_csv(index=False).encode(),
+                            "survey_results.csv",
+                            "text/csv",
+                            use_container_width=True,
+                            key=f"dl_results_top_{ss_key}",
+                        )
+                    else:
+                        st.download_button(
+                            "⬇ Download All Results",
+                            b"",
+                            "survey_results.csv",
+                            "text/csv",
+                            use_container_width=True,
+                            disabled=True,
+                            key=f"dl_results_top_disabled_{ss_key}",
+                        )
+
+                # ── Download Barcode List for this store ──────────────────────
+                with _bc_btn_col:
+                    _bc_cols = [c for c in ["WAMP", "Brand", "Product", "Package", "UPC", "Barcode"] if c in scan_df.columns]
+                    _bc_export = scan_df[_bc_cols].copy()
+                    # Prepend store/market context columns
+                    _bc_export.insert(0, "Market", sel_upc_market if sel_upc_market != "All Markets" else "")
+                    _bc_export.insert(1, "Store",  sel_store      if sel_store      != "All Stores"  else "")
+                    _safe_store = (sel_store if sel_store != "All Stores" else sel_upc_market or "store").replace(" ", "_").replace("/", "-")
                     st.download_button(
-                        "⬇ Download All Results",
-                        _dl_df.to_csv(index=False).encode(),
-                        "survey_results.csv",
+                        "📋 Download Barcode List",
+                        _bc_export.to_csv(index=False).encode(),
+                        f"barcode_list_{_safe_store}.csv",
                         "text/csv",
                         use_container_width=True,
-                        key=f"dl_results_top_{ss_key}",
-                    )
-                else:
-                    st.download_button(
-                        "⬇ Download All Results",
-                        b"",
-                        "survey_results.csv",
-                        "text/csv",
-                        use_container_width=True,
-                        disabled=True,
-                        key=f"dl_results_top_disabled_{ss_key}",
+                        help="Download the UPC / barcode list for this store as a CSV",
+                        key=f"dl_barcode_{ss_key}",
                     )
 
         # ── Saved results preview ─────────────────────────────────────────────
