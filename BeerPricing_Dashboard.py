@@ -12644,17 +12644,51 @@ with tab5:
             with _bc_btn_col:
                 _bc_cols = [c for c in ["WAMP", "Brand", "Product", "Package", "UPC", "Barcode"] if c in scan_df.columns]
                 _bc_export = scan_df[_bc_cols].copy()
-                # Prepend store/market context columns
                 _bc_export.insert(0, "Market", sel_upc_market if sel_upc_market != "All Markets" else "")
                 _bc_export.insert(1, "Store",  sel_store      if sel_store      != "All Stores"  else "")
+                # Add blank input columns for manual entry
+                for _col in ["Wholesaler", "Retail $", "2 for $"]:
+                    _bc_export[_col] = ""
                 _safe_store = (sel_store if sel_store != "All Stores" else sel_upc_market or "store").replace(" ", "_").replace("/", "-")
+                # Build xlsx in-memory with IDAutomation font on Barcode column
+                import io as _io
+                from openpyxl import Workbook as _WB
+                from openpyxl.styles import Font as _Font, PatternFill as _PF, Alignment as _Align
+                _wb = _WB()
+                _ws = _wb.active
+                _ws.title = "Barcode List"
+                _bc_headers = list(_bc_export.columns)
+                _ws.append(_bc_headers)
+                # Style header row
+                _hdr_fill = _PF("solid", start_color="1F4E79", end_color="1F4E79")
+                for _ci, _hdr in enumerate(_bc_headers, 1):
+                    _cell = _ws.cell(row=1, column=_ci)
+                    _cell.font = _Font(name="Arial", bold=True, color="FFFFFF", size=10)
+                    _cell.fill = _hdr_fill
+                    _cell.alignment = _Align(horizontal="center", vertical="center")
+                # Find Barcode column index (1-based)
+                _barcode_col_idx = _bc_headers.index("Barcode") + 1 if "Barcode" in _bc_headers else None
+                # Write data rows
+                for _ri, _row in _bc_export.iterrows():
+                    _ws.append(list(_row))
+                # Apply IDAutomationUPCEANXS font to all Barcode data cells
+                if _barcode_col_idx:
+                    for _r in range(2, len(_bc_export) + 2):
+                        _ws.cell(row=_r, column=_barcode_col_idx).font = _Font(name="IDAutomationUPCEANXS", size=24)
+                # Auto-size columns (cap at 60)
+                for _col_cells in _ws.columns:
+                    _max_w = max((len(str(_c.value or "")) for _c in _col_cells), default=8)
+                    _ws.column_dimensions[_col_cells[0].column_letter].width = min(_max_w + 4, 60)
+                _bc_buf = _io.BytesIO()
+                _wb.save(_bc_buf)
+                _bc_buf.seek(0)
                 st.download_button(
                     "📋 Download Barcode List",
-                    _bc_export.to_csv(index=False).encode(),
-                    f"barcode_list_{_safe_store}.csv",
-                    "text/csv",
+                    _bc_buf.getvalue(),
+                    f"barcode_list_{_safe_store}.xlsx",
+                    "application/vnd.openxmlformats-officedocument.spreadsheetml.sheet",
                     use_container_width=True,
-                    help="Download the UPC / barcode list for this store as a CSV",
+                    help="Download the UPC / barcode list for this store as an Excel file",
                     key=f"dl_barcode_{ss_key}",
                 )
 
