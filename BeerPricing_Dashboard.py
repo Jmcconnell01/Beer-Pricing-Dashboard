@@ -12004,24 +12004,6 @@ with tab5:
         # Get market-specific UPC list (wholesaler varies by market)
         _pg_exact, _pg_norm, _pg_cust = load_planogram_index()
 
-        # ── Planogram debug info ──────────────────────────────────────────────
-        with st.expander("🔍 Planogram Debug Info", expanded=False):
-            st.write(f"**Stores in planogram index:** {len(_pg_exact)}")
-            st.write(f"**Selected store:** `{sel_store}`")
-            if _pg_exact:
-                _sample = list(_pg_exact.keys())[:5]
-                st.write(f"**Sample planogram stores:** {_sample}")
-                import re as _re_dbg
-                _norm_dbg = _re_dbg.sub(r'\s*\([A-Z]+\)\s*$', '', sel_store).strip().lower()
-                st.write(f"**Normalized selected store:** `{_norm_dbg}`")
-                _cid_dbg = str(store_row["customer_id"]).strip() if store_row is not None else "N/A"
-                st.write(f"**Customer ID:** `{_cid_dbg}`")
-                st.write(f"**Exact match:** {sel_store in _pg_exact}")
-                st.write(f"**Norm match:** {_norm_dbg in _pg_norm}")
-                st.write(f"**Cust ID match:** {_cid_dbg in _pg_cust}")
-            else:
-                st.error("❌ Planogram index is EMPTY — gspread fetch likely failed.")
-
         # Try to match selected store to planogram
         _pg_store_data = None
         _pg_store_label = ""
@@ -12104,16 +12086,11 @@ with tab5:
                 _cid_check = str(store_row["customer_id"]).strip() if store_row is not None else "?"
                 if _total_pg_stores == 0:
                     _pg_reason = "planogram sheet is empty or unavailable — showing default list"
-                    st.warning(f"⚠️ DEBUG: Planogram returned 0 stores. gspread fetch likely failed.")
                 else:
                     _pg_reason = (
                         f"no planogram on file for this store "
                         f"(Customer ID {_cid_check} not found in {_total_pg_stores:,} planogram stores)"
                     )
-                    # Debug: show what store name we tried to match
-                    import re as _re_dbg
-                    _norm_dbg = _re_dbg.sub(r'\s*\([A-Z]+\)\s*$', '', sel_store).strip().lower()
-                    st.warning(f"⚠️ DEBUG: {_total_pg_stores:,} stores loaded. Tried exact='{sel_store}' norm='{_norm_dbg}' cid='{_cid_check}'. Sample keys: {list(_pg_exact.keys())[:5]}")
             else:
                 _pg_reason = "no rows found — showing default list"
             st.info(f"📦 Showing **default market scan list** ({_pg_reason}).")
@@ -12446,28 +12423,38 @@ with tab5:
             with fc1:
                 def _save_retail(k=f"val_retail_{ss_key}_{i}", wk=f"_retail_input_{ss_key}_{i}"):
                     v = st.session_state.get(wk)
-                    if v and float(v) > 0:
-                        st.session_state[k] = float(v)
+                    if v is not None and float(v) > 0:
+                        fv = float(v)
+                        # Auto-shift: 999 → 9.99, 349 → 3.49, 150 → 1.50
+                        if fv >= 100 and fv == int(fv):
+                            fv = round(fv / 100, 2)
+                        st.session_state[k]  = fv
+                        st.session_state[wk] = fv
                     elif v == 0.0 or v is None:
                         st.session_state.pop(k, None)
                 st.number_input(
-                    "💲 Retail $", min_value=0.0, step=0.01, format="%.2f",
+                    "💲 Retail $", min_value=0.0, step=1.0, format="%g",
                     value=float(_retail_val) if _has_retail else None,
-                    placeholder="0.00",
+                    placeholder="e.g. 999 → $9.99",
                     key=f"_retail_input_{ss_key}_{i}",
                     on_change=_save_retail,
                 )
             with fc2:
                 def _save_twofor(k=f"val_twofor_{ss_key}_{i}", wk=f"_twofor_input_{ss_key}_{i}"):
                     v = st.session_state.get(wk)
-                    if v and float(v) > 0:
-                        st.session_state[k] = float(v)
+                    if v is not None and float(v) > 0:
+                        fv = float(v)
+                        # Auto-shift: 999 → 9.99, 349 → 3.49, 150 → 1.50
+                        if fv >= 100 and fv == int(fv):
+                            fv = round(fv / 100, 2)
+                        st.session_state[k]  = fv
+                        st.session_state[wk] = fv
                     elif v == 0.0 or v is None:
                         st.session_state.pop(k, None)
                 st.number_input(
-                    "2️⃣ 2 for $", min_value=0.0, step=0.01, format="%.2f",
+                    "2️⃣ 2 for $", min_value=0.0, step=1.0, format="%g",
                     value=float(_twofor_val) if _twofor_val not in (None, 0.0, "") else None,
-                    placeholder="0.00",
+                    placeholder="e.g. 999 → $9.99",
                     key=f"_twofor_input_{ss_key}_{i}",
                     on_change=_save_twofor,
                 )
