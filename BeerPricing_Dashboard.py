@@ -11803,6 +11803,29 @@ with tab2:
     # ── PDF generator ─────────────────────────────────────────────────────────
     def _build_comparison_pdf(sel_chain, peer_chains, pivot_retail, pivot_twofor,
                                summary_retail, filter_market, filter_type, report_date):
+        # ── Build anonymisation map — sel_chain keeps its name, peers get Chain A/B/C ──
+        import string as _str
+        _anon_letters = _str.ascii_uppercase
+        _anon_map = {}
+        _anon_idx = 0
+        for _c in sorted(set(peer_chains)):
+            if _c != sel_chain:
+                _anon_map[_c] = f"Chain {_anon_letters[_anon_idx % 26]}"
+                _anon_idx += 1
+
+        def _anon(name):
+            return name if name == sel_chain else _anon_map.get(name, name)
+
+        # Anonymise pivot columns
+        if pivot_retail is not None and not pivot_retail.empty:
+            pivot_retail = pivot_retail.rename(columns={c: _anon(c) for c in pivot_retail.columns if c != "Product"})
+        if pivot_twofor is not None and not pivot_twofor.empty:
+            pivot_twofor = pivot_twofor.rename(columns={c: _anon(c) for c in pivot_twofor.columns if c != "Product"})
+        # Anonymise summary table
+        summary_retail = summary_retail.copy()
+        summary_retail["Chain"] = summary_retail["Chain"].apply(_anon)
+        # Update peer_chains list to anonymised names
+        peer_chains = [_anon(c) for c in peer_chains]
         import io as _io
         from reportlab.lib.pagesizes import letter
         from reportlab.lib import colors as _rlc
@@ -11881,7 +11904,8 @@ with tab2:
         sum_data = [[
             Paragraph("Chain", s_cell_hdr),
             Paragraph("Stores", s_cell_hdr),
-            Paragraph("Avg Retail $", s_cell_hdr),
+            Paragraph("Avg Singles $", s_cell_hdr),
+            Paragraph("Avg Packages $", s_cell_hdr),
             Paragraph("vs Market Avg", s_cell_hdr),
         ]]
         for _, row in summary_retail.sort_values("Avg").iterrows():
@@ -11889,14 +11913,19 @@ with tab2:
             d_str = f"+${d:.2f}" if d > 0 else f"-${abs(d):.2f}"
             is_sel = row["Chain"] == sel_chain
             c_style = s_cell_sel if is_sel else s_cell_ctr
+            sing_val = row.get("Avg Singles $", float("nan"))
+            pkg_val  = row.get("Avg Packages $", float("nan"))
+            sing_str = f"${sing_val:.2f}" if pd.notna(sing_val) else "—"
+            pkg_str  = f"${pkg_val:.2f}"  if pd.notna(pkg_val)  else "—"
             sum_data.append([
                 Paragraph(f"{'> ' if is_sel else ''}{row['Chain']}", s_cell_sel if is_sel else s_cell_lft),
-                Paragraph(str(int(row["Stores"])),  c_style),
-                Paragraph(f"${row['Avg']:.2f}",     c_style),
-                Paragraph(d_str,                    c_style),
+                Paragraph(str(int(row["Stores"])), c_style),
+                Paragraph(sing_str,                c_style),
+                Paragraph(pkg_str,                 c_style),
+                Paragraph(d_str,                   c_style),
             ])
 
-        sum_tbl = Table(sum_data, colWidths=[2.8*inch, 0.8*inch, 1.2*inch, 1.2*inch])
+        sum_tbl = Table(sum_data, colWidths=[2.4*inch, 0.7*inch, 1.1*inch, 1.1*inch, 1.2*inch])
         sum_style = TableStyle([
             ("BACKGROUND",  (0,0), (-1,0),  TBL_HEAD),
             ("ROWBACKGROUNDS", (0,1), (-1,-1), [WHITE, ROW_ALT]),
@@ -12116,19 +12145,62 @@ with tab2:
             if _pkg_filt != "All Packages":
                 _detail_df = _detail_df[_detail_df["Package"] == _pkg_filt]
 
-            # ── Build summary table (store count per chain) ────────────────────
-            _store_counts = (
-                _detail_df.groupby("_chain")["Store"]
-                .nunique().reset_index()
-                .rename(columns={"_chain": "Chain", "Store": "Stores"})
-            )
+            # ── Build summary table (store count from ACCOUNT_DATA filtered by market) ──
+            _acct_chain_counts = {}
+            for _s in ACCOUNT_DATA:
+                _pc  = _s.get("parent_chain", "")
+                _mkt = _s.get("market", "")
+                _ct  = _s.get("customer_type", "")
+                if not _pc:
+                    continue
+                # Apply same market filter as pricing data
+                if _filter_mkt != "All Markets" and _mkt != _filter_mkt:
+                    continue
+                # Apply same store type filter as pricing data
+                if _filter_types and _ct not in _filter_types:
+                    continue
+                _acct_chain_counts[_pc] = _acct_chain_counts.get(_pc, 0) + 1
+
+            # ── Tag Singles vs Packages on detail_df ──────────────────────────
+            _singles_grps_cpc = {
+                "Core Singles 16oz","Core Singles 24-25oz","Core Singles 32oz","Core Singles Other",
+                "Core Plus Singles 16oz","Core Plus Singles 25oz","Core Plus Singles 32oz","Core Plus Singles Other",
+                "Premium Singles 16oz","Premium Singles 22oz","Premium Singles 24oz","Premium Singles 32oz","Premium Singles Other",
+                "Super Premium Singles 19oz","Super Premium Singles 22oz","Super Premium Singles Other",
+                "Value Singles 16oz","Value Singles 24-25oz","Value Singles 40oz","Value Singles Other",
+                "BB Singles 16oz","BB Value Singles 16oz","BB Singles 19oz","BB Singles 22-24oz","BB Singles 7oz","BB Singles Other",
+                "Wine Singles 7oz","Singles","Singles x4","Singles x6","Singles x8","Singles x9",
+            }
+            if "Package" in _detail_df.columns:
+                _detail_df = _detail_df.copy()
+                _detail_df["_PkgGrp"] = _detail_df.apply(
+                    lambda r: pkg_group(r.get("Package",""), r.get("WAMP",""), r.get("Brand","") or r.get("Product","")), axis=1
+                )
+                _detail_df["_Format"] = _detail_df["_PkgGrp"].apply(
+                    lambda g: "Singles" if g in _singles_grps_cpc else "Packages"
+                )
+            else:
+                _detail_df = _detail_df.copy()
+                _detail_df["_Format"] = "Packages"
+
+            # ── Build summary table split by Singles / Packages ────────────────
+            def _avg_by_format(df, fmt):
+                _d = df[df["_Format"] == fmt] if "_Format" in df.columns else df
+                if _d.empty or "Retail $" not in _d.columns:
+                    return pd.Series(dtype=float)
+                return _d.groupby("_chain")["Retail $"].mean().round(2)
+
+            _avg_singles  = _avg_by_format(_detail_df, "Singles").rename("Avg Singles $")
+            _avg_packages = _avg_by_format(_detail_df, "Packages").rename("Avg Packages $")
+
             _summary_retail = (
                 _detail_df.groupby("_chain")["Retail $"]
                 .mean().round(2).reset_index()
                 .rename(columns={"_chain": "Chain", "Retail $": "Avg"})
-                .merge(_store_counts, on="Chain", how="left")
             )
-            _summary_retail["Stores"] = _summary_retail["Stores"].fillna(0).astype(int)
+            _summary_retail["Stores"]        = _summary_retail["Chain"].map(_acct_chain_counts).fillna(0).astype(int)
+            _summary_retail["Avg Singles $"]  = _summary_retail["Chain"].map(_avg_singles).round(2)
+            _summary_retail["Avg Packages $"] = _summary_retail["Chain"].map(_avg_packages).round(2)
 
             # ── Build pivot tables ─────────────────────────────────────────────
             def _make_pivot(df, value_col):
@@ -12156,19 +12228,31 @@ with tab2:
             _sel_cnt = int(_sel_row["Stores"].iloc[0]) if not _sel_row.empty else 0
             _delta   = _sel_avg - _mkt_avg
 
-            _m1, _m2, _m3, _m4 = st.columns(4)
+            _m1, _m2, _m3, _m4, _m5 = st.columns(5)
             _m1.metric("Selected Chain", _sel_chain)
             _m2.metric("Store Count", str(_sel_cnt))
-            _m3.metric(f"{_sel_chain} Avg Retail", f"${_sel_avg:.2f}")
-            _m4.metric("vs Peer Avg", f"${_delta:+.2f}", delta=f"${_delta:+.2f}", delta_color="inverse")
+            _sel_sing = _sel_row["Avg Singles $"].iloc[0] if not _sel_row.empty and not pd.isna(_sel_row["Avg Singles $"].iloc[0]) else None
+            _sel_pkg  = _sel_row["Avg Packages $"].iloc[0] if not _sel_row.empty and not pd.isna(_sel_row["Avg Packages $"].iloc[0]) else None
+            _m3.metric(f"Avg Singles $",  f"${_sel_sing:.2f}" if _sel_sing else "—")
+            _m4.metric(f"Avg Packages $", f"${_sel_pkg:.2f}"  if _sel_pkg  else "—")
+            _m5.metric("vs Peer Avg", f"${_delta:+.2f}", delta=f"${_delta:+.2f}", delta_color="inverse")
 
-            # Summary table preview
+            # ── Anonymise peer chains — selected chain keeps its name ──────────
             _disp = _summary_retail.sort_values("Avg").copy()
-            _disp["Avg Retail $"] = _disp["Avg"].apply(lambda x: f"${x:.2f}")
-            _disp["vs Avg"]       = _disp["Avg"].apply(lambda x: f"${x-_mkt_avg:+.2f}")
-            _disp["Selected"]     = _disp["Chain"].apply(lambda c: "◀" if c == _sel_chain else "")
+            _letters = "ABCDEFGHIJKLMNOPQRSTUVWXYZ"
+            _peer_label_map = {}
+            _letter_idx = 0
+            for _c in _disp["Chain"]:
+                if _c != _sel_chain:
+                    _peer_label_map[_c] = f"Chain {_letters[_letter_idx % 26]}"
+                    _letter_idx += 1
+            _disp["Chain Display"]  = _disp["Chain"].apply(lambda c: c if c == _sel_chain else _peer_label_map.get(c, c))
+            _disp["Avg Singles $"]  = _disp["Avg Singles $"].apply(lambda x: f"${x:.2f}" if pd.notna(x) else "—")
+            _disp["Avg Packages $"] = _disp["Avg Packages $"].apply(lambda x: f"${x:.2f}" if pd.notna(x) else "—")
+            _disp["vs Avg"]         = _disp["Avg"].apply(lambda x: f"${x-_mkt_avg:+.2f}")
+            _disp["Selected"]       = _disp["Chain"].apply(lambda c: "◀" if c == _sel_chain else "")
             st.dataframe(
-                _disp[["Selected","Chain","Stores","Avg Retail $","vs Avg"]].reset_index(drop=True),
+                _disp[["Selected","Chain Display","Stores","Avg Singles $","Avg Packages $","vs Avg"]].reset_index(drop=True),
                 use_container_width=True, hide_index=True,
                 column_config={"Selected": st.column_config.TextColumn("", width="small")},
             )
