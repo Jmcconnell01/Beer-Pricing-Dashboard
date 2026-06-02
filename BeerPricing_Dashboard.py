@@ -9936,9 +9936,15 @@ PKG_GROUP_ORDER = [
 
 def pkg_group(package: str, wamp: str = "", brand: str = "") -> str:
     """Map a Package string (e.g. '1/16AL', '12/12C') to a display group."""
+    import re as _re_pkg
     p = str(package).strip()
     w = str(wamp).strip()
     b = str(brand).strip()
+    # If package is blank, extract from product/brand name e.g. "Corona Premier 12/12C SC" -> "12/12C"
+    if not p or not _re_pkg.match(r"\d+/", p):
+        _m = _re_pkg.search(r"(\d+/\d+[A-Za-z]+(?:\s*x\d+)?)", b)
+        if _m:
+            p = _m.group(1).strip()
     # Singles: 1 unit — grouped by WAMP + oz size
     if p.startswith("1/"):
         size = p.split("/")[1].lower() if "/" in p else ""
@@ -12085,17 +12091,10 @@ with tab2:
     else:
         _store_meta = {s["company"]: s for s in ACCOUNT_DATA}
 
-        # Consolidation map — sub-brands that should roll up to their parent chain
-        _chain_consolidation = {
-            "Parkers Saint Simons": "Parkers",
-        }
-
         def _enrich_chain(row):
-            meta   = _store_meta.get(str(row.get("Store", "")).strip(), {})
-            _chain = meta.get("parent_chain", str(row.get("Parent Chain", "")).strip())
-            _chain = _chain_consolidation.get(_chain, _chain)
+            meta = _store_meta.get(str(row.get("Store", "")).strip(), {})
             return pd.Series({
-                "_chain":     _chain,
+                "_chain":     meta.get("parent_chain", str(row.get("Parent Chain", "")).strip()),
                 "_cust_type": meta.get("customer_type", str(row.get("Store Type", "")).strip()),
                 "_market":    meta.get("market",        str(row.get("Market", "")).strip()),
             })
@@ -12106,11 +12105,8 @@ with tab2:
         # ── Filters ───────────────────────────────────────────────────────────
         _fc1, _fc2, _fc3 = st.columns([2, 2, 2])
 
-        # Chain list from ACCOUNT_DATA — apply same consolidation map
-        _all_chains = sorted({
-            _chain_consolidation.get(s["parent_chain"], s["parent_chain"])
-            for s in ACCOUNT_DATA if s.get("parent_chain")
-        })
+        # Chain list from ACCOUNT_DATA so all chains appear, not just surveyed ones
+        _all_chains = sorted({s["parent_chain"] for s in ACCOUNT_DATA if s.get("parent_chain")})
         _sel_chain  = _fc1.selectbox("Select Chain to Report On", _all_chains, key="cpc_chain")
 
         # Auto-detect the selected chain's store type from ACCOUNT_DATA
