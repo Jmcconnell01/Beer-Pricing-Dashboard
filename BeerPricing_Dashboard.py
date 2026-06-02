@@ -12182,328 +12182,328 @@ with tab2:
         if _filter_types:
             _df_filtered = _df_filtered[_df_filtered["_cust_type"].isin(_filter_types)]
 
-        # Check selected chain has data
+        # Check selected chain has data — use st.warning without st.stop()
         if _sel_chain not in _df_filtered["_chain"].values:
             st.warning(f"**{_sel_chain}** has no survey data matching the selected store type.")
-            st.stop()
-
-        # Fix WAMP + PkgGroup
-        _df_filtered = _fix_wamp_df(_df_filtered)
-
-        # ── Brand / Package sub-filters ────────────────────────────────────────
-        _sf1, _sf2 = st.columns(2)
-        _b_opts = ["All Brands"]   + sorted(_df_filtered["Brand"].dropna().unique().tolist())   if "Brand"   in _df_filtered.columns else ["All Brands"]
-        _p_opts = ["All Packages"] + sorted(_df_filtered["Package"].dropna().unique().tolist()) if "Package" in _df_filtered.columns else ["All Packages"]
-        _brand_f = _sf1.selectbox("Brand",   _b_opts, key="cpc_brand")
-        _pkg_f   = _sf2.selectbox("Package", _p_opts, key="cpc_pkg")
-        if _brand_f != "All Brands":
-            _df_filtered = _df_filtered[_df_filtered["Brand"] == _brand_f]
-        if _pkg_f != "All Packages":
-            _df_filtered = _df_filtered[_df_filtered["Package"] == _pkg_f]
-
-        # ── Get all markets the selected chain has data in ─────────────────────
-        _chain_markets = sorted(
-            _df_filtered[_df_filtered["_chain"] == _sel_chain]["_market"].dropna().unique())
-
-        # ── Compute per-market and all-markets ────────────────────────────────
-        _market_sections = []
-        _all_over_frames = []
-
-        for _mkt in _chain_markets:
-            _mdf = _df_filtered[_df_filtered["_market"] == _mkt]
-            _comp, _over, _wamp = _compute_comparison(_mdf, _sel_chain)
-            if not _comp.empty:
-                if not _over.empty:
-                    _over_copy = _over.copy()
-                    _over_copy["Market"] = _mkt
-                    _all_over_frames.append(_over_copy)
-                _market_sections.append(dict(
-                    market=_mkt, comp_df=_comp, over_df=_over, wamp_df=_wamp))
-
-        # All-markets combined
-        _all_df_comp, _all_df_over, _all_df_wamp = _compute_comparison(
-            _df_filtered, _sel_chain)
-        _all_over_combined = pd.concat(_all_over_frames, ignore_index=True) \
-            if _all_over_frames else pd.DataFrame()
-
-        # Anonymise peers
-        _peer_chains = sorted(_df_filtered["_chain"].dropna().unique())
-        _letters = "ABCDEFGHIJKLMNOPQRSTUVWXYZ"
-        _peer_label_map = {}
-        _li = 0
-        for _c in sorted(_peer_chains):
-            if _c != _sel_chain:
-                _peer_label_map[_c] = f"Chain {_letters[_li % 26]}"
-                _li += 1
-
-        # Store counts
-        _acct_counts = {}
-        for _s in ACCOUNT_DATA:
-            _pc = _s.get("parent_chain","")
-            _ct = _s.get("customer_type","")
-            if not _pc: continue
-            if _filter_types and _ct not in _filter_types: continue
-            _acct_counts[_pc] = _acct_counts.get(_pc, 0) + 1
-
-        # ══════════════════════════════════════════════════════════════════════
-        # SECTION 1 — ALL-MARKETS COMBINED
-        # ══════════════════════════════════════════════════════════════════════
-        _n_over_all  = len(_all_df_over)
-        _n_total_all = len(_all_df_comp)
-        _avg_gap_all = round(_all_df_over["Gap"].mean(), 2) if _n_over_all else 0.0
-        _max_gap_all = round(_all_df_over["Gap"].max(),  2) if _n_over_all else 0.0
-        _sel_cnt     = _acct_counts.get(_sel_chain, 0)
-
-        st.markdown("---")
-        st.markdown(f"## 🌐 All Markets — {_sel_chain}")
-
-        # Status banner
-        if _n_over_all == 0:
-            st.success(f"✅ **{_sel_chain}** is competitively priced across all markets.")
-        elif _avg_gap_all < 0.50:
-            st.warning(f"🟡 **{_sel_chain}** is above market avg on **{_n_over_all}/{_n_total_all}** products across all markets · Avg gap **${_avg_gap_all:.2f}**")
         else:
-            st.error(f"🔴 **{_sel_chain}** is above market avg on **{_n_over_all}/{_n_total_all}** products across all markets · Avg gap **${_avg_gap_all:.2f}** · Largest gap **${_max_gap_all:.2f}**")
 
-        # Metric row
-        _mc = st.columns(5)
-        _mc[0].metric("Chain",    _sel_chain)
-        _mc[1].metric("Stores",   str(_sel_cnt))
-        _mc[2].metric("Markets Surveyed", str(len(_chain_markets)))
-        _mc[3].metric("Products Above Avg", f"{_n_over_all} / {_n_total_all}")
-        _mc[4].metric("Avg Gap",  f"${_avg_gap_all:.2f}" if _n_over_all else "—")
+            # Fix WAMP + PkgGroup
+            _df_filtered = _fix_wamp_df(_df_filtered)
 
-        # All-markets market summary table
-        st.markdown("#### 📋 Market Summary")
-        _sum_rows = []
-        for sec in _market_sections:
-            _c2 = sec["comp_df"]; _o2 = sec["over_df"]
-            _nc2 = len(_c2); _no2 = len(_o2)
-            _ag2 = round(_o2["Gap"].mean(),2) if not _o2.empty else 0.0
-            _mx2 = round(_o2["Gap"].max(), 2) if not _o2.empty else 0.0
-            _wp2 = _o2.loc[_o2["Gap"].idxmax(),"Product"] if not _o2.empty else "—"
-            _tl2 = ("🔴 Above" if _ag2>0.50 else ("🟡 Slightly Above" if _ag2>0 else "🟢 Competitive"))
-            _sum_rows.append({"Market": sec["market"],
-                               "Products Compared": _nc2,
-                               "Above Avg": _no2,
-                               "% Above": f"{round(_no2/_nc2*100,1) if _nc2 else 0}%",
-                               "Avg Gap $": f"${_ag2:.2f}" if _no2 else "—",
-                               "Largest Gap $": f"${_mx2:.2f}" if _no2 else "—",
-                               "Worst Product": _wp2,
-                               "Status": _tl2})
-        if _sum_rows:
-            st.dataframe(pd.DataFrame(_sum_rows), use_container_width=True,
-                         hide_index=True)
+            # ── Brand / Package sub-filters ────────────────────────────────────────
+            _sf1, _sf2 = st.columns(2)
+            _b_opts = ["All Brands"]   + sorted(_df_filtered["Brand"].dropna().unique().tolist())   if "Brand"   in _df_filtered.columns else ["All Brands"]
+            _p_opts = ["All Packages"] + sorted(_df_filtered["Package"].dropna().unique().tolist()) if "Package" in _df_filtered.columns else ["All Packages"]
+            _brand_f = _sf1.selectbox("Brand",   _b_opts, key="cpc_brand")
+            _pkg_f   = _sf2.selectbox("Package", _p_opts, key="cpc_pkg")
+            if _brand_f != "All Brands":
+                _df_filtered = _df_filtered[_df_filtered["Brand"] == _brand_f]
+            if _pkg_f != "All Packages":
+                _df_filtered = _df_filtered[_df_filtered["Package"] == _pkg_f]
 
-        # Top overpriced across all markets
-        if not _all_over_combined.empty:
-            st.markdown("#### 🔴 Most Overpriced Products — All Markets")
-            _top_all = (_all_over_combined.groupby("Product")
-                        .agg(Markets=("Market","nunique"),
-                             Avg_Gap=("Gap","mean"),
-                             Max_Gap=("Gap","max"))
-                        .round(2).reset_index()
-                        .sort_values("Avg_Gap", ascending=False)
-                        .rename(columns={"Avg_Gap":"Avg Gap $","Max_Gap":"Max Gap $"}))
-            _top_all["Avg Gap $"] = _top_all["Avg Gap $"].apply(lambda x: f"${x:.2f}")
-            _top_all["Max Gap $"] = _top_all["Max Gap $"].apply(lambda x: f"${x:.2f}")
-            st.dataframe(_top_all, use_container_width=True, hide_index=True,
-                         height=min(50+len(_top_all)*35, 400))
+            # ── Get all markets the selected chain has data in ─────────────────────
+            _chain_markets = sorted(
+                _df_filtered[_df_filtered["_chain"] == _sel_chain]["_market"].dropna().unique())
 
-        # All-markets WAMP summary
-        if not _all_df_wamp.empty:
-            st.markdown("#### 📦 Overpricing by Category — All Markets")
-            _wg = _all_df_wamp.copy()
-            for _col in ["Chain Avg","Market Avg","Avg Gap"]:
-                if _col in _wg.columns:
-                    _wg[_col] = _wg[_col].apply(lambda x: f"${x:.2f}")
-            st.dataframe(_wg, use_container_width=True, hide_index=True)
+            # ── Compute per-market and all-markets ────────────────────────────────
+            _market_sections = []
+            _all_over_frames = []
 
-        # ══════════════════════════════════════════════════════════════════════
-        # SECTION 2 — PER-MARKET DETAIL
-        # ══════════════════════════════════════════════════════════════════════
-        st.markdown("---")
-        st.markdown("## 📍 By Market")
+            for _mkt in _chain_markets:
+                _mdf = _df_filtered[_df_filtered["_market"] == _mkt]
+                _comp, _over, _wamp = _compute_comparison(_mdf, _sel_chain)
+                if not _comp.empty:
+                    if not _over.empty:
+                        _over_copy = _over.copy()
+                        _over_copy["Market"] = _mkt
+                        _all_over_frames.append(_over_copy)
+                    _market_sections.append(dict(
+                        market=_mkt, comp_df=_comp, over_df=_over, wamp_df=_wamp))
 
-        if not _market_sections:
-            st.info("No market data available for the selected chain and filters.")
-        else:
-            _market_tabs = st.tabs([sec["market"] for sec in _market_sections])
+            # All-markets combined
+            _all_df_comp, _all_df_over, _all_df_wamp = _compute_comparison(
+                _df_filtered, _sel_chain)
+            _all_over_combined = pd.concat(_all_over_frames, ignore_index=True) \
+                if _all_over_frames else pd.DataFrame()
 
-            for _ti, sec in enumerate(_market_sections):
-                with _market_tabs[_ti]:
-                    _mc_df = sec["comp_df"]
-                    _mo_df = sec["over_df"]
-                    _mw_df = sec["wamp_df"]
-                    _mkt   = sec["market"]
+            # Anonymise peers
+            _peer_chains = sorted(_df_filtered["_chain"].dropna().unique())
+            _letters = "ABCDEFGHIJKLMNOPQRSTUVWXYZ"
+            _peer_label_map = {}
+            _li = 0
+            for _c in sorted(_peer_chains):
+                if _c != _sel_chain:
+                    _peer_label_map[_c] = f"Chain {_letters[_li % 26]}"
+                    _li += 1
 
-                    _n_c3 = len(_mc_df); _n_o3 = len(_mo_df)
-                    _ag3  = round(_mo_df["Gap"].mean(),2) if not _mo_df.empty else 0.0
-                    _mx3  = round(_mo_df["Gap"].max(), 2) if not _mo_df.empty else 0.0
+            # Store counts
+            _acct_counts = {}
+            for _s in ACCOUNT_DATA:
+                _pc = _s.get("parent_chain","")
+                _ct = _s.get("customer_type","")
+                if not _pc: continue
+                if _filter_types and _ct not in _filter_types: continue
+                _acct_counts[_pc] = _acct_counts.get(_pc, 0) + 1
 
-                    # Market status
-                    if _n_o3 == 0:
-                        st.success(f"✅ **{_sel_chain}** is competitively priced in {_mkt}.")
-                    elif _ag3 < 0.50:
-                        st.warning(f"🟡 Above avg on **{_n_o3}/{_n_c3}** products · Avg gap **${_ag3:.2f}**")
-                    else:
-                        st.error(f"🔴 Above avg on **{_n_o3}/{_n_c3}** products · Avg gap **${_ag3:.2f}** · Largest **${_mx3:.2f}**")
+            # ══════════════════════════════════════════════════════════════════════
+            # SECTION 1 — ALL-MARKETS COMBINED
+            # ══════════════════════════════════════════════════════════════════════
+            _n_over_all  = len(_all_df_over)
+            _n_total_all = len(_all_df_comp)
+            _avg_gap_all = round(_all_df_over["Gap"].mean(), 2) if _n_over_all else 0.0
+            _max_gap_all = round(_all_df_over["Gap"].max(),  2) if _n_over_all else 0.0
+            _sel_cnt     = _acct_counts.get(_sel_chain, 0)
 
-                    # Metric row
-                    _mm = st.columns(4)
-                    _mm[0].metric("Products Compared", str(_n_c3))
-                    _mm[1].metric("Above Avg", str(_n_o3))
-                    _mm[2].metric("Avg Gap $", f"${_ag3:.2f}" if _n_o3 else "—")
-                    _mm[3].metric("Largest Gap $", f"${_mx3:.2f}" if _n_o3 else "—")
+            st.markdown("---")
+            st.markdown(f"## 🌐 All Markets — {_sel_chain}")
 
-                    # WAMP summary
-                    if not _mw_df.empty:
-                        st.markdown("#### 📦 By Category")
-                        _mw = _mw_df.copy()
-                        for _col in ["Chain Avg","Market Avg","Avg Gap"]:
-                            if _col in _mw.columns:
-                                _mw[_col] = _mw[_col].apply(lambda x: f"${x:.2f}")
-                        _mw["Priority"] = _mw_df["Avg Gap"].apply(
-                            lambda x: "🔴 High" if x>=1.0 else ("🟡 Medium" if x>=0.25 else "🟢 Low"))
-                        st.dataframe(_mw, use_container_width=True, hide_index=True)
+            # Status banner
+            if _n_over_all == 0:
+                st.success(f"✅ **{_sel_chain}** is competitively priced across all markets.")
+            elif _avg_gap_all < 0.50:
+                st.warning(f"🟡 **{_sel_chain}** is above market avg on **{_n_over_all}/{_n_total_all}** products across all markets · Avg gap **${_avg_gap_all:.2f}**")
+            else:
+                st.error(f"🔴 **{_sel_chain}** is above market avg on **{_n_over_all}/{_n_total_all}** products across all markets · Avg gap **${_avg_gap_all:.2f}** · Largest gap **${_max_gap_all:.2f}**")
 
-                    # Overpriced products
-                    if not _mo_df.empty:
-                        st.markdown("#### 🔴 Overpriced Products")
-                        st.caption("**Peer Avg $** excludes selected chain · **n** = peer chains with data")
-                        _op_d = _mo_df[["Product","Package","WAMP","Chain Avg","Market Avg","Gap",
-                                         "Peer Chains (n)"] if "Peer Chains (n)" in _mo_df.columns
-                                        else ["Product","Package","WAMP","Chain Avg","Market Avg","Gap"]
-                                       ].sort_values("Gap", ascending=False).copy()
-                        _op_d = _op_d.rename(columns={"Chain Avg": f"{_sel_chain} $",
-                                                        "Market Avg": "Peer Avg $",
-                                                        "Gap": "Gap $"})
-                        _op_d[f"{_sel_chain} $"] = _op_d[f"{_sel_chain} $"].apply(lambda x: f"${x:.2f}")
-                        _op_d["Peer Avg $"]       = _op_d["Peer Avg $"].apply(lambda x: f"${x:.2f}")
-                        _op_d["Gap $"]            = _op_d["Gap $"].apply(lambda x: f"+${x:.2f}")
-                        st.dataframe(_op_d, use_container_width=True, hide_index=True,
-                                     height=min(50+len(_op_d)*35, 500))
+            # Metric row
+            _mc = st.columns(5)
+            _mc[0].metric("Chain",    _sel_chain)
+            _mc[1].metric("Stores",   str(_sel_cnt))
+            _mc[2].metric("Markets Surveyed", str(len(_chain_markets)))
+            _mc[3].metric("Products Above Avg", f"{_n_over_all} / {_n_total_all}")
+            _mc[4].metric("Avg Gap",  f"${_avg_gap_all:.2f}" if _n_over_all else "—")
 
-                    # Competitive products
-                    _mc_ok = _mc_df[_mc_df["Gap"] <= 0]
-                    if not _mc_ok.empty:
-                        with st.expander(f"🟢 Competitive Products ({len(_mc_ok)})", expanded=False):
-                            _ok_d = _mc_ok[["Product","Package","WAMP","Chain Avg","Market Avg","Gap"]
-                                           ].sort_values("Gap").copy()
-                            _ok_d = _ok_d.rename(columns={"Chain Avg": f"{_sel_chain} $",
+            # All-markets market summary table
+            st.markdown("#### 📋 Market Summary")
+            _sum_rows = []
+            for sec in _market_sections:
+                _c2 = sec["comp_df"]; _o2 = sec["over_df"]
+                _nc2 = len(_c2); _no2 = len(_o2)
+                _ag2 = round(_o2["Gap"].mean(),2) if not _o2.empty else 0.0
+                _mx2 = round(_o2["Gap"].max(), 2) if not _o2.empty else 0.0
+                _wp2 = _o2.loc[_o2["Gap"].idxmax(),"Product"] if not _o2.empty else "—"
+                _tl2 = ("🔴 Above" if _ag2>0.50 else ("🟡 Slightly Above" if _ag2>0 else "🟢 Competitive"))
+                _sum_rows.append({"Market": sec["market"],
+                                   "Products Compared": _nc2,
+                                   "Above Avg": _no2,
+                                   "% Above": f"{round(_no2/_nc2*100,1) if _nc2 else 0}%",
+                                   "Avg Gap $": f"${_ag2:.2f}" if _no2 else "—",
+                                   "Largest Gap $": f"${_mx2:.2f}" if _no2 else "—",
+                                   "Worst Product": _wp2,
+                                   "Status": _tl2})
+            if _sum_rows:
+                st.dataframe(pd.DataFrame(_sum_rows), use_container_width=True,
+                             hide_index=True)
+
+            # Top overpriced across all markets
+            if not _all_over_combined.empty:
+                st.markdown("#### 🔴 Most Overpriced Products — All Markets")
+                _top_all = (_all_over_combined.groupby("Product")
+                            .agg(Markets=("Market","nunique"),
+                                 Avg_Gap=("Gap","mean"),
+                                 Max_Gap=("Gap","max"))
+                            .round(2).reset_index()
+                            .sort_values("Avg_Gap", ascending=False)
+                            .rename(columns={"Avg_Gap":"Avg Gap $","Max_Gap":"Max Gap $"}))
+                _top_all["Avg Gap $"] = _top_all["Avg Gap $"].apply(lambda x: f"${x:.2f}")
+                _top_all["Max Gap $"] = _top_all["Max Gap $"].apply(lambda x: f"${x:.2f}")
+                st.dataframe(_top_all, use_container_width=True, hide_index=True,
+                             height=min(50+len(_top_all)*35, 400))
+
+            # All-markets WAMP summary
+            if not _all_df_wamp.empty:
+                st.markdown("#### 📦 Overpricing by Category — All Markets")
+                _wg = _all_df_wamp.copy()
+                for _col in ["Chain Avg","Market Avg","Avg Gap"]:
+                    if _col in _wg.columns:
+                        _wg[_col] = _wg[_col].apply(lambda x: f"${x:.2f}")
+                st.dataframe(_wg, use_container_width=True, hide_index=True)
+
+            # ══════════════════════════════════════════════════════════════════════
+            # SECTION 2 — PER-MARKET DETAIL
+            # ══════════════════════════════════════════════════════════════════════
+            st.markdown("---")
+            st.markdown("## 📍 By Market")
+
+            if not _market_sections:
+                st.info("No market data available for the selected chain and filters.")
+            else:
+                _market_tabs = st.tabs([sec["market"] for sec in _market_sections])
+
+                for _ti, sec in enumerate(_market_sections):
+                    with _market_tabs[_ti]:
+                        _mc_df = sec["comp_df"]
+                        _mo_df = sec["over_df"]
+                        _mw_df = sec["wamp_df"]
+                        _mkt   = sec["market"]
+
+                        _n_c3 = len(_mc_df); _n_o3 = len(_mo_df)
+                        _ag3  = round(_mo_df["Gap"].mean(),2) if not _mo_df.empty else 0.0
+                        _mx3  = round(_mo_df["Gap"].max(), 2) if not _mo_df.empty else 0.0
+
+                        # Market status
+                        if _n_o3 == 0:
+                            st.success(f"✅ **{_sel_chain}** is competitively priced in {_mkt}.")
+                        elif _ag3 < 0.50:
+                            st.warning(f"🟡 Above avg on **{_n_o3}/{_n_c3}** products · Avg gap **${_ag3:.2f}**")
+                        else:
+                            st.error(f"🔴 Above avg on **{_n_o3}/{_n_c3}** products · Avg gap **${_ag3:.2f}** · Largest **${_mx3:.2f}**")
+
+                        # Metric row
+                        _mm = st.columns(4)
+                        _mm[0].metric("Products Compared", str(_n_c3))
+                        _mm[1].metric("Above Avg", str(_n_o3))
+                        _mm[2].metric("Avg Gap $", f"${_ag3:.2f}" if _n_o3 else "—")
+                        _mm[3].metric("Largest Gap $", f"${_mx3:.2f}" if _n_o3 else "—")
+
+                        # WAMP summary
+                        if not _mw_df.empty:
+                            st.markdown("#### 📦 By Category")
+                            _mw = _mw_df.copy()
+                            for _col in ["Chain Avg","Market Avg","Avg Gap"]:
+                                if _col in _mw.columns:
+                                    _mw[_col] = _mw[_col].apply(lambda x: f"${x:.2f}")
+                            _mw["Priority"] = _mw_df["Avg Gap"].apply(
+                                lambda x: "🔴 High" if x>=1.0 else ("🟡 Medium" if x>=0.25 else "🟢 Low"))
+                            st.dataframe(_mw, use_container_width=True, hide_index=True)
+
+                        # Overpriced products
+                        if not _mo_df.empty:
+                            st.markdown("#### 🔴 Overpriced Products")
+                            st.caption("**Peer Avg $** excludes selected chain · **n** = peer chains with data")
+                            _op_d = _mo_df[["Product","Package","WAMP","Chain Avg","Market Avg","Gap",
+                                             "Peer Chains (n)"] if "Peer Chains (n)" in _mo_df.columns
+                                            else ["Product","Package","WAMP","Chain Avg","Market Avg","Gap"]
+                                           ].sort_values("Gap", ascending=False).copy()
+                            _op_d = _op_d.rename(columns={"Chain Avg": f"{_sel_chain} $",
                                                             "Market Avg": "Peer Avg $",
                                                             "Gap": "Gap $"})
-                            _ok_d[f"{_sel_chain} $"] = _ok_d[f"{_sel_chain} $"].apply(lambda x: f"${x:.2f}")
-                            _ok_d["Peer Avg $"]       = _ok_d["Peer Avg $"].apply(lambda x: f"${x:.2f}")
-                            _ok_d["Gap $"]            = _ok_d["Gap $"].apply(lambda x: f"${x:.2f}")
-                            st.dataframe(_ok_d, use_container_width=True, hide_index=True)
+                            _op_d[f"{_sel_chain} $"] = _op_d[f"{_sel_chain} $"].apply(lambda x: f"${x:.2f}")
+                            _op_d["Peer Avg $"]       = _op_d["Peer Avg $"].apply(lambda x: f"${x:.2f}")
+                            _op_d["Gap $"]            = _op_d["Gap $"].apply(lambda x: f"+${x:.2f}")
+                            st.dataframe(_op_d, use_container_width=True, hide_index=True,
+                                         height=min(50+len(_op_d)*35, 500))
 
-                    # Heatmap
-                    st.markdown("#### 🔥 Price Detail by WAMP · Package")
-                    st.caption("Peer chain names anonymised · 🔴 peer cheaper · 🟢 peer more expensive")
-                    _mkt_df_hm = _df_filtered[_df_filtered["_market"] == _mkt]
-                    _hm_pivot  = _mkt_df_hm.pivot_table(
-                        index=["WAMP","PkgGroup","Product"],
-                        columns="_chain", values="Retail $", aggfunc="mean"
-                    ).round(2)
-                    _hm_pivot.columns.name = None
+                        # Competitive products
+                        _mc_ok = _mc_df[_mc_df["Gap"] <= 0]
+                        if not _mc_ok.empty:
+                            with st.expander(f"🟢 Competitive Products ({len(_mc_ok)})", expanded=False):
+                                _ok_d = _mc_ok[["Product","Package","WAMP","Chain Avg","Market Avg","Gap"]
+                                               ].sort_values("Gap").copy()
+                                _ok_d = _ok_d.rename(columns={"Chain Avg": f"{_sel_chain} $",
+                                                                "Market Avg": "Peer Avg $",
+                                                                "Gap": "Gap $"})
+                                _ok_d[f"{_sel_chain} $"] = _ok_d[f"{_sel_chain} $"].apply(lambda x: f"${x:.2f}")
+                                _ok_d["Peer Avg $"]       = _ok_d["Peer Avg $"].apply(lambda x: f"${x:.2f}")
+                                _ok_d["Gap $"]            = _ok_d["Gap $"].apply(lambda x: f"${x:.2f}")
+                                st.dataframe(_ok_d, use_container_width=True, hide_index=True)
 
-                    if not _hm_pivot.empty and _sel_chain in _hm_pivot.columns:
-                        _hm_pivot = _hm_pivot.rename(
-                            columns={c: (c if c==_sel_chain else _peer_label_map.get(c,c))
-                                     for c in _hm_pivot.columns})
-                        _hm_cols = [_sel_chain] + sorted([c for c in _hm_pivot.columns if c != _sel_chain])
-                        _hm_pivot = _hm_pivot[[c for c in _hm_cols if c in _hm_pivot.columns]]
+                        # Heatmap
+                        st.markdown("#### 🔥 Price Detail by WAMP · Package")
+                        st.caption("Peer chain names anonymised · 🔴 peer cheaper · 🟢 peer more expensive")
+                        _mkt_df_hm = _df_filtered[_df_filtered["_market"] == _mkt]
+                        _hm_pivot  = _mkt_df_hm.pivot_table(
+                            index=["WAMP","PkgGroup","Product"],
+                            columns="_chain", values="Retail $", aggfunc="mean"
+                        ).round(2)
+                        _hm_pivot.columns.name = None
 
-                        from collections import defaultdict as _dd4
-                        _wg4 = _dd4(list)
-                        for (_w4,_p4),_g4 in _hm_pivot.groupby(level=["WAMP","PkgGroup"]):
-                            _wg4[_w4].append((_p4,_g4))
+                        if not _hm_pivot.empty and _sel_chain in _hm_pivot.columns:
+                            _hm_pivot = _hm_pivot.rename(
+                                columns={c: (c if c==_sel_chain else _peer_label_map.get(c,c))
+                                         for c in _hm_pivot.columns})
+                            _hm_cols = [_sel_chain] + sorted([c for c in _hm_pivot.columns if c != _sel_chain])
+                            _hm_pivot = _hm_pivot[[c for c in _hm_cols if c in _hm_pivot.columns]]
 
-                        _wo4 = [w for w in ["Value","Value-High","Value-Low","Core","Core Plus",
-                                             "Premium","Super Premium","Import Styles",
-                                             "Beyond Beer","Wine","NABLAB","Other"]
-                                if w in _wg4] + [w for w in _wg4 if w not in
-                                ["Value","Value-High","Value-Low","Core","Core Plus",
-                                 "Premium","Super Premium","Import Styles",
-                                 "Beyond Beer","Wine","NABLAB","Other"]]
+                            from collections import defaultdict as _dd4
+                            _wg4 = _dd4(list)
+                            for (_w4,_p4),_g4 in _hm_pivot.groupby(level=["WAMP","PkgGroup"]):
+                                _wg4[_w4].append((_p4,_g4))
 
-                        for _w4 in _wo4:
-                            with st.expander(f"**{_w4}** — {len(_wg4[_w4])} group(s)", expanded=False):
-                                for _p4, _g4 in sorted(_wg4[_w4], key=lambda x: x[0]):
-                                    _gc4 = _g4.dropna(axis=1,how="all").dropna(axis=0,how="all")
-                                    if _gc4.empty or _sel_chain not in _gc4.columns: continue
-                                    st.markdown(f"##### {_p4}")
-                                    _pr4 = [idx[-1] for idx in _gc4.index]
-                                    _cc4 = list(_gc4.columns)
-                                    _df4 = _gc4.copy().astype(float)
-                                    for _col4 in _cc4:
-                                        _df4[_col4] = float("nan") if _col4==_sel_chain else \
-                                            (_gc4[_col4]-_gc4[_sel_chain]).round(2)
-                                    _tx4 = []
-                                    for _pi4 in _gc4.index:
-                                        _rt4=[]
+                            _wo4 = [w for w in ["Value","Value-High","Value-Low","Core","Core Plus",
+                                                 "Premium","Super Premium","Import Styles",
+                                                 "Beyond Beer","Wine","NABLAB","Other"]
+                                    if w in _wg4] + [w for w in _wg4 if w not in
+                                    ["Value","Value-High","Value-Low","Core","Core Plus",
+                                     "Premium","Super Premium","Import Styles",
+                                     "Beyond Beer","Wine","NABLAB","Other"]]
+
+                            for _w4 in _wo4:
+                                with st.expander(f"**{_w4}** — {len(_wg4[_w4])} group(s)", expanded=False):
+                                    for _p4, _g4 in sorted(_wg4[_w4], key=lambda x: x[0]):
+                                        _gc4 = _g4.dropna(axis=1,how="all").dropna(axis=0,how="all")
+                                        if _gc4.empty or _sel_chain not in _gc4.columns: continue
+                                        st.markdown(f"##### {_p4}")
+                                        _pr4 = [idx[-1] for idx in _gc4.index]
+                                        _cc4 = list(_gc4.columns)
+                                        _df4 = _gc4.copy().astype(float)
                                         for _col4 in _cc4:
-                                            _pv4=_gc4.loc[_pi4,_col4]; _dv4=_df4.loc[_pi4,_col4]
-                                            if pd.isna(_pv4): _rt4.append("—")
-                                            elif _col4==_sel_chain: _rt4.append(f"${_pv4:.2f}")
-                                            elif not pd.isna(_dv4): _rt4.append(f"${_pv4:.2f}<br>({_dv4:+.2f})")
-                                            else: _rt4.append(f"${_pv4:.2f}")
-                                        _tx4.append(_rt4)
-                                    _z4=_df4.copy(); _z4[_sel_chain]=0
-                                    _fig4=go.Figure(data=go.Heatmap(
-                                        z=_z4.values,x=_cc4,y=_pr4,
-                                        colorscale=[[0,"#991b1b"],[0.3,"#ef4444"],[0.45,"#fee2e2"],
-                                                    [0.5,"#f9fafb"],[0.55,"#dcfce7"],[0.7,"#22c55e"],[1,"#166534"]],
-                                        zmid=0,text=_tx4,texttemplate="%{text}",textfont={"size":10},
-                                        hoverongaps=False,
-                                        colorbar=dict(title=f"vs {_sel_chain[:10]}",
-                                                      tickformat="+.2f",thickness=12,len=0.8),
-                                        xgap=2,ygap=2))
-                                    _ml4=max(len(p) for p in _pr4) if _pr4 else 20
-                                    _fig4.update_layout(
-                                        height=max(180,len(_pr4)*44+100),
-                                        margin=dict(l=max(200,_ml4*7),r=20,t=50,b=10),
-                                        xaxis=dict(side="top",tickangle=-30,
-                                                   tickfont=dict(size=11,color="black",
-                                                                family="Arial Black,Arial,sans-serif")),
-                                        yaxis=dict(autorange="reversed",
-                                                   tickfont=dict(size=11,color="black",
-                                                                family="Arial Black,Arial,sans-serif"),
-                                                   automargin=False,side="left",
-                                                   ticklabelposition="outside left"),
-                                        plot_bgcolor="#f8fafc",paper_bgcolor="#ffffff")
-                                    _fig4.update_yaxes(ticksuffix="  ")
-                                    st.plotly_chart(_fig4,use_container_width=True,
-                                                    key=f"hmv2_{_mkt}_{_w4}_{_p4}")
-                    else:
-                        st.info("Not enough overlapping data for heatmap in this market.")
+                                            _df4[_col4] = float("nan") if _col4==_sel_chain else \
+                                                (_gc4[_col4]-_gc4[_sel_chain]).round(2)
+                                        _tx4 = []
+                                        for _pi4 in _gc4.index:
+                                            _rt4=[]
+                                            for _col4 in _cc4:
+                                                _pv4=_gc4.loc[_pi4,_col4]; _dv4=_df4.loc[_pi4,_col4]
+                                                if pd.isna(_pv4): _rt4.append("—")
+                                                elif _col4==_sel_chain: _rt4.append(f"${_pv4:.2f}")
+                                                elif not pd.isna(_dv4): _rt4.append(f"${_pv4:.2f}<br>({_dv4:+.2f})")
+                                                else: _rt4.append(f"${_pv4:.2f}")
+                                            _tx4.append(_rt4)
+                                        _z4=_df4.copy(); _z4[_sel_chain]=0
+                                        _fig4=go.Figure(data=go.Heatmap(
+                                            z=_z4.values,x=_cc4,y=_pr4,
+                                            colorscale=[[0,"#991b1b"],[0.3,"#ef4444"],[0.45,"#fee2e2"],
+                                                        [0.5,"#f9fafb"],[0.55,"#dcfce7"],[0.7,"#22c55e"],[1,"#166534"]],
+                                            zmid=0,text=_tx4,texttemplate="%{text}",textfont={"size":10},
+                                            hoverongaps=False,
+                                            colorbar=dict(title=f"vs {_sel_chain[:10]}",
+                                                          tickformat="+.2f",thickness=12,len=0.8),
+                                            xgap=2,ygap=2))
+                                        _ml4=max(len(p) for p in _pr4) if _pr4 else 20
+                                        _fig4.update_layout(
+                                            height=max(180,len(_pr4)*44+100),
+                                            margin=dict(l=max(200,_ml4*7),r=20,t=50,b=10),
+                                            xaxis=dict(side="top",tickangle=-30,
+                                                       tickfont=dict(size=11,color="black",
+                                                                    family="Arial Black,Arial,sans-serif")),
+                                            yaxis=dict(autorange="reversed",
+                                                       tickfont=dict(size=11,color="black",
+                                                                    family="Arial Black,Arial,sans-serif"),
+                                                       automargin=False,side="left",
+                                                       ticklabelposition="outside left"),
+                                            plot_bgcolor="#f8fafc",paper_bgcolor="#ffffff")
+                                        _fig4.update_yaxes(ticksuffix="  ")
+                                        st.plotly_chart(_fig4,use_container_width=True,
+                                                        key=f"hmv2_{_mkt}_{_w4}_{_p4}")
+                        else:
+                            st.info("Not enough overlapping data for heatmap in this market.")
 
-        # ══════════════════════════════════════════════════════════════════════
-        # PDF DOWNLOAD
-        # ══════════════════════════════════════════════════════════════════════
-        st.markdown("---")
-        _rdate   = _dt_t2.date.today().strftime("%B %d, %Y")
-        _sfchain = _sel_chain.replace(" ","_").replace("/","-")
-        try:
-            _pdf_b = _build_full_pdf(
-                sel_chain      = _sel_chain,
-                filter_types   = _filter_types,
-                market_sections= _market_sections,
-                all_markets_over=_all_over_combined,
-                peer_label_map = _peer_label_map,
-                report_date    = _rdate,
-            )
-            st.download_button(
-                f"📄 Download Full Report — {_sel_chain} (All Markets)",
-                _pdf_b,
-                f"{_sfchain}_price_report_{_dt_t2.date.today().strftime('%Y%m%d')}.pdf",
-                "application/pdf",
-                use_container_width=True,
-                key="buyer_pdf_dl",
-            )
-        except Exception as _pe:
-            st.error(f"PDF error: {_pe}")
+            # ══════════════════════════════════════════════════════════════════════
+            # PDF DOWNLOAD
+            # ══════════════════════════════════════════════════════════════════════
+            st.markdown("---")
+            _rdate   = _dt_t2.date.today().strftime("%B %d, %Y")
+            _sfchain = _sel_chain.replace(" ","_").replace("/","-")
+            try:
+                _pdf_b = _build_full_pdf(
+                    sel_chain      = _sel_chain,
+                    filter_types   = _filter_types,
+                    market_sections= _market_sections,
+                    all_markets_over=_all_over_combined,
+                    peer_label_map = _peer_label_map,
+                    report_date    = _rdate,
+                )
+                st.download_button(
+                    f"📄 Download Full Report — {_sel_chain} (All Markets)",
+                    _pdf_b,
+                    f"{_sfchain}_price_report_{_dt_t2.date.today().strftime('%Y%m%d')}.pdf",
+                    "application/pdf",
+                    use_container_width=True,
+                    key="buyer_pdf_dl",
+                )
+            except Exception as _pe:
+                st.error(f"PDF error: {_pe}")
 
 with tab5:
     _scanner_hdr_col, _scanner_btn_col = st.columns([6, 1])
