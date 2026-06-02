@@ -12203,6 +12203,192 @@ with tab2:
             _summary_retail["Avg Packages $"] = _summary_retail["Chain"].map(_avg_packages).round(2)
 
             # ── Build pivot tables ─────────────────────────────────────────────
+            # ── Build anonymisation map ────────────────────────────────────────
+            _letters = "ABCDEFGHIJKLMNOPQRSTUVWXYZ"
+            _peer_label_map = {}
+            _letter_idx = 0
+            for _c in sorted(_peer_chains):
+                if _c != _sel_chain:
+                    _peer_label_map[_c] = f"Chain {_letters[_letter_idx % 26]}"
+                    _letter_idx += 1
+
+            def _cpc_anon(name):
+                return name if name == _sel_chain else _peer_label_map.get(name, name)
+
+            # ── Summary metrics ────────────────────────────────────────────────
+            st.markdown("---")
+            _mkt_avg = float(_summary_retail["Avg"].mean())
+            _sel_row = _summary_retail[_summary_retail["Chain"] == _sel_chain]
+            _sel_avg = float(_sel_row["Avg"].iloc[0]) if not _sel_row.empty else 0.0
+            _sel_cnt = int(_sel_row["Stores"].iloc[0]) if not _sel_row.empty else 0
+            _delta   = _sel_avg - _mkt_avg
+            _sel_sing = _sel_row["Avg Singles $"].iloc[0] if not _sel_row.empty and pd.notna(_sel_row["Avg Singles $"].iloc[0]) else None
+            _sel_pkg  = _sel_row["Avg Packages $"].iloc[0] if not _sel_row.empty and pd.notna(_sel_row["Avg Packages $"].iloc[0]) else None
+
+            _m1, _m2, _m3, _m4, _m5 = st.columns(5)
+            _m1.metric("Selected Chain", _sel_chain)
+            _m2.metric("Store Count", str(_sel_cnt))
+            _m3.metric("Avg Singles $",  f"${_sel_sing:.2f}" if _sel_sing else "—")
+            _m4.metric("Avg Packages $", f"${_sel_pkg:.2f}"  if _sel_pkg  else "—")
+            _m5.metric("vs Peer Avg", f"${_delta:+.2f}", delta=f"${_delta:+.2f}", delta_color="inverse")
+
+            # ── Summary table (anonymised) ─────────────────────────────────────
+            _disp = _summary_retail.sort_values("Avg").copy()
+            _disp["Chain Display"]  = _disp["Chain"].apply(_cpc_anon)
+            _disp["Avg Singles $"]  = _disp["Avg Singles $"].apply(lambda x: f"${x:.2f}" if pd.notna(x) else "—")
+            _disp["Avg Packages $"] = _disp["Avg Packages $"].apply(lambda x: f"${x:.2f}" if pd.notna(x) else "—")
+            _disp["vs Avg"]         = _disp["Avg"].apply(lambda x: f"${x-_mkt_avg:+.2f}")
+            _disp["Selected"]       = _disp["Chain"].apply(lambda c: "◀" if c == _sel_chain else "")
+            st.dataframe(
+                _disp[["Selected","Chain Display","Stores","Avg Singles $","Avg Packages $","vs Avg"]].reset_index(drop=True),
+                use_container_width=True, hide_index=True,
+                column_config={"Selected": st.column_config.TextColumn("", width="small")},
+            )
+
+            st.markdown("---")
+            st.markdown(f"### 🔥 Price Comparison by WAMP · Package Group")
+            st.caption(
+                f"**{_sel_chain}** vs peer chains · Cell shows avg retail price · "
+                f"Colour = difference vs {_sel_chain} (🟢 peer higher · 🔴 peer lower) · "
+                f"Peer chain names anonymised."
+            )
+
+            # ── Build WAMP/PkgGroup heatmaps ───────────────────────────────────
+            # Tag PkgGroup onto detail_df (already has _Format from above)
+            if "PkgGroup" not in _detail_df.columns and "Package" in _detail_df.columns:
+                _detail_df = _detail_df.copy()
+                _detail_df["PkgGroup"] = _detail_df.apply(
+                    lambda r: pkg_group(r.get("Package",""), r.get("WAMP",""),
+                                        r.get("Brand","") or r.get("Product","")), axis=1
+                )
+
+            # Pivot: rows=(WAMP, PkgGroup, Product), cols=_chain → avg Retail $
+            if "WAMP" in _detail_df.columns and "PkgGroup" in _detail_df.columns:
+                _cpc_pivot = _detail_df.pivot_table(
+                    index=["WAMP","PkgGroup","Product"],
+                    columns="_chain",
+                    values="Retail $",
+                    aggfunc="mean"
+                ).round(2)
+                _cpc_pivot.columns.name = None
+
+                if _cpc_pivot.empty or _sel_chain not in _cpc_pivot.columns:
+                    st.info("Not enough data to build heatmap. Ensure survey data includes WAMP and Package fields.")
+                else:
+                    # Anonymise columns
+                    _cpc_pivot = _cpc_pivot.rename(columns={c: _cpc_anon(c) for c in _cpc_pivot.columns})
+                    _sel_label = _sel_chain  # stays as is
+                    _anon_cols = [c for c in _cpc_pivot.columns if c != _sel_label]
+                    _all_cols  = [_sel_label] + sorted(_anon_cols)
+                    _cpc_pivot = _cpc_pivot[[c for c in _all_cols if c in _cpc_pivot.columns]]
+
+                    # Group by WAMP
+                    from collections import defaultdict as _dd2
+                    _wamp_groups_cpc = _dd2(list)
+                    for (_wamp, _pkg), _grp in _cpc_pivot.groupby(level=["WAMP","PkgGroup"]):
+                        _wamp_groups_cpc[_wamp].append((_pkg, _grp))
+
+                    # Ordered WAMPs
+                    _wamp_order = [w for w in [
+                        "Value","Value-High","Value-Low","Core","Core Plus","Premium",
+                        "Super Premium","Import Styles","Beyond Beer","Wine","NABLAB","Other"
+                    ] if w in _wamp_groups_cpc] + [w for w in _wamp_groups_cpc if w not in [
+                        "Value","Value-High","Value-Low","Core","Core Plus","Premium",
+                        "Super Premium","Import Styles","Beyond Beer","Wine","NABLAB","Other"
+                    ]]
+
+                    for _wamp in _wamp_order:
+                        _pkg_groups = _wamp_groups_cpc[_wamp]
+                        with st.expander(f"**{_wamp}** — {len(_pkg_groups)} package group(s)", expanded=False):
+                            for _pkg, _grp in sorted(_pkg_groups, key=lambda x: x[0]):
+                                _grp_clean = _grp.dropna(axis=1, how="all").dropna(axis=0, how="all")
+                                if _grp_clean.empty or _sel_label not in _grp_clean.columns:
+                                    continue
+
+                                st.markdown(f"##### {_pkg}")
+
+                                _prod_labels = [idx[-1] for idx in _grp_clean.index]
+                                _chain_cols  = list(_grp_clean.columns)
+                                _sel_vals    = _grp_clean[_sel_label]
+
+                                # Diff matrix: each peer cell = peer price - selected chain price
+                                # positive = peer is more expensive, negative = peer is cheaper
+                                _diff = _grp_clean.copy().astype(float)
+                                for _col in _chain_cols:
+                                    if _col == _sel_label:
+                                        _diff[_col] = float("nan")  # no self-comparison
+                                    else:
+                                        _diff[_col] = (_grp_clean[_col] - _grp_clean[_sel_label]).round(2)
+
+                                # Text: price + delta
+                                _text_cells = []
+                                for _pi, _prod_idx in enumerate(_grp_clean.index):
+                                    _row_txt = []
+                                    for _col in _chain_cols:
+                                        _pval = _grp_clean.loc[_prod_idx, _col]
+                                        _dval = _diff.loc[_prod_idx, _col]
+                                        if pd.isna(_pval):
+                                            _row_txt.append("—")
+                                        elif _col == _sel_label:
+                                            _row_txt.append(f"${_pval:.2f}")
+                                        elif not pd.isna(_dval):
+                                            _row_txt.append(f"${_pval:.2f}<br>({_dval:+.2f})")
+                                        else:
+                                            _row_txt.append(f"${_pval:.2f}")
+                                    _text_cells.append(_row_txt)
+
+                                # Z values: use diff for colour, 0 for selected chain column
+                                _z_vals = _diff.copy()
+                                _z_vals[_sel_label] = 0
+
+                                _fig_cpc = go.Figure(data=go.Heatmap(
+                                    z=_z_vals.values,
+                                    x=_chain_cols,
+                                    y=_prod_labels,
+                                    colorscale=[
+                                        [0.0,  "#991b1b"],[0.3,  "#ef4444"],[0.45, "#fee2e2"],
+                                        [0.5,  "#f9fafb"],
+                                        [0.55, "#dcfce7"],[0.7,  "#22c55e"],[1.0,  "#166534"]
+                                    ],
+                                    zmid=0,
+                                    text=_text_cells,
+                                    texttemplate="%{text}",
+                                    textfont={"size": 10},
+                                    hoverongaps=False,
+                                    colorbar=dict(
+                                        title="vs " + _sel_chain[:12],
+                                        tickformat="+.2f", thickness=12, len=0.8
+                                    ),
+                                    xgap=2, ygap=2,
+                                ))
+                                _max_lbl = max(len(p) for p in _prod_labels) if _prod_labels else 20
+                                _fig_cpc.update_layout(
+                                    height=max(180, len(_prod_labels) * 44 + 100),
+                                    margin=dict(l=max(200, _max_lbl * 7), r=20, t=50, b=10),
+                                    xaxis=dict(
+                                        side="top", tickangle=-30,
+                                        tickfont=dict(size=11, color="black",
+                                                      family="Arial Black, Arial, sans-serif")
+                                    ),
+                                    yaxis=dict(
+                                        autorange="reversed",
+                                        tickfont=dict(size=11, color="black",
+                                                      family="Arial Black, Arial, sans-serif"),
+                                        automargin=False, side="left",
+                                        ticklabelposition="outside left",
+                                    ),
+                                    plot_bgcolor="#f8fafc", paper_bgcolor="#ffffff",
+                                )
+                                _fig_cpc.update_yaxes(ticksuffix="  ")
+                                st.plotly_chart(_fig_cpc, use_container_width=True,
+                                                key=f"cpc_{_wamp}_{_pkg}")
+
+                                if show_2for if "show_2for" in dir() else False:
+                                    pass  # 2-for data handled in PDF only for now
+            else:
+                st.info("Survey data is missing WAMP or Package fields — heatmap unavailable.")
+
+            # ── Build pivots for PDF ───────────────────────────────────────────
             def _make_pivot(df, value_col):
                 if value_col not in df.columns:
                     return None
@@ -12219,43 +12405,6 @@ with tab2:
 
             _pivot_retail = _make_pivot(_detail_df, "Retail $")
             _pivot_twofor = _make_pivot(_detail_df, "2 for $")
-
-            # ── Preview summary ────────────────────────────────────────────────
-            st.markdown("---")
-            _mkt_avg = float(_summary_retail["Avg"].mean())
-            _sel_row = _summary_retail[_summary_retail["Chain"] == _sel_chain]
-            _sel_avg = float(_sel_row["Avg"].iloc[0]) if not _sel_row.empty else 0.0
-            _sel_cnt = int(_sel_row["Stores"].iloc[0]) if not _sel_row.empty else 0
-            _delta   = _sel_avg - _mkt_avg
-
-            _m1, _m2, _m3, _m4, _m5 = st.columns(5)
-            _m1.metric("Selected Chain", _sel_chain)
-            _m2.metric("Store Count", str(_sel_cnt))
-            _sel_sing = _sel_row["Avg Singles $"].iloc[0] if not _sel_row.empty and not pd.isna(_sel_row["Avg Singles $"].iloc[0]) else None
-            _sel_pkg  = _sel_row["Avg Packages $"].iloc[0] if not _sel_row.empty and not pd.isna(_sel_row["Avg Packages $"].iloc[0]) else None
-            _m3.metric(f"Avg Singles $",  f"${_sel_sing:.2f}" if _sel_sing else "—")
-            _m4.metric(f"Avg Packages $", f"${_sel_pkg:.2f}"  if _sel_pkg  else "—")
-            _m5.metric("vs Peer Avg", f"${_delta:+.2f}", delta=f"${_delta:+.2f}", delta_color="inverse")
-
-            # ── Anonymise peer chains — selected chain keeps its name ──────────
-            _disp = _summary_retail.sort_values("Avg").copy()
-            _letters = "ABCDEFGHIJKLMNOPQRSTUVWXYZ"
-            _peer_label_map = {}
-            _letter_idx = 0
-            for _c in _disp["Chain"]:
-                if _c != _sel_chain:
-                    _peer_label_map[_c] = f"Chain {_letters[_letter_idx % 26]}"
-                    _letter_idx += 1
-            _disp["Chain Display"]  = _disp["Chain"].apply(lambda c: c if c == _sel_chain else _peer_label_map.get(c, c))
-            _disp["Avg Singles $"]  = _disp["Avg Singles $"].apply(lambda x: f"${x:.2f}" if pd.notna(x) else "—")
-            _disp["Avg Packages $"] = _disp["Avg Packages $"].apply(lambda x: f"${x:.2f}" if pd.notna(x) else "—")
-            _disp["vs Avg"]         = _disp["Avg"].apply(lambda x: f"${x-_mkt_avg:+.2f}")
-            _disp["Selected"]       = _disp["Chain"].apply(lambda c: "◀" if c == _sel_chain else "")
-            st.dataframe(
-                _disp[["Selected","Chain Display","Stores","Avg Singles $","Avg Packages $","vs Avg"]].reset_index(drop=True),
-                use_container_width=True, hide_index=True,
-                column_config={"Selected": st.column_config.TextColumn("", width="small")},
-            )
 
             # ── Generate PDF button ────────────────────────────────────────────
             st.markdown("---")
