@@ -12098,13 +12098,17 @@ with tab2:
 
         # ── Filters ───────────────────────────────────────────────────────────
         _fc1, _fc2, _fc3 = st.columns([2, 2, 2])
-        _all_chains  = sorted(_cpc_meta["_chain"].dropna().unique())
-        _sel_chain   = _fc1.selectbox("Select Chain to Report On", _all_chains, key="cpc_chain")
 
-        # Auto-detect the selected chain's store type as default selection
-        _sel_type_default = _cpc_meta[_cpc_meta["_chain"] == _sel_chain]["_cust_type"].mode()
-        _sel_type_default = [_sel_type_default.iloc[0]] if not _sel_type_default.empty else []
-        _all_types_cpc    = sorted(_cpc_meta["_cust_type"].dropna().unique())
+        # Chain list from ACCOUNT_DATA so all chains appear, not just surveyed ones
+        _all_chains = sorted({s["parent_chain"] for s in ACCOUNT_DATA if s.get("parent_chain")})
+        _sel_chain  = _fc1.selectbox("Select Chain to Report On", _all_chains, key="cpc_chain")
+
+        # Auto-detect the selected chain's store type from ACCOUNT_DATA
+        _sel_type_default = next(
+            (s["customer_type"] for s in ACCOUNT_DATA if s.get("parent_chain") == _sel_chain), ""
+        )
+        _sel_type_default = [_sel_type_default] if _sel_type_default else []
+        _all_types_cpc    = sorted({s["customer_type"] for s in ACCOUNT_DATA if s.get("customer_type")})
         _filter_types     = _fc2.multiselect(
             "Store Type", _all_types_cpc,
             default=_sel_type_default,
