@@ -12375,7 +12375,7 @@ with tab2:
             import datetime as _dt2
             _rdate = _dt2.date.today().strftime("%B %d, %Y")
             _sfchain = _sel_chain_cpi.replace(" ","_").replace("/","-")
-            _logo_p  = os.path.join(os.path.dirname(os.path.abspath(__file__)), "SCP_LOGO.jpg")
+            _logo_p  = _os_tab2.path.join(_os_tab2.path.dirname(_os_tab2.path.abspath(__file__)), "SCP_LOGO.jpg")
 
             _scorecard = dict(total_prods=_total_p, over_prods=_over_p,
                               avg_gap=_avg_gap, max_gap=_max_gap)
