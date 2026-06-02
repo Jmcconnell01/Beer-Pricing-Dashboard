@@ -12208,6 +12208,8 @@ with tab2:
                 .mean().round(2).reset_index()
                 .rename(columns={"_chain": "Chain", "Retail $": "Avg"})
             )
+            # Only keep chains that actually have pricing submissions
+            _summary_retail = _summary_retail[_summary_retail["Avg"].notna()].copy()
             _summary_retail["Stores"]        = _summary_retail["Chain"].map(_acct_chain_counts).fillna(0).astype(int)
             _summary_retail["Avg Singles $"]  = _summary_retail["Chain"].map(_avg_singles).round(2)
             _summary_retail["Avg Packages $"] = _summary_retail["Chain"].map(_avg_packages).round(2)
