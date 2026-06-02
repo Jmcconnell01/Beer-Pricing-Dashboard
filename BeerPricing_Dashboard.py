@@ -11796,42 +11796,233 @@ with tab1:
                     use_container_width=True,
                 )
 
-# ── TAB 2 ─────────────────────────────────────────────────────────────────────
+# ── TAB 2 — CHAIN PRICE COMPARISON ───────────────────────────────────────────
 with tab2:
-    st.subheader("Price Comparison by Product")
+    st.subheader("⛓️ Chain Price Comparison")
 
-    avail_prods = sorted(df_valid["Product"].unique()) if not df_valid.empty else []
-    if sel_prod == "All Products":
-        prod_choice = st.selectbox("Select a product", avail_prods) if avail_prods else None
+    # ── Load all survey submissions ───────────────────────────────────────────
+    _cpc_raw = _load_all_survey_from_sheets()
+
+    if _cpc_raw.empty:
+        st.info("No survey data available yet. Submit prices via the UPC Scanner tab first.")
     else:
-        prod_choice = sel_prod
+        # Enrich with parent_chain + customer_type from STORES lookup
+        _store_meta = {s["company"]: s for s in STORES}
 
-    prod_df = df_valid[df_valid["Product"] == prod_choice].copy() if prod_choice else pd.DataFrame()
+        def _enrich_chain(row):
+            meta = _store_meta.get(str(row.get("Store", "")).strip(), {})
+            return pd.Series({
+                "_chain":      meta.get("parent_chain", str(row.get("Parent Chain", "")).strip()),
+                "_cust_type":  meta.get("customer_type", str(row.get("Store Type", "")).strip()),
+                "_market":     meta.get("market",        str(row.get("Market", "")).strip()),
+            })
 
-    if prod_df.empty:
-        st.info("No competitor price data for this selection.")
-    else:
-        parkers_price = prod_df["Our Price"].iloc[0]
-        bar_data = prod_df[["Competitor","Comp Price"]].drop_duplicates().sort_values("Comp Price")
-        colors = ["#ef4444" if p < parkers_price else "#22c55e" for p in bar_data["Comp Price"]]
+        _cpc_meta = _cpc_raw.join(_cpc_raw.apply(_enrich_chain, axis=1))
+        _cpc_meta = _cpc_meta[_cpc_meta["Retail $"].notna() & (_cpc_meta["Retail $"] > 0)].copy()
 
-        fig2 = go.Figure()
-        fig2.add_trace(go.Bar(
-            x=bar_data["Competitor"], y=bar_data["Comp Price"],
-            marker_color=colors,
-            text=[f"${p:.2f}" for p in bar_data["Comp Price"]],
-            textposition="outside",
-        ))
-        fig2.add_hline(
-            y=parkers_price, line_dash="dash", line_color="#f59e0b", line_width=2,
-            annotation_text=f" Our ${parkers_price:.2f}", annotation_position="right",
-        )
-        fig2.update_layout(
-            height=420, yaxis_title="Price ($)", xaxis_title="",
-            showlegend=False, margin=dict(l=10, r=100, t=30, b=10),
-        )
-        st.plotly_chart(fig2, use_container_width=True)
-        st.caption("🔴 = Competitor cheaper than us · 🟢 = We're cheaper · Dashed line = our price")
+        # ── Filters row ───────────────────────────────────────────────────────
+        _fc1, _fc2, _fc3 = st.columns([2, 2, 2])
+
+        _all_chains = sorted(_cpc_meta["_chain"].dropna().unique())
+        _sel_chain  = _fc1.selectbox("Select Chain", _all_chains, key="cpc_chain")
+
+        # Derive same-type + same-market peers automatically
+        _sel_type   = _cpc_meta[_cpc_meta["_chain"] == _sel_chain]["_cust_type"].mode()
+        _sel_type   = _sel_type.iloc[0] if not _sel_type.empty else ""
+        _sel_markets = sorted(_cpc_meta[_cpc_meta["_chain"] == _sel_chain]["_market"].dropna().unique())
+
+        _all_types  = ["All Types"] + sorted(_cpc_meta["_cust_type"].dropna().unique())
+        _type_idx   = _all_types.index(_sel_type) if _sel_type in _all_types else 0
+        _filter_type = _fc2.selectbox("Store Type Filter", _all_types, index=_type_idx, key="cpc_type")
+
+        _all_markets_cpc = ["All Markets"] + sorted(_cpc_meta["_market"].dropna().unique())
+        _filter_market   = _fc3.selectbox("Market Filter", _all_markets_cpc,
+                                           index=1 if len(_sel_markets) == 1 and _sel_markets[0] in _all_markets_cpc else 0,
+                                           key="cpc_market")
+
+        # Filter to peers (same type + same market as selected chain)
+        _peer_df = _cpc_meta.copy()
+        if _filter_type != "All Types":
+            _peer_df = _peer_df[_peer_df["_cust_type"] == _filter_type]
+        if _filter_market != "All Markets":
+            _peer_df = _peer_df[_peer_df["_market"] == _filter_market]
+
+        _peer_chains = sorted(_peer_df["_chain"].dropna().unique())
+
+        if _sel_chain not in _peer_chains:
+            st.warning(f"**{_sel_chain}** has no submitted prices matching the current type/market filter.")
+        else:
+            # ── Summary stats ─────────────────────────────────────────────────
+            st.markdown("#### 📊 Summary — Avg Retail $ by Chain")
+            _summary = (
+                _peer_df.groupby("_chain")["Retail $"]
+                .agg(Avg=lambda x: round(x.mean(), 2), Count="count")
+                .reset_index()
+                .rename(columns={"_chain": "Chain"})
+                .sort_values("Avg")
+            )
+            _sel_avg = _summary.loc[_summary["Chain"] == _sel_chain, "Avg"]
+            _sel_avg_val = float(_sel_avg.iloc[0]) if not _sel_avg.empty else 0.0
+            _overall_avg = round(_peer_df["Retail $"].mean(), 2)
+
+            # Summary metric cards
+            _ms1, _ms2, _ms3, _ms4 = st.columns(4)
+            _ms1.metric("Selected Chain", _sel_chain)
+            _ms2.metric(f"{_sel_chain} Avg Retail", f"${_sel_avg_val:.2f}")
+            _ms3.metric("Market Avg Retail", f"${_overall_avg:.2f}",
+                        delta=f"${round(_sel_avg_val - _overall_avg, 2):+.2f}",
+                        delta_color="inverse")
+            _ms4.metric("Peer Chains", str(len(_peer_chains)))
+
+            # Bar chart — avg retail by chain, selected chain highlighted
+            _bar_colors = ["#f59e0b" if c == _sel_chain else "#3b82f6" for c in _summary["Chain"]]
+            _fig_sum = go.Figure(go.Bar(
+                x=_summary["Chain"],
+                y=_summary["Avg"],
+                marker_color=_bar_colors,
+                text=[f"${v:.2f}" for v in _summary["Avg"]],
+                textposition="outside",
+                customdata=_summary["Count"],
+                hovertemplate="<b>%{x}</b><br>Avg: $%{y:.2f}<br>Submissions: %{customdata}<extra></extra>",
+            ))
+            _fig_sum.add_hline(y=_overall_avg, line_dash="dash", line_color="#6b7280",
+                               annotation_text=f" Market avg ${_overall_avg:.2f}",
+                               annotation_position="top right")
+            _fig_sum.update_layout(
+                height=380, yaxis_title="Avg Retail $", xaxis_title="",
+                showlegend=False, margin=dict(l=10, r=120, t=40, b=80),
+                xaxis_tickangle=-35,
+            )
+            st.plotly_chart(_fig_sum, use_container_width=True)
+            st.caption("🟡 = Selected chain · 🔵 = Peer chains · Dashed = market average")
+
+            # ── 2 for $ summary if data exists ───────────────────────────────
+            if "2 for $" in _peer_df.columns:
+                _twofor_df = _peer_df[_peer_df["2 for $"].notna() & (_peer_df["2 for $"] > 0)]
+                if not _twofor_df.empty:
+                    st.markdown("#### 2️⃣ Summary — Avg 2 for $ by Chain")
+                    _sum2 = (
+                        _twofor_df.groupby("_chain")["2 for $"]
+                        .agg(Avg=lambda x: round(x.mean(), 2), Count="count")
+                        .reset_index()
+                        .rename(columns={"_chain": "Chain"})
+                        .sort_values("Avg")
+                    )
+                    _sel_avg2 = _sum2.loc[_sum2["Chain"] == _sel_chain, "Avg"]
+                    _sel_avg2_val = float(_sel_avg2.iloc[0]) if not _sel_avg2.empty else 0.0
+                    _overall_avg2 = round(_twofor_df["2 for $"].mean(), 2)
+                    _bar_colors2 = ["#f59e0b" if c == _sel_chain else "#8b5cf6" for c in _sum2["Chain"]]
+                    _fig_sum2 = go.Figure(go.Bar(
+                        x=_sum2["Chain"],
+                        y=_sum2["Avg"],
+                        marker_color=_bar_colors2,
+                        text=[f"${v:.2f}" for v in _sum2["Avg"]],
+                        textposition="outside",
+                        customdata=_sum2["Count"],
+                        hovertemplate="<b>%{x}</b><br>2 for Avg: $%{y:.2f}<br>Submissions: %{customdata}<extra></extra>",
+                    ))
+                    _fig_sum2.add_hline(y=_overall_avg2, line_dash="dash", line_color="#6b7280",
+                                        annotation_text=f" Market avg ${_overall_avg2:.2f}",
+                                        annotation_position="top right")
+                    _fig_sum2.update_layout(
+                        height=340, yaxis_title="Avg 2 for $", xaxis_title="",
+                        showlegend=False, margin=dict(l=10, r=120, t=30, b=80),
+                        xaxis_tickangle=-35,
+                    )
+                    st.plotly_chart(_fig_sum2, use_container_width=True)
+
+            st.divider()
+
+            # ── Detail table: product rows × chain columns ────────────────────
+            st.markdown("#### 📋 Product Detail — Retail $ by Chain")
+
+            _prod_filter_col, _brand_filter_col, _pkg_filter_col = st.columns(3)
+            _avail_brands = ["All Brands"] + sorted(_peer_df["Brand"].dropna().unique()) if "Brand" in _peer_df.columns else ["All Brands"]
+            _avail_pkgs   = ["All Packages"] + sorted(_peer_df["Package"].dropna().unique()) if "Package" in _peer_df.columns else ["All Packages"]
+            _brand_filt   = _brand_filter_col.selectbox("Brand", _avail_brands, key="cpc_brand")
+            _pkg_filt     = _pkg_filter_col.selectbox("Package", _avail_pkgs,   key="cpc_pkg")
+
+            _detail_df = _peer_df.copy()
+            if _brand_filt != "All Brands":
+                _detail_df = _detail_df[_detail_df["Brand"] == _brand_filt]
+            if _pkg_filt != "All Packages":
+                _detail_df = _detail_df[_detail_df["Package"] == _pkg_filt]
+
+            if _detail_df.empty:
+                st.info("No data matches the selected filters.")
+            else:
+                # Pivot: avg retail per product per chain
+                _pivot = (
+                    _detail_df.groupby(["Product", "_chain"])["Retail $"]
+                    .mean().round(2).reset_index()
+                    .pivot(index="Product", columns="_chain", values="Retail $")
+                )
+                _pivot.columns.name = None
+                _pivot = _pivot.reset_index()
+
+                # Move selected chain column to front
+                _other_cols = [c for c in _pivot.columns if c not in ("Product", _sel_chain)]
+                _col_order  = ["Product"] + ([_sel_chain] if _sel_chain in _pivot.columns else []) + sorted(_other_cols)
+                _pivot = _pivot[[c for c in _col_order if c in _pivot.columns]]
+
+                # Colour-code: cells cheaper than selected chain = red, more expensive = green
+                def _color_cell(val, ref):
+                    if pd.isna(val) or pd.isna(ref):
+                        return ""
+                    if val < ref:
+                        return "background-color: #fef2f2; color: #b91c1c"
+                    if val > ref:
+                        return "background-color: #f0fdf4; color: #15803d"
+                    return ""
+
+                def _style_pivot(df):
+                    styles = pd.DataFrame("", index=df.index, columns=df.columns)
+                    if _sel_chain in df.columns:
+                        for col in df.columns:
+                            if col in ("Product", _sel_chain):
+                                continue
+                            styles[col] = [
+                                _color_cell(row[col], row.get(_sel_chain, float("nan")))
+                                for _, row in df.iterrows()
+                            ]
+                    return styles
+
+                _fmt_dict = {c: "${:.2f}" for c in _pivot.columns if c != "Product"}
+                st.dataframe(
+                    _pivot.style.apply(_style_pivot, axis=None).format(_fmt_dict, na_rep="—"),
+                    use_container_width=True,
+                    height=min(50 + len(_pivot) * 35, 600),
+                )
+
+                # 2 for $ detail table
+                if "2 for $" in _detail_df.columns:
+                    _tfd2 = _detail_df[_detail_df["2 for $"].notna() & (_detail_df["2 for $"] > 0)]
+                    if not _tfd2.empty:
+                        st.markdown("#### 2️⃣ Product Detail — 2 for $ by Chain")
+                        _pivot2 = (
+                            _tfd2.groupby(["Product", "_chain"])["2 for $"]
+                            .mean().round(2).reset_index()
+                            .pivot(index="Product", columns="_chain", values="2 for $")
+                        )
+                        _pivot2.columns.name = None
+                        _pivot2 = _pivot2.reset_index()
+                        _col_order2 = ["Product"] + ([_sel_chain] if _sel_chain in _pivot2.columns else []) + sorted([c for c in _pivot2.columns if c not in ("Product", _sel_chain)])
+                        _pivot2 = _pivot2[[c for c in _col_order2 if c in _pivot2.columns]]
+                        _fmt2 = {c: "${:.2f}" for c in _pivot2.columns if c != "Product"}
+                        st.dataframe(
+                            _pivot2.style.apply(_style_pivot, axis=None).format(_fmt2, na_rep="—"),
+                            use_container_width=True,
+                            height=min(50 + len(_pivot2) * 35, 500),
+                        )
+
+                # Download detail table
+                st.download_button(
+                    "⬇ Download Comparison",
+                    _pivot.to_csv(index=False).encode(),
+                    f"chain_comparison_{_sel_chain.replace(' ','_')}.csv",
+                    "text/csv",
+                    key="cpc_dl",
+                )
 
 
 with tab5:
