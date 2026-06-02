@@ -12171,7 +12171,39 @@ with tab2:
                     continue
                 _acct_chain_counts[_pc] = _acct_chain_counts.get(_pc, 0) + 1
 
-            # ── Tag Singles vs Packages on detail_df ──────────────────────────
+            # ── Fix WAMP + PkgGroup on detail_df ──────────────────────────────
+            _detail_df = _detail_df.copy()
+
+            # Apply authoritative WAMP lookup (same as load_survey_pricing)
+            _wamp_ref_cpc, _name_ref_cpc = _load_wamp_reference()
+            def _fix_wamp_cpc(row):
+                upc  = str(row.get("UPC", "")).strip().zfill(12)
+                prod = str(row.get("Product", "")).strip()
+                if upc in _wamp_ref_cpc:
+                    return _wamp_ref_cpc[upc]
+                if prod in _name_ref_cpc:
+                    return _name_ref_cpc[prod]
+                stripped = prod.removesuffix(" SC").removesuffix(" SCP").strip()
+                if stripped in _name_ref_cpc:
+                    return _name_ref_cpc[stripped]
+                existing = str(row.get("WAMP", "")).strip()
+                return existing if existing else ""
+
+            _detail_df["WAMP"] = _detail_df.apply(_fix_wamp_cpc, axis=1)
+            # For rows still missing WAMP, fall back to what was saved in the survey
+            _detail_df["WAMP"] = _detail_df["WAMP"].replace("", pd.NA)
+            if "WAMP" in _cpc_raw.columns:
+                _detail_df["WAMP"] = _detail_df["WAMP"].fillna(
+                    _detail_df.index.map(lambda i: str(_cpc_raw.loc[i, "WAMP"]).strip() if i in _cpc_raw.index else "")
+                )
+            # Only drop rows where WAMP is truly unresolvable
+            _detail_df = _detail_df[_detail_df["WAMP"].fillna("").str.strip().ne("")]
+
+            # Build PkgGroup
+            _detail_df["PkgGroup"] = _detail_df.apply(
+                lambda r: pkg_group(r.get("Package",""), r.get("WAMP",""), r.get("Brand","") or r.get("Product","")), axis=1
+            )
+
             _singles_grps_cpc = {
                 "Core Singles 16oz","Core Singles 24-25oz","Core Singles 32oz","Core Singles Other",
                 "Core Plus Singles 16oz","Core Plus Singles 25oz","Core Plus Singles 32oz","Core Plus Singles Other",
@@ -12181,17 +12213,9 @@ with tab2:
                 "BB Singles 16oz","BB Value Singles 16oz","BB Singles 19oz","BB Singles 22-24oz","BB Singles 7oz","BB Singles Other",
                 "Wine Singles 7oz","Singles","Singles x4","Singles x6","Singles x8","Singles x9",
             }
-            if "Package" in _detail_df.columns:
-                _detail_df = _detail_df.copy()
-                _detail_df["_PkgGrp"] = _detail_df.apply(
-                    lambda r: pkg_group(r.get("Package",""), r.get("WAMP",""), r.get("Brand","") or r.get("Product","")), axis=1
-                )
-                _detail_df["_Format"] = _detail_df["_PkgGrp"].apply(
-                    lambda g: "Singles" if g in _singles_grps_cpc else "Packages"
-                )
-            else:
-                _detail_df = _detail_df.copy()
-                _detail_df["_Format"] = "Packages"
+            _detail_df["_Format"] = _detail_df["PkgGroup"].apply(
+                lambda g: "Singles" if g in _singles_grps_cpc else "Packages"
+            )
 
             # ── Build summary table split by Singles / Packages ────────────────
             def _avg_by_format(df, fmt):
@@ -12269,14 +12293,6 @@ with tab2:
             )
 
             # ── Build WAMP/PkgGroup heatmaps ───────────────────────────────────
-            # Tag PkgGroup onto detail_df (already has _Format from above)
-            if "PkgGroup" not in _detail_df.columns and "Package" in _detail_df.columns:
-                _detail_df = _detail_df.copy()
-                _detail_df["PkgGroup"] = _detail_df.apply(
-                    lambda r: pkg_group(r.get("Package",""), r.get("WAMP",""),
-                                        r.get("Brand","") or r.get("Product","")), axis=1
-                )
-
             # Pivot: rows=(WAMP, PkgGroup, Product), cols=_chain → avg Retail $
             if "WAMP" in _detail_df.columns and "PkgGroup" in _detail_df.columns:
                 _cpc_pivot = _detail_df.pivot_table(
