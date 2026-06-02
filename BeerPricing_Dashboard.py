@@ -11337,37 +11337,31 @@ with tab1:
             view["_Format"] = view["PkgGroup"].apply(lambda g: "Singles" if g in _singles_grps else "Packages")
 
             # ── Unified filter bar ────────────────────────────────────────────
-            # Classify chains into format buckets
-            _SMALL_FORMAT = {
-                "Circle K", "Refuel Market", "GPM Southeast", "7-Eleven", "Spinx",
-                "Parkers", "Enmark", "Buck Magement (Blue Water)",
-                "Minuteman Food Mart", "Casey's", "Wawa", "Sheetz", "Quik Trip", "QT",
-                "RaceTrac", "Circle K GA", "Loves GA", "Murphy GA", "Nouria",
-                "Pilot GA", "QT GA", "WaWa", "Loves", "Pilot", "Flying J",
-                "Independent (GA)", "Independent (SC)",
-            }
-            _LARGE_FORMAT = {
-                "Food Lion", "Publix", "Walmart", "Harris Teeter", "Lowe's Foods",
-                "Kroger", "Ingles", "Aldi", "Lidl", "Target", "Sam's Club",
-                "Costco", "Trader Joe's", "Whole Foods", "Bi-Lo", "Winn-Dixie",
-                "Food City", "Giant", "Stop & Shop",
-            }
-            _DRUG_DOLLAR_FORMAT = {
-                "Dollar General", "Dollar Tree", "Family Dollar",
-                "CVS", "Walgreens", "Rite Aid",
-            }
-            _all_view_chains    = set(view["Competitor"].dropna().unique()) if "Competitor" in view.columns else set()
-            _chains_small       = sorted(_all_view_chains & _SMALL_FORMAT)
-            _chains_large       = sorted(_all_view_chains & _LARGE_FORMAT)
-            _chains_drug_dollar = sorted(_all_view_chains & _DRUG_DOLLAR_FORMAT)
+            # Build chain → store type lookup from ACCOUNT_DATA
+            _chain_type_map = {}
+            for _s in ACCOUNT_DATA:
+                _pc = _s.get("parent_chain", "")
+                _ct = _s.get("customer_type", "")
+                if _pc and _ct:
+                    _chain_type_map[_pc] = _ct
 
-            fc1, fc2, fc3, fc4, fc5, fc6 = st.columns([2, 1, 2, 1, 1, 1])
+            _all_view_chains = set(view["Competitor"].dropna().unique()) if "Competitor" in view.columns else set()
+
+            # All store types present in the current view
+            _all_store_types = sorted({
+                _chain_type_map.get(c, "Other")
+                for c in _all_view_chains
+            })
+
+            fc1, fc2, fc3, fc4, fc5, fc6 = st.columns([2, 2, 2, 1, 1, 1])
             with fc1:
                 wamp_all = sorted(view["WAMP"].unique())
                 sel_wamp = st.multiselect("WAMP", wamp_all, default=[], placeholder="All WAMPs", key="d_wamp")
             with fc2:
-                _fmt_options = ["All", "Small", "Large", "Drug/Dollar"]
-                sel_chain_fmt = st.selectbox("Format", _fmt_options, key="d_chain_fmt")
+                sel_store_types = st.multiselect(
+                    "Store Type", _all_store_types, default=[],
+                    placeholder="All Store Types", key="d_store_type"
+                )
             with fc3:
                 _chain_opts_all = sorted(_all_view_chains)
                 sel_gap_chains = st.multiselect("Chain", _chain_opts_all, default=[],
@@ -11388,13 +11382,13 @@ with tab1:
             if sel_wamp:
                 view = view[view["WAMP"].isin(sel_wamp)]
 
-            # Apply chain format filter
-            if sel_chain_fmt == "Small" and _chains_small:
-                view = view[view["Competitor"].isin(_chains_small)]
-            elif sel_chain_fmt == "Large" and _chains_large:
-                view = view[view["Competitor"].isin(_chains_large)]
-            elif sel_chain_fmt == "Drug/Dollar" and _chains_drug_dollar:
-                view = view[view["Competitor"].isin(_chains_drug_dollar)]
+            # Apply Store Type filter — keep only chains whose type is selected
+            if sel_store_types:
+                _keep_chains = {
+                    c for c in _all_view_chains
+                    if _chain_type_map.get(c, "Other") in sel_store_types
+                }
+                view = view[view["Competitor"].isin(_keep_chains)]
 
             # Apply Singles/Packages format filter
             if sel_format_gap != "Both" and "_Format" in view.columns:
@@ -12078,11 +12072,16 @@ with tab2:
         _all_chains  = sorted(_cpc_meta["_chain"].dropna().unique())
         _sel_chain   = _fc1.selectbox("Select Chain to Report On", _all_chains, key="cpc_chain")
 
-        _sel_type    = _cpc_meta[_cpc_meta["_chain"] == _sel_chain]["_cust_type"].mode()
-        _sel_type    = _sel_type.iloc[0] if not _sel_type.empty else ""
-        _all_types   = ["All Types"] + sorted(_cpc_meta["_cust_type"].dropna().unique())
-        _type_idx    = _all_types.index(_sel_type) if _sel_type in _all_types else 0
-        _filter_type = _fc2.selectbox("Store Type", _all_types, index=_type_idx, key="cpc_type")
+        # Auto-detect the selected chain's store type as default selection
+        _sel_type_default = _cpc_meta[_cpc_meta["_chain"] == _sel_chain]["_cust_type"].mode()
+        _sel_type_default = [_sel_type_default.iloc[0]] if not _sel_type_default.empty else []
+        _all_types_cpc    = sorted(_cpc_meta["_cust_type"].dropna().unique())
+        _filter_types     = _fc2.multiselect(
+            "Store Type", _all_types_cpc,
+            default=_sel_type_default,
+            placeholder="All Store Types",
+            key="cpc_type"
+        )
 
         _sel_mkts    = sorted(_cpc_meta[_cpc_meta["_chain"] == _sel_chain]["_market"].dropna().unique())
         _all_mkts    = ["All Markets"] + sorted(_cpc_meta["_market"].dropna().unique())
@@ -12091,10 +12090,13 @@ with tab2:
 
         # Apply filters
         _peer_df = _cpc_meta.copy()
-        if _filter_type != "All Types":
-            _peer_df = _peer_df[_peer_df["_cust_type"] == _filter_type]
+        if _filter_types:
+            _peer_df = _peer_df[_peer_df["_cust_type"].isin(_filter_types)]
         if _filter_mkt != "All Markets":
             _peer_df = _peer_df[_peer_df["_market"] == _filter_mkt]
+
+        # Also update filter_type string for PDF report label
+        _filter_type = ", ".join(_filter_types) if _filter_types else "All Store Types"
 
         _peer_chains = sorted(_peer_df["_chain"].dropna().unique())
 
