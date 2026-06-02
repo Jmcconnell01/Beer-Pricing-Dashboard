@@ -12245,7 +12245,10 @@ with tab2:
             _m5.metric("vs Peer Avg", f"${_delta:+.2f}", delta=f"${_delta:+.2f}", delta_color="inverse")
 
             # ── Summary table (anonymised) ─────────────────────────────────────
-            _disp = _summary_retail.sort_values("Avg").copy()
+            # ── Summary table (anonymised) — selected chain always first ──────
+            _sel_rows  = _summary_retail[_summary_retail["Chain"] == _sel_chain]
+            _peer_rows = _summary_retail[_summary_retail["Chain"] != _sel_chain].sort_values("Avg")
+            _disp = pd.concat([_sel_rows, _peer_rows], ignore_index=True)
             _disp["Chain Display"]  = _disp["Chain"].apply(_cpc_anon)
             _disp["Avg Singles $"]  = _disp["Avg Singles $"].apply(lambda x: f"${x:.2f}" if pd.notna(x) else "—")
             _disp["Avg Packages $"] = _disp["Avg Packages $"].apply(lambda x: f"${x:.2f}" if pd.notna(x) else "—")
