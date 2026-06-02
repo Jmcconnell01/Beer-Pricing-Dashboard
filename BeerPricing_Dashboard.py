@@ -12085,10 +12085,17 @@ with tab2:
     else:
         _store_meta = {s["company"]: s for s in ACCOUNT_DATA}
 
+        # Consolidation map — sub-brands that should roll up to their parent chain
+        _chain_consolidation = {
+            "Parkers Saint Simons": "Parkers",
+        }
+
         def _enrich_chain(row):
-            meta = _store_meta.get(str(row.get("Store", "")).strip(), {})
+            meta   = _store_meta.get(str(row.get("Store", "")).strip(), {})
+            _chain = meta.get("parent_chain", str(row.get("Parent Chain", "")).strip())
+            _chain = _chain_consolidation.get(_chain, _chain)
             return pd.Series({
-                "_chain":     meta.get("parent_chain", str(row.get("Parent Chain", "")).strip()),
+                "_chain":     _chain,
                 "_cust_type": meta.get("customer_type", str(row.get("Store Type", "")).strip()),
                 "_market":    meta.get("market",        str(row.get("Market", "")).strip()),
             })
@@ -12099,8 +12106,11 @@ with tab2:
         # ── Filters ───────────────────────────────────────────────────────────
         _fc1, _fc2, _fc3 = st.columns([2, 2, 2])
 
-        # Chain list from ACCOUNT_DATA so all chains appear, not just surveyed ones
-        _all_chains = sorted({s["parent_chain"] for s in ACCOUNT_DATA if s.get("parent_chain")})
+        # Chain list from ACCOUNT_DATA — apply same consolidation map
+        _all_chains = sorted({
+            _chain_consolidation.get(s["parent_chain"], s["parent_chain"])
+            for s in ACCOUNT_DATA if s.get("parent_chain")
+        })
         _sel_chain  = _fc1.selectbox("Select Chain to Report On", _all_chains, key="cpc_chain")
 
         # Auto-detect the selected chain's store type from ACCOUNT_DATA
