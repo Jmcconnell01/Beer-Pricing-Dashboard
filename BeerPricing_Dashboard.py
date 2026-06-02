@@ -12190,11 +12190,12 @@ with tab2:
                 return existing if existing else ""
 
             _detail_df["WAMP"] = _detail_df.apply(_fix_wamp_cpc, axis=1)
-            # For rows still missing WAMP, fall back to what was saved in the survey
-            _detail_df["WAMP"] = _detail_df["WAMP"].replace("", pd.NA)
-            if "WAMP" in _cpc_raw.columns:
-                _detail_df["WAMP"] = _detail_df["WAMP"].fillna(
-                    _detail_df.index.map(lambda i: str(_cpc_raw.loc[i, "WAMP"]).strip() if i in _cpc_raw.index else "")
+            # For rows still missing WAMP, use the value stored in the survey row directly
+            _blank_wamp = _detail_df["WAMP"].fillna("").str.strip().eq("")
+            if _blank_wamp.any():
+                _detail_df.loc[_blank_wamp, "WAMP"] = (
+                    _detail_df.loc[_blank_wamp]
+                    .apply(lambda r: str(r.get("WAMP","") or "").strip(), axis=1)
                 )
             # Only drop rows where WAMP is truly unresolvable
             _detail_df = _detail_df[_detail_df["WAMP"].fillna("").str.strip().ne("")]
