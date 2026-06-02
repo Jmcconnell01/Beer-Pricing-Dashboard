@@ -12505,6 +12505,7 @@ with tab2:
         except Exception as _pe:
             st.error(f"PDF error: {_pe}")
 
+with tab5:
     _scanner_hdr_col, _scanner_btn_col = st.columns([6, 1])
     _scanner_hdr_col.subheader("📱 UPC Scanner List")
     if _scanner_btn_col.button("🔄 Refresh", help="Reload latest planogram from Google Sheets", key="scanner_refresh"):
