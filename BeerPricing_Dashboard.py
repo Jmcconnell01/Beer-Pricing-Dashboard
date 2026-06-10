@@ -11963,6 +11963,7 @@ with tab2:
                 ("RIGHTPADDING",  (0,0), (-1,-1), 4),
             ])
             t.setStyle(ts)
+            t._scp_style = ts  # keep public ref to the TableStyle for later .add()
             return t
 
         buf = _io2.BytesIO()
@@ -12036,7 +12037,7 @@ with tab2:
         for ri, sec in enumerate(market_sections, 1):
             _ag = round(sec["over_df"]["Gap"].mean(),2) if not sec["over_df"].empty else 0
             _bg = RED_L if _ag>0.50 else (YEL_L if _ag>0 else GRN_L)
-            _st._tblStyle.add("BACKGROUND",(4,ri),(4,ri),_bg)
+            _st._scp_style.add("BACKGROUND",(4,ri),(4,ri),_bg)
         story.append(_st)
         story.append(Spacer(1,6))
 
@@ -12136,7 +12137,7 @@ with tab2:
                 # Colour gap col
                 for ri, (_, r) in enumerate(_o.sort_values("Gap",ascending=False).iterrows(),1):
                     _bg = RED_L if r["Gap"]>=1.0 else YEL_L
-                    _ot._tblStyle.add("BACKGROUND",(5,ri),(5,ri),_bg)
+                    _ot._scp_style.add("BACKGROUND",(5,ri),(5,ri),_bg)
                 story.append(_ot)
 
         # ── Footer ─────────────────────────────────────────────────────────────
